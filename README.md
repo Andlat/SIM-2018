@@ -24,32 +24,45 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 ### Design
 - Pixel art
-![](images/eg_pixel_art.png)
+<img src="images/eg_pixel_art.png" alt="pixel art" height="300" />
 
 - Contrôles du rêve
-![](images/controls_game_design_01.jpg)
+<img src="images/controls_game_design_01.jpg" alt="controls" height="300" />
 
 
 ### Développement
 
-- Design des pesonnages, pièces [Anthony - leader design]
+**Version Android Minimum: 4.3 (api 18, 91.4% des appareils)**
 
-- Design des objets et de la monnaie [Sébastien]
+**Tâches**
+- Design des pesonnages, pièces \[Anthony - leader design\]
+
+- Design des objets et de la monnaie \[Sébastien\]
 
 - Google maps (voir section **Jour**) [Antoine - leader Google maps]
 
-- Google maps [Hans]
+- Google maps \[Hans\]
 
-- Google maps [Sébastien]
+- Google maps \[Sébastien\]
 
-- Moteur de jeu [Nikola]
+- Moteur de jeu \[Nikola\]
 
-- Implémentation du jeux [Hans]
+- Implémentation du jeux \[Hans\]
 
-- Mécaniques de jeu [?]
+- Mécaniques de jeu \[?\]
 
 - Histoire [?]
 
-![](images/tasks_01.jpg)
+<img src="images/tasks_01.jpg" alt="tasks" height="300" />
+
+**Outils**
+- Android Studio 3.0.1
+
+- (? Pixel art editor)
+
+- Blender (3d editor)
+
+**Frameworks**
+- OpenGl ES 3.0 (api 18, android 4.3+)
 
 
