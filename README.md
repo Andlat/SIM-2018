@@ -10,6 +10,8 @@ Un enfant se déplace dans une ville le jour à la recherche d'objets et rêve l
 **Nuit (Quand l'enfant dort)**
 Un enfant rêve à un jeux vidéo dans lequel il doit se défendre contre des toutous. Le rêve se déroule dans un monde style maison qui contient une cuisine en son centre. La cuisine agit en tant que "safe zone". L'attaque des toutous se déroule en vagues dont la difficulté augmente en changeant de vague.
 
+<!-- anchor to section -->
+<a name="day_desc"></a>
 **Jour (Quand l'enfant est réveillé)**
 Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réelle visionné à l'aide de google maps) pour trouver des objets qui l'aideront à se défendre dans son rêve.
 
@@ -39,7 +41,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 - Design des objets et de la monnaie \[Sébastien\]
 
-- Google maps (voir section **Jour**) [Antoine - leader Google maps]
+- Google maps (voir section [**Jour**](#day_desc)) [Antoine - leader Google maps]
 
 - Google maps \[Hans\]
 
