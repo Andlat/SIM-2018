@@ -55,6 +55,8 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 - Histoire [?]
 
+- Génération de monde (algorithme) [?]
+
 <img src="images/tasks_01.jpg" alt="tasks" height="300" />
 
 **Outils**
@@ -62,7 +64,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 - (? Pixel art editor)
 
-- Blender (3d editor)
+- Blender (Éditeur 3d)
 
 **Frameworks**
 - OpenGl ES 3.0 (api 18, android 4.3+)
