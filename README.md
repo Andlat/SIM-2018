@@ -67,6 +67,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 - Blender (Éditeur 3d)
 
 **API**
+- Google maps
 
 **Frameworks**
 - OpenGl ES 3.0 (api 18, android 4.3+)
