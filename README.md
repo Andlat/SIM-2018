@@ -62,9 +62,11 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 **Outils**
 - Android Studio 3.0.1
 
-- (? Pixel art editor)
+- PixilArt.com
 
 - Blender (Éditeur 3d)
+
+**API**
 
 **Frameworks**
 - OpenGl ES 3.0 (api 18, android 4.3+)
