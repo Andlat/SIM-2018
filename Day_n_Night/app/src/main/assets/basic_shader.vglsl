@@ -1,0 +1,13 @@
+#version 300 es
+
+layout (location=0) in vec3 position;
+
+//attribute vec4 MVP;
+
+//out vec4 fcolor;
+
+void main(){
+    gl_Position = vec4(position, 1);
+
+    //fcolor = vec4(0.f, 0.f, .5f, 1.f);//color;
+}
