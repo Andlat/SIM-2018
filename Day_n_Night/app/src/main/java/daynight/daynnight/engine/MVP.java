@@ -29,13 +29,15 @@ class MVP {
 
     /**
      * Calcule la matrice de vue dans l'espace. Model View Projection matrix
+     * @param modelMat4 Position du modèle. Utiliser une matrice d'identité pour un objet à l'origine.
      * @return La matrice MVP
      */
-    public Mat4 get(){
-        Mat4 mvp = new Mat4();
-        mvp.mult(mCamera.lookAt()).mult(mProjection);
-        return mvp;
+    Mat4 get(Mat4 modelMat4){
+        modelMat4.mult(mCamera.lookAt()).mult(mProjection);
+        return modelMat4;
     }
+
+    Camera getCamera(){ return mCamera; }
 
     static class Camera{
         private Vec3 mEye, mCenter, mUp;
@@ -61,21 +63,21 @@ class MVP {
             mUp = up;
         }
 
-        public Vec3 getEye() { return mEye; }
-        public void setEye(Vec3 pos) { mEye = pos; }
+        Vec3 getEye() { return mEye; }
+        Camera setEye(Vec3 pos) { mEye = pos; return this; }
 
-        public Vec3 getCenter() { return mCenter; }
-        public void setCenter(Vec3 eye) { mCenter = eye; }
+        Vec3 getCenter() { return mCenter; }
+        Camera setCenter(Vec3 eye) { mCenter = eye; return this; }
 
 
-        public Vec3 getUp() { return mUp; }
-        public void setUp(Vec3 head) { mUp = head; }
+        Vec3 getUp() { return mUp; }
+        Camera setUp(Vec3 head) { mUp = head; return this; }
 
         /**
          * Calcule la matrice de ce que la caméra voit
          * @return La matrice spécifiant ce que la caméra voit
          */
-        public Mat4 lookAt(){
+        Mat4 lookAt(){
             float[] lookat = new float[16];
 
             Matrix.setLookAtM(lookat, 0, mEye.x(), mEye.y(), mEye.z(), mCenter.x(), mCenter.y(), mCenter.z(), mUp.x(), mUp.y(), mUp.z());

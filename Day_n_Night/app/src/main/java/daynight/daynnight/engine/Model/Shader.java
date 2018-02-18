@@ -1,24 +1,23 @@
-package daynight.daynnight.engine;
+package daynight.daynnight.engine.Model;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
  * Created by andlat on 2018-02-03.
  */
 
-class Shader {
+//TODO Remove public access. Add some convenient functions to create a simple shader
+public class Shader {
     /**
      * Shader exception
      */
-    static class Exception extends java.lang.Exception{
+    public static class Exception extends java.lang.Exception{
         /**
          * Default exception
          */
@@ -36,13 +35,13 @@ class Shader {
     private int mProgram, mVertexShader, mFragmentShader;//IDs
     private boolean mIsLinked;
 
-    enum Type {VERTEX, FRAGMENT};
+    public enum Type {VERTEX, FRAGMENT};
 
     /**
      * Constructeur d'objets Shader
      * @param context Context de l'activité
      */
-    Shader(Context context){
+    public Shader(Context context){
         mContext = context;
     }
 
@@ -53,7 +52,7 @@ class Shader {
      * @return this. Pour faire du "chaining" de fonctions
      * @throws IOException Si le fichier n'a pas pu être lu
      */
-    Shader Load(String file, Type type) throws IOException{
+    public Shader Load(String file, Type type) throws IOException{
 
         BufferedReader reader = null;
         try {
@@ -85,7 +84,7 @@ class Shader {
      * @param type Type du shader
      * @return this. Pour faire du "chaining" de fonctions
      */
-    Shader setSource(String src, Type type){
+    public Shader setSource(String src, Type type){
         if(type == Type.VERTEX)
             m_vert_shader_src = src;
         else
@@ -99,7 +98,7 @@ class Shader {
      * @return this. Pour faire du "chaining" de fonctions
      * @throws Exception Si le shader n'a pas pu être compilé
      */
-    Shader Compile() throws Shader.Exception{
+    public Shader Compile() throws Shader.Exception{
         int[] success_p = new int[1];
 
         //Compile the vertex shader
@@ -132,7 +131,7 @@ class Shader {
      * @return this. Pour faire du "chaining" de fonctions
      * @throws Shader.Exception Si le programme n'a pas pu lier
      */
-    Shader Link() throws Shader.Exception{
+    public Shader Link() throws Shader.Exception{
         mProgram = GLES30.glCreateProgram();
 
         GLES30.glAttachShader(mProgram, mVertexShader);
@@ -152,7 +151,7 @@ class Shader {
      * Supprimer les shaders (vertex & fragment)
      * @return this. Pour faire du "chaining" de fonctions
      */
-    Shader DeleteShaders(){
+    public Shader DeleteShaders(){
         GLES30.glDeleteShader(mVertexShader);
         GLES30.glDeleteShader(mFragmentShader);
 
@@ -163,13 +162,13 @@ class Shader {
      * Supprimer le programme associé à cet objet Shader
      * @return this. Pour faire du "chaining" de fonctions
      */
-    Shader DeleteProgram(){
+    public Shader DeleteProgram(){
         GLES30.glDeleteProgram(mProgram);
 
         return this;
     }
-    Shader Use(){ GLES30.glUseProgram(mProgram); return this; }
+    public Shader Use(){ GLES30.glUseProgram(mProgram); return this; }
 
-    int getProgram(){ return mProgram; }
-    boolean isLinked(){ return mIsLinked; }
+    public int getProgram(){ return mProgram; }
+    public boolean isLinked(){ return mIsLinked; }
 }
