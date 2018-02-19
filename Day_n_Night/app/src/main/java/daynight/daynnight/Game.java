@@ -76,6 +76,7 @@ class Game extends GameView {
                  1, -1, 0,
                  0.5f, 1.f, 0
                 });
+        buff.position(0);
         hero.setVBO(buff);
         hero.setVerticesOffset(0);
 

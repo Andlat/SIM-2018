@@ -3,6 +3,8 @@ package daynight.daynnight.engine;
 import android.support.annotation.Nullable;
 import android.util.LongSparseArray;
 
+import java.nio.FloatBuffer;
+
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -12,7 +14,9 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  */
 
 public class World {
-    private float[] VAO;
+    private float[] VAO, VBO;
+    private FloatBuffer WorldData_VBO;
+
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
