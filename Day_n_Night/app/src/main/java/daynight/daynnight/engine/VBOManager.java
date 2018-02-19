@@ -1,11 +1,14 @@
 package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
+import android.util.Pair;
 
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by andlat on 2018-02-18.
@@ -22,34 +25,53 @@ class VBOManager {
 
     private int[] mVBO = new int[1];
 
-    private long mDataSizeInBytes = 0;
+    private int mDataSizeInBytes = 0;
     private int mVBOSizeInMB = 1;
+
+    private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();//Pair<Offset in VBO, Data size in bytes>
 
     VBOManager(){
         mVBOData = allocateDirect(1);
         CreateVBO();
     }
 
+    private void WriteToVBO(int floatBufferOffset, int dataSize){
+        //Bind VBO in case it was unbound. (Maybe another vbo was bound outside of the engine)
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
+
+        mVBOData.position(floatBufferOffset);
+        GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset*4, dataSize, mVBOData);
+    }
+
     int addData(FloatBuffer data){
         int count = data.remaining();
-        long dataSize = count * 4;
+        int dataSize = count * 4;
 
         CheckSizeForIncrease(dataSize);
-
         mDataSizeInBytes += dataSize;
 
         mVBOData.put(data);
+        int offset = mVBOData.position() - count;
 
-        return mVBOData.position() - count;
+        WriteToVBO(offset, dataSize);
+
+        return offset;
     }
 
     /**
      * Remove data from the buffer
-     * @param offset Starting offset of the data in the FloatBuffer. Returned by {@link #addData}
+     * @param floatBufferOffset Starting offset of the data in the FloatBuffer. Returned by {@link #addData}
      * @param floatCount Number of floats to be removed
      */
-    void removeData(int offset, int floatCount){
+    void removeData(int floatBufferOffset, int floatCount){
         //TODO When drawing the VBO, skip the removed parts. For that, keep track of removed offsets and removed parts' size in bytes.
+        int dataSize = floatCount * 4, VBOOffset = floatBufferOffset * 4;
+
+        mEmptyVBOPools.add(new Pair<>(VBOOffset, dataSize));
+    }
+
+    private void ShiftDataGPU(){
+
     }
 
     private void CreateVBO(){
@@ -60,7 +82,7 @@ class VBOManager {
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mVBOData.capacity()*4, mVBOData, GLES30.GL_DYNAMIC_DRAW);
     }
 
-    private void CheckSizeForIncrease(long newDataSizeInBytes){
+    private void CheckSizeForIncrease(int newDataSizeInBytes){
         if(mDataSizeInBytes + newDataSizeInBytes > mVBOData.capacity()*4) {
             IncreaseVBO();
         }
