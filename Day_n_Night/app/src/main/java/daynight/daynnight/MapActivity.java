@@ -2,38 +2,61 @@ package daynight.daynnight;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PointOfInterest;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
+    private LocationManager locationManager;
+    private LatLng livePos;
+    private LatLng prevPos;
+    private float[] move;
+    private LocationListener locationListener;
+    private Marker perso;
+
+
+    private ArrayList<LocationProvider> providers;
+    private ArrayList<String> providerNames;
+    private Criteria criteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        move = new float[1];
+        prevPos = new LatLng(0, 0);
 
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
@@ -52,32 +75,139 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 });
                 builder.show();
 
+            //Si c'est la première fois, on demande directement l'autorisation a l'utilisateur
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCALISATION_REQUEST);
             }
         }
-
-
-
-
     }
 
+
+    /**
+     *Arrete la demande de localisation lorsque l'app n'est pas active
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(locationManager != null) locationManager.removeUpdates(locationListener);
+    }
+
+
+    /**
+     * Rappel la fonction OnMapReady() lorsque l'app devient active
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Quand la map est disponible, on appel la fonction OnMapReady()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        map = googleMap;
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        map.setMinZoomPreference(17);
 
+
+        //La section en commentaire suvante sert à quoi?????????????
+        /*providers = new ArrayList<LocationProvider>();
+
+        criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(true);
+        criteria.setCostAllowed(false);
+
+        providerNames = new ArrayList<String>(locationManager.getProviders(criteria, true));
+
+        for (String name : providerNames) {
+            providers.add(locationManager.getProvider(name));
+        }*/
+
+        try {
+            //Actulise la position sur la carte à chaque x ms
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
+
+                @Override
+                public void onLocationChanged(Location location) {
+
+                    livePos = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    //Distance entre la position actuelle et la dernière actualisation
+                    Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
+                    Log.d("Move", String.valueOf(move[0]));
+
+                    //Si la distance entre deux actualisation est suppérieur à 3m alors le personnage se déplace
+                    if(move[0] > 3){
+                        if(perso != null){
+                            perso.remove();
+                        }
+                        perso = map.addMarker(new MarkerOptions()
+                                .position(livePos)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                    }
+
+                    prevPos = livePos;
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+
+                }
+            });
+        //Si nous avons pas acces à la localisation
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        map.setOnPoiClickListener(this);
     }
 
 
+    /**
+     * Réaction au clique d'un POI
+     * @param poi   Le POI qui a été cliqué
+     */
+    @Override
+    public void onPoiClick(PointOfInterest poi) {
 
-    //Gère les réponses des demandes de permissions
+        float[] distancePOI = new float[1];
+
+        Toast.makeText(getApplicationContext(), "BISCUIT!!!!!!", Toast.LENGTH_SHORT).show();
+        Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
+        Log.d("Distance", String.valueOf(distancePOI[0]));
+    }
+
+    /**
+     * gère les réponses des demandes de permission
+     * @param requestCode   Code qui indique de quel autorisation il s'agit
+     * @param permissions
+     * @param grantResults  Réponse de l'utilisateur
+     */
     @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
         if (requestCode == LOCALISATION_REQUEST) {
+            //Si l'autorisation de géolocalisation n'est pas donné,
+            //on averti l'utilisateur que la fonction de jour est désactivé
             if (permissions.length != 1
                     || !Objects.equals(permissions[0], Manifest.permission.ACCESS_FINE_LOCATION)
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -86,4 +216,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         }
     }
+
 }
