@@ -5,11 +5,8 @@
     <uses-feature
         android:glEsVersion="0x00030000"
         android:required="true" />
-<<<<<<< HEAD
-=======
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
->>>>>>> f4472c051eec3652e3e992f84cf97878a62b72ac
 
     <application
         android:allowBackup="true"
@@ -29,14 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
         <activity android:name=".CreateAccountActivity"></activity>
-=======
+
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_maps">
         </activity>
->>>>>>> f4472c051eec3652e3e992f84cf97878a62b72ac
     </application>
 
 </manifest>
