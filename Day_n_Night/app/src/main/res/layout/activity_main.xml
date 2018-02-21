@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="daynight.daynnight.MainActivity">
+    tools:context="daynight.daynnight.MainActivity"
+    android:padding="@dimen/activity_padding">
 
     <ImageView
         android:id="@+id/imageView"
