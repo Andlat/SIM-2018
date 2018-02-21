@@ -34,7 +34,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 ### Développement
 
-**Version Android Minimum: 5.0 Lolipop (api 21, 71.3% des appareils)**
+**Version Android Minimum: 4.3 (api 18, 91.4% des appareils)**
 
 **Tâches**
 - Design des pesonnages, pièces \[Anthony - leader design\]
