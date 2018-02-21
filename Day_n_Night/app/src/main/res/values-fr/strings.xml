@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CreateAccountActivity -->
+    <string name="caa_name">Nom</string>
+    <string name="caa_desc">Veuillez entrer votre nom</string>
+    <!-- ********************* -->
+</resources>
