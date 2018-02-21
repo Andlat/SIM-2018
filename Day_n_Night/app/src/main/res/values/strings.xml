@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Day \'n\' Night</string>
+<<<<<<< HEAD
     <string name="start_button">Start</string>
     <string name="option_button">Options</string>
     <string name="center_button">Center</string>
@@ -8,3 +9,9 @@
     <string name="character_button">Customize</string>
 
 </resources>
+=======
+    <string name="title_activity_maps">Map Activity</string>
+    <string name="ok">ok</string>
+    <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
+</resources>
+>>>>>>> f4472c051eec3652e3e992f84cf97878a62b72ac

@@ -2,9 +2,9 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="false"
     android:visible="true">
-    <item android:drawable="@drawable/Arthur1.1" android:duration="300"/>
-    <item android:drawable="@drawable/Arthur1.2" android:duration="300"/>
-    <item android:drawable="@drawable/Arthur1.3" android:duration="300"/>
-    <item android:drawable="@drawable/Arthur1.4" android:duration="300"/>
-    <item android:drawable="@drawable/Arthur1.5" android:duration="300"/>
+    <item android:drawable="@drawable/arthur1_1" android:duration="300"/>
+    <item android:drawable="@drawable/arthur1_2" android:duration="300"/>
+    <item android:drawable="@drawable/arthur1_3" android:duration="300"/>
+    <item android:drawable="@drawable/arthur1_4" android:duration="300"/>
+    <item android:drawable="@drawable/arthur1_5" android:duration="300"/>
 </animation-list>
