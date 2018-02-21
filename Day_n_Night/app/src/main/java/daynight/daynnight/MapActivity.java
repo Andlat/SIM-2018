@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -46,9 +47,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Marker perso;
 
 
-    private ArrayList<LocationProvider> providers;
-    private ArrayList<String> providerNames;
-    private Criteria criteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,42 +112,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        map.setMinZoomPreference(17);
-        
+
+
         //Stylisation de la carte avec JSON d'un Raw.xml
-        try
-        {
+        try {
+
             boolean reussi = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
 
             if(!reussi)
-            {
                 Log.e("MapsActivity", "Génération du style impossible");
-            }
         }
-        catch (Resources.NotFoundException e)
-        {
+        catch (Resources.NotFoundException e) {
             Log.e("MapsActivity", "Impossible de trouver le style", e);
         }
 
 
-        //La section en commentaire suvante sert à quoi?????????????
-        /*providers = new ArrayList<LocationProvider>();
-
-        criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(true);
-        criteria.setCostAllowed(false);
-
-        providerNames = new ArrayList<String>(locationManager.getProviders(criteria, true));
-
-        for (String name : providerNames) {
-            providers.add(locationManager.getProvider(name));
-        }*/
-
         try {
             //Actulise la position sur la carte à chaque x ms
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener = new LocationListener() {
 
                 @Override
                 public void onLocationChanged(Location location) {
@@ -162,9 +142,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     //Si la distance entre deux actualisation est suppérieur à 3m alors le personnage se déplace
                     if(move[0] > 3){
-                        if(perso != null){
-                            perso.remove();
-                        }
+
+                        if(perso != null) perso.remove();
+
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
@@ -188,7 +168,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 }
             });
-        //Si nous avons pas acces à la localisation
+        //Si nous avons pas accès à la localisation
         } catch (SecurityException e) {
             e.printStackTrace();
         }

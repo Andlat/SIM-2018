@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Test
 
-        Button buttonMap = (Button) findViewById(R.id.mapButton);
+        Button buttonMap = (Button) findViewById(R.id.jourButton);
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
