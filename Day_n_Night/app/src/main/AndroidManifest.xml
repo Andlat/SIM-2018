@@ -19,7 +19,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
