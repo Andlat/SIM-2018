@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.maps.model.MapStyleOptions;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -114,6 +115,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         map.setMinZoomPreference(17);
+        
+        //Stylisation de la carte avec JSON d'un Raw.xml
+        try
+        {
+            boolean reussi = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
+
+            if(!reussi)
+            {
+                Log.e("MapsActivity", "Génération du style impossible");
+            }
+        }
+        catch (Resources.NotFoundException e)
+        {
+            Log.e("MapsActivity", "Impossible de trouver le style", e);
+        }
 
 
         //La section en commentaire suvante sert à quoi?????????????
