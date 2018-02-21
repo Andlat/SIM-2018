@@ -47,7 +47,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Marker perso;
 
 
-    //PUTE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
