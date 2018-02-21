@@ -8,6 +8,11 @@
     <string name="character_button">Customize</string>
 
     <string name="title_activity_maps">Map Activity</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
+
+    <!-- CreateAccountActivity -->
+    <string name="caa_name">Name</string>
+    <string name="caa_desc">Please enter your name</string>
+    <!-- ********************* -->
 </resources>
