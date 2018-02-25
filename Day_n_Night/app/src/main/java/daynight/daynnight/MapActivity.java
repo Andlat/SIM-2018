@@ -45,6 +45,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
+    //private Button bouton;
+    //private boolean LOCALISATION_UPDATE = true;
+    //private AnimationDrawable mapCharacterAnimation;
 
 
 
@@ -57,6 +60,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         move = new float[1];
         prevPos = new LatLng(0, 0);
 
+        //bouton = (findViewById(R.id.button_id)); ne pas oublier de mettre un bouton sur la carte
+        //bouton.setOnClickListener(new OnClickListener()){
+        //public void onClick(){LOCALISATION_UPDATE = true}};
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -147,8 +153,30 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));/**/
+                        //perso = map.addMarker(new MarkerOptions()
+                                //.position(livePos)
+                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.mapCharacterAnimation1)));
+
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));/**/
+
+                        //if(LOCASISATION_UPDATE == true){
+                          //map.animateCamera(CameraUpdateFactory.newLatLng(livePos), int move[0]/5, null);
+                        //}
+
+
+                        //map.setOnCameraChangeListener(new CameraChangeListener()){
+                          //map.setOnCameraMoveListener(new OnCameraMoveListener()){
+                            //LOCALISATION_UPDATE = false;
+                            //map.stopAnimation()}};
+
+                        //mapCharacterAnimation.start();
+
+                        //new CountDownTimer(5000,5000){
+                          //@Override
+                          //public void onTick(long l){}
+                          //public void onFinish(){
+                            //mapCharacterAnimation.stop()}};
                     }
 
                     prevPos = livePos;
