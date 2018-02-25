@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -201,23 +202,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             e.printStackTrace();
         }
 
-        map.setOnPoiClickListener(this);
+        //Réaction au clique d'un POI
+        map.setOnPoiClickListener(new GoogleMap.OnPoiClickListener() {
+            @Override
+            public void onPoiClick(PointOfInterest poi) {
+                float[] distancePOI = new float[1];
+
+                Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
+                Log.d("Distance", String.valueOf(distancePOI[0]));
+                if(distancePOI[0] < 100){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                    LayoutInflater inflater = MapActivity.this.getLayoutInflater();
+                    builder.setView(inflater.inflate(R.layout.reward_dialog, null));
+                    builder.show();
+                }
+            }
+        });
     }
 
-
-    /**
-     * Réaction au clique d'un POI
-     * @param poi   Le POI qui a été cliqué
-     */
-    @Override
-    public void onPoiClick(PointOfInterest poi) {
-
-        float[] distancePOI = new float[1];
-
-        Toast.makeText(getApplicationContext(), "BISCUIT!!!!!!", Toast.LENGTH_SHORT).show();
-        Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
-        Log.d("Distance", String.valueOf(distancePOI[0]));
-    }
 
     /**
      * gère les réponses des demandes de permission
