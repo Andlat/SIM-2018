@@ -8,10 +8,10 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="6dp"
-    tools:context="daynight.daynnight.ListeBadges">
+    tools:context="daynight.daynnight.Badges">
 
     <Button
-        android:id="@+id/retour"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="6"
@@ -19,7 +19,7 @@
 
 
     <ListView
-        android:id="@+id/listeBadges"
+        android:id="@+id/listeComptesBancaires"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
