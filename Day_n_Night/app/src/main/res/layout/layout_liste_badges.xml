@@ -17,6 +17,8 @@
         android:layout_weight="6"
         android:text="@string/fl_che_de_retour" />
 
+<<<<<<< HEAD:Day_n_Night/app/src/main/res/layout/layout_liste_badges.xml
+
     <ListView
         android:id="@+id/listeBadges"
         android:layout_width="match_parent"
@@ -27,3 +29,17 @@
         android:layout_marginTop="6dp"
         android:orientation="vertical"></ListView>
 </LinearLayout>
+=======
+    <!--
+        <ListView
+            android:id="@+id/listeComptesBancaires"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_liste_badges"
+            android:padding="6dip"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"></ListView>-->
+    </LinearLayout>
+>>>>>>> 5f24725971769916941ee470c5acd9685cd1c1b5:Day_n_Night/app/src/main/res/layout/layout_badges.xml
+
