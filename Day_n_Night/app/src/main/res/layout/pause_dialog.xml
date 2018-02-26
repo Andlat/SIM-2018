@@ -26,7 +26,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Badge"
+        android:text="@string/badge"
         android:textColor="@android:color/white" />
 
     <Button
@@ -38,7 +38,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Inventaire"
+        android:text="@string/inventaire"
         android:textColor="@android:color/white" />
 
     <Button
@@ -50,7 +50,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Menu"
+        android:text="@string/menu"
         android:textColor="@android:color/white" />
 
     <Button
@@ -62,7 +62,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Options"
+        android:text="@string/options"
         android:textColor="@android:color/white" />
 
 </android.support.v7.widget.LinearLayoutCompat>

@@ -24,7 +24,7 @@
         android:layout_marginStart="200dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Nuit"
+        android:text="@string/nuit"
         android:textColor="@android:color/white"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="189dp" />
@@ -38,7 +38,7 @@
         android:layout_marginStart="200dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Jour"
+        android:text="@string/jour"
         android:textColor="@android:color/white"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="117dp" />
@@ -52,7 +52,7 @@
         android:layout_marginStart="250dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Options"
+        android:text="@string/options"
         android:textColor="@android:color/white" />
 
 </android.support.v7.widget.LinearLayoutCompat>

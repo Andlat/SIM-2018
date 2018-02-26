@@ -27,11 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateAccountActivity" />
-        <activity
-            android:name=".MapActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".Badges"></activity>
+        <activity android:name=".CreateAccountActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".MapActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Badges" />
     </application>
 
 </manifest>

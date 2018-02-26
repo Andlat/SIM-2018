@@ -9,9 +9,18 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/mapcharacteranimation1" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/coffre" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_50_biscuits"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/collectButton"
@@ -19,6 +28,6 @@
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Ramasser!"
+        android:text="@string/ramasser"
         android:textColor="@color/white" />
 </android.support.v7.widget.LinearLayoutCompat>

@@ -154,30 +154,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));/**/
-                        //perso = map.addMarker(new MarkerOptions()
-                                //.position(livePos)
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.mapCharacterAnimation1)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
 
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));/**/
 
-                        //if(LOCASISATION_UPDATE == true){
-                          //map.animateCamera(CameraUpdateFactory.newLatLng(livePos), int move[0]/5, null);
-                        //}
-
-
-                        //map.setOnCameraChangeListener(new CameraChangeListener()){
-                          //map.setOnCameraMoveListener(new OnCameraMoveListener()){
-                            //LOCALISATION_UPDATE = false;
-                            //map.stopAnimation()}};
-
-                        //mapCharacterAnimation.start();
-
-                        //new CountDownTimer(5000,5000){
-                          //@Override
-                          //public void onTick(long l){}
-                          //public void onFinish(){
-                            //mapCharacterAnimation.stop()}};
                     }
 
                     prevPos = livePos;
@@ -210,7 +190,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                 Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
                 Log.d("Distance", String.valueOf(distancePOI[0]));
-                if(distancePOI[0] < 100){
+                if(distancePOI[0] < 1000){
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
                     LayoutInflater inflater = MapActivity.this.getLayoutInflater();
                     builder.setView(inflater.inflate(R.layout.reward_dialog, null));
@@ -238,7 +218,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     || !Objects.equals(permissions[0], Manifest.permission.ACCESS_FINE_LOCATION)
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(getApplicationContext(), "Le jeu de jour a été désactivé.\nActivez la géolocalisation dansles réglages pour l'activer!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.toast_onrequestpermission, Toast.LENGTH_LONG).show();
             }
         }
     }
