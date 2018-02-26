@@ -14,15 +14,5 @@
     <!-- CreateAccountActivity -->
     <string name="caa_name">Name</string>
     <string name="caa_desc">Please enter your name</string>
-    <string name="fl_che_de_retour">Flèche de retour</string>
-    <string name="nuit">Nuit</string>
-    <string name="options">Options</string>
-    <string name="menu">Menu</string>
-    <string name="inventaire">Inventaire</string>
-    <string name="badge">Badge</string>
-    <string name="ramasser">Ramasser!</string>
-    <string name="_50_biscuits">+ 50 biscuits!</string>
-    <string name="toast_onrequestpermission">Le jeu de jour a été désactivé. Activez la géolocalisation dansles réglages pour l\'activer!</string>
-    <string name="jour">Jour</string>
     <!-- ********************* -->
 </resources>

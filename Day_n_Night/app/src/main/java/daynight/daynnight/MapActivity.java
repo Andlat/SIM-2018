@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -46,9 +45,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
-    //private Button bouton;
-    //private boolean LOCALISATION_UPDATE = true;
-    //private AnimationDrawable mapCharacterAnimation;
 
 
 
@@ -61,9 +57,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         move = new float[1];
         prevPos = new LatLng(0, 0);
 
-        //bouton = (findViewById(R.id.button_id)); ne pas oublier de mettre un bouton sur la carte
-        //bouton.setOnClickListener(new OnClickListener()){
-        //public void onClick(){LOCALISATION_UPDATE = true}};
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -155,9 +148,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
-
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));/**/
-
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
                     prevPos = livePos;
@@ -182,24 +173,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             e.printStackTrace();
         }
 
-        //Réaction au clique d'un POI
-        map.setOnPoiClickListener(new GoogleMap.OnPoiClickListener() {
-            @Override
-            public void onPoiClick(PointOfInterest poi) {
-                float[] distancePOI = new float[1];
-
-                Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
-                Log.d("Distance", String.valueOf(distancePOI[0]));
-                if(distancePOI[0] < 1000){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                    LayoutInflater inflater = MapActivity.this.getLayoutInflater();
-                    builder.setView(inflater.inflate(R.layout.reward_dialog, null));
-                    builder.show();
-                }
-            }
-        });
+        map.setOnPoiClickListener(this);
     }
 
+
+    /**
+     * Réaction au clique d'un POI
+     * @param poi   Le POI qui a été cliqué
+     */
+    @Override
+    public void onPoiClick(PointOfInterest poi) {
+
+        float[] distancePOI = new float[1];
+
+        Toast.makeText(getApplicationContext(), "BISCUIT!!!!!!", Toast.LENGTH_SHORT).show();
+        Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
+        Log.d("Distance", String.valueOf(distancePOI[0]));
+    }
 
     /**
      * gère les réponses des demandes de permission
@@ -218,7 +208,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     || !Objects.equals(permissions[0], Manifest.permission.ACCESS_FINE_LOCATION)
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(getApplicationContext(), R.string.toast_onrequestpermission, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Le jeu de jour a été désactivé.\nActivez la géolocalisation dansles réglages pour l'activer!", Toast.LENGTH_LONG).show();
             }
         }
     }
