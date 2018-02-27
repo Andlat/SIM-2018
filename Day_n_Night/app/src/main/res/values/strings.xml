@@ -11,6 +11,11 @@
     <string name="ok">OK</string>
     <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
 
+    <string name="badge">badge</string>
+    <string name="inventaire">inventaire</string>
+    <string name="menu">menu</string>
+    <string name="options">options</string>
+
     <!-- CreateAccountActivity -->
     <string name="caa_name">Name</string>
     <string name="caa_desc">Please enter your name</string>
