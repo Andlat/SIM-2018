@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,10 +45,8 @@ public class ListeBadges extends AppCompatActivity
         //Attribuer
         retour = (Button) findViewById(R.id.retour);
 
-        //Ajout des comptes bancaires manuellement
-        //badges.add(new CompteBancaire("Ciniseb","Galor","Sylphigle","Cartomancien",122,85));
-        //badges.add(new CompteBancaire("Léamsi","Galor","Zygöre","Druide",63,100));
-        //badges.add(new CompteBancaire("Gabrya","Winchester","Zygöre","Archer Élémentaire",56,90));
+        //Ajout de Badges manuellement
+        badges.add(new Badge("arthur1_1.png","Quillorama, Marieville, Qc, Ca",new Date(Calendar.DATE),"Divertissement"));
 
         retour.setOnClickListener(new View.OnClickListener()
         {

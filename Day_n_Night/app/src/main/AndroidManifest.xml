@@ -19,7 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListeBadges">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".ListeBadges"></activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
