@@ -11,7 +11,7 @@
     tools:context="daynight.daynnight.ListeBadges">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/retour"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="6"
