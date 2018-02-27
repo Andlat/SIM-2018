@@ -26,6 +26,7 @@
         android:layout_weight="1"
         android:background="@drawable/layout_liste_badges"
         android:padding="6dip"
+        android:paddingBottom="0dp"
         android:layout_marginTop="6dp"
         android:orientation="vertical" />
 </LinearLayout>

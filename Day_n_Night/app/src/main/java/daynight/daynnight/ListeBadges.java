@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +47,14 @@ public class ListeBadges extends AppCompatActivity
         retour = (Button) findViewById(R.id.retour);
 
         //Ajout de Badges manuellement
-        badges.add(new Badge("arthur1_1.png","Quillorama, Marieville, Qc, Ca",new Date(Calendar.DATE),"Divertissement"));
+        Date c = Calendar.getInstance().getTime();
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("arthur1_1","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
 
         retour.setOnClickListener(new View.OnClickListener()
         {
@@ -88,15 +96,17 @@ public class ListeBadges extends AppCompatActivity
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.layout_badge, null);
 
-            ImageView logo = (ImageView) findViewById(R.id.logo);
-            TextView locationCapture = (TextView) findViewById(R.id.locationCapture);
-            TextView dateCapture = (TextView) findViewById(R.id.dateCapture);
-            TextView type = (TextView) findViewById(R.id.type);
+            ImageView logo = (ImageView) view.findViewById(R.id.logo);
+            TextView locationCapture = (TextView) view.findViewById(R.id.locationCapture);
+            TextView dateCapture = (TextView) view.findViewById(R.id.dateCapture);
+            TextView type = (TextView) view.findViewById(R.id.type);
 
             int imageID = context.getResources().getIdentifier(badge.getLogo(), "drawable", context.getPackageName());
             logo.setImageResource(imageID);
             locationCapture.setText(badge.getLocationCapture());
-            dateCapture.setText(badge.getDateCapture().toString());
+            SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            String date = df.format(badge.getDateCapture());
+            dateCapture.setText(date);
             type.setText(badge.getType());
 
             return view;
