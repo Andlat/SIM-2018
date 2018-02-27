@@ -31,12 +31,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Ceci est juste un test pour le bouton pause
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-
-                builder.setView(inflater.inflate(R.layout.pause_dialog, null));
-
-                builder.show();
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(intent);
             }
         });
     }
