@@ -3,7 +3,7 @@ package daynight.daynnight;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Badges extends AppCompatActivity {
+public class ListeBadges extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
