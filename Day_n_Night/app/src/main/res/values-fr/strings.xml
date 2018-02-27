@@ -4,5 +4,9 @@
     <!-- CreateAccountActivity -->
     <string name="caa_name">Nom</string>
     <string name="caa_desc">Veuillez entrer votre nom</string>
+    <string name="logo_du_badge">Logo du badge</string>
+    <string name="location_capture">Location de la capture</string>
+    <string name="date_capture">12-11-1997</string>
+    <string name="type_de_badge">Type de badge</string>
     <!-- ********************* -->
 </resources>

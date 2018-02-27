@@ -87,12 +87,12 @@ public class ListeBadges extends AppCompatActivity
             Badge badge = badges.get(position);
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout. /*TODO*/, null);
+            View view = inflater.inflate(R.layout.layout_badge, null);
 
-            ImageView logo = (ImageView) findViewById(R.);
-            TextView locationCapture = (ImageView) findViewById(R.);
-            TextView dateCapture = (ImageView) findViewById(R.);
-            TextView type = (ImageView) findViewById(R.);
+            ImageView logo = (ImageView) findViewById(R.id.logo);
+            TextView locationCapture = (TextView) findViewById(R.id.locationCapture);
+            TextView dateCapture = (TextView) findViewById(R.id.dateCapture);
+            TextView type = (TextView) findViewById(R.id.type);
 
             int imageID = context.getResources().getIdentifier(badge.getLogo(), "drawable", context.getPackageName());
             logo.setImageResource(imageID);
