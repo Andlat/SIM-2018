@@ -14,6 +14,16 @@
     <!-- CreateAccountActivity -->
     <string name="caa_name">Name</string>
     <string name="caa_desc">Please enter your name</string>
-    <string name="fleche_de_retour"><![CDATA[Flèche de retour <----]]></string>
     <!-- ********************* -->
+
+
+    <!-- layout_badges -->
+    <string name="fleche_de_retour"><![CDATA[Flèche de retour <----]]></string>
+    <!-- ************* -->
+
+    <!-- layout_badge -->
+    //Spéciaux
+    <string name="ageClient">Âge : %1$d</string>
+    <string name="raceClient">Race : %1$s</string>
+    <!-- ************ -->
 </resources>
