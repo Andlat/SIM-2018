@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Test
 
-        Button buttonDay = (Button) findViewById(R.id.dayButton);
+        Button buttonDay = (Button) findViewById(R.id.jourButton);
         buttonDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonNight = (Button) findViewById(R.id.nightButton);
+        Button buttonNight = (Button) findViewById(R.id.nuitButton);
         buttonNight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
