@@ -49,11 +49,11 @@ public class ListeBadges extends AppCompatActivity
         //Ajout de Badges manuellement
         Date c = Calendar.getInstance().getTime();
         badges.add(new Badge("badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("ic_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("ic_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("ic_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
 
         retour.setOnClickListener(new View.OnClickListener()

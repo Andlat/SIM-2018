@@ -45,7 +45,7 @@
                 android:id="@+id/boutonBoutique"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/biscuit_boutique" />
+                android:src="@drawable/boutique_biscuit" />
         </LinearLayout>
 
     </RelativeLayout>

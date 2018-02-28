@@ -147,7 +147,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
