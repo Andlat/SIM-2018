@@ -47,7 +47,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LocationListener locationListener;
     private Marker perso;
 
-    private CountDownTimer countDownTimer;
+    //private CountDownTimer countDownTimer;
 
 
     @Override
@@ -109,9 +109,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
 
-    private int getDrawable(int race, int frame){
+    /*private int getDrawable(int race, int frame){
         return this.getResources().getIdentifier("arthur" + race + "_" + frame + ".png", "drawable", this.getPackageName());
-    }
+    }*/
 
 
     @Override
@@ -119,7 +119,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -150,15 +149,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     //Si la distance entre deux actualisation est suppérieur à 3m alors le personnage se déplace
                     if(move[0] > 3){
 
-                        /*
                         if(perso != null) perso.remove();
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
-                        */
 
-
+/*
+                        Log.d("Location changed", "location changed");
                         if(perso == null){
                             perso = map.addMarker(new MarkerOptions()
                                     .position(livePos)
@@ -172,6 +170,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             public void onTick(long millisUntilFinished) {
                                 ++count;
                                 perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
+                                Log.d("icon changed", "icon changed");
                             }
 
                             @Override
@@ -180,7 +179,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             }
                         };
 
-
+*/
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
