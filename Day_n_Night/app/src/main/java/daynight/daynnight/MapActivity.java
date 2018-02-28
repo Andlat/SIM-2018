@@ -45,7 +45,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
-
+    
     //private CountDownTimer countDownTimer;
 
 
@@ -107,7 +107,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
     }
 
-
     /*private int getDrawable(int race, int frame){
         return this.getResources().getIdentifier("arthur" + race + "_" + frame + ".png", "drawable", this.getPackageName());
     }*/
@@ -118,6 +117,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -179,11 +179,13 @@ Log.d("POS", livePos.toString());
                         };
 
 */
+
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
                     prevPos = livePos;
                 }
+
 
                 @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {

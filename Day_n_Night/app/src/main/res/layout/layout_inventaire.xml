@@ -26,7 +26,7 @@
 
         <ImageView
             android:id="@+id/boutonBoutique"
-            android:src="@drawable/biscuit_boutique"
+            android:src="@drawable/boutique_biscuit"
             android:background="@drawable/layout_biscuit_boutique"
             android:layout_width="80dp"
             android:layout_height="80dp"
