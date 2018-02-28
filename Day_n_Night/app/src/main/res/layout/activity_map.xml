@@ -21,4 +21,5 @@
         map:cameraTargetLat="37.421828"
         map:cameraTargetLng="-122.084152"
         map:cameraTilt="45" />
+
 </android.support.constraint.ConstraintLayout>
