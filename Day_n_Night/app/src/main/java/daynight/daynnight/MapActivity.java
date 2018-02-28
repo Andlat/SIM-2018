@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -46,7 +45,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
-
+    
     //private CountDownTimer countDownTimer;
 
 
