@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,7 +27,8 @@ class VBOManager {
     private int[] mVBO = new int[1];
 
     private int mDataSizeInBytes = 0;
-    private int mVBOSizeInMB = 1;
+    private float mVBOSizeInMB = .5f;
+    private final static float VBO_SIZE_JUMP_MB = .5f;
 
     private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();//Pair<Offset in VBO, Data size in bytes>
 
@@ -70,8 +72,17 @@ class VBOManager {
         mEmptyVBOPools.add(new Pair<>(VBOOffset, dataSize));
     }
 
-    private void ShiftDataGPU(){
 
+    //Shift data as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory is too high.
+    private void ShiftDataGPU(){
+        this.SortOrderEmptyPoolsArray();
+
+        for(int i = mEmptyVBOPools.size(); i > 0; --i){
+            mVBOData.position(mEmptyVBOPools.get(mEmptyVBOPools.size()).first);
+            for(int j=0; j < mEmptyVBOPools.get(i).second; ++j){
+
+            }
+        }
     }
 
     private void CreateVBO(){
@@ -97,7 +108,7 @@ class VBOManager {
     }
 
     private void IncreaseDataSize(){
-        ++mVBOSizeInMB;
+        mVBOSizeInMB += VBO_SIZE_JUMP_MB;
         try {
             AllocateTransferData(mVBOSizeInMB, 0);
         }catch(BufferOverflowException ex){
@@ -105,7 +116,7 @@ class VBOManager {
         }
     }
 
-    private void AllocateTransferData(int allocateInMB, int dataOffset) throws BufferOverflowException{
+    private void AllocateTransferData(float allocateInMB, int dataOffset) throws BufferOverflowException{
         FloatBuffer buff = this.allocateDirect(allocateInMB);
         mVBOData.position(dataOffset);
 
@@ -118,7 +129,24 @@ class VBOManager {
         }
     }
 
-    FloatBuffer allocateDirect(int sizeInMB){
-        return ByteBuffer.allocateDirect(sizeInMB * 1024 * 1024).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    FloatBuffer allocateDirect(float sizeInMB){
+        return ByteBuffer.allocateDirect((int)(sizeInMB * 1024 * 1024)).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    }
+
+    /**
+     * Order empty pools of memory by index
+     */
+    void SortOrderEmptyPoolsArray(){
+        final int size = mEmptyVBOPools.size();
+        Pair<Integer, Integer> h, k;
+        for(int i=0; i < size; ++i){
+            h = mEmptyVBOPools.get(i);
+            for(int j=0; j < size; ++j){
+                k = mEmptyVBOPools.get(j);
+
+                if(k.first > h.first)
+                    Collections.swap(mEmptyVBOPools, i, j);
+            }
+        }
     }
 }
