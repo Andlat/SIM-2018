@@ -22,7 +22,7 @@
         <activity
             android:name=".Inventaire"
             android:screenOrientation="landscape" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListeBadges">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,7 @@
         <activity
             android:name=".GameActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ListeBadges" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".Boutique"/>
     </application>
 

@@ -152,7 +152,7 @@ Log.d("POS", livePos.toString());
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
 
 /*
                         Log.d("Location changed", "location changed");
