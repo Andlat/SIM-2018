@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LocationListener locationListener;
     private Marker perso;
 
+    private CountDownTimer countDownTimer;
 
 
     @Override
@@ -107,6 +109,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
 
+    private int getDrawable(int race, int frame){
+        return this.getResources().getIdentifier("arthur" + race + "_" + frame + ".png", "drawable", this.getPackageName());
+    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -143,11 +150,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     //Si la distance entre deux actualisation est suppérieur à 3m alors le personnage se déplace
                     if(move[0] > 3){
 
+                        /*
                         if(perso != null) perso.remove();
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                        */
+
+
+                        if(perso == null){
+                            perso = map.addMarker(new MarkerOptions()
+                                    .position(livePos)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                        }
+                        perso.setPosition(livePos);
+
+                        countDownTimer = new CountDownTimer(5000, 200) {
+                            private int count = 0;
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                ++count;
+                                perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                            }
+                        };
+
+
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
