@@ -21,6 +21,13 @@
     <string name="caa_desc">Please enter your name</string>
     <!-- ********************* -->
 
+    <!-- SettingsActivity -->
+    <string name="sa_title">Settings</string>
+    <string name="sa_volume">Volume</string>
+    <string name="sa_music">Music</string>
+    <string name="sa_character">Avatar</string>
+    <string name="sa_language">Language</string>
+    <!-- **************** -->
 
     <!-- layout_badges -->
     <string name="fleche_de_retour"><![CDATA[Flèche de retour <----]]></string>
@@ -31,6 +38,6 @@
     <!-- ************* -->
 
     <!-- layout_badge -->
-    //Spéciaux
+    <!-- Spéciaux -->
     <!-- ************ -->
 </resources>
