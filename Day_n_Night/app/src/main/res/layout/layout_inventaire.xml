@@ -30,8 +30,7 @@
             android:background="@drawable/layout_biscuit_boutique"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/logo_du_badge" />
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <View

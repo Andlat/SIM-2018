@@ -20,9 +20,9 @@
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Inventaire"
             android:screenOrientation="landscape" />
-        <activity android:name=".Inventaire">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,8 @@
         <activity
             android:name=".GameActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ListeBadges"></activity>
+        <activity android:name=".ListeBadges" />
+        <activity android:name=".Boutique"/>
     </application>
 
 </manifest>

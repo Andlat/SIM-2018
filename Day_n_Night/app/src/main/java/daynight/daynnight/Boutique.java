@@ -15,23 +15,23 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventaire extends AppCompatActivity
+public class Boutique extends AppCompatActivity
 {
     //Créer
     Button retour;
     static ArrayList<String> nomObjets = new ArrayList<>();
-    static Inventaire.AdapteurArrayInventaire adapteur;
+    static AdapteurArrayBoutique adapteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_inventaire);
+        setContentView(R.layout.layout_boutique);
 
 
-        adapteur = new Inventaire.AdapteurArrayInventaire(this, 0, nomObjets);
+        adapteur = new AdapteurArrayBoutique(this, 0, nomObjets);
 
-        GridView gridView = (GridView) findViewById(R.id.inventaire);
+        GridView gridView = (GridView) findViewById(R.id.boutique);
         gridView.setAdapter(adapteur);
 
 
@@ -41,10 +41,8 @@ public class Inventaire extends AppCompatActivity
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");
-        nomObjets.set(0,"eau_benite");
-        nomObjets.set(1,"melon_deau");
-        nomObjets.set(2,"seau_deau");
-        nomObjets.set(3,"boule_neige");
+        nomObjets.set(0,"arthur1_1");
+        nomObjets.set(1,"arthur2_1");
 
 
         retour.setOnClickListener(new View.OnClickListener()
@@ -65,13 +63,13 @@ public class Inventaire extends AppCompatActivity
     }
 
     //custom ArrayAdapter
-    class AdapteurArrayInventaire extends ArrayAdapter<String>
+    class AdapteurArrayBoutique extends ArrayAdapter<String>
     {
         private Context context;
         private int layout;
         private List<String> nomObjets;
 
-        public AdapteurArrayInventaire(Context context, int resource, ArrayList<String> objects)
+        public AdapteurArrayBoutique(Context context, int resource, ArrayList<String> objects)
         {
             super(context, resource, objects);
 
