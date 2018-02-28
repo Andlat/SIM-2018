@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="daynight.daynnight.ListeBadges">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/retour"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_keyboard_backspace_black_24dp"
+            android:backgroundTint="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/boutonBoutique"
+            android:src="@drawable/biscuit_boutique"
+            android:background="@drawable/layout_biscuit_boutique"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/logo_du_badge" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dip"
+        android:layout_gravity="fill"
+        android:background="@color/black" />
+
+    <GridView
+        android:id="@+id/inventaire"
+        android:numColumns="6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+</LinearLayout>

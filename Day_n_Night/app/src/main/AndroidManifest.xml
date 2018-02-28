@@ -21,8 +21,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".ListeBadges">
+            android:screenOrientation="landscape" />
+        <activity android:name=".Inventaire">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +38,7 @@
         <activity
             android:name=".GameActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".ListeBadges"></activity>
     </application>
 
 </manifest>

@@ -13,8 +13,7 @@
     <Button
         android:id="@+id/retour"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="6"
+        android:layout_height="80dp"
         android:background="@drawable/ic_keyboard_backspace_black_24dp"
         android:backgroundTint="@color/colorPrimary"/>
 
@@ -23,7 +22,6 @@
         android:id="@+id/listeBadges"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@drawable/layout_liste_badges"
         android:padding="6dip"
         android:paddingBottom="0dp"
