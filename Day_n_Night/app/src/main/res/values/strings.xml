@@ -35,6 +35,7 @@
     <string name="location_capture">Location de la capture</string>
     <string name="date_capture">12-11-1997</string>
     <string name="type_de_badge">Type de badge</string>
+    <string name="title_activity_test">TEST</string>
     <!-- ************* -->
 
     <!-- layout_badge -->

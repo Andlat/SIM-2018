@@ -2,6 +2,7 @@ package daynight.daynnight;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Inventaire extends AppCompatActivity
 {
     //Créer
     Button retour;
+    ImageView boutique;
     static ArrayList<String> nomObjets = new ArrayList<>();
     static Inventaire.AdapteurArrayInventaire adapteur;
 
@@ -38,6 +41,7 @@ public class Inventaire extends AppCompatActivity
 
         //Attribuer
         retour = (Button) findViewById(R.id.retour);
+        boutique = (ImageView) findViewById(R.id.boutique);
 
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
@@ -56,6 +60,14 @@ public class Inventaire extends AppCompatActivity
                 finish();
             }
         });
+        boutique.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(Inventaire.this, Boutique.class));
+            }
+        });
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -64,14 +76,13 @@ public class Inventaire extends AppCompatActivity
             }
         });
 
-
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            gridView.setNumColumns(8);
+            gridView.setNumColumns(7);
         }
         else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
-            gridView.setNumColumns(5);
+            gridView.setNumColumns(4);
         }
     }
 
