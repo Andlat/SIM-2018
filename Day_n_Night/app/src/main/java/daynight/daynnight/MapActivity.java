@@ -45,7 +45,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
-    
+
     //private CountDownTimer countDownTimer;
 
 
@@ -133,14 +133,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         try {
+            Log.d("Try location", "location manager");
             //Actulise la position sur la carte à chaque x ms
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener = new LocationListener() {
-
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
-
+Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
@@ -163,7 +163,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         }
                         perso.setPosition(livePos);
 
-                        countDownTimer = new CountDownTimer(5000, 200) {
+                        countDownTimer = new CountDownTimer(3000, 200) {
                             private int count = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
@@ -187,21 +187,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {
+                    Log.d("status", "status changed: " + s);
                 }
 
                 @Override
                 public void onProviderEnabled(String s) {
-
+                    Log.d("enabled provider", "provider enabled: " + s + "\nLast loc:"/* + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)*/);
                 }
 
                 @Override
                 public void onProviderDisabled(String s) {
 
+                    Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
         //Si nous avons pas accès à la localisation
         } catch (SecurityException e) {
-            e.printStackTrace();
+            Log.e("O", "O");e.printStackTrace();
         }
 
         map.setOnPoiClickListener(this);
