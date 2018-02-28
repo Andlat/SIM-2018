@@ -2,6 +2,7 @@ package daynight.daynnight;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,10 +42,10 @@ public class Inventaire extends AppCompatActivity
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");
-        nomObjets.set(0,"eau_benite");
-        nomObjets.set(1,"melon_deau");
-        nomObjets.set(2,"seau_deau");
-        nomObjets.set(3,"boule_neige");
+        nomObjets.set(0,"outil_eau_benite");
+        nomObjets.set(1,"outil_melon_deau");
+        nomObjets.set(2,"outil_seau_deau");
+        nomObjets.set(3,"outil_boule_neige");
 
 
         retour.setOnClickListener(new View.OnClickListener()
@@ -62,6 +63,16 @@ public class Inventaire extends AppCompatActivity
                 //TODO
             }
         });
+
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            gridView.setNumColumns(8);
+        }
+        else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            gridView.setNumColumns(5);
+        }
     }
 
     //custom ArrayAdapter
