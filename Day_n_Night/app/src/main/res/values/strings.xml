@@ -11,8 +11,34 @@
     <string name="ok">OK</string>
     <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
 
+    <string name="badge">badge</string>
+    <string name="inventaire">inventaire</string>
+    <string name="menu">menu</string>
+    <string name="options">options</string>
+
     <!-- CreateAccountActivity -->
     <string name="caa_name">Name</string>
     <string name="caa_desc">Please enter your name</string>
     <!-- ********************* -->
+
+    <!-- SettingsActivity -->
+    <string name="sa_title">Settings</string>
+    <string name="sa_volume">Volume</string>
+    <string name="sa_music">Music</string>
+    <string name="sa_character">Avatar</string>
+    <string name="sa_language">Language</string>
+    <!-- **************** -->
+
+    <!-- layout_badges -->
+    <string name="fleche_de_retour"><![CDATA[Flèche de retour <----]]></string>
+    <string name="logo_du_badge">Logo du badge</string>
+    <string name="location_capture">Location de la capture</string>
+    <string name="date_capture">12-11-1997</string>
+    <string name="type_de_badge">Type de badge</string>
+    <string name="title_activity_test">TEST</string>
+    <!-- ************* -->
+
+    <!-- layout_badge -->
+    <!-- Spéciaux -->
+    <!-- ************ -->
 </resources>

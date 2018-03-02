@@ -16,43 +16,34 @@
         app:srcCompat="@drawable/mapcharacteranimation1" />
 
     <Button
-        android:id="@+id/nightButton"
+        android:id="@+id/nuitButton"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginStart="200dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/oval_button_shape"
         android:text="Nuit"
-        android:textColor="@android:color/white"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="189dp" />
 
     <Button
-        android:id="@+id/dayButton"
+        android:id="@+id/jourButton"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/oval_button_shape"
         android:text="Jour"
-        android:textColor="@android:color/white"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="117dp" />
 
     <Button
         android:id="@+id/settingsButton"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="195dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="250dp"
-        android:layout_marginStart="250dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/oval_button_shape"
+        android:layout_marginEnd="100dp"
         android:text="Options"
-        android:textColor="@android:color/white" />
+     />
 
 </android.support.v7.widget.LinearLayoutCompat>

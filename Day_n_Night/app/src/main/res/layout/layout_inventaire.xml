@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="daynight.daynnight.ListeBadges">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/retour"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_keyboard_backspace_black_24dp"
+                android:backgroundTint="@color/colorPrimary" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dip"
+            android:layout_gravity="fill"
+            android:background="@color/black" />
+
+        <GridView
+            android:id="@+id/inventaire"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/boutique"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/layout_biscuit_boutique"
+        android:src="@drawable/boutique_biscuit" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -25,10 +25,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+<<<<<<< HEAD
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+=======
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,7 +52,11 @@ import java.util.List;
 import java.util.Objects;
 
 
+<<<<<<< HEAD
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+=======
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -59,9 +66,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private float[] move;
     private LocationListener locationListener;
     private Marker perso;
+<<<<<<< HEAD
     private Button boutonCenter;
     private boolean LOCALISATION_UPDATE = true;
     private AnimationDrawable animationDrawable;
+=======
+    
+    //private CountDownTimer countDownTimer;
+
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +85,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         move = new float[1];
         prevPos = new LatLng(0, 0);
 
+<<<<<<< HEAD
         animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_1), 300);
         animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_2), 300);
         animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_3), 300);
@@ -87,6 +101,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 LOCALISATION_UPDATE = true;
             }
         });
+=======
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -136,6 +152,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
     }
 
+    /*private int getDrawable(int race, int frame){
+        return this.getResources().getIdentifier("arthur" + race + "_" + frame + ".png", "drawable", this.getPackageName());
+    }*/
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -157,7 +177,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
 
         try {
+            Log.d("Try location", "location manager");
             //Actulise la position sur la carte à chaque x ms
+<<<<<<< HEAD
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -170,13 +192,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener = new LocationListener() {
 
+=======
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener = new LocationListener() {
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
                 @Override
                 public void onLocationChanged(Location location) {
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
+<<<<<<< HEAD
 
                     final View persomarker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
+=======
+Log.d("POS", livePos.toString());
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
@@ -188,6 +217,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                         /*perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
+<<<<<<< HEAD
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));*/
                         //ImageView imageView = new ImageView(null);
                         //imageView.setBackgroundResource(R.drawable.mapcharacteranimation1);
@@ -222,46 +252,65 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 persomarker.clearAnimation();
                             }
                         };
+=======
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
+
+/*
+                        Log.d("Location changed", "location changed");
+                        if(perso == null){
+                            perso = map.addMarker(new MarkerOptions()
+                                    .position(livePos)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
+                        }
+                        perso.setPosition(livePos);
+
+                        countDownTimer = new CountDownTimer(3000, 200) {
+                            private int count = 0;
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                ++count;
+                                perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
+                                Log.d("icon changed", "icon changed");
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                            }
+                        };
+
+*/
+
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+>>>>>>> ed6b6d0d60bb69f1b434b4b9238a8b10d90dfc0b
                     }
 
                     prevPos = livePos;
                 }
 
+
                 @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {
+                    Log.d("status", "status changed: " + s);
                 }
 
                 @Override
                 public void onProviderEnabled(String s) {
-
+                    Log.d("enabled provider", "provider enabled: " + s + "\nLast loc:"/* + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)*/);
                 }
 
                 @Override
                 public void onProviderDisabled(String s) {
 
+                    Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
         //Si nous avons pas accès à la localisation
         } catch (SecurityException e) {
-            e.printStackTrace();
+            Log.e("O", "O");e.printStackTrace();
         }
 
-        //Réaction au clique d'un POI
-        map.setOnPoiClickListener(new GoogleMap.OnPoiClickListener() {
-            @Override
-            public void onPoiClick(PointOfInterest poi) {
-                float[] distancePOI = new float[1];
-
-                Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
-                Log.d("Distance", String.valueOf(distancePOI[0]));
-                if(distancePOI[0] < 100){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                    LayoutInflater inflater = MapActivity.this.getLayoutInflater();
-                    builder.setView(inflater.inflate(R.layout.reward_dialog, null));
-                    builder.show();
-                }
-            }
-        });
+        map.setOnPoiClickListener(this);
     }
 
     // Convert a view to bitmap
@@ -280,6 +329,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         return bitmap;
     }
 
+
+    /**
+     * Réaction au clique d'un POI
+     * @param poi   Le POI qui a été cliqué
+     */
+    @Override
+    public void onPoiClick(PointOfInterest poi) {
+
+        float[] distancePOI = new float[1];
+
+        Toast.makeText(getApplicationContext(), "BISCUIT!!!!!!", Toast.LENGTH_SHORT).show();
+        Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
+        Log.d("Distance", String.valueOf(distancePOI[0]));
+    }
 
     /**
      * gère les réponses des demandes de permission

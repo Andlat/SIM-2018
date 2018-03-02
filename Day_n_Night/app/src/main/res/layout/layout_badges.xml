@@ -8,24 +8,24 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="6dp"
-    tools:context="daynight.daynnight.Badges">
+    tools:context="daynight.daynnight.ListeBadges">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/retour"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="6"
-        android:text="Flèche de retour " />
+        android:layout_height="80dp"
+        android:background="@drawable/ic_keyboard_backspace_black_24dp"
+        android:backgroundTint="@color/colorPrimary"/>
 
-    <!--
-        <ListView
-            android:id="@+id/listeComptesBancaires"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/layout_liste_badges"
-            android:padding="6dip"
-            android:layout_marginTop="6dp"
-            android:orientation="vertical"></ListView>-->
-    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listeBadges"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_liste_badges"
+        android:padding="6dip"
+        android:paddingBottom="0dp"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical" />
+</LinearLayout>
 

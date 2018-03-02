@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:drawable/screen_background_dark_transparent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -26,7 +25,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Badge"
+        android:text="@string/badge"
         android:textColor="@android:color/white" />
 
     <Button
@@ -38,7 +37,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Inventaire"
+        android:text="@string/inventaire"
         android:textColor="@android:color/white" />
 
     <Button
@@ -50,7 +49,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Menu"
+        android:text="@string/menu"
         android:textColor="@android:color/white" />
 
     <Button
@@ -62,7 +61,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/oval_button_shape"
-        android:text="Options"
+        android:text="@string/options"
         android:textColor="@android:color/white" />
 
 </android.support.v7.widget.LinearLayoutCompat>
