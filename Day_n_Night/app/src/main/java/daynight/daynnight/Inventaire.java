@@ -4,16 +4,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.support.design.widget.CoordinatorLayout.LayoutParams;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +44,7 @@ public class Inventaire extends AppCompatActivity
 
         adapteur = new Inventaire.AdapteurArrayInventaire(this, 0, nomObjets);
 
-        GridView gridView = (GridView) findViewById(R.id.inventaire);
+        final GridView gridView = (GridView) findViewById(R.id.inventaire);
         gridView.setAdapter(adapteur);
 
 
@@ -52,6 +61,61 @@ public class Inventaire extends AppCompatActivity
         nomObjets.set(3,"outil_boule_neige");
 
 
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        final int width = size.x;
+        final int height = size.y;
+        boutique.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent event)
+            {
+                //float xInitial = 0, yInitial = 0;
+                //float dx = 0, dy = 0;
+                //view.setY(event.getRawX() - boutique.getWidth());
+                //view.setY(event.getRawY() - boutique.getHeight());
+                LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
+
+                switch(event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        //xInitial = event.getRawX() - view.getWidth();
+                        //yInitial = event.getRawY() - view.getHeight();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int xCoord = (int) event.getRawX();
+                        int yCoord = (int) event.getRawY();
+
+                        if((xCoord + view.getWidth()/2) < width && (xCoord - view.getWidth()/2) > 0)
+                        {
+                            layoutParams.leftMargin = xCoord - view.getWidth()/2;
+                        }
+                        if((yCoord + view.getHeight()/2) < height && (yCoord - view.getHeight()/2) > 0)
+                        {
+                            layoutParams.topMargin = yCoord - view.getHeight()/2;
+                        }
+
+                        view.setLayoutParams(layoutParams);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //dx = event.getRawX() - xInitial;
+                        //dy = event.getRawY() - yInitial;
+                        break;
+                }
+                return true;
+            }
+        });
+
+        /*boutique.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(Inventaire.this, Boutique.class));
+            }
+        });*/
         retour.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -60,14 +124,8 @@ public class Inventaire extends AppCompatActivity
                 finish();
             }
         });
-        boutique.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                startActivity(new Intent(Inventaire.this, Boutique.class));
-            }
-        });
+
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
