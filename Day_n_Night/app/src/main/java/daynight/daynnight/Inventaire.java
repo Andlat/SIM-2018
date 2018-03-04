@@ -79,16 +79,16 @@ public class Inventaire extends AppCompatActivity
                     case MotionEvent.ACTION_DOWN:
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int xCoord = (int) event.getRawX();
-                        int yCoord = (int) event.getRawY();
+                        float xCoord = event.getRawX() - view.getWidth()/2;
+                        float yCoord = event.getRawY() - view.getHeight()/(1.2f);
 
-                        if((xCoord) < width && (xCoord) > 0)
+                        if((xCoord + view.getWidth()) < width && (xCoord) > 0)
                         {
-                            layoutParams.leftMargin = xCoord;
+                            layoutParams.leftMargin = (int) xCoord;
                         }
-                        if((yCoord + view.getHeight()/2) < height && (yCoord - view.getHeight()/2) > 0)
+                        if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
                         {
-                            layoutParams.topMargin = yCoord - view.getHeight()/2;
+                            layoutParams.topMargin = (int) yCoord;
                         }
 
                         view.setLayoutParams(layoutParams);
