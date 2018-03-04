@@ -72,25 +72,19 @@ public class Inventaire extends AppCompatActivity
             @Override
             public boolean onTouch(View view, MotionEvent event)
             {
-                //float xInitial = 0, yInitial = 0;
-                //float dx = 0, dy = 0;
-                //view.setY(event.getRawX() - boutique.getWidth());
-                //view.setY(event.getRawY() - boutique.getHeight());
                 LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
 
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        //xInitial = event.getRawX() - view.getWidth();
-                        //yInitial = event.getRawY() - view.getHeight();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         int xCoord = (int) event.getRawX();
                         int yCoord = (int) event.getRawY();
 
-                        if((xCoord + view.getWidth()/2) < width && (xCoord - view.getWidth()/2) > 0)
+                        if((xCoord) < width && (xCoord) > 0)
                         {
-                            layoutParams.leftMargin = xCoord - view.getWidth()/2;
+                            layoutParams.leftMargin = xCoord;
                         }
                         if((yCoord + view.getHeight()/2) < height && (yCoord - view.getHeight()/2) > 0)
                         {
@@ -100,8 +94,6 @@ public class Inventaire extends AppCompatActivity
                         view.setLayoutParams(layoutParams);
                         break;
                     case MotionEvent.ACTION_UP:
-                        //dx = event.getRawX() - xInitial;
-                        //dy = event.getRawY() - yInitial;
                         break;
                 }
                 return true;
