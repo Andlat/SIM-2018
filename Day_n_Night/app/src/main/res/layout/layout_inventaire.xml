@@ -51,6 +51,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="6dp"
+        android:layout_gravity="top|end"
         android:background="@drawable/layout_biscuit_boutique"
         android:src="@drawable/boutique_biscuit" />
 

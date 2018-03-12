@@ -60,8 +60,6 @@ public class Inventaire extends AppCompatActivity
         nomObjets.set(2,"outil_seau_deau");
         nomObjets.set(3,"outil_boule_neige");
 
-
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -69,45 +67,57 @@ public class Inventaire extends AppCompatActivity
         final int height = size.y;
         boutique.setOnTouchListener(new View.OnTouchListener()
         {
+            float xRepere;
+            float yRepere;
+            float xCoord, yCoord;
+            float Xdiff = 11;
+            float Ydiff = 11;
+
             @Override
             public boolean onTouch(View view, MotionEvent event)
             {
                 LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
+                layoutParams.gravity = Gravity.NO_GRAVITY;
 
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float xCoord = event.getRawX() - view.getWidth()/2;
-                        float yCoord = event.getRawY() - view.getHeight()/(1.2f);
-
-                        if((xCoord + view.getWidth()) < width && (xCoord) > 0)
-                        {
-                            layoutParams.leftMargin = (int) xCoord;
-                        }
-                        if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
-                        {
-                            layoutParams.topMargin = (int) yCoord;
-                        }
-
-                        view.setLayoutParams(layoutParams);
+                        xRepere = event.getRawX();
+                        yRepere = event.getRawY();
                         break;
                     case MotionEvent.ACTION_UP:
+                        Xdiff = event.getRawX() - xRepere;
+                        Ydiff = event.getRawY() - yRepere;
+
+
+                        if (Xdiff <= 10 && Ydiff <= 10 && Xdiff >= -10 && Ydiff >= -10)
+                        {
+                            view.performClick();
+                            startActivity(new Intent(Inventaire.this, Boutique.class));
+
+                        }
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        xCoord = event.getRawX() - view.getWidth()/2;
+                        yCoord = event.getRawY() - view.getHeight()/(1.2f);
+
+                        if (Xdiff > 10 || Ydiff > 10 || Xdiff < -10 || Ydiff < -10)
+                        {
+                            if((xCoord + view.getWidth()) < width && (xCoord) > 0)
+                            {
+                                layoutParams.leftMargin = (int) xCoord;
+                            }
+                            if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
+                            {
+                                layoutParams.topMargin = (int) yCoord;
+                            }
+                        }
+                        view.setLayoutParams(layoutParams);
                         break;
                 }
                 return true;
             }
         });
-
-        /*boutique.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                startActivity(new Intent(Inventaire.this, Boutique.class));
-            }
-        });*/
         retour.setOnClickListener(new View.OnClickListener()
         {
             @Override
