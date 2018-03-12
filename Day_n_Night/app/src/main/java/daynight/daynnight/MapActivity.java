@@ -72,11 +72,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         move = new float[1];
         prevPos = new LatLng(0, 0);
 
-        animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_1), 300);
-        animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_2), 300);
-        animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_3), 300);
-        animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_4), 300);
-        animationDrawable.addFrame(getResources().getDrawable(R.drawable.arthur1_5), 300);
+
 
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(false);
@@ -141,6 +137,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }*/
 
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -160,20 +157,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
 
 
-        try {
-            Log.d("Try location", "location manager");
-            //Actulise la position sur la carte à chaque x ms
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener = new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
 
@@ -181,7 +165,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     final View persomarker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
-Log.d("POS", livePos.toString());
+    Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
@@ -191,31 +175,29 @@ Log.d("POS", livePos.toString());
 
                         if (perso != null) perso.remove();
 
-                        /*perso = map.addMarker(new MarkerOptions()
-                                .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));*/
                         //ImageView imageView = new ImageView(null);
                         //imageView.setBackgroundResource(R.drawable.mapcharacteranimation1);
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), persomarker))));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
+                        //.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), persomarker))));
 
-                        //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));/**/
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
 
-                        if (LOCALISATION_UPDATE == true) {
-                            map.animateCamera(CameraUpdateFactory.newLatLng(livePos), (int) move[0] / 5, null);
-                        }
+                        /* if (LOCALISATION_UPDATE == true) {
+                              map.animateCamera(CameraUpdateFactory.newLatLng(livePos), (int) move[0] / 5, null);
+                           }*/
 
-                        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
-                            @Override
-                            public void onCameraMoveStarted(int i) {
-                                LOCALISATION_UPDATE = false;
-                                map.stopAnimation();
-                                boutonCenter.setClickable(true);
-                                boutonCenter.setVisibility(View.VISIBLE);
-                            }
-                        });
+                        /*map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+                               @Override
+                               public void onCameraMoveStarted(int i) {
+                                   LOCALISATION_UPDATE = false;
+                                   map.stopAnimation();
+                                   boutonCenter.setClickable(true);
+                                   boutonCenter.setVisibility(View.VISIBLE);
+                               }
+                           });*/
 
                         //persomarker.startAnimation(animationDrawable);
                         //mapCharacterAnimation.start();
@@ -224,40 +206,33 @@ Log.d("POS", livePos.toString());
                             @Override
                             public void onTick(long l){}
                             public void onFinish(){
-                                persomarker.clearAnimation();
-                            }
+                                    persomarker.clearAnimation();
+                                }
                         };
 
-/*
+    /*
                         Log.d("Location changed", "location changed");
-                        if(perso == null){
-                            perso = map.addMarker(new MarkerOptions()
-                                    .position(livePos)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icondude)));
-                        }
-                        perso.setPosition(livePos);
 
                         countDownTimer = new CountDownTimer(3000, 200) {
-                            private int count = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                ++count;
-                                perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
-                                Log.d("icon changed", "icon changed");
-                            }
+                        private int count = 0;
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                    ++count;
+                                    perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
+                                    Log.d("icon changed", "icon changed");
+                                }
 
-                            @Override
-                            public void onFinish() {
+                                @Override
+                                public void onFinish() {
 
-                            }
-                        };
+                                }
+                            };
 
-*/
-
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+    */
+                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
-                    prevPos = livePos;
+                        prevPos = livePos;
                 }
 
 
@@ -277,28 +252,9 @@ Log.d("POS", livePos.toString());
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-        //Si nous avons pas accès à la localisation
-        } catch (SecurityException e) {
-            Log.e("O", "O");e.printStackTrace();
-        }
+
 
         map.setOnPoiClickListener(this);
-    }
-
-    // Convert a view to bitmap
-    public static Bitmap createDrawableFromView(Context context, View view) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
-        view.buildDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-
-        return bitmap;
     }
 
 
