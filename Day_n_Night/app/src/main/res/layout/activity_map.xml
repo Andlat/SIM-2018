@@ -38,4 +38,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/imageViewPersonnage"
+        android:layout_width="57dp"
+        android:layout_height="74dp"
+        android:src="@drawable/arthur1_1"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="246dp" />
+
 </android.support.constraint.ConstraintLayout>
