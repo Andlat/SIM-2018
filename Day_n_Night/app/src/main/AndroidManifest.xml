@@ -40,6 +40,7 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
+        <activity android:name=".BarreDOutils"></activity>
     </application>
 
 </manifest>
