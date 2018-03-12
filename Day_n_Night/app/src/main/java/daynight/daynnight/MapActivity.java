@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -61,7 +62,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Marker perso;
     private Button boutonCenter;
     private boolean LOCALISATION_UPDATE = true;
-    private AnimationDrawable animationDrawable;
+    private boolean MAP_CENTREE = true;
+    private TranslateAnimation translateAnimation;
+    private ImageView imageViewPersonnage;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +76,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         move = new float[1];
         prevPos = new LatLng(0, 0);
 
-
+        imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
 
         boutonCenter = (findViewById(R.id.boutonCenter));
-        boutonCenter.setClickable(false);
-        boutonCenter.setVisibility(View.INVISIBLE);
+        boutonCenter.setClickable(true);
+        boutonCenter.setVisibility(View.VISIBLE);
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LOCALISATION_UPDATE = true;
+                MAP_CENTREE = true;
+                boutonCenter.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -157,7 +163,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
 
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener = new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
 
@@ -165,70 +171,57 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     final View persomarker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
-    Log.d("POS", livePos.toString());
+                    Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
 
-                    //Si la distance entre deux actualisation est suppérieur à 3m alors le personnage se déplace
+                    //Si la distance entre deux actualisation est supérieure à 3m, alors le personnage se déplace
                     if (move[0] > 3) {
 
-                        if (perso != null) perso.remove();
 
-                        //ImageView imageView = new ImageView(null);
-                        //imageView.setBackgroundResource(R.drawable.mapcharacteranimation1);
+                        if(MAP_CENTREE){
+                            //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                            map.animateCamera(CameraUpdateFactory.newLatLng(livePos), (int) move[0] / 5, null);
+                        }
+                        else{
+                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(), map.getProjection().toScreenLocation(livePos).x, imageViewPersonnage.getY(), map.getProjection().toScreenLocation(livePos).y);
+                            translateAnimation.setDuration(5000);
+                            translateAnimation.setFillAfter(true);
+                            translateAnimation.start();
+                        }
 
-                        perso = map.addMarker(new MarkerOptions()
-                                .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
-                        //.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), persomarker))));
-
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-
-                        /* if (LOCALISATION_UPDATE == true) {
-                              map.animateCamera(CameraUpdateFactory.newLatLng(livePos), (int) move[0] / 5, null);
-                           }*/
-
-                        /*map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+                        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
                                @Override
-                               public void onCameraMoveStarted(int i) {
+                               public void onCameraMoveStarted(int reason) {
                                    LOCALISATION_UPDATE = false;
-                                   map.stopAnimation();
-                                   boutonCenter.setClickable(true);
-                                   boutonCenter.setVisibility(View.VISIBLE);
+                                   if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+                                       map.stopAnimation();
+                                       boutonCenter.setClickable(true);
+                                       boutonCenter.setVisibility(View.VISIBLE);
+                                   }
                                }
-                           });*/
+                           });
 
-                        //persomarker.startAnimation(animationDrawable);
-                        //mapCharacterAnimation.start();
+                            Log.d("Location changed", "location changed");
 
-                        new CountDownTimer(5000,5000){
+                            countDownTimer = new CountDownTimer(5000, 200) {
+                            private int count = 0;
                             @Override
-                            public void onTick(long l){}
-                            public void onFinish(){
-                                    persomarker.clearAnimation();
-                                }
+                            public void onTick(long millisUntilFinished) {
+                                ++count;
+                                String temp = "arthur1_" + count%6;
+                                imageViewPersonnage.setImageResource(imageViewPersonnage.getContext().getResources().getIdentifier(temp, "drawable", imageViewPersonnage.getContext().getPackageName()));
+                                Log.d("icon changed", "icon changed");
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                            }
                         };
 
-    /*
-                        Log.d("Location changed", "location changed");
 
-                        countDownTimer = new CountDownTimer(3000, 200) {
-                        private int count = 0;
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    ++count;
-                                    perso.setIcon(BitmapDescriptorFactory.fromResource(getDrawable(1, count%6)));
-                                    Log.d("icon changed", "icon changed");
-                                }
-
-                                @Override
-                                public void onFinish() {
-
-                                }
-                            };
-
-    */
                             map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                     }
 
