@@ -180,7 +180,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         perso = map.addMarker(new MarkerOptions()
                                 .position(livePos)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_1)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arthur1_2)));
                         //.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), persomarker))));
 
                         map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -252,7 +252,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-
 
         map.setOnPoiClickListener(this);
     }
