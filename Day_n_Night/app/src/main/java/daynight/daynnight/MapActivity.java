@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +61,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LatLng prevPos;
     private float[] move;
     private LocationListener locationListener;
-    private Marker perso;
     private Button boutonCenter;
     private boolean LOCALISATION_UPDATE = true;
     private boolean MAP_CENTREE = true;
     private TranslateAnimation translateAnimation;
     private ImageView imageViewPersonnage;
     private CountDownTimer countDownTimer;
+    private DisplayMetrics displayMetrics;
+    private Display display;
+    private Point size;
+    private Marker persoMarker;
+    private AnimationDrawable animationDrawable0;
+    private AnimationDrawable animationDrawable1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,20 +82,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         move = new float[1];
         prevPos = new LatLng(0, 0);
-
-        imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
-
-        boutonCenter = (findViewById(R.id.boutonCenter));
-        boutonCenter.setClickable(true);
-        boutonCenter.setVisibility(View.VISIBLE);
-        boutonCenter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOCALISATION_UPDATE = true;
-                MAP_CENTREE = true;
-                boutonCenter.setVisibility(View.INVISIBLE);
-            }
-        });
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -138,18 +131,35 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
     }
 
-    /*private int getDrawable(int race, int frame){
-        return this.getResources().getIdentifier("arthur" + race + "_" + frame + ".png", "drawable", this.getPackageName());
-    }*/
-
-
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
+        imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
+        animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
+        display = getWindowManager().getDefaultDisplay();
+        size = new Point();
+        display.getSize(size);
+        //getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        boutonCenter = (findViewById(R.id.boutonCenter));
+        boutonCenter.setClickable(true);
+        boutonCenter.setVisibility(View.INVISIBLE);
+        boutonCenter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LOCALISATION_UPDATE = true;
+                MAP_CENTREE = true;
+                boutonCenter.setVisibility(View.INVISIBLE);
+                map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                imageViewPersonnage.setX((size.x/2) - imageViewPersonnage.getWidth()/2);
+                imageViewPersonnage.setY((size.y/2) - imageViewPersonnage.getHeight()/2);
+            }
+        });
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -169,26 +179,35 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    final View persomarker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
-
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
 
                     //Si la distance entre deux actualisation est supérieure à 3m, alors le personnage se déplace
-                    if (move[0] > 3) {
+                    if (move[0] > 0.15) {
 
 
                         if(MAP_CENTREE){
                             //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                            map.animateCamera(CameraUpdateFactory.newLatLng(livePos), (int) move[0] / 5, null);
+                            map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
+                                    (int) move[0] / 5000, null);
+                            animationDrawable1.start();
+                            /*imageViewPersonnage.setVisibility(View.VISIBLE);
+                            if(persoMarker != null){
+                                persoMarker.remove();
+                            }*/
                         }
                         else{
-                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(), map.getProjection().toScreenLocation(livePos).x, imageViewPersonnage.getY(), map.getProjection().toScreenLocation(livePos).y);
+                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
+                                    map.getProjection().toScreenLocation(livePos).x,
+                                    imageViewPersonnage.getY(),
+                                    map.getProjection().toScreenLocation(livePos).y);
                             translateAnimation.setDuration(5000);
                             translateAnimation.setFillAfter(true);
+                            imageViewPersonnage.setAnimation(translateAnimation);
                             translateAnimation.start();
+                            animationDrawable1.start();
                         }
 
                         map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
@@ -196,40 +215,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                public void onCameraMoveStarted(int reason) {
                                    LOCALISATION_UPDATE = false;
                                    if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
-                                       map.stopAnimation();
                                        boutonCenter.setClickable(true);
                                        boutonCenter.setVisibility(View.VISIBLE);
+                                       //persoMarker = map.addMarker(new MarkerOptions()
+                                               //.position(livePos).icon(BitmapDescriptorFactory
+                                                       //.fromResource(R.drawable.arthur1_1)));
+                                       //imageViewPersonnage.setVisibility(View.INVISIBLE);
                                    }
                                }
                            });
 
-                            Log.d("Location changed", "location changed");
+                        Log.d("Location changed", "location changed");
 
-                            countDownTimer = new CountDownTimer(5000, 200) {
-                            private int count = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                ++count;
-                                String temp = "arthur1_" + count%6;
-                                imageViewPersonnage.setImageResource(imageViewPersonnage.getContext().getResources().getIdentifier(temp, "drawable", imageViewPersonnage.getContext().getPackageName()));
-                                Log.d("icon changed", "icon changed");
-                            }
-
-                            @Override
-                            public void onFinish() {
-
-                            }
-                        };
-
-
-                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                        map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
+                                (int) move[0] / 5000, null);
+                        animationDrawable1.start();
                     }
 
                         prevPos = livePos;
                 }
 
-
-                @Override
+            @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {
                     Log.d("status", "status changed: " + s);
                 }
