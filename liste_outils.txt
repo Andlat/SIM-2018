@@ -6,16 +6,16 @@ Coeur
 Seau d'eau
 Eau bénite
 Boule de neige
-
 Frisbee bleu, vert, rouge et mauve
 	BLEU: multiple(2) toucherParCoup(1)
 	VERT: multiple(3) toucherParCoup(1)
 	ROUGE: multiple(3) toucherParCoup(2)
 	MAUVE: multiple(4) toucherParCoup(2)
-All of Pokéball
 Poireau Pokémon
-Rubis-Cube
 Ballon de basket-ball
+All of Pokéball
+
+Rubis-Cube
 Ballon de soccer
 
 Avion en papier

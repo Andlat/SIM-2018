@@ -55,10 +55,10 @@ public class Inventaire extends AppCompatActivity
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");
-        nomObjets.set(0,"outil_eau_benite");
-        nomObjets.set(1,"outil_melon_deau");
-        nomObjets.set(2,"outil_seau_deau");
-        nomObjets.set(3,"outil_boule_neige");
+        nomObjets.set(0,"objet_outil_eau_benite");
+        nomObjets.set(1,"objet_outil_melon_deau");
+        nomObjets.set(2,"objet_outil_seau_deau");
+        nomObjets.set(3,"objet_outil_boule_neige");
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
