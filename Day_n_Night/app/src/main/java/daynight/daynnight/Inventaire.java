@@ -1,28 +1,27 @@
 package daynight.daynnight;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.List;
 public class Inventaire extends AppCompatActivity
 {
     //Créer
-    Button retour;
     ImageView boutique;
     static ArrayList<String> nomObjets = new ArrayList<>();
     static Inventaire.AdapteurArrayInventaire adapteur;
@@ -49,9 +47,7 @@ public class Inventaire extends AppCompatActivity
 
 
         //Attribuer
-        retour = (Button) findViewById(R.id.retour);
         boutique = (ImageView) findViewById(R.id.boutique);
-
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");
@@ -65,6 +61,7 @@ public class Inventaire extends AppCompatActivity
         display.getSize(size);
         final int width = size.x;
         final int height = size.y;
+
         boutique.setOnTouchListener(new View.OnTouchListener()
         {
             float xRepere;
@@ -94,7 +91,6 @@ public class Inventaire extends AppCompatActivity
                         {
                             view.performClick();
                             startActivity(new Intent(Inventaire.this, Boutique.class));
-
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -107,7 +103,7 @@ public class Inventaire extends AppCompatActivity
                             {
                                 layoutParams.leftMargin = (int) xCoord;
                             }
-                            if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
+                            if((yCoord + view.getHeight()*(1.3f)) < (height - (width/5)) && (yCoord) > 0)
                             {
                                 layoutParams.topMargin = (int) yCoord;
                             }
@@ -116,14 +112,6 @@ public class Inventaire extends AppCompatActivity
                         break;
                 }
                 return true;
-            }
-        });
-        retour.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                finish();
             }
         });
 
@@ -170,7 +158,7 @@ public class Inventaire extends AppCompatActivity
             View view = inflater.inflate(R.layout.layout_objet, null);
             view.setPaddingRelative(20,20,20,20);
 
-            GridViewInventaireObjet objet = view.findViewById(R.id.objet);
+            ObjetGridView objet = view.findViewById(R.id.objet);
             objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getPackageName()));
 
 

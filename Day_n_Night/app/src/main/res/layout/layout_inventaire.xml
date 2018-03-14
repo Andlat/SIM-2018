@@ -4,18 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="daynight.daynnight.ListeBadges">
+    tools:context="daynight.daynnight.Inventaire">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/BarreDOutils"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
 
         <!--<RelativeLayout
             android:layout_width="match_parent"
@@ -35,17 +29,25 @@
 
         </RelativeLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6dip"
-            android:layout_gravity="fill"
-            android:background="@color/black" />
-
         <GridView
             android:id="@+id/inventaire"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dip"
+            android:background="@color/black" />
+
+        <fragment
+            android:id="@+id/barreDOutils"
+            android:name="daynight.daynnight.BarreDOutils"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
 
     </LinearLayout>
 

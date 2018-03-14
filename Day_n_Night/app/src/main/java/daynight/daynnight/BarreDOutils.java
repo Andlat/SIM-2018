@@ -1,15 +1,23 @@
 package daynight.daynnight;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-public class BarreDOutils extends AppCompatActivity
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+
+public class BarreDOutils extends Fragment
 {
+    public BarreDOutils()
+    {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_barre_doutils);
+        return inflater.inflate(R.layout.fragment_barre_doutils, container, false);
     }
 }

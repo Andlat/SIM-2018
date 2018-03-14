@@ -20,15 +20,15 @@
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
 
         <activity
-            android:name=".Inventaire"
-            android:screenOrientation="landscape" />
-        <activity android:name=".MainActivity"
-            android:screenOrientation="landscape">
+            android:name=".Inventaire">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".CreateAccountActivity"
@@ -41,7 +41,6 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
-        <activity android:name=".BarreDOutils"></activity>
     </application>
 
 </manifest>
