@@ -62,16 +62,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private float[] move;
     private LocationListener locationListener;
     private Button boutonCenter;
-    private boolean LOCALISATION_UPDATE = true;
     private boolean MAP_CENTREE = true;
     private TranslateAnimation translateAnimation;
     private ImageView imageViewPersonnage;
-    private CountDownTimer countDownTimer;
-    private DisplayMetrics displayMetrics;
     private Display display;
     private Point size;
     private Marker persoMarker;
-    private AnimationDrawable animationDrawable0;
     private AnimationDrawable animationDrawable1;
 
     @Override
@@ -152,7 +148,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LOCALISATION_UPDATE = true;
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -184,19 +179,46 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
                     Log.d("Move", String.valueOf(move[0]));
 
-                    //Si la distance entre deux actualisation est supérieure à 3m, alors le personnage se déplace
-                    if (move[0] > 0.15) {
+                    Location prevLocation = new Location("");
+                    prevLocation.setLatitude(prevPos.latitude);
+                    prevLocation.setLongitude(prevPos.longitude);
 
+                    Location presentLocation = new Location("");
+                    presentLocation.setLatitude(livePos.latitude);
+                    presentLocation.setLongitude(livePos.longitude);
+
+                    //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
+                    if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                            map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
-                                    (int) move[0] / 5000, null);
-                            animationDrawable1.start();
-                            /*imageViewPersonnage.setVisibility(View.VISIBLE);
-                            if(persoMarker != null){
-                                persoMarker.remove();
-                            }*/
+                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                            translateAnimation = new TranslateAnimation((float)prevLocation.getLongitude(),
+                                    map.getProjection().toScreenLocation(livePos).x,
+                                    (float)prevLocation.getLatitude(),
+                                    map.getProjection().toScreenLocation(livePos).y);
+                            translateAnimation.setDuration(5000);
+                            translateAnimation.setFillBefore(true);
+                            translateAnimation.setFillAfter(true);
+                            imageViewPersonnage.setAnimation(translateAnimation);
+                            translateAnimation.start();
+                            /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
+                                    (int) move[0] / 5000, null);*/
+                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    animationDrawable1.start();
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    animationDrawable1.stop();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
                         }
                         else{
                             translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
@@ -213,23 +235,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
                                @Override
                                public void onCameraMoveStarted(int reason) {
-                                   LOCALISATION_UPDATE = false;
                                    if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
                                        boutonCenter.setClickable(true);
                                        boutonCenter.setVisibility(View.VISIBLE);
-                                       //persoMarker = map.addMarker(new MarkerOptions()
-                                               //.position(livePos).icon(BitmapDescriptorFactory
-                                                       //.fromResource(R.drawable.arthur1_1)));
-                                       //imageViewPersonnage.setVisibility(View.INVISIBLE);
+                                       persoMarker = map.addMarker(new MarkerOptions()
+                                               .position(livePos).icon(BitmapDescriptorFactory
+                                                       .fromResource(R.drawable.arthur1_1)));
+                                       imageViewPersonnage.setVisibility(View.INVISIBLE);
                                    }
                                }
                            });
 
                         Log.d("Location changed", "location changed");
 
-                        map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
-                                (int) move[0] / 5000, null);
-                        animationDrawable1.start();
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                        /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
+                                (int) move[0] / 5000, null);*/
+                        //animationDrawable1.start();
                     }
 
                         prevPos = livePos;
