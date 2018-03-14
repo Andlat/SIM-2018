@@ -77,7 +77,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
+        move = new float[1];
+        distanceFromPoiUpdate = new float[1];
+        prevPos = new LatLng(0, 0);
+        poiUpdate = new LatLng(0,0);
+        
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -154,10 +158,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
-        move = new float[1];
-        distanceFromPoiUpdate = new float[1];
-        prevPos = new LatLng(0, 0);
-        poiUpdate = new LatLng(0,0);
+
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -177,7 +178,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    if(prevPos == null){
                     if (prevPos == null) {
                         prevPos = livePos;
                         //Va chercher les coordonnés des poi dans un rayon de 50km
@@ -208,7 +208,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         map.getProjection().toScreenLocation(livePos).x,
                                         (float) prevLocation.getLatitude(),
                                         map.getProjection().toScreenLocation(livePos).y);
-                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setRepeatCount(1);
                                 translateAnimation.setFillBefore(true);
                                 translateAnimation.setFillAfter(true);
                                 imageViewPersonnage.setAnimation(translateAnimation);
@@ -236,7 +236,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         map.getProjection().toScreenLocation(livePos).x,
                                         imageViewPersonnage.getY(),
                                         map.getProjection().toScreenLocation(livePos).y);
-                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setRepeatCount(1);
                                 translateAnimation.setFillAfter(true);
                                 imageViewPersonnage.setAnimation(translateAnimation);
                                 translateAnimation.setAnimationListener(new Animation.AnimationListener() {
