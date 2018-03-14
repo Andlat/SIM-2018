@@ -254,7 +254,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                        boutonCenter.setVisibility(View.VISIBLE);
                                        persoMarker = map.addMarker(new MarkerOptions()
                                                .position(livePos).icon(BitmapDescriptorFactory
-                                                       .fromResource(R.drawable.arthur1_1)));
+                                                       .fromResource(R.drawable.arthur1_2)));
                                        imageViewPersonnage.setVisibility(View.INVISIBLE);
                                    }
                                }
