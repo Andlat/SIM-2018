@@ -3,6 +3,7 @@ package daynight.daynnight;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -36,6 +37,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.Response;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,9 +60,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
@@ -180,7 +207,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                     if(distanceFromPoiUpdate[0] > 20000){
+                        final ExecutorService executor = Executors.newSingleThreadExecutor();
 
+                        final HttpRequest request = new HttpRequest();
+                        final FutureTask<String> future = new FutureTask<>(request);
+
+                        executor.execute(future);
+                        String response = null;
+
+                        try {
+                             response = future.get();
+                            Log.d("Request", response);
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                            Log.d("Request", "NOPE ça marche pas");
+                        }
                     }
 
                     Log.d("POS", livePos.toString());
