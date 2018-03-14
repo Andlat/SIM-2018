@@ -173,6 +173,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
 
+                    if(prevPos == null){
+                        prevPos = livePos;
+                    }
+
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
                     Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
@@ -195,7 +199,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     map.getProjection().toScreenLocation(livePos).x,
                                     (float)prevLocation.getLatitude(),
                                     map.getProjection().toScreenLocation(livePos).y);
-                            translateAnimation.setDuration(5000);
+                            translateAnimation.setDuration((long) prevLocation.distanceTo(presentLocation)/10);
                             translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
                             imageViewPersonnage.setAnimation(translateAnimation);
@@ -224,7 +228,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     map.getProjection().toScreenLocation(livePos).x,
                                     imageViewPersonnage.getY(),
                                     map.getProjection().toScreenLocation(livePos).y);
-                            translateAnimation.setDuration(5000);
+                            translateAnimation.setDuration((long) prevLocation.distanceTo(presentLocation)/10);
                             translateAnimation.setFillAfter(true);
                             imageViewPersonnage.setAnimation(translateAnimation);
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -250,12 +254,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                @Override
                                public void onCameraMoveStarted(int reason) {
                                    if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+                                       map.clear();
                                        boutonCenter.setClickable(true);
                                        boutonCenter.setVisibility(View.VISIBLE);
                                        persoMarker = map.addMarker(new MarkerOptions()
                                                .position(livePos).icon(BitmapDescriptorFactory
                                                        .fromResource(R.drawable.arthur1_2)));
-                                       imageViewPersonnage.setVisibility(View.INVISIBLE);
+                                       //imageViewPersonnage.setVisibility(View.INVISIBLE);
+                                       imageViewPersonnage.setVisibility(View.GONE);
                                    }
                                }
                            });
