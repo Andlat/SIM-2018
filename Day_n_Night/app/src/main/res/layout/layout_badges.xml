@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="6dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="6dp"
+    android:background="@color/beige"
     tools:context="daynight.daynnight.ListeBadges">
 
     <Button
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="@drawable/ic_keyboard_backspace_black_24dp"
-        android:backgroundTint="@color/colorPrimary"/>
+        android:backgroundTint="@color/beigefonce"/>
 
 
     <ListView

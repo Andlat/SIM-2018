@@ -16,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,11 +85,9 @@ public class Inventaire extends AppCompatActivity
                         yRepere = event.getRawY();
                         break;
                     case MotionEvent.ACTION_UP:
-                        Xdiff = event.getRawX() - xRepere;
-                        Ydiff = event.getRawY() - yRepere;
 
 
-                        if (Xdiff <= 10 && Ydiff <= 10 && Xdiff >= -10 && Ydiff >= -10)
+                        if (Xdiff <= 20 && Ydiff <= 20 && Xdiff >= -20 && Ydiff >= -20)
                         {
                             view.performClick();
                             startActivity(new Intent(Inventaire.this, Boutique.class));
@@ -97,7 +97,10 @@ public class Inventaire extends AppCompatActivity
                         xCoord = event.getRawX() - view.getWidth()/2;
                         yCoord = event.getRawY() - view.getHeight()/(1.2f);
 
-                        if (Xdiff > 10 || Ydiff > 10 || Xdiff < -10 || Ydiff < -10)
+                        Xdiff = event.getRawX() - xRepere;
+                        Ydiff = event.getRawY() - yRepere;
+
+                        if (Xdiff > 20 || Ydiff > 20 || Xdiff < -20 || Ydiff < -20)
                         {
                             if((xCoord + view.getWidth()) < width && (xCoord) > 0)
                             {
@@ -124,13 +127,19 @@ public class Inventaire extends AppCompatActivity
             }
         });
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-        {
-            gridView.setNumColumns(7);
-        }
-        else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
             gridView.setNumColumns(4);
+        }
+        else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            LinearLayout layoutBarreDOutils = findViewById(R.id.layout_barreDOutils);
+            ViewGroup.LayoutParams params = layoutBarreDOutils.getLayoutParams();
+            params.width = height;
+            layoutBarreDOutils.setLayoutParams(params);
+
+            gridView.setNumColumns(7);
         }
     }
 

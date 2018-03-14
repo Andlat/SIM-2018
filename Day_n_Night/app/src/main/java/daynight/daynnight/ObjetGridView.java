@@ -23,7 +23,10 @@ public class ObjetGridView extends android.support.v7.widget.AppCompatImageView 
     }
 
     @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec); // This is the key that will make the height equivalent to its width
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
+
+
 }

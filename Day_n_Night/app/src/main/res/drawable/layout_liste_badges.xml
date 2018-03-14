@@ -6,7 +6,7 @@
             <corners
                 android:topLeftRadius="30dp"
                 android:topRightRadius="30dp" />
-            <solid android:color="@color/colorPrimary" />
+            <solid android:color="@color/beigefonce" />
         </shape>
     </item>
 
@@ -18,7 +18,7 @@
             <corners
                 android:topLeftRadius="30dp"
                 android:topRightRadius="30dp" />
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/beige" />
         </shape>
     </item>
 
