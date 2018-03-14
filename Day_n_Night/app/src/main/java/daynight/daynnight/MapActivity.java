@@ -228,8 +228,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             translateAnimation.setDuration(5000);
                             translateAnimation.setFillAfter(true);
                             imageViewPersonnage.setAnimation(translateAnimation);
+                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    animationDrawable1.start();
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    animationDrawable1.stop();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
                             translateAnimation.start();
-                            animationDrawable1.start();
                         }
 
                         map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
