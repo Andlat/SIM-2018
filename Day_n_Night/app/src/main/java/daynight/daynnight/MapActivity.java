@@ -59,6 +59,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LocationManager locationManager;
     private LatLng livePos;
     private LatLng prevPos;
+    private LatLng poiUpdate;
+    private float[] distanceFromPoiUpdate;
     private float[] move;
     private LocationListener locationListener;
     private Button boutonCenter;
@@ -75,9 +77,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
-        move = new float[1];
-        prevPos = new LatLng(0, 0);
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -155,6 +154,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        move = new float[1];
+        distanceFromPoiUpdate = new float[1];
+        prevPos = new LatLng(0, 0);
+        poiUpdate = new LatLng(0,0);
+
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
 
@@ -174,125 +178,130 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
 
                     if(prevPos == null){
+                    if (prevPos == null) {
                         prevPos = livePos;
-                    }
+                        //Va chercher les coordonnés des poi dans un rayon de 50km
+                        Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                        if (distanceFromPoiUpdate[0] > 20000) {
 
-                    Log.d("POS", livePos.toString());
-                    //Distance entre la position actuelle et la dernière actualisation
-                    Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
-                    Log.d("Move", String.valueOf(move[0]));
+                        }
 
-                    Location prevLocation = new Location("");
-                    prevLocation.setLatitude(prevPos.latitude);
-                    prevLocation.setLongitude(prevPos.longitude);
+                        Log.d("POS", livePos.toString());
+                        //Distance entre la position actuelle et la dernière actualisation
+                        Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
+                        Log.d("Move", String.valueOf(move[0]));
 
-                    Location presentLocation = new Location("");
-                    presentLocation.setLatitude(livePos.latitude);
-                    presentLocation.setLongitude(livePos.longitude);
+                        Location prevLocation = new Location("");
+                        prevLocation.setLatitude(prevPos.latitude);
+                        prevLocation.setLongitude(prevPos.longitude);
 
-                    //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
-                    if (prevLocation.distanceTo(presentLocation) > 2) {
+                        Location presentLocation = new Location("");
+                        presentLocation.setLatitude(livePos.latitude);
+                        presentLocation.setLongitude(livePos.longitude);
 
-                        if(MAP_CENTREE){
-                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                            translateAnimation = new TranslateAnimation((float)prevLocation.getLongitude(),
-                                    map.getProjection().toScreenLocation(livePos).x,
-                                    (float)prevLocation.getLatitude(),
-                                    map.getProjection().toScreenLocation(livePos).y);
-                            translateAnimation.setDuration((long) prevLocation.distanceTo(presentLocation)/10);
-                            translateAnimation.setFillBefore(true);
-                            translateAnimation.setFillAfter(true);
-                            imageViewPersonnage.setAnimation(translateAnimation);
+                        //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
+                        if (prevLocation.distanceTo(presentLocation) > 2) {
+
+                            if (MAP_CENTREE) {
+                                map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                                translateAnimation = new TranslateAnimation((float) prevLocation.getLongitude(),
+                                        map.getProjection().toScreenLocation(livePos).x,
+                                        (float) prevLocation.getLatitude(),
+                                        map.getProjection().toScreenLocation(livePos).y);
+                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setFillBefore(true);
+                                translateAnimation.setFillAfter(true);
+                                imageViewPersonnage.setAnimation(translateAnimation);
                             /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
                                     (int) move[0] / 5000, null);*/
-                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                                @Override
-                                public void onAnimationStart(Animation animation) {
-                                    animationDrawable1.start();
-                                }
+                                translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+                                        animationDrawable1.start();
+                                    }
 
-                                @Override
-                                public void onAnimationEnd(Animation animation) {
-                                    animationDrawable1.stop();
-                                }
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        animationDrawable1.stop();
+                                    }
 
-                                @Override
-                                public void onAnimationRepeat(Animation animation) {
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
 
+                                    }
+                                });
+                                translateAnimation.start();
+                            } else {
+                                translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
+                                        map.getProjection().toScreenLocation(livePos).x,
+                                        imageViewPersonnage.getY(),
+                                        map.getProjection().toScreenLocation(livePos).y);
+                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setFillAfter(true);
+                                imageViewPersonnage.setAnimation(translateAnimation);
+                                translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+                                        animationDrawable1.start();
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        animationDrawable1.stop();
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                translateAnimation.start();
+                            }
+
+                            map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+                                @Override
+                                public void onCameraMoveStarted(int reason) {
+                                    if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+                                        map.clear();
+                                        boutonCenter.setClickable(true);
+                                        boutonCenter.setVisibility(View.VISIBLE);
+                                        persoMarker = map.addMarker(new MarkerOptions()
+                                                .position(livePos).icon(BitmapDescriptorFactory
+                                                        .fromResource(R.drawable.arthur1_2)));
+                                        //imageViewPersonnage.setVisibility(View.INVISIBLE);
+                                        imageViewPersonnage.setVisibility(View.GONE);
+                                    }
                                 }
                             });
-                            translateAnimation.start();
-                        }
-                        else{
-                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(livePos).x,
-                                    imageViewPersonnage.getY(),
-                                    map.getProjection().toScreenLocation(livePos).y);
-                            translateAnimation.setDuration((long) prevLocation.distanceTo(presentLocation)/10);
-                            translateAnimation.setFillAfter(true);
-                            imageViewPersonnage.setAnimation(translateAnimation);
-                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                                @Override
-                                public void onAnimationStart(Animation animation) {
-                                    animationDrawable1.start();
-                                }
 
-                                @Override
-                                public void onAnimationEnd(Animation animation) {
-                                    animationDrawable1.stop();
-                                }
+                            Log.d("Location changed", "location changed");
 
-                                @Override
-                                public void onAnimationRepeat(Animation animation) {
-
-                                }
-                            });
-                            translateAnimation.start();
-                        }
-
-                        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
-                               @Override
-                               public void onCameraMoveStarted(int reason) {
-                                   if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
-                                       map.clear();
-                                       boutonCenter.setClickable(true);
-                                       boutonCenter.setVisibility(View.VISIBLE);
-                                       persoMarker = map.addMarker(new MarkerOptions()
-                                               .position(livePos).icon(BitmapDescriptorFactory
-                                                       .fromResource(R.drawable.arthur1_2)));
-                                       //imageViewPersonnage.setVisibility(View.INVISIBLE);
-                                       imageViewPersonnage.setVisibility(View.GONE);
-                                   }
-                               }
-                           });
-
-                        Log.d("Location changed", "location changed");
-
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                         /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
                                 (int) move[0] / 5000, null);*/
-                        //animationDrawable1.start();
-                    }
+                            //animationDrawable1.start();
+                        }
 
                         prevPos = livePos;
+                    }
                 }
 
-                @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
-                    Log.d("status", "status changed: " + s);
-                }
+                    @Override
+                    public void onStatusChanged (String s,int i, Bundle bundle){
+                        Log.d("status", "status changed: " + s);
+                    }
 
-                @Override
-                public void onProviderEnabled(String s) {
-                    Log.d("enabled provider", "provider enabled: " + s + "\nLast loc:"/* + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)*/);
-                }
+                    @Override
+                    public void onProviderEnabled (String s){
+                        Log.d("enabled provider", "provider enabled: " + s + "\nLast loc:"/* + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)*/);
+                    }
 
-                @Override
-                public void onProviderDisabled(String s) {
+                    @Override
+                    public void onProviderDisabled (String s){
 
-                    Log.d("disabled provider", "provider disabled: " + s);
-                }
-            });
+                        Log.d("disabled provider", "provider disabled: " + s);
+                    }
+        });
 
 
         map.setOnPoiClickListener(this);
