@@ -140,7 +140,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
         display.getSize(size);
-        //getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
@@ -200,7 +199,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
                             imageViewPersonnage.setAnimation(translateAnimation);
-                            translateAnimation.start();
                             /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
                                     (int) move[0] / 5000, null);*/
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -219,6 +217,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                                 }
                             });
+                            translateAnimation.start();
                         }
                         else{
                             translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
@@ -272,7 +271,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         prevPos = livePos;
                 }
 
-            @Override
+                @Override
                 public void onStatusChanged(String s, int i, Bundle bundle) {
                     Log.d("status", "status changed: " + s);
                 }
