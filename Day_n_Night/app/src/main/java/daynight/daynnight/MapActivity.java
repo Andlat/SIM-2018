@@ -3,6 +3,7 @@ package daynight.daynnight;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -59,6 +60,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LocationManager locationManager;
     private LatLng livePos;
     private LatLng prevPos;
+    private LatLng poiUpdate;
+    private float[] distanceFromPoiUpdate;
     private float[] move;
     private LocationListener locationListener;
     private Button boutonCenter;
@@ -75,9 +78,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
-        move = new float[1];
-        prevPos = new LatLng(0, 0);
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -155,6 +155,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        move = new float[1];
+        distanceFromPoiUpdate = new float[1];
+        prevPos = new LatLng(0, 0);
+        poiUpdate = new LatLng(0,0);
+
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
 
@@ -172,6 +177,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 public void onLocationChanged(Location location) {
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    //Va chercher les coordonnés des poi dans un rayon de 50km
+                    Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                    if(distanceFromPoiUpdate[0] > 20000){
+                        final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                        final HttpRequest request = new HttpRequest();
+                        final FutureTask<String> future = new FutureTask<>(request);
+
+                        executor.execute(future);
+                        String response = null;
+
+                        try {
+                             response = future.get();
+                            Log.d("Request", response);
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                            Log.d("Request", "NOPE ça marche pas");
+                        }
+                    }
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
@@ -254,7 +279,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                        boutonCenter.setVisibility(View.VISIBLE);
                                        persoMarker = map.addMarker(new MarkerOptions()
                                                .position(livePos).icon(BitmapDescriptorFactory
-                                                       .fromResource(R.drawable.arthur1_1)));
+                                                       .fromResource(R.drawable.arthur1_2)));
                                        imageViewPersonnage.setVisibility(View.INVISIBLE);
                                    }
                                }
