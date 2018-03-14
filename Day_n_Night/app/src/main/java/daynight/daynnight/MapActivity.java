@@ -208,7 +208,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         map.getProjection().toScreenLocation(livePos).x,
                                         (float) prevLocation.getLatitude(),
                                         map.getProjection().toScreenLocation(livePos).y);
-                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setRepeatCount(1);
                                 translateAnimation.setFillBefore(true);
                                 translateAnimation.setFillAfter(true);
                                 imageViewPersonnage.setAnimation(translateAnimation);
@@ -236,7 +236,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         map.getProjection().toScreenLocation(livePos).x,
                                         imageViewPersonnage.getY(),
                                         map.getProjection().toScreenLocation(livePos).y);
-                                translateAnimation.setRepeatCount(0);
+                                translateAnimation.setRepeatCount(1);
                                 translateAnimation.setFillAfter(true);
                                 imageViewPersonnage.setAnimation(translateAnimation);
                                 translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -285,7 +285,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         prevPos = livePos;
                     }
                 }
-
+                }
                     @Override
                     public void onStatusChanged (String s,int i, Bundle bundle){
                         Log.d("status", "status changed: " + s);
