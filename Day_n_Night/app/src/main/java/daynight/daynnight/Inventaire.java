@@ -69,8 +69,8 @@ public class Inventaire extends AppCompatActivity
             float xRepere;
             float yRepere;
             float xCoord, yCoord;
-            float Xdiff = 11;
-            float Ydiff = 11;
+            float Xdiff = 21;
+            float Ydiff = 21;
 
             @Override
             public boolean onTouch(View view, MotionEvent event)
@@ -106,7 +106,7 @@ public class Inventaire extends AppCompatActivity
                             {
                                 layoutParams.leftMargin = (int) xCoord;
                             }
-                            if((yCoord + view.getHeight()*(1.3f)) < (height - (width/5)) && (yCoord) > 0)
+                            if((yCoord + view.getHeight()*(1.3f)) < (height - (height/5)) && (yCoord) > 0)
                             {
                                 layoutParams.topMargin = (int) yCoord;
                             }
