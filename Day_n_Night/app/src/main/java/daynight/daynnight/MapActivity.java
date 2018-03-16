@@ -171,7 +171,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.arthur1_1)));
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
-                    map.clear();
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
@@ -248,6 +247,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
+                            map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
                             //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
                             /*translateAnimation = new TranslateAnimation((float)prevLocation.getLongitude(),
