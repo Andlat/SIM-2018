@@ -171,6 +171,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.arthur1_1)));
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
+                    map.clear();
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
