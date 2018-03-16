@@ -1,9 +1,6 @@
 package daynight.daynnight;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,10 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
@@ -68,15 +63,15 @@ public class Inventaire extends AppCompatActivity
         {
             float xRepere;
             float yRepere;
-            float xCoord, yCoord;
-            float Xdiff = 21;
-            float Ydiff = 21;
+            float xCoord;
+            float yCoord;
+            float Xdiff;
+            float Ydiff;
 
             @Override
             public boolean onTouch(View view, MotionEvent event)
             {
                 LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
-                layoutParams.gravity = Gravity.NO_GRAVITY;
 
                 switch(event.getAction())
                 {
@@ -85,8 +80,6 @@ public class Inventaire extends AppCompatActivity
                         yRepere = event.getRawY();
                         break;
                     case MotionEvent.ACTION_UP:
-
-
                         if (Xdiff <= 20 && Ydiff <= 20 && Xdiff >= -20 && Ydiff >= -20)
                         {
                             view.performClick();
@@ -94,19 +87,17 @@ public class Inventaire extends AppCompatActivity
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        xCoord = event.getRawX() - view.getWidth()/2;
-                        yCoord = event.getRawY() - view.getHeight()/(1.2f);
-
                         Xdiff = event.getRawX() - xRepere;
                         Ydiff = event.getRawY() - yRepere;
-
                         if (Xdiff > 20 || Ydiff > 20 || Xdiff < -20 || Ydiff < -20)
                         {
+                            xCoord = event.getRawX() - view.getWidth()/2;
+                            yCoord = event.getRawY() - view.getHeight()/(1.2f);
                             if((xCoord + view.getWidth()) < width && (xCoord) > 0)
                             {
                                 layoutParams.leftMargin = (int) xCoord;
                             }
-                            if((yCoord + view.getHeight()*(1.3f)) < (height - (height/5)) && (yCoord) > 0)
+                            if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
                             {
                                 layoutParams.topMargin = (int) yCoord;
                             }
@@ -167,7 +158,7 @@ public class Inventaire extends AppCompatActivity
             View view = inflater.inflate(R.layout.layout_objet, null);
             view.setPaddingRelative(20,20,20,20);
 
-            ObjetGridView objet = view.findViewById(R.id.objet);
+            ImageViewCarre objet = view.findViewById(R.id.objet);
             objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getPackageName()));
 
 

@@ -28,26 +28,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:padding="4dp"
-        android:background="@drawable/layout_barre_doutils"
-        android:orientation="vertical">
+        android:background="@drawable/layout_barre_doutils">
 
         <fragment
             android:id="@+id/barreDOutils"
             android:name="daynight.daynnight.BarreDOutils"
             android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/boutique"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_gravity="top|end"
         android:background="@drawable/layout_biscuit_boutique"
         android:src="@drawable/objet_boutique_biscuit" />
 

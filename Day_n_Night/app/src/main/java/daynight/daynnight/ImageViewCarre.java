@@ -8,17 +8,17 @@ import android.widget.ImageView;
  * Created by sebastien on 18-02-28.
  */
 
-public class ObjetGridView extends android.support.v7.widget.AppCompatImageView {
+public class ImageViewCarre extends android.support.v7.widget.AppCompatImageView {
 
-    public ObjetGridView(Context context) {
+    public ImageViewCarre(Context context) {
         super(context);
     }
 
-    public ObjetGridView(Context context, AttributeSet attrs) {
+    public ImageViewCarre(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ObjetGridView(Context context, AttributeSet attrs, int defStyle) {
+    public ImageViewCarre(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
