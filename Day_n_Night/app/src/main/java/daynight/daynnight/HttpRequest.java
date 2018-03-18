@@ -1,7 +1,10 @@
 package daynight.daynnight;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -9,6 +12,9 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import static java.lang.System.in;
+
 
 /**
  * Created by Antoine Mascolo on 2018-03-14.
@@ -25,7 +31,7 @@ public class HttpRequest implements Callable<String> {
         try {
             url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.404476,-71.888351&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
 
-            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con = (HttpsURLConnection) url.openConnection();
             con.setConnectTimeout(2000);
             con.setRequestMethod("GET");
             con.setDoInput(true);
@@ -35,14 +41,15 @@ public class HttpRequest implements Callable<String> {
             e.printStackTrace();
         }
 
-        //Get response
-        InputStream in = null;
+        //Redonne la réponse
 
         try {
-            in = new BufferedInputStream(con.getInputStream());
+            InputStream in = new BufferedInputStream(con.getInputStream());
+            //InputStream in = url.openStream();
             response = ConvertStreamToString(in);
         } finally{
             if(in != null) in.close();
+            con.disconnect();
         }
         return response;
     }

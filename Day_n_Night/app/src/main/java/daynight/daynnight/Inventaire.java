@@ -46,7 +46,7 @@ public class Inventaire extends AppCompatActivity
 
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
-        infosObjetInventaire = new PopupInformationsObjet("Inventaire");
+        //infosObjetInventaire = new PopupInformationsObjet("Inventaire");
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");

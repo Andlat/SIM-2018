@@ -223,6 +223,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         try {
                              response = future.get();
+                             //poiUpdate = livePos;
                             Log.d("Request", response);
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
