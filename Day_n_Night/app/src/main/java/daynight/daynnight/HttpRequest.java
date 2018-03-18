@@ -15,7 +15,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class HttpRequest implements Callable<String> {
-    HttpsURLConnection con;
+    private HttpsURLConnection con;
 
     @Override
     public String call() throws Exception {
