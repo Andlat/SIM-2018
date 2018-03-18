@@ -29,6 +29,7 @@ public class Inventaire extends AppCompatActivity
     ImageView boutique;
     static ArrayList<String> nomObjets = new ArrayList<>();
     static Inventaire.AdapteurArrayInventaire adapteur;
+    PopupInformationsObjet infosObjetInventaire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,6 +46,7 @@ public class Inventaire extends AppCompatActivity
 
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
+        infosObjetInventaire = new PopupInformationsObjet("Inventaire");
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
             nomObjets.add("");
@@ -114,7 +116,7 @@ public class Inventaire extends AppCompatActivity
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                //TODO
+                startActivity(new Intent(Inventaire.this, PopupInformationsObjet.class));
             }
         });
 

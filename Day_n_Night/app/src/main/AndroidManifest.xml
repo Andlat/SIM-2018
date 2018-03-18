@@ -42,6 +42,9 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
+        <activity android:name=".PopupInformationsObjet"
+            android:theme="@style/AppTheme.PopupTheme">
+        </activity>
     </application>
 
 </manifest>
