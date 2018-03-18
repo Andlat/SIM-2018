@@ -86,7 +86,7 @@ public class Boutique extends AppCompatActivity
             View view = inflater.inflate(R.layout.layout_objet, null);
             view.setPaddingRelative(20,20,20,20);
 
-            ObjetGridView objet = view.findViewById(R.id.objet);
+            ImageViewCarre objet = view.findViewById(R.id.objet);
             objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getPackageName()));
 
 

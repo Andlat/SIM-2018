@@ -37,13 +37,27 @@
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="117dp" />
 
-    <Button
-        android:id="@+id/settingsButton"
-        android:layout_width="195dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="100dp"
-        android:text="Options"
-     />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="100dp"
+            android:layout_weight="1"
+            android:text="Options" />
+
+        <Button
+            android:id="@+id/leSebBouton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:text="666" />
+    </LinearLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>
