@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -159,6 +160,32 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int reason) {
+                if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+                    Log.d("MapMovement", "Cause: Gesture");
+                    boutonCenter.setClickable(true);
+                    boutonCenter.setVisibility(View.VISIBLE);
+                    persoMarker = map.addMarker(new MarkerOptions()
+                            .position(livePos).icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.arthur1_1)));
+                    imageViewPersonnage.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    Log.d("MapMovement", "Cause: Code");
+                    animationDrawable1.start();
+                }
+            }
+        });
+
+        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                animationDrawable1.stop();
+            }
+        });
+
         move = new float[1];
         distanceFromPoiUpdate = new float[1];
         prevPos = new LatLng(0, 0);
@@ -181,6 +208,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 public void onLocationChanged(Location location) {
 
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
+                    Log.d("Localisation", "Recue: " + livePos.toString());
 
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
@@ -219,18 +247,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                            translateAnimation = new TranslateAnimation((float)prevLocation.getLongitude(),
+                            map.clear();
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
+                            //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                            /*translateAnimation = new TranslateAnimation((float)prevLocation.getLongitude(),
                                     map.getProjection().toScreenLocation(livePos).x,
                                     (float)prevLocation.getLatitude(),
                                     map.getProjection().toScreenLocation(livePos).y);
                             translateAnimation.setDuration(5000);
                             translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
-                            imageViewPersonnage.setAnimation(translateAnimation);
+                            imageViewPersonnage.setAnimation(translateAnimation);*/
                             /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
                                     (int) move[0] / 5000, null);*/
-                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            /*translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
                                 public void onAnimationStart(Animation animation) {
                                     animationDrawable1.start();
@@ -246,7 +276,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                                 }
                             });
-                            translateAnimation.start();
+                            translateAnimation.start();*/
                         }
                         else{
                             translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
@@ -254,6 +284,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     imageViewPersonnage.getY(),
                                     map.getProjection().toScreenLocation(livePos).y);
                             translateAnimation.setDuration(5000);
+                            translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
                             imageViewPersonnage.setAnimation(translateAnimation);
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -274,20 +305,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             });
                             translateAnimation.start();
                         }
-
-                        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
-                               @Override
-                               public void onCameraMoveStarted(int reason) {
-                                   if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
-                                       boutonCenter.setClickable(true);
-                                       boutonCenter.setVisibility(View.VISIBLE);
-                                       persoMarker = map.addMarker(new MarkerOptions()
-                                               .position(livePos).icon(BitmapDescriptorFactory
-                                                       .fromResource(R.drawable.arthur1_2)));
-                                       imageViewPersonnage.setVisibility(View.INVISIBLE);
-                                   }
-                               }
-                           });
 
                         Log.d("Location changed", "location changed");
 

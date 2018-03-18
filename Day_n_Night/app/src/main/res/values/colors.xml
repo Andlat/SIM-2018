@@ -6,4 +6,8 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="beigefonce">#a68553</color>
+    <color name="beige">#deb16f</color>
+    <color name="beigepale">#f0c078</color>
 </resources>
