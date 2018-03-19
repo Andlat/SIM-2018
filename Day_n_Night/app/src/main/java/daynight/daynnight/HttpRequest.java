@@ -3,9 +3,11 @@ package daynight.daynnight;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -29,8 +31,8 @@ public class HttpRequest implements Callable<String> {
 
         URL url = null;
         try {
-            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.404476,-71.888351&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
-
+            //url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.404476,-71.888351&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
+            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.704958,%20-73.908998&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
             con = (HttpsURLConnection) url.openConnection();
             con.setConnectTimeout(2000);
             con.setRequestMethod("GET");
@@ -47,16 +49,15 @@ public class HttpRequest implements Callable<String> {
             InputStream in = new BufferedInputStream(con.getInputStream());
             //InputStream in = url.openStream();
             response = ConvertStreamToString(in);
-        } finally{
-            if(in != null) in.close();
+        } finally {
+            if (in != null) in.close();
             con.disconnect();
         }
         return response;
     }
 
     /* Function copied from StackOverflow */
-    private static String ConvertStreamToString(InputStream is)
-    {
+    private static String ConvertStreamToString(InputStream is) {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
