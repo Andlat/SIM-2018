@@ -140,6 +140,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
         imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
+        imageViewPersonnage.setVisibility(View.INVISIBLE);
         animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         display = getWindowManager().getDefaultDisplay();
@@ -206,7 +207,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
@@ -280,10 +281,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             translateAnimation.start();*/
                         }
                         else{
-                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(livePos).x,
-                                    imageViewPersonnage.getY(),
-                                    map.getProjection().toScreenLocation(livePos).y);
+                            translateAnimation = new TranslateAnimation(0,
+                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
+                                    0,
+                                    map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setDuration(5000);
                             translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
