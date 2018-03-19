@@ -318,17 +318,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         prevPos = livePos;
                 }
 
-<<<<<<< HEAD
-                    @Override
-                    public void onStatusChanged (String s,int i, Bundle bundle){
-                        Log.d("status", "status changed: " + s);
-                    }
-=======
                 @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
+                public void onStatusChanged (String s,int i, Bundle bundle){
                     Log.d("status", "status changed: " + s);
                 }
->>>>>>> cf60ccda55dfc7921addb84e657a9ade93b60026
 
                 @Override
                 public void onProviderEnabled(String s) {
