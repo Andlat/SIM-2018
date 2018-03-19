@@ -10,6 +10,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by andlat on 2018-02-18.
@@ -30,7 +31,10 @@ class VBOManager {
     private float mVBOSizeInMB = .5f;
     private final static float VBO_SIZE_JUMP_MB = .5f;
 
-    private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();//Pair<Offset in VBO, Data size in bytes>
+    /**
+     * List<Pair<Offset in VBO, Data size in bytes>>
+     */
+    private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();
 
     VBOManager(){
         mVBOData = allocateDirect(1);
@@ -72,17 +76,34 @@ class VBOManager {
         mEmptyVBOPools.add(new Pair<>(VBOOffset, dataSize));
     }
 
-
-    //Shift data as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory is too high.
+    //TODO Use mVBOData instead and write to the GPU buffer only once.
+    /**
+     * Do not use this function for now.
+     */
+    //Shift data in the gpu as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory usage is too high.
     private void ShiftDataGPU(){
         this.SortOrderEmptyPoolsArray();
 
-        for(int i = mEmptyVBOPools.size(); i > 0; --i){
-            mVBOData.position(mEmptyVBOPools.get(mEmptyVBOPools.size()).first);
-            for(int j=0; j < mEmptyVBOPools.get(i).second; ++j){
+        int subIndex = 0;//glSubDataIndex
+        int dataIndex = 0;//mVBOData index
+
+        for(Pair<Integer, Integer> pool : mEmptyVBOPools){//Pair<Offset in VBO, Data size in bytes>
+            final int poolIndex = pool.first, poolSize = pool.second;
+            if(dataIndex < poolIndex) {
+                final int indexDiff = poolIndex - dataIndex;
+                final int writeDataSize = indexDiff*4;
+
+                mVBOData.position(dataIndex);
+                GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, subIndex, writeDataSize, mVBOData);
+
+                subIndex += writeDataSize;
 
             }
+
+            dataIndex = poolIndex + poolSize/4;
         }
+
+        mEmptyVBOPools.clear();
     }
 
     private void CreateVBO(){
