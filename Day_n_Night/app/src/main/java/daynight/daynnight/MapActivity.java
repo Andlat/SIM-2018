@@ -153,6 +153,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                map.clear();
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -310,10 +311,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         Log.d("Location changed", "location changed");
 
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                        /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
-                                (int) move[0] / 5000, null);*/
-                        //animationDrawable1.start();
                     }
 
                         prevPos = livePos;
