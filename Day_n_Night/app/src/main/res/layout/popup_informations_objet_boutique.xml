@@ -130,7 +130,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/acheter"
+            android:id="@+id/boutiqueAcheter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -139,7 +139,7 @@
         <Button
             android:id="@+id/fermerVerticale"
             android:background="@drawable/style_button_ripple"
-            android:layout_toEndOf="@id/acheter"
+            android:layout_toEndOf="@id/boutiqueAcheter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"

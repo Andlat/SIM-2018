@@ -18,20 +18,22 @@
             android:id="@+id/nom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:text="Nomnomnomnomnomnomnom"
             android:textSize="24sp" />
 
         <LinearLayout
+            android:id="@+id/boutiquePrix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/prix"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="000"
@@ -39,7 +41,7 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/boutonBoutique"
+                android:id="@+id/biscuitBoutique"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/objet_biscuit" />
@@ -104,37 +106,59 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/boutiqueBoutonsHorizontale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:padding="10dp"
             android:layout_alignBottom="@id/caracteristiquesOutil"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/boutiqueAcheterHorizontale"
+                android:background="@drawable/style_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentBottom="true"
+                android:text="Acheter" />
 
             <Button
                 android:id="@+id/fermerHorizontale"
+                android:layout_toEndOf="@id/boutiqueAcheterHorizontale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/style_button_ripple"
-                android:text="Fermer"
-                android:visibility="invisible" />
+                android:text="Fermer" />
         </RelativeLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/boutiqueBoutonsVerticale"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipToPadding="false"
         android:padding="10dp"
-        android:layout_height="match_parent">
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/boutiqueAcheterVerticale"
+            android:background="@drawable/style_button_ripple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentBottom="true"
+            android:text="Acheter" />
 
         <Button
             android:id="@+id/fermerVerticale"
             android:background="@drawable/style_button_ripple"
+            android:layout_toEndOf="@id/boutiqueAcheterVerticale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:text="Fermer" />

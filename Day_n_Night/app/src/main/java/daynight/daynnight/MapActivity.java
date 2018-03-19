@@ -142,6 +142,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
         imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
+        imageViewPersonnage.setVisibility(View.INVISIBLE);
         animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         display = getWindowManager().getDefaultDisplay();
@@ -154,6 +155,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                map.clear();
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -208,7 +210,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
@@ -282,10 +284,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             translateAnimation.start();*/
                         }
                         else{
-                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(livePos).x,
-                                    imageViewPersonnage.getY(),
-                                    map.getProjection().toScreenLocation(livePos).y);
+                            translateAnimation = new TranslateAnimation(0,
+                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
+                                    0,
+                                    map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setDuration(5000);
                             translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
@@ -311,17 +313,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         Log.d("Location changed", "location changed");
 
-                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                        /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
-                                (int) move[0] / 5000, null);*/
-                        //animationDrawable1.start();
                     }
 
                         prevPos = livePos;
                 }
 
                 @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
+                public void onStatusChanged (String s,int i, Bundle bundle){
                     Log.d("status", "status changed: " + s);
                 }
 
