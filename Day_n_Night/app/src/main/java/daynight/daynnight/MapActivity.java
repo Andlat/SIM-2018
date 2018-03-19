@@ -157,8 +157,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                imageViewPersonnage.setX((size.x/2) - imageViewPersonnage.getWidth()/2);
-                imageViewPersonnage.setY((size.y/2) - imageViewPersonnage.getHeight()/2);
+                imageViewPersonnage.setX((size.x/2) + imageViewPersonnage.getWidth()/2);
+                imageViewPersonnage.setY((size.y/2) + imageViewPersonnage.getHeight()/2);
             }
         });
 
@@ -167,11 +167,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onCameraMoveStarted(int reason) {
                 if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
                     Log.d("MapMovement", "Cause: Gesture");
+                    MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.arthur1_1)));
+                                    .fromBitmap(smallMarker)));
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
@@ -184,6 +187,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
+                if(persoMarker != null){
+                    map.clear();
+                    imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
+                    imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
+                }
                 animationDrawable1.stop();
             }
         });
@@ -211,6 +220,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
+
+                    translateAnimation = new TranslateAnimation(0,
+                            map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
+                            0,
+                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
+                    translateAnimation.setRepeatCount(1);
+                    translateAnimation.setFillAfter(true);
+                    imageViewPersonnage.setAnimation(translateAnimation);
 
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
@@ -280,16 +297,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                 }
                             });
                             translateAnimation.start();*/
-                        }
-                        else{
-                            translateAnimation = new TranslateAnimation(0,
-                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
-                                    0,
-                                    map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
-                            translateAnimation.setDuration(5000);
-                            translateAnimation.setFillBefore(true);
-                            translateAnimation.setFillAfter(true);
-                            imageViewPersonnage.setAnimation(translateAnimation);
+                        } else{
+
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
                                 public void onAnimationStart(Animation animation) {
