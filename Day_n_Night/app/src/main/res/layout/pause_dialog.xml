@@ -14,7 +14,7 @@
         android:layout_marginEnd="82dp"
         android:layout_marginStart="82dp"
         android:layout_marginTop="10dp"
-        android:background="@android:drawable/ic_media_play" />
+        android:background="@drawable/droit1" />
 
     <Button
         android:id="@+id/badgePauseButton"
@@ -24,9 +24,9 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton3_1"
         android:text="@string/badge"
-        android:textColor="@android:color/white" />
+        android:textColor="?android:attr/colorForeground" />
 
     <Button
         android:id="@+id/inventairePauseButton"
@@ -36,9 +36,9 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton3_1"
         android:text="@string/inventaire"
-        android:textColor="@android:color/white" />
+        android:textColor="?android:attr/colorForeground" />
 
     <Button
         android:id="@+id/menuPauseButton"
@@ -48,9 +48,9 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton3_1"
         android:text="@string/menu"
-        android:textColor="@android:color/white" />
+        android:textColor="?android:attr/colorForeground" />
 
     <Button
         android:id="@+id/settingsPauseButton"
@@ -60,8 +60,8 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton3_1"
         android:text="@string/options"
-        android:textColor="@android:color/white" />
+        android:textColor="?android:attr/colorForeground" />
 
 </android.support.v7.widget.LinearLayoutCompat>

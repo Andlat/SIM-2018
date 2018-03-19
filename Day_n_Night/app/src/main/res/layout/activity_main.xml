@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:srcCompat="@drawable/mapcharacteranimation1" />
+        app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/nuitButton"
@@ -21,7 +21,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton5_1"
         android:text="Nuit"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="189dp" />
@@ -32,7 +32,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/oval_button_shape"
+        android:background="@drawable/bouton5_1"
         android:text="Jour"
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="117dp" />
@@ -44,20 +44,21 @@
 
         <Button
             android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="100dp"
             android:layout_weight="1"
+            android:background="@drawable/bouton1_1"
             android:text="Options" />
 
         <Button
             android:id="@+id/leSebBouton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-
-            android:text="666" />
+            android:background="@drawable/bouton1_1"
+            android:text="Inventaire" />
     </LinearLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:layout_margin="14dp"
+    android:background="@color/beige"
     android:orientation="vertical"
     tools:context="daynight.daynnight.PopupInformationsObjet">
 
@@ -58,8 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="L'Ornithorynque (Ornithorhynchus anatinus) est un animal semi-aquatique endémique de l'est de l'Australie, y compris la Tasmanie. C'est l'une des cinq espèces de l'ordre des monotrèmes, seul ordre de mammifères qui pond des œufs." />
+            android:text="L'Ornithorynque (Ornithorhynchus anatinus) est un animal semi-aquatique endémique de l'est de l'Australie, y compris la Tasmanie. C'est l'une des cinq espèces de l'ordre des monotrèmes, seul ordre de mammifères qui pond des œufs."
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -106,10 +107,10 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="10dp"
             android:layout_alignBottom="@id/caracteristiquesOutil"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:clipToPadding="false"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/fermerHorizontale"
@@ -124,20 +125,20 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipToPadding="false"
-        android:padding="10dp"
-        android:layout_height="match_parent">
+        android:padding="10dp">
 
         <Button
             android:id="@+id/fermerVerticale"
-            android:background="@drawable/style_button_ripple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:text="Fermer" />
+            android:background="@drawable/style_button_ripple"
+            android:text="Fermer"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </LinearLayout>

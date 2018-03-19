@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context="daynight.daynnight.GameActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/test" />
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +25,7 @@
             android:layout_marginBottom="182dp"
             android:layout_marginStart="100dp"
             android:text="50"
-            android:textColor="@color/white"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="85sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +38,7 @@
             android:layout_marginBottom="182dp"
             android:layout_marginEnd="100dp"
             android:text="36"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorBackgroundFloating"
             android:textSize="85sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,9 +83,9 @@
             android:layout_marginEnd="233dp"
             android:layout_marginStart="233dp"
             android:layout_marginTop="133dp"
-            android:background="@drawable/oval_button_shape"
+            android:background="@drawable/bouton4_1"
             android:text="REcommencer"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/button4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,9 +100,9 @@
             android:layout_marginEnd="233dp"
             android:layout_marginStart="233dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/oval_button_shape"
+            android:background="@drawable/bouton4_1"
             android:text="Button"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
