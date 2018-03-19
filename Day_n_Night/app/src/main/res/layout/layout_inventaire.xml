@@ -4,30 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigepale"
     tools:context="daynight.daynnight.Inventaire">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <!--<RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/retour"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_keyboard_backspace_black_24dp"
-                android:backgroundTint="@color/colorPrimary" />
-
-        </RelativeLayout>-->
 
         <GridView
             android:id="@+id/inventaire"
@@ -36,30 +19,29 @@
             android:layout_weight="1"
             android:orientation="vertical" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6dip"
-            android:background="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_barreDOutils"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="4dp"
+        android:background="@drawable/layout_barre_doutils">
 
         <fragment
             android:id="@+id/barreDOutils"
             android:name="daynight.daynnight.BarreDOutils"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/boutique"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_gravity="top|end"
         android:background="@drawable/layout_biscuit_boutique"
         android:src="@drawable/objet_boutique_biscuit" />
 

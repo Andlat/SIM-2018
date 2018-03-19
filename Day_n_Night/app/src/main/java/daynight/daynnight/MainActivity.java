@@ -33,5 +33,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button leSebBouton = (Button) findViewById(R.id.leSebBouton);
+        leSebBouton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, Inventaire.class));
+            }
+        });
     }
 }
