@@ -32,7 +32,7 @@ public class HttpRequest implements Callable<String> {
         URL url = null;
         try {
             //url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.404476,-71.888351&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
-            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.704958,%20-73.908998&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
+            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.40438704282181,-71.81978199829362&types=point_of_interest&radius=5000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
             con = (HttpsURLConnection) url.openConnection();
             con.setConnectTimeout(2000);
             con.setRequestMethod("GET");
