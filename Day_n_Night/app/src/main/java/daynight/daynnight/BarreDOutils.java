@@ -37,6 +37,4 @@ public class BarreDOutils extends Fragment
         for(int i = 0 ; i < 4 ; i++)
             outils[i].setImageResource(getResources().getIdentifier("", "drawable", getContext().getPackageName()));
     }
-
-
 }

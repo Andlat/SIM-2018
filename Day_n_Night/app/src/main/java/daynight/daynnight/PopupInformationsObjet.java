@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.TextView;
 
 /**
  * Created by sebastien on 18-03-17.
@@ -23,13 +22,17 @@ import android.view.ViewGroup.MarginLayoutParams;
 public class PopupInformationsObjet extends Activity
 {
     //Variables
-    Objet objet;
+    Outil objet;
     Boolean objetVendu; //Boutique ou Inventaire
     RelativeLayout boutons;
     Button fermer;
 
     Button acheter;
-    LinearLayout prix;
+    LinearLayout prixLayout;
+    LinearLayout caracteristiquesOutil;
+
+    TextView nom, prix, description, portee, nbCibles, toucherParCoup;
+    ImageView imageObjet;
 
     Context context;
 
@@ -65,8 +68,8 @@ public class PopupInformationsObjet extends Activity
         }
         boutons.setVisibility(View.VISIBLE);
 
-        prix = (LinearLayout) findViewById(R.id.boutiquePrix);
-        ViewGroup.LayoutParams paramsPrix = prix.getLayoutParams();
+        prixLayout = (LinearLayout) findViewById(R.id.boutiquePrix);
+        ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
 
@@ -81,8 +84,36 @@ public class PopupInformationsObjet extends Activity
             paramsAcheter.width = 0;
             paramsAcheter.setMarginEnd(0);
         }
-        prix.setLayoutParams(paramsPrix);
+        prixLayout.setLayoutParams(paramsPrix);
         acheter.setLayoutParams(paramsAcheter);
+
+
+        objet = new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
+        //objet = getIntent().getParcelableExtra("objet");
+        caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
+        nom = (TextView) findViewById(R.id.nom);
+        prix = (TextView) findViewById(R.id.prix);
+        description = (TextView) findViewById(R.id.description);
+        portee = (TextView) findViewById(R.id.portee);
+        nbCibles = (TextView) findViewById(R.id.nbCibles);
+        toucherParCoup = (TextView) findViewById(R.id.toucherParCoup);
+        imageObjet = (ImageView) findViewById(R.id.imageObjet);
+        nom.setText(objet.getNom());
+        prix.setText(String.valueOf(objet.getPrix()));
+        description.setText(objet.getDescription());
+        portee.setText(String.valueOf(objet.getPortee()));
+        nbCibles.setText(String.valueOf(objet.getNbCibles()));
+        toucherParCoup.setText(String.valueOf(objet.getToucherParCoup()));
+        imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
+        /*if(objet.getType().equals(Objet.Type.Outil))
+        {
+            caracteristiquesOutil.setVisibility(View.VISIBLE);
+
+        }
+        else
+        {
+            caracteristiquesOutil.setVisibility(View.INVISIBLE);
+        }*/
 
         fermer.setOnClickListener(new View.OnClickListener()
         {
@@ -96,10 +127,11 @@ public class PopupInformationsObjet extends Activity
     //Getteurs & setteurs
 
     //Méthodes
-    public void startActivity(Context context, Boolean objetVendu)
+    public void startActivity(Objet objet, Context context, Boolean objetVendu)
     {
         Intent intent = new Intent(context, PopupInformationsObjet.class);
         intent.putExtra("objetVendu", objetVendu);
+        //intent.putExtra("objet", objet); //TODO j'obtiens un erreur sur la valeur de l'enum Portee...
         context.startActivity(intent);
     }
 
