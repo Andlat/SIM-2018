@@ -51,6 +51,11 @@ class VBOManager {
         GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset*4, dataSize, mVBOData);
     }
 
+    /**
+     * Ajouter un modèle dans le VBO
+     * @param data Données du modèle
+     * @return Offset des données du modèle dans le VBO global
+     */
     int addData(FloatBuffer data){
         int count = data.remaining();
         int dataSize = count * 4;

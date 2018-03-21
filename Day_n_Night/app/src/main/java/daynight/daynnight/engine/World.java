@@ -36,14 +36,17 @@ public class World {
         final long modelID = model.getID();
         mModels.put(modelID, model);
 
-        mVBOMan.addData(model.getVBO());
+        model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
 
         return modelID;
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
 
-        mVBOMan.removeData();
+
+        FloatBuffer modelVBO = toRemoveModel.getVBO();
+        int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
+        mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
 
         mModels.remove(id_model);
     }
