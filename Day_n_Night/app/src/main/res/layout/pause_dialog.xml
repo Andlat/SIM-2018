@@ -24,7 +24,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bouton3_1"
+        android:background="@drawable/style_button_ripple_coin"
         android:text="@string/badge"
         android:textColor="?android:attr/colorForeground" />
 
@@ -36,7 +36,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bouton3_1"
+        android:background="@drawable/style_button_ripple_coin"
         android:text="@string/inventaire"
         android:textColor="?android:attr/colorForeground" />
 
@@ -48,7 +48,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bouton3_1"
+        android:background="@drawable/style_button_ripple_coin"
         android:text="@string/menu"
         android:textColor="?android:attr/colorForeground" />
 
@@ -60,7 +60,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bouton3_1"
+        android:background="@drawable/style_button_ripple_coin"
         android:text="@string/options"
         android:textColor="?android:attr/colorForeground" />
 

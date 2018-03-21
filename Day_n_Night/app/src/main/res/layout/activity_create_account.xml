@@ -42,7 +42,7 @@
         android:id="@+id/boutonOk"
         android:layout_width="134dp"
         android:layout_height="55dp"
-        android:background="@drawable/bouton1_1"
+        android:background="@drawable/style_button_ripple_coin"
         android:fontFamily="@font/bungee"
         android:text="@string/ok"
         android:textColor="@color/common_google_signin_btn_text_light_default"
