@@ -36,12 +36,15 @@
     <string name="date_capture">12-11-1997</string>
     <string name="type_de_badge">Type de badge</string>
     <string name="title_activity_test" translatable="false">TEST</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- ************* -->
 
-    <!-- layout_badge -->
+    <!-- popup_informations_objet-->
+    <string name="fermer">Fermer</string>
+    <string name="acheter">Acheter</string>
+    <string name="prix_nulle">000</string>
     <!-- Spéciaux -->
+    <string name="toucher_par_coup">Nombre de tagues par coup : %1$d</string>
+    <string name="nb_cibles">Nombre de cibles : %1$d</string>
+    <string name="portee">Portée : %1$s</string>
     <!-- ************ -->
 </resources>
