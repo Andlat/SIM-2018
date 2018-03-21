@@ -66,7 +66,7 @@ public class ListeObjets extends Fragment
                 //extras.putParcelable("objet", objets.get(position));
                 //intent.putExtras(extras);
                 //startActivity(intent);
-                infosObjetInventaire.startActivity(objets.get(position), getContext(), false);
+                infosObjetInventaire.startActivity(objets.get(position), getContext(), true);
             }
         });
 

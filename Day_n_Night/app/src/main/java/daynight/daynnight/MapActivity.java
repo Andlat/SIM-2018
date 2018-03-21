@@ -170,10 +170,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-                    imageViewPersonnage.setVisibility(View.INVISIBLE);
-                    persoMarker = map.addMarker(new MarkerOptions()
-                            .position(livePos).icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.arthur1_1)));
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
@@ -183,7 +179,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
-                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     animationDrawable1.start();
                 }
             }
@@ -230,9 +225,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
-                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
-                    translateAnimation.setDuration(5000);
-                    translateAnimation.setFillBefore(true);
+                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
                     translateAnimation.setRepeatCount(1);
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
@@ -254,9 +247,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            if(persoMarker != null){
-                                persoMarker.remove();
-                            }
                             //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
                             //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -291,6 +281,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             //Va chercher les coordonnés des poi dans un rayon de 50km
                             Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                             if(distanceFromPoiUpdate[0] > 20000){
+                                do{
+
                                 final ExecutorService executor = Executors.newSingleThreadExecutor();
 
                                 final FutureTask<String> future = new FutureTask<>(request);
@@ -324,12 +316,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     Log.d("Request", "NOPE ça marche pas");
                                 }
                                 nbrPage++;
-                            }while(jsonPOI.getJSONArray("results").length() > 20);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            }
+                            while(jsonPOI.getJSONArray("results").length() > 20);
+
 
                         //poiUpdate = livePos;
+                            }
+
+                        } else{
+
+                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    animationDrawable1.start();
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    animationDrawable1.stop();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
+                            translateAnimation.start();
+                        }
+
+                        Log.d("Location changed", "location changed");
+
+>>>>>>> ece9ebc7151c1f677a0d58237753faf5663c4ce3
                     }
 
                         prevPos = livePos;
