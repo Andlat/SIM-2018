@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="@string/location_capture"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/noir"
             android:textSize="16sp" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/date_capture"
-                android:textColor="@color/black"
+                android:textColor="@color/noir"
                 android:textStyle="bold"
                 android:textSize="12sp" />
 
@@ -48,14 +48,14 @@
                 android:layout_gravity="fill"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimary" />
+                android:background="@color/beige" />
 
             <TextView
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/type_de_badge"
-                android:textColor="@color/black"
+                android:textColor="@color/noir"
                 android:textStyle="bold"
                 android:textSize="12sp" />
 

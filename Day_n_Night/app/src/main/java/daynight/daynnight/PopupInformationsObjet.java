@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by sebastien on 18-03-17.
  */
@@ -64,7 +66,7 @@ public class PopupInformationsObjet extends Activity
             fermer = (Button) findViewById(R.id.fermerHorizontale);
             boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsHorizontale);
             acheter = (Button) findViewById(R.id.boutiqueAcheterHorizontale);
-            getWindow().setLayout((int)(width*0.80), (int)(height*0.80));
+            getWindow().setLayout((int)(width*0.75), (int)(height*0.85));
         }
         boutons.setVisibility(View.VISIBLE);
 
@@ -88,7 +90,7 @@ public class PopupInformationsObjet extends Activity
         acheter.setLayoutParams(paramsAcheter);
 
 
-        objet = new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
+        objet = new Outil("Seau d'eaux","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
         //objet = getIntent().getParcelableExtra("objet");
         caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
         nom = (TextView) findViewById(R.id.nom);
@@ -134,5 +136,4 @@ public class PopupInformationsObjet extends Activity
         //intent.putExtra("objet", objet); //TODO j'obtiens un erreur sur la valeur de l'enum Portee...
         context.startActivity(intent);
     }
-
 }

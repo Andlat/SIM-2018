@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_margin="14dp"
-    android:background="@color/beige"
+    android:padding="16dp"
+    android:background="@drawable/layout_popup_informations_objet"
     android:orientation="vertical"
     tools:context="daynight.daynnight.PopupInformationsObjet">
 
@@ -37,7 +37,7 @@
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="@string/prix_nulle"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/beigeFonce"
                 android:textSize="20sp" />
 
             <ImageView
@@ -111,7 +111,7 @@
             android:layout_alignBottom="@id/caracteristiquesOutil"
             android:layout_alignParentEnd="true"
             android:clipToPadding="false"
-            android:padding="10dp">
+            android:padding="10dp"
             android:visibility="invisible">
 
             <Button
@@ -140,7 +140,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipToPadding="false"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="invisible">
 
         <Button
             android:id="@+id/boutiqueAcheterVerticale"
@@ -159,7 +160,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:visibility="invisible"
             android:text="@string/fermer" />
     </RelativeLayout>
 

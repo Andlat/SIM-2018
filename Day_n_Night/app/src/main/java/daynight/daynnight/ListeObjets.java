@@ -60,6 +60,12 @@ public class ListeObjets extends Fragment
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                Bundle extras = new Bundle();
+                Intent intent = new Intent(getContext(), PopupInformationsObjet.class);
+
+                //extras.putParcelable("objet", objets.get(position));
+                //intent.putExtras(extras);
+                //startActivity(intent);
                 infosObjetInventaire.startActivity(objets.get(position), getContext(), true);
             }
         });
