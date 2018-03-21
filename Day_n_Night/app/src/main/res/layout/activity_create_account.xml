@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/caa_desc"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/noir"
         android:textSize="@dimen/description_text_size"
         app:layout_constraintBottom_toTopOf="@+id/caa_enter_name"
         app:layout_constraintEnd_toEndOf="parent"

@@ -170,6 +170,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
+                    imageViewPersonnage.setVisibility(View.INVISIBLE);
+                    persoMarker = map.addMarker(new MarkerOptions()
+                            .position(livePos).icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.arthur1_1)));
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
@@ -179,6 +183,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     animationDrawable1.start();
                 }
             }
@@ -225,7 +230,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
-                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
+                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
+                    translateAnimation.setDuration(5000);
+                    translateAnimation.setFillBefore(true);
                     translateAnimation.setRepeatCount(1);
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
@@ -247,6 +254,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
+                            if(persoMarker != null){
+                                persoMarker.remove();
+                            }
                             //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
                             //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -278,56 +288,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             });
                             translateAnimation.start();*/
 
-                        } else{
-
-                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                                @Override
-                                public void onAnimationStart(Animation animation) {
-                                    animationDrawable1.start();
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animation animation) {
-                                    animationDrawable1.stop();
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animation animation) {
-
-                                }
-                            });
-                            translateAnimation.start();
-                        }
-
-                        Log.d("Location changed", "location changed");
-
-                    }
-
-                    //Va chercher les coordonnés des poi dans un rayon de 50km
-                    Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                    if(distanceFromPoiUpdate[0] > 20000){
-                        nbrPage = 0;
-
-                        try {
-                            //Change l'url pour aller chercher tout les pages de POIs
-                            do{
-
+                            //Va chercher les coordonnés des poi dans un rayon de 50km
+                            Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                            if(distanceFromPoiUpdate[0] > 20000){
                                 final ExecutorService executor = Executors.newSingleThreadExecutor();
-                                HttpRequest request = null;
-                                //La premiere fois il utilise l'url complet, ensuite il utilise le next page token
-                                if(nbrPage ==0){
-                                    try {
-                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + livePos.latitude + "," + livePos.longitude + "&types=airport|amusement_park|aquarium|art_gallery|campground|casino|church|city_hall|courthouse|embassy|hindu_temple|hospital|library|lodging|mosque|museum|park|school|stadium|synagogue|university|zoo&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
-                                    } catch (MalformedURLException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else{
-                                    try {
-                                        request = new HttpRequest(new URL(("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk")));
-                                    } catch (MalformedURLException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
 
                                 final FutureTask<String> future = new FutureTask<>(request);
 
@@ -352,6 +316,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                                 .position(tempPos).icon(BitmapDescriptorFactory
                                                         .fromResource(R.drawable.chest)));
                                     }
+
 
                                     Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
                                 } catch (InterruptedException | ExecutionException e) {

@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="@drawable/ic_keyboard_backspace_black_24dp"
-        android:backgroundTint="@color/beigefonce"/>
+        android:backgroundTint="@color/beigeFonce"/>
 
 
     <ListView
@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/layout_liste_badges"
-        android:padding="6dip"
+        android:paddingTop="30dip"
+        android:paddingStart="6dip"
+        android:paddingEnd="6dip"
         android:paddingBottom="0dp"
         android:layout_marginTop="6dp"
         android:orientation="vertical" />

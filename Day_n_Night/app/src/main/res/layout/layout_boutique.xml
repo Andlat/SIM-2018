@@ -38,7 +38,7 @@
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:text="324"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/beigeFonce"
                 android:textSize="20sp" />
 
             <ImageView
@@ -103,7 +103,7 @@
                 android:layout_height="5dip"
                 android:layout_gravity="fill"
                 android:layout_marginTop="4dp"
-                android:background="@color/black" />
+                android:background="@color/noir" />
 
             <GridView
                 android:id="@+id/boutique"
