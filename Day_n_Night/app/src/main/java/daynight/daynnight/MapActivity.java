@@ -150,10 +150,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View view) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if(persoMarker != null){
                     //map.clear();
                     persoMarker.remove();
                 }
+=======
+>>>>>>> parent of 3645545... 2018/03/21-12h01
 =======
 >>>>>>> parent of 3645545... 2018/03/21-12h01
                 //map.clear();
@@ -198,7 +201,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 if(persoMarker != null){
                     //map.clear();
 <<<<<<< HEAD
+<<<<<<< HEAD
                     persoMarker.remove();
+=======
+>>>>>>> parent of 3645545... 2018/03/21-12h01
 =======
 >>>>>>> parent of 3645545... 2018/03/21-12h01
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
@@ -244,6 +250,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
 <<<<<<< HEAD
+<<<<<<< HEAD
                     translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -266,6 +273,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+=======
+>>>>>>> parent of 3645545... 2018/03/21-12h01
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
