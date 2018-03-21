@@ -2,6 +2,10 @@ package daynight.daynnight;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,35 +28,49 @@ import static java.lang.System.in;
 
 public class HttpRequest implements Callable<String> {
     private HttpsURLConnection con;
+    private LatLng livePos;
+    private JSONObject obj;
+    private int nbrPage;
+    private String pageToken;
+    private StringBuilder sb;
+    private URL url;
+
+    public HttpRequest(URL url) {
+        this.con = con;
+        this.url = url;
+    }
 
     @Override
     public String call() throws Exception {
-        String response;
+        String response = null;
 
-        URL url = null;
-        try {
-            //url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.404476,-71.888351&types=point_of_interest&radius=50000&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
-            url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.40438704282181,-71.81978199829362&types=point_of_interest&radius=5000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
-            con = (HttpsURLConnection) url.openConnection();
-            con.setConnectTimeout(2000);
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.connect();
+            try {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + livePos.latitude + "," + livePos.longitude + "&types=airport|amusement_park|aquarium|art_gallery|bar|campground|casino|church|city_hall|courthouse|embassy|hindu_temple|hospital|library|lodging|mosque|museum|night_club|park|school|stadium|synagogue|university|zoo&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk");
 
-        //Redonne la réponse
+                con = (HttpsURLConnection) url.openConnection();
+                con.setConnectTimeout(2000);
+                con.setRequestMethod("GET");
+                con.setDoInput(true);
+                con.connect();
 
-        try {
-            InputStream in = new BufferedInputStream(con.getInputStream());
-            //InputStream in = url.openStream();
-            response = ConvertStreamToString(in);
-        } finally {
-            if (in != null) in.close();
-            con.disconnect();
-        }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Redonne la réponse
+
+            try {
+                InputStream in = new BufferedInputStream(con.getInputStream());
+                //InputStream in = url.openStream();
+                response = ConvertStreamToString(in);
+
+            } finally {
+                if (in != null) in.close();
+                con.disconnect();
+            }
+
+
         return response;
     }
 
@@ -62,3 +80,4 @@ public class HttpRequest implements Callable<String> {
         return s.hasNext() ? s.next() : "";
     }
 }
+

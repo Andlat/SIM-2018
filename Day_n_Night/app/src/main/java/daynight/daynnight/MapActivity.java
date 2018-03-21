@@ -42,6 +42,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -73,6 +75,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private JSONArray jsonResults;
     private ArrayList posPOI;
     private LatLng tempPos;
+    private int nbrPage;
+    private String pageToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,46 +278,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             });
                             translateAnimation.start();*/
 
-                            //Va chercher les coordonnés des poi dans un rayon de 50km
-                            Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                            if(distanceFromPoiUpdate[0] > 20000){
-                                final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-                                final HttpRequest request = new HttpRequest();
-                                final FutureTask<String> future = new FutureTask<>(request);
-
-                                executor.execute(future);
-                                String response = null;
-
-                                try {
-                                    jsonPOI = null;
-                                    response = future.get();
-                                    jsonPOI = new JSONObject(response);
-                                    //poiUpdate = livePos;
-                                    jsonResults = jsonPOI.getJSONArray("results");
-
-                                    //Enregistre tout les position des POI dans le rayon spécifié
-                                    for(int i = 0; i < jsonResults.length(); i++){
-
-                                        posPOI.add(new LatLng(jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                                jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
-
-                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
-                                        map.addMarker(new MarkerOptions()
-                                                .position(tempPos).icon(BitmapDescriptorFactory
-                                                        .fromResource(R.drawable.chest)));
-                                    }
-
-
-                                    Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
-                                } catch (InterruptedException | ExecutionException e) {
-                                    e.printStackTrace();
-                                    Log.d("Request", "NOPE ça marche pas");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
                         } else{
 
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -337,6 +301,70 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         Log.d("Location changed", "location changed");
 
+                    }
+
+                    //Va chercher les coordonnés des poi dans un rayon de 50km
+                    Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                    if(distanceFromPoiUpdate[0] > 20000){
+                        nbrPage = 0;
+
+                        try {
+                            //Change l'url pour aller chercher tout les pages de POIs
+                            do{
+
+                                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                                HttpRequest request = null;
+                                //La premiere fois il utilise l'url complet, ensuite il utilise le next page token
+                                if(nbrPage ==0){
+                                    try {
+                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + livePos.latitude + "," + livePos.longitude + "&types=airport|amusement_park|aquarium|art_gallery|campground|casino|church|city_hall|courthouse|embassy|hindu_temple|hospital|library|lodging|mosque|museum|park|school|stadium|synagogue|university|zoo&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }else{
+                                    try {
+                                        request = new HttpRequest(new URL(("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk")));
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                final FutureTask<String> future = new FutureTask<>(request);
+
+                                executor.execute(future);
+                                String response = null;
+
+                                try {
+                                    jsonPOI = null;
+                                    response = future.get();
+                                    jsonPOI = new JSONObject(response);
+                                    jsonResults = jsonPOI.getJSONArray("results");
+
+                                    //Enregistre tout les position des POI dans le rayon spécifié
+                                    for(int i = 0; i < jsonResults.length(); i++){
+
+                                        posPOI.add(new LatLng(jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+
+                                        //place des marqueur à chaque poi
+                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
+                                        map.addMarker(new MarkerOptions()
+                                                .position(tempPos).icon(BitmapDescriptorFactory
+                                                        .fromResource(R.drawable.chest)));
+                                    }
+
+                                    Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                    Log.d("Request", "NOPE ça marche pas");
+                                }
+                                nbrPage++;
+                            }while(jsonPOI.getJSONArray("results").length() > 20);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //poiUpdate = livePos;
                     }
 
                         prevPos = livePos;
