@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="beigeTRESpale">#fad69f</color>
     <color name="beigePale">#f0c078</color>
     <color name="beige">#deb16f</color>
     <color name="beigeFonce">#a68553</color>
