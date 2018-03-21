@@ -5,5 +5,5 @@
         android:width="4dp"
         android:color="@color/beige" />
     <solid
-        android:color="@color/beigepale" />
+        android:color="@color/beigePale" />
 </shape>
