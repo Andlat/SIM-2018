@@ -16,10 +16,9 @@
 
         <TextView
             android:id="@+id/nom"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Nomnomnomnomnomnomnom"
             android:textSize="24sp" />
 
         <LinearLayout
@@ -36,7 +35,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_gravity="center"
                 android:gravity="end"
-                android:text="000"
+                android:text="@string/prix_nulle"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
@@ -56,14 +55,13 @@
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:textSize="14sp"
-            android:text="L'Ornithorynque (Ornithorhynchus anatinus) est un animal semi-aquatique endémique de l'est de l'Australie, y compris la Tasmanie. C'est l'une des cinq espèces de l'ordre des monotrèmes, seul ordre de mammifères qui pond des œufs." />
+            android:textSize="14sp" />
 
-        <ImageView
+        <daynight.daynnight.ImageViewCarre
             android:id="@+id/imageObjet"
             android:layout_width="140dp"
             android:layout_height="140dp"
@@ -86,21 +84,21 @@
                 android:id="@+id/portee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Portée : "
+                android:text="@string/portee"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/nbCibles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre de cibles : "
+                android:text="@string/nb_cibles"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/toucherParCoup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre de tagues par coup : "
+                android:text="@string/toucher_par_coup"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -121,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentBottom="true"
-                android:text="Acheter" />
+                android:text="@string/acheter" />
 
             <Button
                 android:id="@+id/fermerHorizontale"
@@ -129,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/style_button_ripple"
-                android:text="Fermer" />
+                android:text="@string/fermer" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -150,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_alignParentBottom="true"
-            android:text="Acheter" />
+            android:text="@string/acheter" />
 
         <Button
             android:id="@+id/fermerVerticale"
@@ -160,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:text="Fermer" />
+            android:text="@string/fermer" />
     </RelativeLayout>
 
 </LinearLayout>

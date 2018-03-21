@@ -32,7 +32,7 @@ public class PopupInformationsObjet extends Activity
     LinearLayout caracteristiquesOutil;
 
     TextView nom, prix, description, portee, nbCibles, toucherParCoup;
-    ImageView imageObjet;
+    ImageViewCarre imageObjet;
 
     Context context;
 
@@ -97,13 +97,13 @@ public class PopupInformationsObjet extends Activity
         portee = (TextView) findViewById(R.id.portee);
         nbCibles = (TextView) findViewById(R.id.nbCibles);
         toucherParCoup = (TextView) findViewById(R.id.toucherParCoup);
-        imageObjet = (ImageView) findViewById(R.id.imageObjet);
+        imageObjet = (ImageViewCarre) findViewById(R.id.imageObjet);
         nom.setText(objet.getNom());
         prix.setText(String.valueOf(objet.getPrix()));
         description.setText(objet.getDescription());
-        portee.setText(String.valueOf(objet.getPortee()));
-        nbCibles.setText(String.valueOf(objet.getNbCibles()));
-        toucherParCoup.setText(String.valueOf(objet.getToucherParCoup()));
+        portee.setText(getString(R.string.portee, String.valueOf(objet.getPortee())));
+        nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles()));
+        toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
         /*if(objet.getType().equals(Objet.Type.Outil))
         {
