@@ -176,20 +176,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-                    imageViewPersonnage.setVisibility(View.INVISIBLE);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.arthur1_1)));
+<<<<<<< HEAD
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromBitmap(smallMarker)));
+=======
+>>>>>>> parent of ac2923d... 2018/03/21-13h08
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
-                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     animationDrawable1.start();
                 }
             }
@@ -240,6 +241,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
+<<<<<<< HEAD
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
@@ -271,6 +273,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 =======
 >>>>>>> parent of 3645545... 2018/03/21-12h01
 
+=======
+>>>>>>> parent of ac2923d... 2018/03/21-13h08
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
 =======
@@ -326,6 +330,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                 }
                             });
                             translateAnimation.start();*/
+<<<<<<< HEAD
 
                             Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                             if(distanceFromPoiUpdate[0] > 20000){
@@ -370,6 +375,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             }
                         } else{
 
+=======
+                        }
+                        else{
+                            translateAnimation = new TranslateAnimation(0,
+                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
+                                    0,
+                                    map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
+                            translateAnimation.setDuration(5000);
+                            translateAnimation.setFillBefore(true);
+                            translateAnimation.setFillAfter(true);
+                            imageViewPersonnage.setAnimation(translateAnimation);
+>>>>>>> parent of ac2923d... 2018/03/21-13h08
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
                                 public void onAnimationStart(Animation animation) {
@@ -390,6 +407,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         }
 
                         Log.d("Location changed", "location changed");
+
+                        map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                        /*map.animateCamera(CameraUpdateFactory.newLatLng(livePos),
+                                (int) move[0] / 5000, null);*/
+                        //animationDrawable1.start();
                     }
 
                         prevPos = livePos;
