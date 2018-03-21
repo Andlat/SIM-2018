@@ -149,16 +149,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                if(persoMarker != null){
-                    //map.clear();
-                    persoMarker.remove();
-                }
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
                 //map.clear();
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -176,10 +166,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-                    imageViewPersonnage.setVisibility(View.INVISIBLE);
-                    persoMarker = map.addMarker(new MarkerOptions()
-                            .position(livePos).icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.arthur1_1)));
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
@@ -189,7 +175,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
-                    imageViewPersonnage.setVisibility(View.VISIBLE);
                     animationDrawable1.start();
                 }
             }
@@ -200,13 +185,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onCameraIdle() {
                 if(persoMarker != null){
                     //map.clear();
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    persoMarker.remove();
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
@@ -243,38 +221,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
-                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
-                    translateAnimation.setDuration(5000);
-                    translateAnimation.setFillBefore(true);
+                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
                     translateAnimation.setRepeatCount(1);
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            imageViewPersonnage.setVisibility(View.VISIBLE);
-                            animationDrawable1.start();
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animationDrawable1.stop();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
-
-                    //Va chercher les coordonnés des poi dans un rayon de 50km
-                    Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-=======
->>>>>>> parent of 3645545... 2018/03/21-12h01
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
@@ -293,9 +243,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            if(persoMarker != null){
-                                persoMarker.remove();
-                            }
                             //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
                             //map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
@@ -327,6 +274,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             });
                             translateAnimation.start();*/
 
+                            //Va chercher les coordonnés des poi dans un rayon de 50km
                             Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                             if(distanceFromPoiUpdate[0] > 20000){
                                 final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -365,9 +313,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     e.printStackTrace();
                                 }
                             }
-                            else{
-                                translateAnimation.start();
-                            }
+
                         } else{
 
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -390,6 +336,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         }
 
                         Log.d("Location changed", "location changed");
+
                     }
 
                         prevPos = livePos;
