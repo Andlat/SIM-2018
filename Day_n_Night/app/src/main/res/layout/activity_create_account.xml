@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/beigeTRESpale"
+=======
+    android:background="@color/beige"
+>>>>>>> parent of 385d9e3... supprimé le projet
     android:padding="@dimen/activity_padding"
     tools:context="daynight.daynnight.CreateAccountActivity">
 
     <TextView
         android:id="@+id/caa_description"
+<<<<<<< HEAD
         android:layout_width="313dp"
         android:layout_height="86dp"
         android:layout_marginStart="8dp"
@@ -25,27 +30,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.822" />
+=======
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/caa_desc"
+        android:textAlignment="center"
+        android:textColor="@color/noir"
+        android:textSize="@dimen/description_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/caa_enter_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <EditText
         android:id="@+id/caa_enter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:fontFamily="bungee"
+=======
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+>>>>>>> parent of 385d9e3... supprimé le projet
         android:hint="@string/caa_name"
         android:textAlignment="center"
         android:textSize="@dimen/default_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="65dp" />
+=======
+        app:layout_constraintTop_toTopOf="parent" />
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <Button
         android:id="@+id/boutonOk"
         android:layout_width="134dp"
         android:layout_height="55dp"
         android:background="@drawable/bouton1_1"
+<<<<<<< HEAD
         android:fontFamily="@font/bungee"
         android:text="@string/ok"
         android:textColor="@color/common_google_signin_btn_text_light_default"
+=======
+        android:text="@string/ok"
+>>>>>>> parent of 385d9e3... supprimé le projet
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

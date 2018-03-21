@@ -4,10 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/beigeTRESpale"
     android:orientation="vertical"
     android:padding="@dimen/activity_padding"
     tools:context="daynight.daynnight.MainActivity">
+=======
+    android:orientation="vertical"
+    tools:context="daynight.daynnight.MainActivity"
+    android:padding="@dimen/activity_padding">
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <ImageView
         android:id="@+id/imageView"
@@ -23,10 +29,14 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bouton5_1"
+<<<<<<< HEAD
         android:fontFamily="@font/bungee"
         android:text="Nuit"
         android:textColor="@color/common_google_signin_btn_text_light_default"
         android:textSize="24sp"
+=======
+        android:text="Nuit"
+>>>>>>> parent of 385d9e3... supprimé le projet
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="189dp" />
 
@@ -37,10 +47,14 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bouton5_1"
+<<<<<<< HEAD
         android:fontFamily="@font/bungee"
         android:text="Jour"
         android:textColor="@color/common_google_signin_btn_text_light_default"
         android:textSize="24sp"
+=======
+        android:text="Jour"
+>>>>>>> parent of 385d9e3... supprimé le projet
         tools:layout_editor_absoluteX="199dp"
         tools:layout_editor_absoluteY="117dp" />
 
@@ -51,12 +65,17 @@
 
         <Button
             android:id="@+id/settingsButton"
+<<<<<<< HEAD
             android:layout_width="150dp"
+=======
+            android:layout_width="128dp"
+>>>>>>> parent of 385d9e3... supprimé le projet
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="100dp"
             android:layout_weight="1"
             android:background="@drawable/bouton1_1"
+<<<<<<< HEAD
             android:fontFamily="@font/bungee"
             android:text="Options"
             android:textColor="@color/common_google_signin_btn_text_light_default"
@@ -72,6 +91,17 @@
             android:text="Inventaire"
             android:textColor="@color/common_google_signin_btn_text_light_default"
             android:textSize="16sp" />
+=======
+            android:text="Options" />
+
+        <Button
+            android:id="@+id/leSebBouton"
+            android:layout_width="128dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/bouton1_1"
+            android:text="Inventaire" />
+>>>>>>> parent of 385d9e3... supprimé le projet
     </LinearLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>

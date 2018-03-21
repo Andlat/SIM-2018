@@ -11,6 +11,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
     }
 }
+<<<<<<< HEAD
 
 /*
 Crédits musique :
@@ -22,3 +23,5 @@ https://creativecommons.org/licenses/...
 Music promoted by Audio Library https://youtu.be/8TKy9bzrk24
 
  */
+=======
+>>>>>>> parent of 385d9e3... supprimé le projet

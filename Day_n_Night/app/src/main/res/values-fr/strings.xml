@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CreateAccountActivity -->
+    <string name="caa_name">Nom</string>
+    <string name="caa_desc">Veuillez entrer votre nom</string>
+    <!-- ********************* -->
+
+    <!-- SettingsActivity -->
+    <string name="sa_title">Réglages</string>
+    <string name="sa_music">Musique</string>
+    <string name="sa_language">Langue</string>
+    <!-- **************** -->
+
+    <string name="logo_du_badge">Logo du badge</string>
+    <string name="location_capture">Location de la capture</string>
+    <string name="date_capture">12-11-1997</string>
+    <string name="type_de_badge">Type de badge</string>
+    <string name="start_button">Commencer</string>
+    <string name="center_button">Centrer</string>
+    <string name="free_cam_button">Caméra libre</string>
+    <string name="night_button">Jeu Nuit</string>
+    <string name="character_button">Personalisation</string>
+    <string name="title_activity_maps">Écran maps</string>
+    <string name="rationale_dialog">Votre Localisation</string>
+    <string name="fleche_de_retour">Flèche retour</string>
+</resources>

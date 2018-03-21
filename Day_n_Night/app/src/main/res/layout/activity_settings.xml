@@ -11,6 +11,7 @@
         android:id="@+id/sa_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:fontFamily="@font/bungee"
         android:text="@string/sa_title"
         android:textAlignment="center"
@@ -47,11 +48,38 @@
         android:layout_height="45dp"
         tools:layout_editor_absoluteX="78dp"
         tools:layout_editor_absoluteY="141dp" />
+=======
+        android:text="@string/sa_title"
+        android:textSize="@dimen/description_text_size"
+        android:textColor="@color/noir"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sa_volume"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/sa_volume"
+        android:layout_width="@dimen/sa_option_width"
+        android:layout_height="wrap_content"
+        android:text="@string/sa_volume"
+        android:textSize="@dimen/default_button_text_size"
+        android:textColor="@color/noir"
+        android:textAlignment="center"
+        android:drawableEnd="@drawable/ic_volume_up_24dp"
+        android:background="@drawable/black_border"
+        android:padding="@dimen/border_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sa_title"
+        app:layout_constraintBottom_toTopOf="@+id/sa_music"/>
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <TextView
         android:id="@+id/sa_music"
         android:layout_width="@dimen/sa_option_width"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/black_border"
@@ -73,11 +101,25 @@
         android:layout_height="45dp"
         tools:layout_editor_absoluteX="77dp"
         tools:layout_editor_absoluteY="282dp" />
+=======
+        android:text="@string/sa_music"
+        android:textSize="@dimen/default_button_text_size"
+        android:textColor="@color/noir"
+        android:textAlignment="center"
+        android:drawableEnd="@drawable/ic_music_note_24dp"
+        android:background="@drawable/black_border"
+        android:padding="@dimen/border_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sa_volume"
+        app:layout_constraintBottom_toTopOf="@+id/sa_avatar"/>
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <TextView
         android:id="@+id/sa_avatar"
         android:layout_width="@dimen/sa_option_width"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginTop="8dp"
         android:background="@drawable/black_border"
         android:fontFamily="@font/bungee"
@@ -90,11 +132,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+=======
+        android:text="@string/sa_character"
+        android:textSize="@dimen/default_button_text_size"
+        android:textColor="@color/noir"
+        android:textAlignment="center"
+        android:background="@drawable/black_border"
+        android:padding="@dimen/border_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sa_music"
+        app:layout_constraintBottom_toTopOf="@+id/sa_language"/>
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <TextView
         android:id="@+id/sa_language"
         android:layout_width="@dimen/sa_option_width"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="8dp"
         android:background="@drawable/black_border"
         android:fontFamily="@font/bungee"
@@ -115,12 +170,25 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="398dp"></LinearLayout>
+=======
+        android:text="@string/sa_language"
+        android:textSize="@dimen/default_button_text_size"
+        android:textColor="@color/noir"
+        android:textAlignment="center"
+        android:background="@drawable/black_border"
+        android:padding="@dimen/border_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sa_avatar"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOK"/>
+>>>>>>> parent of 385d9e3... supprimé le projet
 
     <Button
         android:id="@+id/buttonOK"
         android:layout_width="150dp"
         android:layout_height="71dp"
         android:background="@drawable/bouton1_1"
+<<<<<<< HEAD
         android:fontFamily="@font/bungee"
         android:text="@string/ok"
         android:textColor="@color/common_google_signin_btn_text_light_default"
@@ -128,5 +196,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="462dp" />
+=======
+        android:text="@string/ok"
+        android:textColor="@color/blanc"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sa_language" />
+>>>>>>> parent of 385d9e3... supprimé le projet
 
 </android.support.constraint.ConstraintLayout>

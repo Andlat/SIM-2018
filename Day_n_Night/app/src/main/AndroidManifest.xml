@@ -19,12 +19,19 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
+<<<<<<< HEAD
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".Inventaire"></activity>
         <activity android:name=".MainActivity">
+=======
+
+        <activity android:name=".Inventaire" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape">
+>>>>>>> parent of 385d9e3... supprimé le projet
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

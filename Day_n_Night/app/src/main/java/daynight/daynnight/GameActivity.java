@@ -2,6 +2,7 @@ package daynight.daynnight;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -9,10 +10,16 @@ import android.widget.Button;
 public class GameActivity extends AppCompatActivity {
     Button buttonRecommencer;
     Button buttonMenu;
+=======
+
+public class GameActivity extends AppCompatActivity {
+
+>>>>>>> parent of 385d9e3... supprimé le projet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+<<<<<<< HEAD
 
         buttonRecommencer = (Button)findViewById(R.id.buttonRecommencer);
         //Changement couleur bouton lorsque touché
@@ -41,5 +48,7 @@ public class GameActivity extends AppCompatActivity {
                 return false;
             }
         });
+=======
+>>>>>>> parent of 385d9e3... supprimé le projet
     }
 }

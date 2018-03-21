@@ -46,7 +46,10 @@
     <string name="toucher_par_coup">Nombre de tagues par coup : %1$d</string>
     <string name="nb_cibles">Nombre de cibles : %1$d</string>
     <string name="portee">Portée : %1$s</string>
+<<<<<<< HEAD
     <string name="menuJeu">Menu</string>
     <string name="recommencer">Recommencer</string>
+=======
+>>>>>>> parent of 385d9e3... supprimé le projet
     <!-- ************ -->
 </resources>
