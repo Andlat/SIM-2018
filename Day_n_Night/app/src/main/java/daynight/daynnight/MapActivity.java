@@ -156,7 +156,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
-                    map.clear();
+                    //map.clear();
+                    persoMarker.remove();
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -173,19 +174,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-<<<<<<< HEAD
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.arthur1_1)));
-=======
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromBitmap(smallMarker)));
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
->>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
@@ -199,7 +197,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
-                    map.clear();
+                    //map.clear();
+                    persoMarker.remove();
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
@@ -236,22 +235,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
-<<<<<<< HEAD
                             map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                     translateAnimation.setDuration(5000);
                     translateAnimation.setFillBefore(true);
-=======
-                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
                     translateAnimation.setRepeatCount(1);
->>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
                     translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
+                            imageViewPersonnage.setVisibility(View.VISIBLE);
                             animationDrawable1.start();
                         }
-<<<<<<< HEAD
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
@@ -266,21 +261,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                    if(distanceFromPoiUpdate[0] > 20000){
-                        final ExecutorService executor = Executors.newSingleThreadExecutor();
-=======
->>>>>>> 36455457517900f420f222bf5ee048376e426d0a
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animationDrawable1.stop();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
@@ -299,15 +279,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            //map.clear();
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
-<<<<<<< HEAD
-                        }
-                        else{
-=======
+                            if(persoMarker != null){
+                                persoMarker.remove();
+                            }
 
-                            //Va chercher les coordonnés des poi dans un rayon de 50km
-                            Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+
+                            // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<                       Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                             if(distanceFromPoiUpdate[0] > 20000){
                                 final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -345,17 +322,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     e.printStackTrace();
                                 }
                             }
+                            else{
+                                translateAnimation.start();
+                            }
 
-                        } else{
->>>>>>> 36455457517900f420f222bf5ee048376e426d0a
-                            translateAnimation.start();
                         }
 
                         Log.d("Location changed", "location changed");
-<<<<<<< HEAD
-=======
-
->>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                     }
                         prevPos = livePos;
                 }
