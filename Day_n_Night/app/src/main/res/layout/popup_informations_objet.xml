@@ -60,10 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-<<<<<<< HEAD
             android:text="L'Ornithorynque (Ornithorhynchus anatinus) est un animal semi-aquatique endémique de l'est de l'Australie, y compris la Tasmanie. C'est l'une des cinq espèces de l'ordre des monotrèmes, seul ordre de mammifères qui pond des œufs."
-=======
->>>>>>> a2269c1855ca9c33f2daff50aa1b1e3638fb76c8
             android:textSize="14sp" />
 
         <daynight.daynnight.ImageViewCarre
@@ -113,10 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/caracteristiquesOutil"
             android:layout_alignParentEnd="true"
-<<<<<<< HEAD
             android:clipToPadding="false"
             android:padding="10dp">
-=======
             android:visibility="invisible">
 
             <Button
@@ -127,7 +122,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentBottom="true"
                 android:text="@string/acheter" />
->>>>>>> a2269c1855ca9c33f2daff50aa1b1e3638fb76c8
 
             <Button
                 android:id="@+id/fermerHorizontale"
@@ -146,14 +140,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipToPadding="false"
-<<<<<<< HEAD
         android:padding="10dp">
-
-        <Button
-            android:id="@+id/fermerVerticale"
-=======
-        android:padding="10dp"
-        android:visibility="invisible">
 
         <Button
             android:id="@+id/boutiqueAcheterVerticale"
@@ -168,18 +155,12 @@
             android:id="@+id/fermerVerticale"
             android:background="@drawable/style_button_ripple"
             android:layout_toEndOf="@id/boutiqueAcheterVerticale"
->>>>>>> a2269c1855ca9c33f2daff50aa1b1e3638fb76c8
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-<<<<<<< HEAD
-            android:background="@drawable/style_button_ripple"
-            android:text="Fermer"
-            android:visibility="invisible" />
-=======
+            android:visibility="invisible"
             android:text="@string/fermer" />
->>>>>>> a2269c1855ca9c33f2daff50aa1b1e3638fb76c8
     </RelativeLayout>
 
 </LinearLayout>
