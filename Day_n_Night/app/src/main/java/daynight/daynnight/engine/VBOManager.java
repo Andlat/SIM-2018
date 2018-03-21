@@ -1,6 +1,7 @@
 package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
+import android.util.Log;
 import android.util.Pair;
 
 import java.nio.BufferOverflowException;
@@ -39,7 +40,8 @@ class VBOManager {
     private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();
 
     VBOManager(){
-        mVBOData = allocateDirect(1);
+        mVBOData = allocateDirect(mVBOSizeInMB);
+
         CreateVBO();
     }
 
@@ -86,8 +88,9 @@ class VBOManager {
     //TODO Use mVBOData instead and write to the GPU buffer only once.
     /**
      * Do not use this function for now.
+     *
+     * Shift data in the gpu as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory usage is too high.
      */
-    //Shift data in the gpu as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory usage is too high.
     private void ShiftDataGPU(){
         this.SortOrderEmptyPoolsArray();
 
@@ -157,14 +160,14 @@ class VBOManager {
         }
     }
 
-    FloatBuffer allocateDirect(float sizeInMB){
+    private FloatBuffer allocateDirect(float sizeInMB){
         return ByteBuffer.allocateDirect((int)(sizeInMB * 1024 * 1024)).order(ByteOrder.nativeOrder()).asFloatBuffer();
     }
 
     /**
      * Order empty pools of memory by index
      */
-    void SortOrderEmptyPoolsArray(){
+    private void SortOrderEmptyPoolsArray(){
         final int size = mEmptyVBOPools.size();
         Pair<Integer, Integer> h, k;
         for(int i=0; i < size; ++i){
@@ -183,8 +186,12 @@ class VBOManager {
      * @return A list containing pairs of the offset in the VBO and size of sequential vertices (a model). List<Pair<Offset in VBO, Size in bytes>>
      */
     List<Pair<Integer, Integer>> getDrawOffsets(){
+
+        Log.e("TRIANGLE VBO", mVBOData.get(0) + ", " + mVBOData.get(1) + ", " +  mVBOData.get(2) + ", " +  mVBOData.get(3) + ", " +  mVBOData.get(4) + ", " +  mVBOData.get(5) + ", " +  mVBOData.get(6) + ", " +  mVBOData.get(7) + ", " +  mVBOData.get(8));
+        Log.e("TRIANGLE VBO", mVBOData.get(9) + ", " + mVBOData.get(10) + ", " +  mVBOData.get(11) + ", " +  mVBOData.get(12) + ", " +  mVBOData.get(13));
         List<Pair<Integer, Integer>> drawOffsets = new ArrayList<>();
 
+        //TODO Repair this loop. Will not work if there is no empty pools
         int offset=0, sizeInBytes;
         for(Pair<Integer, Integer> empty : mEmptyVBOPools){
             sizeInBytes = empty.first - offset;
@@ -194,6 +201,8 @@ class VBOManager {
             offset = empty.first + empty.second;
         }
 
+        Log.e("LIST DRAW OFFSETS", drawOffsets.toString());
+        drawOffsets.add(new Pair<>(0, 36));//TODO Remove this. This is for testing
         return drawOffsets;
     }
 }

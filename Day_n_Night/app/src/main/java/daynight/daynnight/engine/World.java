@@ -3,6 +3,7 @@ package daynight.daynnight.engine;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
@@ -18,8 +19,8 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  */
 
 public class World {
-    private float[] VAO;
-    private VBOManager mVBOMan = new VBOManager();
+    private final int[] mVAO = new int[1];
+    private final VBOManager mVBOMan;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
 
@@ -29,7 +30,11 @@ public class World {
     public enum State {SHOWN, HIDDEN}
 
     public World(){
+        //One VertexArrayObject (VAO) per World
+        GLES30.glGenVertexArrays(1, mVAO, 0);
+        GLES30.glBindVertexArray(mVAO[0]);
 
+        mVBOMan = new VBOManager();
     }
 
     public long addModel(Model model){
@@ -93,8 +98,11 @@ public class World {
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     public void DrawWorld(){
         final List<Pair<Integer, Integer>> drawOffsets = mVBOMan.getDrawOffsets();
+
+        GLES30.glBinVert
         for(Pair<Integer, Integer> offset : drawOffsets) {
-            GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second);
+            Log.e("DRAW WORLD PAIR", "Pair: " + offset.first + ", " + offset.second);
+            GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second/4);
         }
     }
 }

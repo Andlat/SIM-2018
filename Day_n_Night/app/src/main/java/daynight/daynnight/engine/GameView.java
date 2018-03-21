@@ -30,6 +30,8 @@ public class GameView extends GLSurfaceView {
 
         Renderer renderer = new Renderer();
         setRenderer(renderer);
+
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO Remove RENDER_WHEN_DIRTY
     }
 
     public void UseWorld(World world){ mWorld = world; }
@@ -38,12 +40,15 @@ public class GameView extends GLSurfaceView {
     }
 
     protected void onDrawFrame(World world){
+        world.DrawWorld();
     }
 
     private class Renderer implements GLSurfaceView.Renderer{
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             GameView.this.onCreate();
+
+            requestRender();//TODO Only usefull if rendering when dirty
         }
 
         @Override
@@ -54,11 +59,6 @@ public class GameView extends GLSurfaceView {
         @Override
         public void onDrawFrame(GL10 gl) {
             GameView.this.onDrawFrame(mWorld);
-
-            //Draw the vbos
-            for(long i=0; i < mWorld.getShownModelsCount(); ++i){
-
-            }
         }
     }
 }

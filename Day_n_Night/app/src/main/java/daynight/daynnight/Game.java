@@ -1,6 +1,7 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.opengl.GLES30;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -81,6 +82,8 @@ class Game extends GameView {
         hero.setVerticesOffset(0);
 
         mHeroID = world.addModel(hero);
+
+        Log.e("HERO ID", "ID: " + mHeroID);
     }
 
     @Override
