@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:padding="16dp"
+    android:background="@drawable/layout_popup_informations_objet"
+    android:orientation="vertical"
+    tools:context="daynight.daynnight.PopupInformationsObjet">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/nom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:id="@+id/boutiquePrix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/prix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="@string/prix_nulle"
+                android:textColor="@color/beigeFonce"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/biscuitBoutique"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/objet_biscuit" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--Outil-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:text="L'Ornithorynque (Ornithorhynchus anatinus) est un animal semi-aquatique endémique de l'est de l'Australie, y compris la Tasmanie. C'est l'une des cinq espèces de l'ordre des monotrèmes, seul ordre de mammifères qui pond des œufs."
+            android:textSize="14sp" />
+
+        <daynight.daynnight.ImageViewCarre
+            android:id="@+id/imageObjet"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/layout_objet"
+            android:padding="5dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/caracteristiquesOutil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/portee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/portee"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/nbCibles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nb_cibles"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/toucherParCoup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toucher_par_coup"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/boutiqueBoutonsHorizontale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/caracteristiquesOutil"
+            android:layout_alignParentEnd="true"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/boutiqueAcheterHorizontale"
+                android:background="@drawable/style_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentBottom="true"
+                android:text="@string/acheter" />
+
+            <Button
+                android:id="@+id/fermerHorizontale"
+                android:layout_toEndOf="@id/boutiqueAcheterHorizontale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/style_button_ripple"
+                android:text="@string/fermer" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/boutiqueBoutonsVerticale"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:padding="10dp"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/boutiqueAcheterVerticale"
+            android:background="@drawable/style_button_ripple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/acheter" />
+
+        <Button
+            android:id="@+id/fermerVerticale"
+            android:background="@drawable/style_button_ripple"
+            android:layout_toEndOf="@id/boutiqueAcheterVerticale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:text="@string/fermer" />
+    </RelativeLayout>
+
+</LinearLayout>
