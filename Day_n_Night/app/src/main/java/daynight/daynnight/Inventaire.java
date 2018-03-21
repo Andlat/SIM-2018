@@ -5,17 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.widget.LinearLayout;
@@ -23,13 +26,19 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import static daynight.daynnight.ListeObjets.newInstance;
+
 public class Inventaire extends AppCompatActivity
 {
     //Créer
     ImageView boutique;
-    static ArrayList<String> nomObjets = new ArrayList<>();
-    static Inventaire.AdapteurArrayInventaire adapteur;
-    PopupInformationsObjet infosObjetInventaire;
+
+    TabLayout tabObjets;
+    ViewPager viewPager;
+
+    ArrayList<Objet> outils;
+    ArrayList<Objet> skins;
+    ArrayList<Objet> decorations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,30 +46,24 @@ public class Inventaire extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_inventaire);
 
-
-        adapteur = new Inventaire.AdapteurArrayInventaire(this, 0, nomObjets);
-
-        final GridView gridView = (GridView) findViewById(R.id.inventaire);
-        gridView.setAdapter(adapteur);
-
-
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
-        infosObjetInventaire = new PopupInformationsObjet(true);
-        //Ajout de Badges manuellement
-        for(int j = 0 ; j < 48 ; j++)
-            nomObjets.add("");
-        nomObjets.set(0,"objet_outil_eau_benite");
-        nomObjets.set(1,"objet_outil_melon_deau");
-        nomObjets.set(2,"objet_outil_seau_deau");
-        nomObjets.set(3,"objet_outil_boule_neige");
+        tabObjets = (TabLayout) findViewById(R.id.tabObjets);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        tabObjets.setupWithViewPager(viewPager);
+
+        outils = new ArrayList<>();
+        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
+        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
+        skins = new ArrayList<>();
+        decorations = new ArrayList<>();
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         final int width = size.x;
         final int height = size.y;
-
         boutique.setOnTouchListener(new View.OnTouchListener()
         {
             float xRepere;
@@ -111,60 +114,56 @@ public class Inventaire extends AppCompatActivity
             }
         });
 
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                startActivity(new Intent(Inventaire.this, PopupInformationsObjet.class));
-            }
-        });
-
-
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
-            gridView.setNumColumns(4);
         }
         else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            LinearLayout layoutBarreDOutils = findViewById(R.id.layout_barreDOutils);
+            LinearLayout layoutBarreDOutils = (LinearLayout) findViewById(R.id.layout_barreDOutils);
             ViewGroup.LayoutParams params = layoutBarreDOutils.getLayoutParams();
             params.width = height;
             layoutBarreDOutils.setLayoutParams(params);
-
-            gridView.setNumColumns(7);
         }
     }
 
     //custom ArrayAdapter
-    class AdapteurArrayInventaire extends ArrayAdapter<String>
-    {
-        private Context context;
-        private int layout;
-        private List<String> nomObjets;
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
 
-        public AdapteurArrayInventaire(Context context, int resource, ArrayList<String> objects)
-        {
-            super(context, resource, objects);
-
-            this.context = context;
-            this.layout = resource;
-            this.nomObjets = objects;
+        public SectionPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        public View getView(final int position, View convertView, ViewGroup parent)
-        {
-            String nomObjet = nomObjets.get(position);
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return newInstance(outils);
+                case 1:
+                    return newInstance(outils);
+                case 2:
+                    return newInstance(outils);
+                default:
+                    return newInstance(outils);
+            }
+        }
 
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.layout_objet, null);
-            view.setPaddingRelative(20,20,20,20);
+        @Override
+        public int getCount() {
+            return 3;
+        }
 
-            ImageViewCarre objet = view.findViewById(R.id.objet);
-            objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getPackageName()));
-
-
-            return view;
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Outils";
+                case 1:
+                    return "Skins";
+                case 2:
+                    return "Décorations";
+                default:
+                    return "Vide";
+            }
         }
     }
 }

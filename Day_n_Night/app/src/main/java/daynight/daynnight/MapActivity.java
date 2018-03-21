@@ -2,42 +2,32 @@ package daynight.daynnight;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,8 +39,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -77,6 +70,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Point size;
     private Marker persoMarker;
     private AnimationDrawable animationDrawable1;
+    private JSONObject jsonPOI;
+    private JSONArray jsonResults;
+    private ArrayList posPOI;
+    private LatLng tempPos;
+    private RelativeLayout.LayoutParams layoutParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,17 +145,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         size = new Point();
         display.getSize(size);
 
+        layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
+        layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);
+
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
         boutonCenter.setVisibility(View.INVISIBLE);
         boutonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(persoMarker != null){
+                    map.clear();
+                }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                imageViewPersonnage.setX((size.x/2) - imageViewPersonnage.getWidth()/2);
-                imageViewPersonnage.setY((size.y/2) - imageViewPersonnage.getHeight()/2);
+                imageViewPersonnage.setLayoutParams(layoutParams);
             }
         });
 
@@ -166,12 +170,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onCameraMoveStarted(int reason) {
                 if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
                     Log.d("MapMovement", "Cause: Gesture");
+                    MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                     persoMarker = map.addMarker(new MarkerOptions()
                             .position(livePos).icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.arthur1_1)));
+=======
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
+                    persoMarker = map.addMarker(new MarkerOptions()
+                            .position(livePos).icon(BitmapDescriptorFactory
+                                    .fromBitmap(smallMarker)));
+                    imageViewPersonnage.setVisibility(View.INVISIBLE);
+>>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
@@ -184,6 +198,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
+                if(persoMarker != null){
+                    map.clear();
+                    imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
+                    imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
+                }
                 animationDrawable1.stop();
             }
         });
@@ -192,6 +212,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         distanceFromPoiUpdate = new float[1];
         prevPos = new LatLng(0, 0);
         poiUpdate = new LatLng(0,0);
+        posPOI = new ArrayList<LatLng>();
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -215,9 +236,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
+<<<<<<< HEAD
                             map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                     translateAnimation.setDuration(5000);
                     translateAnimation.setFillBefore(true);
+=======
+                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
+                    translateAnimation.setRepeatCount(1);
+>>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                     translateAnimation.setFillAfter(true);
                     imageViewPersonnage.setAnimation(translateAnimation);
                     translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -225,6 +251,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         public void onAnimationStart(Animation animation) {
                             animationDrawable1.start();
                         }
+<<<<<<< HEAD
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
@@ -241,22 +268,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                     if(distanceFromPoiUpdate[0] > 20000){
                         final ExecutorService executor = Executors.newSingleThreadExecutor();
+=======
+>>>>>>> 36455457517900f420f222bf5ee048376e426d0a
 
-                        final HttpRequest request = new HttpRequest();
-                        final FutureTask<String> future = new FutureTask<>(request);
-
-                        executor.execute(future);
-                        String response = null;
-
-                        try {
-                             response = future.get();
-                             //poiUpdate = livePos;
-                            Log.d("Request", response);
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                            Log.d("Request", "NOPE ça marche pas");
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            animationDrawable1.stop();
                         }
-                    }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
@@ -275,16 +299,64 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     if (prevLocation.distanceTo(presentLocation) > 2) {
 
                         if(MAP_CENTREE){
-                            map.clear();
+                            //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
+<<<<<<< HEAD
                         }
                         else{
+=======
+
+                            //Va chercher les coordonnés des poi dans un rayon de 50km
+                            Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                            if(distanceFromPoiUpdate[0] > 20000){
+                                final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                                final HttpRequest request = new HttpRequest();
+                                final FutureTask<String> future = new FutureTask<>(request);
+
+                                executor.execute(future);
+                                String response = null;
+
+                                try {
+                                    jsonPOI = null;
+                                    response = future.get();
+                                    jsonPOI = new JSONObject(response);
+                                    //poiUpdate = livePos;
+                                    jsonResults = jsonPOI.getJSONArray("results");
+
+                                    //Enregistre tout les position des POI dans le rayon spécifié
+                                    for(int i = 0; i < jsonResults.length(); i++){
+
+                                        posPOI.add(new LatLng(jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+
+                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
+                                        map.addMarker(new MarkerOptions()
+                                                .position(tempPos).icon(BitmapDescriptorFactory
+                                                        .fromResource(R.drawable.chest)));
+                                    }
+
+
+                                    Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                    Log.d("Request", "NOPE ça marche pas");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        } else{
+>>>>>>> 36455457517900f420f222bf5ee048376e426d0a
                             translateAnimation.start();
                         }
 
                         Log.d("Location changed", "location changed");
-                    }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 36455457517900f420f222bf5ee048376e426d0a
+                    }
                         prevPos = livePos;
                 }
 
@@ -304,8 +376,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-
-
         map.setOnPoiClickListener(this);
     }
 
@@ -345,5 +415,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         }
     }
-
 }

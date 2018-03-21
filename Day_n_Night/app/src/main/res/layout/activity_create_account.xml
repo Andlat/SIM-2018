@@ -4,42 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="daynight.daynnight.CreateAccountActivity"
-    android:padding="@dimen/activity_padding">
+    android:background="@color/beige"
+    android:padding="@dimen/activity_padding"
+    tools:context="daynight.daynnight.CreateAccountActivity">
+
     <TextView
         android:id="@+id/caa_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/caa_desc"
-        android:textSize="@dimen/description_text_size"
-        android:textColor="@color/black"
         android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/noir"
+        android:textSize="@dimen/description_text_size"
         app:layout_constraintBottom_toTopOf="@+id/caa_enter_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/caa_enter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/caa_name"
-        android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:hint="@string/caa_name"
         android:textAlignment="center"
         android:textSize="@dimen/default_button_text_size"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonOK"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/boutonOk"
+        android:layout_width="134dp"
+        android:layout_height="55dp"
+        android:background="@drawable/bouton1_1"
         android:text="@string/ok"
-        android:textColor="@color/white"
-        android:background="@drawable/oval_button_shape"
-        app:layout_constraintTop_toBottomOf="@+id/caa_enter_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caa_enter_name" />
+
 </android.support.constraint.ConstraintLayout>
