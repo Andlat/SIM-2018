@@ -56,7 +56,7 @@ public class GameView extends GLSurfaceView {
             GameView.this.onDrawFrame(mWorld);
 
             //Draw the vbos
-            for(long i=0; i < mWorld.getModelsCount(); ++i){
+            for(long i=0; i < mWorld.getShownModelsCount(); ++i){
 
             }
         }

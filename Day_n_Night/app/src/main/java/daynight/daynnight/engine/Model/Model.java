@@ -83,14 +83,26 @@ public class Model {
 
     public long getID(){ return mID; }
 
+    /**
+     * Clone model to a new MovingModel
+     * @return The new MovingModel created from this Model
+     */
     public MovingModel toMovingModel(){
         return new MovingModel(this);
     }
 
+    /**
+     * Clone model to a new StaticModel
+     * @return The new StaticModel created from this Model
+     */
     public StaticModel toStaticModel(){
         return new StaticModel(this);
     }
 
+    /**
+     * Clone a Model's attributes to this one. Deep
+     * @param clone The model to clone
+     */
     public void CloneTo(Model clone){
         clone.mShader = this.mShader;
         clone.mModelVBO = this.mModelVBO;
@@ -103,6 +115,10 @@ public class Model {
         clone.mTexture = this.mTexture;
     }
 
+    /**
+     * Clone this Model's attributes to another Model
+     * @param model Model which will be cloned with this one's attributes
+     */
     public void CloneFrom(Model model){
         model.CloneTo(this);
     }

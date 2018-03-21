@@ -17,6 +17,8 @@ import java.util.ListIterator;
  */
 
 /**
+ * VBO: Vertex Buffer Object
+ *
  * S'occuper de gérer les données dans la mémoire du GPU. N'utilise qu'un VBO à la fois.
  * Cela peut être plus lent pour afficher les graphiques s'il y a beaucoup de changement de modèles,
  * mais ça utilise moins de mémoire que s'il procédait à 2 VBO
@@ -169,5 +171,24 @@ class VBOManager {
                     Collections.swap(mEmptyVBOPools, i, j);
             }
         }
+    }
+
+    /**
+     * Get a list containing the offsets and size of vertices to draw (visible vertices)
+     * @return A list containing pairs of the offset in the VBO and size of sequential vertices (a model). List<Pair<Offset in VBO, Size in bytes>>
+     */
+    List<Pair<Integer, Integer>> getDrawOffsets(){
+        List<Pair<Integer, Integer>> drawOffsets = new ArrayList<>();
+
+        int offset=0, sizeInBytes;
+        for(Pair<Integer, Integer> empty : mEmptyVBOPools){
+            sizeInBytes = empty.first - offset;
+
+            drawOffsets.add(new Pair<>(offset, sizeInBytes));
+
+            offset = empty.first + empty.second;
+        }
+
+        return drawOffsets;
     }
 }

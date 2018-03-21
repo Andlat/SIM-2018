@@ -1,9 +1,13 @@
 package daynight.daynnight.engine;
 
+import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.util.LongSparseArray;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.math.Vec3;
@@ -14,22 +18,33 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  */
 
 public class World {
-    private float[] VAO, VBO;
-    private FloatBuffer WorldData_VBO;
+    private float[] VAO;
+    private VBOManager mVBOMan = new VBOManager();
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
     private boolean mArePhysicsOn = false;
 
-    public enum State {SHOWN, HIDDEN};
+    public enum State {SHOWN, HIDDEN}
+
+    public World(){
+
+    }
 
     public long addModel(Model model){
         final long modelID = model.getID();
         mModels.put(modelID, model);
+
+        mVBOMan.addData(model.getVBO());
+
         return modelID;
     }
     public void removeModel(long id_model){
+        Model toRemoveModel = mModels.get(id_model);
+
+        mVBOMan.removeData();
+
         mModels.remove(id_model);
     }
 
@@ -72,8 +87,11 @@ public class World {
         
     }
 
-    //TODO Draw world VBO
+    //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     public void DrawWorld(){
-
+        final List<Pair<Integer, Integer>> drawOffsets = mVBOMan.getDrawOffsets();
+        for(Pair<Integer, Integer> offset : drawOffsets) {
+            GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second);
+        }
     }
 }
