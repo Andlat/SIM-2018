@@ -70,7 +70,7 @@ class Game extends GameView {
         hero.setPhysics(new PhysicsAttributes.MovingModelAttr(80, 0.5f, 0.4f, 1.f));
         hero.AssociateShader(basicShader);
 
-        FloatBuffer buff = ByteBuffer.allocateDirect(9).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer buff = ByteBuffer.allocateDirect(9*4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         buff.put(new float[]
                 {-1, -1, 0,
                  1, -1, 0,
@@ -86,7 +86,5 @@ class Game extends GameView {
     @Override
     protected void onDrawFrame(World world) {
         super.onDrawFrame(world);
-
-
     }
 }
