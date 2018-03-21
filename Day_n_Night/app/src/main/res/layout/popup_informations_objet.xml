@@ -116,7 +116,7 @@
 
             <Button
                 android:id="@+id/boutiqueAcheterHorizontale"
-                android:background="@drawable/style_button_ripple"
+                android:background="@drawable/style_button_ripple_coin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -128,7 +128,7 @@
                 android:layout_toEndOf="@id/boutiqueAcheterHorizontale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/style_button_ripple"
+                android:background="@drawable/style_button_ripple_coin"
                 android:text="@string/fermer" />
         </RelativeLayout>
 
@@ -145,7 +145,7 @@
 
         <Button
             android:id="@+id/boutiqueAcheterVerticale"
-            android:background="@drawable/style_button_ripple"
+            android:background="@drawable/style_button_ripple_coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -154,7 +154,7 @@
 
         <Button
             android:id="@+id/fermerVerticale"
-            android:background="@drawable/style_button_ripple"
+            android:background="@drawable/style_button_ripple_coin"
             android:layout_toEndOf="@id/boutiqueAcheterVerticale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
