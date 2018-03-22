@@ -160,7 +160,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
-                    map.clear();
+                    //map.clear();
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -195,7 +195,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
-                    map.clear();
+                    //map.clear();
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
@@ -293,7 +293,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                 HttpRequest request = null;
                                 try {
                                     if(nbrPage == 0){
-                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude+","+livePos.longitude+"&types=point_of_interest&radius=5000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude + ","+livePos.longitude + "&type=point_of_interest&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
 
                                     }else{
                                         request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + pageToken + "key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
@@ -307,11 +307,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                 executor.execute(future);
                                 String response = null;
 
-
-                                jsonPOI = null;
                                 response = future.get();
                                 jsonPOI = new JSONObject(response);
                                 jsonResults = jsonPOI.getJSONArray("results");
+                                Log.d("Request", String.valueOf(jsonResults.length()));
 
                                 //Enregistre tout les position des POI dans le rayon spécifié
                                 for(int i = 0; i < jsonResults.length(); i++){
@@ -323,10 +322,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     map.addMarker(new MarkerOptions()
                                             .position(tempPos).icon(BitmapDescriptorFactory
                                                     .fromResource(R.drawable.chest)));
+                                    Log.d("Request","jso " + i + " " + nbrPage);
                                 }
 
 
-                                Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
+                                //Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
 
                                 pageToken = jsonPOI.getString("next_page_token");
                                 nbrPage++;
