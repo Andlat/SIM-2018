@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="beigeTRESpale">#fad69f</color>
+    <!--Couleurs pour layout-->
+    <color name="beigePale2">#fad69f</color>
     <color name="beigePale">#f0c078</color>
     <color name="beige">#deb16f</color>
     <color name="beigeFonce">#a68553</color>
     <color name="beigeFonce2">#775B35</color>
     <color name="colorAccent">#ff4d40</color>
 
+    <!--Couleurs pour boutons-->
+    <color name="beigePale2Bouton">#e9c895</color>
+    <color name="beigePaleBouton">#e4b672</color>
+    <color name="beigeBouton">#cea367</color>
+    <color name="beigeFonceBouton">#917448</color>
+    <color name="beigeFonce2Bouton">#6e5431</color>
+
+    <!--Couleurs générales-->
     <color name="blanc">#ffffff</color>
     <color name="noir">#000000</color>
 </resources>

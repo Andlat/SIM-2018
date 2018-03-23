@@ -3,7 +3,7 @@
     <item>
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/beigePale" />
+            <solid android:color="@color/beigePaleBouton" />
         </shape>
     </item>
 
@@ -11,7 +11,7 @@
         android:right="3dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/beige" />
+            <solid android:color="@color/beigeBouton" />
         </shape>
     </item>
 
@@ -20,7 +20,7 @@
         android:right="3dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/beigeFonce" />
+            <solid android:color="@color/beigeFonceBouton" />
         </shape>
     </item>
 
@@ -30,7 +30,7 @@
         android:right="3dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/beige" />
+            <solid android:color="@color/beigeBouton" />
         </shape>
     </item>
 

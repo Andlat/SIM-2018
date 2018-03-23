@@ -19,11 +19,6 @@ public class GameActivity extends AppCompatActivity {
         buttonRecommencer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    buttonRecommencer.setBackground(getDrawable(R.drawable.bouton4_2));
-                }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    buttonRecommencer.setBackground(getDrawable(R.drawable.bouton4_1));
-                }
                 return false;
             }
         });
@@ -34,9 +29,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    buttonMenu.setBackground(getDrawable(R.drawable.bouton4_2));
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    buttonMenu.setBackground(getDrawable(R.drawable.bouton4_1));
                 }
                 return false;
             }
