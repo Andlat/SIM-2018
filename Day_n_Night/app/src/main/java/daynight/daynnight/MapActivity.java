@@ -142,7 +142,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
         imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
-        imageViewPersonnage.setVisibility(View.VISIBLE);
         animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         display = getWindowManager().getDefaultDisplay();
@@ -160,7 +159,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
-                    //map.clear();
+                    persoMarker.setVisible(false);
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -177,11 +176,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-                    BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
-                    Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
-                    persoMarker = map.addMarker(new MarkerOptions()
-                            .position(livePos).icon(BitmapDescriptorFactory
-                                    .fromBitmap(smallMarker)));
+                    if(persoMarker == null){
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
+                        persoMarker = map.addMarker(new MarkerOptions()
+                                .position(livePos).icon(BitmapDescriptorFactory
+                                        .fromBitmap(smallMarker)));
+                    }else{
+                        persoMarker.setPosition(livePos);
+                        persoMarker.setVisible(true);
+                    }
+
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
@@ -195,7 +200,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
-                    //map.clear();
+                    persoMarker.setVisible(false);
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
