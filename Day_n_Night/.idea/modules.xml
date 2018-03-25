@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Day_n_Night.iml" filepath="$PROJECT_DIR$/Day_n_Night.iml" />
+      <module fileurl="file://C:\Users\fontaiha\Documents\GitHub\SIM-2018\Day_n_Night\Day_n_Night.iml" filepath="C:\Users\fontaiha\Documents\GitHub\SIM-2018\Day_n_Night\Day_n_Night.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\fontaiha\Documents\GitHub\SIM-2018\Day_n_Night\app\app.iml" filepath="C:\Users\fontaiha\Documents\GitHub\SIM-2018\Day_n_Night\app\app.iml" />
     </modules>
   </component>
 </project>
