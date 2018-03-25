@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private RelativeLayout.LayoutParams layoutParams;
     private int nbrPage;
     private String pageToken;
+    private String[] filters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +154,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
         layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);
+
+        filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", "school", "stadium", "synagogue", "university", "zoo"};
 
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
@@ -289,6 +293,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                         try {
                             do {
+                                Log.d("Request", "Entering page " + nbrPage);
                                 final ExecutorService executor = Executors.newSingleThreadExecutor();
                                 HttpRequest request = null;
                                 try {
@@ -296,7 +301,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                         request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude + ","+livePos.longitude + "&type=point_of_interest&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
 
                                     }else{
-                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + pageToken + "key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
                                     }
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
@@ -310,7 +315,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                 response = future.get();
                                 jsonPOI = new JSONObject(response);
                                 jsonResults = jsonPOI.getJSONArray("results");
-                                Log.d("Request", String.valueOf(jsonResults.length()));
+
+                                Log.d("Request",jsonPOI.toString());
 
                                 //Enregistre tout les position des POI dans le rayon spécifié
                                 for(int i = 0; i < jsonResults.length(); i++){
@@ -330,7 +336,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                                 pageToken = jsonPOI.getString("next_page_token");
                                 nbrPage++;
-                            }while(jsonPOI.getJSONArray("results").length() < 20);
+                                Log.d("Request", pageToken);
+                                Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
+                            }while(jsonPOI.getJSONArray("results").length() == 20);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }catch (InterruptedException | ExecutionException e) {
