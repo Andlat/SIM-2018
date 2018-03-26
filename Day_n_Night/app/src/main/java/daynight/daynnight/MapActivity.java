@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,7 +55,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
+public
+class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -64,6 +66,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private LatLng poiUpdate;
     private float[] distanceFromPoiUpdate;
     private float[] move;
+    private float[] distanceFromPoi;
     private LocationListener locationListener;
     private Button boutonCenter;
     private boolean MAP_CENTREE = true;
@@ -82,6 +85,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private String pageToken;
     private String[] filters;
     private URL url;
+    private MarkerOptions POImarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,9 +347,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                                 jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
 
                                         tempPos = (LatLng) posPOI.get(posPOI.size() - 1);
-                                        map.addMarker(new MarkerOptions()
+                                        map.addMarker(POImarker = new MarkerOptions().title("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
                                                         .fromResource(R.drawable.chest)));
+
                                         Log.d("Request", "json " + k + " " + nbrPage);
                                     }
 
@@ -353,11 +358,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     pageToken = jsonPOI.getString("next_page_token");
                                     nbrPage++;
                                     Log.d("Request", pageToken);
-                                    Log.d("Request", url.getPath());
+                                    Log.d("Request", url.toString());
                                     Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
                                 } while (jsonPOI.getJSONArray("results").length() == 20);
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                Log.d("Request", "Malformed url");
                             } catch (InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
                                 Log.d("Request", "NOPE ça marche pas");
@@ -388,6 +394,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 }
             });
 
+        //Réaction au clique sur un marqueur
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                distanceFromPoi = new float[1];
+                Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi)
+
+                if(marker.getTitle().equals("POI") && distanceFromPoi[0]<100){
+
+                    Toast.makeText(MapActivity.this, "HEHE", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -411,4 +432,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             }
         }
     }
+
 }
