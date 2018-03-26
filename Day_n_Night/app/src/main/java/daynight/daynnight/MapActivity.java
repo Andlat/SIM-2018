@@ -76,7 +76,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private Display display;
     private Point size;
     private Marker persoMarker;
-    private AnimationDrawable animationDrawable1;
+    private AnimationDrawable animationDrawable;
     private JSONObject jsonPOI;
     private JSONArray jsonResults;
     private ArrayList posPOI;
@@ -90,6 +90,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     Intent intent;
     private int modelePerosnage = 1;
     private MarkerOptions POImarker;
+    private BitmapDrawable bitmapDrawable;
+    private Bitmap smallMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +160,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
         imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + modelePerosnage, "drawable", MapActivity.this.getPackageName()));
-        animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
+        animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
+
+        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+        smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
 
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
@@ -183,10 +188,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
-                map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                imageViewPersonnage.setX((Resources.getSystem().getDisplayMetrics().widthPixels/2)-(imageViewPersonnage.getMaxWidth()/2));
-                imageViewPersonnage.setY((Resources.getSystem().getDisplayMetrics().heightPixels/2)-(imageViewPersonnage.getMaxHeight()/2));
-                imageViewPersonnage.setVisibility(View.VISIBLE);
+                if(livePos != null){
+                    map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
+                    imageViewPersonnage.setX((Resources.getSystem().getDisplayMetrics().widthPixels/2)-(imageViewPersonnage.getMaxWidth()/2));
+                    imageViewPersonnage.setY((Resources.getSystem().getDisplayMetrics().heightPixels/2)-(imageViewPersonnage.getMaxHeight()/2));
+                    imageViewPersonnage.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -198,21 +205,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-                    BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
-                    Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     if(livePos != null){
-                        /*persoMarker = map.addMarker(new MarkerOptions()
-                                .position(livePos).icon(BitmapDescriptorFactory
-                                        .fromBitmap(smallMarker)));*/
                         persoMarker.setPosition(livePos);
                         persoMarker.setVisible(true);
                     }
                     else{
-                        if(livePos != null){
-                            persoMarker = map.addMarker(new MarkerOptions()
-                                    .position(livePos).icon(BitmapDescriptorFactory
-                                            .fromBitmap(smallMarker)));
-                        }
+                        persoMarker = map.addMarker(new MarkerOptions()
+                                .position(livePos).icon(BitmapDescriptorFactory
+                                        .fromBitmap(smallMarker)));
                     }
 
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
@@ -220,7 +220,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 else{
                     Log.d("MapMovement", "Cause: Code");
                     imageViewPersonnage.setVisibility(View.VISIBLE);
-                    animationDrawable1.start();
+                    animationDrawable.start();
                 }
             }
         });
@@ -236,7 +236,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
                 }
-                animationDrawable1.stop();
+                animationDrawable.stop();
             }
         });
 
@@ -256,7 +256,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         } catch (Resources.NotFoundException e) {
             Log.e("MapsActivity", "Impossible de trouver le style", e);
         }
-
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
@@ -284,12 +283,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            animationDrawable1.start();
+                            animationDrawable.start();
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            animationDrawable1.stop();
+                            animationDrawable.stop();
                         }
 
                         @Override
@@ -313,9 +312,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
                     if (prevLocation.distanceTo(presentLocation) > 2) {
-
+                        persoMarker.setVisible(false);
                         if(MAP_CENTREE){
-                            //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
 
                         } else{
@@ -323,7 +321,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         }
 
                         Log.d("Location changed", "location changed");
-
                     }
 
                     //Va chercher les coordonnés des poi
@@ -389,8 +386,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                 Log.d("Request", "NOPE ça marche pas");
                             }
                         }
-
-
                         poiUpdate = livePos;
                     }
                     prevPos = livePos;
