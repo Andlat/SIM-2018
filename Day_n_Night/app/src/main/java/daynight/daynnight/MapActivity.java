@@ -419,7 +419,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             public boolean onMarkerClick(Marker marker) {
 
                 distanceFromPoi = new float[1];
-                Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi)
+                Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
 
                 if(marker.getTitle().equals("POI") && distanceFromPoi[0]<100){
 
