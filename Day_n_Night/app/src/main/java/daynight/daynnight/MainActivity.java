@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Musique d'arriere plan
-        backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        /*backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
         backgroundMusique.setLooping(true);
-        backgroundMusique.start();
+        backgroundMusique.start();*/
 
 
         //Bouton jeu de jour
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        backgroundMusique.release();
+        //backgroundMusique.release();
         finish();
     }
 
