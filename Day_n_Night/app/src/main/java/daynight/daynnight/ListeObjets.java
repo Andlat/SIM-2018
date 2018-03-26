@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,11 @@ public class ListeObjets extends Fragment
         //Ajout des objets manuellement
         ArrayList<Objet> transitition = getArguments().getParcelableArrayList("objets");
         for(int j = 0 ; j < transitition.size() ; j++)
+        {
             objets.set(j, transitition.get(j));
+            //Log.e("SEB", objets.get(j).getNom());
+        }
+
 
 
 
@@ -93,6 +98,8 @@ public class ListeObjets extends Fragment
         Bundle bundle = new Bundle();
         bundle.putSerializable("objets", objets);
         fragment.setArguments(bundle);
+
+        //Log.e("SEB", objets.get(1).getNom());
 
         return fragment;
     }

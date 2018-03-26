@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -90,8 +91,15 @@ public class PopupInformationsObjet extends Activity
         acheter.setLayoutParams(paramsAcheter);
 
 
-        objet = new Outil("Seau d'eaux","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
-        //objet = getIntent().getParcelableExtra("objet");
+        //objet = new Outil("Seau d'eaux","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
+        objet = getIntent().getParcelableExtra("objet");
+        objet.setNbCibles(1);
+        objet.setPortee(Outil.Portee.Éloignée);
+        objet.setToucherParCoup(1);
+        Log.e("SEB", objet.getPortee().name());
+        //NE PASSE PAS ICI
+        Log.e("VERIFICATION", "C'est passé!");
+
         caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
         nom = (TextView) findViewById(R.id.nom);
         prix = (TextView) findViewById(R.id.prix);
@@ -131,9 +139,10 @@ public class PopupInformationsObjet extends Activity
     //Méthodes
     public void startActivity(Objet objet, Context context, Boolean objetVendu)
     {
+        Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);
         intent.putExtra("objetVendu", objetVendu);
-        //intent.putExtra("objet", objet); //TODO j'obtiens un erreur sur la valeur de l'enum Portee...
+        intent.putExtra("objet", objet); //TODO j'obtiens un erreur sur la valeur de l'enum Portee...
         context.startActivity(intent);
     }
 }
