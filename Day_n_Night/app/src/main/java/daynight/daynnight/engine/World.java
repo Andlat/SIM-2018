@@ -27,7 +27,7 @@ public class World {
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
     private boolean mArePhysicsOn = false;
 
-    public enum State {SHOWN, HIDDEN}
+    public enum State {VISIBLE, HIDDEN}
 
     public World(){
         //One VertexArrayObject (VAO) per World
@@ -66,13 +66,13 @@ public class World {
     }
 
     public Model getModel(long id_model, State state){
-        return (state == State.SHOWN ? mModels.get(id_model) : mHiddenModels.get(id_model));
+        return (state == State.VISIBLE ? mModels.get(id_model) : mHiddenModels.get(id_model));
     }
 
     @Nullable
     public State getState(long id_model){
         if(mModels.get(id_model) != null)
-            return State.SHOWN;
+            return State.VISIBLE;
         else if(mHiddenModels.get(id_model) != null)
             return State.HIDDEN;
         else
@@ -95,11 +95,15 @@ public class World {
         
     }
 
+    //TODO Use the Specified shaders. For now, it is only using the standard shader
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     public void DrawWorld(){
         final List<Pair<Integer, Integer>> drawOffsets = mVBOMan.getDrawOffsets();
 
-        GLES30.glBinVert
+        GLES30.glBindVertexArray(mVAO[0]);
+
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+
         for(Pair<Integer, Integer> offset : drawOffsets) {
             Log.e("DRAW WORLD PAIR", "Pair: " + offset.first + ", " + offset.second);
             GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second/4);

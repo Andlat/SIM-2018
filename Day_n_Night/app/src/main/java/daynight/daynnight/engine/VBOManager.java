@@ -34,6 +34,9 @@ class VBOManager {
     private float mVBOSizeInMB = .5f;
     private final static float VBO_SIZE_JUMP_MB = .5f;
 
+    //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.
+    private final static int VERTEX_ATTRIB = 0, UV_ATTRIB = 1, NORMAL_ATTRIB = 2;
+
     /**
      * List<Pair<Offset in VBO, Data size in bytes>>
      */
@@ -122,7 +125,20 @@ class VBOManager {
 
         mVBOData.position(0);
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mVBOData.capacity()*4, mVBOData, GLES30.GL_DYNAMIC_DRAW);
+
+        CreateAttribs();
     }
+
+    //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.
+    private void CreateAttribs(){
+        GLES30.glVertexAttribPointer(VERTEX_ATTRIB, 3, GLES30.GL_FLOAT, false, 3*4, 0);
+        ActivateAttribs();//TODO Remove this and put it somewhere where it makes sense. This is only temporary for debugging.
+    }
+
+    void ActivateAttribs(){
+        GLES30.glEnableVertexAttribArray(VERTEX_ATTRIB);
+    }
+    //TODO Make a DisableAttribs function with glDisableVertexAttrib calls.
 
     private void CheckSizeForIncrease(int newDataSizeInBytes){
         if(mDataSizeInBytes + newDataSizeInBytes > mVBOData.capacity()*4) {

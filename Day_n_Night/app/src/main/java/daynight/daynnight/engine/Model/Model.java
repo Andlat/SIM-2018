@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
  */
 
 public class Model {
-    private static long NxtModelID = 0;//Static variable incremented when a new Model is created
+    private static long NxtModelID = 1;//Static variable incremented when a new Model is created
     private long mWorldVBOOffset = -1;//TODO Check usage. How to create a big world VBO, and modify it at runtime if needed? (Like if I want to add or remove objects at runtime)
 
     private Shader mShader;

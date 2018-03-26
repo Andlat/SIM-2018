@@ -1,7 +1,6 @@
 package daynight.daynnight;
 
 import android.content.Context;
-import android.opengl.GLES30;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -43,6 +42,7 @@ class Game extends GameView {
 
     @Override
     protected void onCreate() {
+        Log.e("111", "11111111");
         super.onCreate();
 
         World world = new World();
@@ -59,9 +59,7 @@ class Game extends GameView {
         try{
             basicShader.Compile()
                     .Link()
-                    .DeleteShaders()
-                    .Use();
-
+                    .DeleteShaders();
         }catch(Shader.Exception ex){
             Log.e("SHADER EXCEPTION", ex.getMessage());
         }
@@ -88,6 +86,8 @@ class Game extends GameView {
 
     @Override
     protected void onDrawFrame(World world) {
+        Log.e("222", "22222222");
+        world.getModel(mHeroID, World.State.VISIBLE).getShader().Use();//Use the shader of the hero. //TODO This is only temp. Shader should be used for each model when drawing. For now, only using this basic shader
         super.onDrawFrame(world);
     }
 }

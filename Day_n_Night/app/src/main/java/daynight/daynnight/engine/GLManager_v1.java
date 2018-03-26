@@ -11,6 +11,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 //import daynight.daynnight.engine.Model.Shader;
+import daynight.daynnight.engine.Model.Shader;
 import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec3;
 
@@ -37,12 +38,13 @@ public class GLManager_v1 {
     public static class GLRenderer implements GLSurfaceView.Renderer{
         private int[] VAO = new int[1], VBO = new int[1];
         private Geometry.Triangle tri = new Geometry.Triangle();//Create the triangle
-        private MVP mMVP;
-        //private Shader mShader;
+        //private MVP mMVP;
+        private Shader mShader;
 
-        private Mat4 mMat4Identity = new Mat4(1.f),
+        /*private Mat4 mMat4Identity = new Mat4(1.f),
                     mMat4Projection = new Mat4(),
                     mMath4Camera;
+        */
 
         private Context mContext;
         public GLRenderer(Context context){
@@ -53,7 +55,7 @@ public class GLManager_v1 {
         public void onSurfaceCreated(GL10 unused, EGLConfig config){
             GLES30.glClearColor(50.f, 50.f, 0.f, 1.f);
 
-          /*  //Create the shader
+            //Create the shader
             mShader = new Shader(mContext);
 
             try {//Load the mShader files
@@ -71,7 +73,7 @@ public class GLManager_v1 {
             }catch(Shader.Exception ex){
                 Log.e("SHADER EXCEPTION", ex.getMessage());
             }
-*/
+
             GLES30.glGenVertexArrays(1, VAO, 0);
             GLES30.glBindVertexArray(VAO[0]);
 
@@ -89,11 +91,12 @@ public class GLManager_v1 {
             GLES30.glViewport(0, 0, width, height);
 
             //Set the mvp with a perspective of 45 degrees
+            /*
             mMVP = new MVP((float)width  / (float)height);
             mMVP.getCamera().setEye(new Vec3(0, 0, -4))
                             .setCenter(new Vec3(0, 0, 0))
                             .setUp(new Vec3(0, 0, 1));
-
+            */
             //int mvp_shaderLoc = GLES30.glGetUniformLocation(mShader.getProgram(), "MVP");
             //GLES30.glUniformMatrix4fv(mvp_shaderLoc, 1, false, mMVP.get().toArray(), 0);
         }
