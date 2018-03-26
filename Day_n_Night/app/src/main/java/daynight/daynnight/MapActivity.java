@@ -43,6 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -51,7 +54,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -75,6 +78,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ArrayList posPOI;
     private LatLng tempPos;
     private RelativeLayout.LayoutParams layoutParams;
+    private int nbrPage;
+    private String pageToken;
+    private String[] filters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +144,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
         imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
-        imageViewPersonnage.setVisibility(View.INVISIBLE);
         animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         display = getWindowManager().getDefaultDisplay();
@@ -149,6 +154,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
         layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);
 
+        filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", "school", "stadium", "synagogue", "university", "zoo"};
+
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
         boutonCenter.setVisibility(View.INVISIBLE);
@@ -156,8 +163,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
+<<<<<<< HEAD
                     persoMarker.remove();
                     persoMarker = null;
+=======
+                    persoMarker.setVisible(false);
+>>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -176,6 +187,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     if(livePos != null){
@@ -183,6 +195,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                 .position(livePos).icon(BitmapDescriptorFactory
                                         .fromBitmap(smallMarker)));
                     }
+=======
+                    if(persoMarker == null){
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
+                        persoMarker = map.addMarker(new MarkerOptions()
+                                .position(livePos).icon(BitmapDescriptorFactory
+                                        .fromBitmap(smallMarker)));
+                    }else{
+                        persoMarker.setPosition(livePos);
+                        persoMarker.setVisible(true);
+                    }
+
+>>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
@@ -197,8 +222,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
+<<<<<<< HEAD
                     persoMarker.remove();
                     persoMarker = null;
+=======
+                    persoMarker.setVisible(false);
+>>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
@@ -276,46 +305,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             //map.clear();
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
 
-                            //Va chercher les coordonnés des poi dans un rayon de 50km
-                            Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                            if(distanceFromPoiUpdate[0] > 20000){
-                                final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-                                final HttpRequest request = new HttpRequest();
-                                final FutureTask<String> future = new FutureTask<>(request);
-
-                                executor.execute(future);
-                                String response = null;
-
-                                try {
-                                    jsonPOI = null;
-                                    response = future.get();
-                                    jsonPOI = new JSONObject(response);
-                                    //poiUpdate = livePos;
-                                    jsonResults = jsonPOI.getJSONArray("results");
-
-                                    //Enregistre tout les position des POI dans le rayon spécifié
-                                    for(int i = 0; i < jsonResults.length(); i++){
-
-                                        posPOI.add(new LatLng(jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                                jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
-
-                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
-                                        map.addMarker(new MarkerOptions()
-                                                .position(tempPos).icon(BitmapDescriptorFactory
-                                                        .fromResource(R.drawable.chest)));
-                                    }
-
-
-                                    Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
-                                } catch (InterruptedException | ExecutionException e) {
-                                    e.printStackTrace();
-                                    Log.d("Request", "NOPE ça marche pas");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
                         } else{
                             translateAnimation.start();
                         }
@@ -323,7 +312,76 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         Log.d("Location changed", "location changed");
 
                     }
-                        prevPos = livePos;
+
+                    //Va chercher les coordonnés des poi dans un rayon de 50km
+                    Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
+                    if(distanceFromPoiUpdate[0] > 20000){
+
+
+
+                        for(int i = 0; i < filters.length; i++){
+                            nbrPage = 0;
+                            try {
+                                do {
+                                    Log.d("Request", "Entering page " + nbrPage);
+                                    final ExecutorService executor = Executors.newSingleThreadExecutor();
+                                    HttpRequest request = null;
+                                    try {
+                                        if(nbrPage == 0){
+                                            request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude + ","+livePos.longitude + "&type=" + filters[i] + "&rankby=distance&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+
+                                        }else{
+                                            request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                                        }
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    final FutureTask<String> future = new FutureTask<>(request);
+
+                                    executor.execute(future);
+                                    String response = null;
+
+                                    response = future.get();
+                                    jsonPOI = new JSONObject(response);
+                                    jsonResults = jsonPOI.getJSONArray("results");
+
+                                    Log.d("Request",jsonPOI.toString());
+
+                                    //Enregistre tout les position des POI dans le rayon spécifié
+                                    for(int k = 0; k < jsonResults.length(); k++){
+
+                                        posPOI.add(new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+
+                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
+                                        map.addMarker(new MarkerOptions()
+                                                .position(tempPos).icon(BitmapDescriptorFactory
+                                                        .fromResource(R.drawable.chest)));
+                                        Log.d("Request","jso " + k + " " + nbrPage);
+                                    }
+
+
+                                    //Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
+
+                                    pageToken = jsonPOI.getString("next_page_token");
+                                    nbrPage++;
+                                    Log.d("Request", pageToken);
+                                    Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
+                                }while(jsonPOI.getJSONArray("results").length() == 20);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                                Log.d("Request", "NOPE ça marche pas");
+                            }
+                        }
+
+
+                        poiUpdate = livePos;
+                    }
+
+                    prevPos = livePos;
                 }
 
                 @Override
@@ -342,22 +400,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-        map.setOnPoiClickListener(this);
-    }
 
-
-    /**
-     * Réaction au clique d'un POI
-     * @param poi   Le POI qui a été cliqué
-     */
-    @Override
-    public void onPoiClick(PointOfInterest poi) {
-
-        float[] distancePOI = new float[1];
-
-        Toast.makeText(getApplicationContext(), "BISCUIT!!!!!!", Toast.LENGTH_SHORT).show();
-        Location.distanceBetween(livePos.latitude, livePos.longitude, poi.latLng.latitude, poi.latLng.longitude, distancePOI);
-        Log.d("Distance", String.valueOf(distancePOI[0]));
     }
 
     /**

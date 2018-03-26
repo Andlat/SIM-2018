@@ -29,10 +29,10 @@ public class Boutique extends AppCompatActivity
         setContentView(R.layout.layout_boutique);
 
 
-        adapteur = new AdapteurArrayBoutique(this, 0, nomObjets);
+        //adapteur = new AdapteurArrayBoutique(this, 0, nomObjets);
 
-        GridView gridView = (GridView) findViewById(R.id.boutique);
-        gridView.setAdapter(adapteur);
+        //GridView gridView = (GridView) findViewById(R.id.boutique);
+        //gridView.setAdapter(adapteur);
 
 
         //Attribuer
@@ -53,13 +53,13 @@ public class Boutique extends AppCompatActivity
                 finish();
             }
         });
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 //TODO
             }
-        });
+        });*/
     }
 
     //custom ArrayAdapter

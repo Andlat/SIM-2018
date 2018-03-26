@@ -21,11 +21,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         boutonOk.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    boutonOk.setBackground(getDrawable(R.drawable.bouton1_2));
-                }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    boutonOk.setBackground(getDrawable(R.drawable.bouton1_1));
-                }
                 return false;
             }
         });
@@ -33,7 +28,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         boutonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boutonOk.setBackground(getDrawable(R.drawable.bouton1_2));
             }
         });
     }
