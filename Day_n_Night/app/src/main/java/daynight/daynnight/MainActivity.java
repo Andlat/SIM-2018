@@ -9,16 +9,17 @@ import android.media.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
 
-    MediaPlayer backgroundMusique;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //Musique d'arriere plan
-        //backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        //backgroundMusique.setLooping(true);
-        //backgroundMusique.start();
+        /*backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        backgroundMusique.setLooping(true);
+        backgroundMusique.start();*/
+        Musique musique = new Musique();
+        musique.startMusic(getApplicationContext());
 
 
         //Bouton jeu de jour

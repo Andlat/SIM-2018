@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -43,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -55,8 +57,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 
-public
-class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private static final int LOCALISATION_REQUEST = 1;
     private GoogleMap map;
@@ -84,7 +85,10 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private int nbrPage;
     private String pageToken;
     private String[] filters;
+    private String directionRegardee = "droite";
     private URL url;
+    Intent intent;
+    private int modelePerosnage = 1;
     private MarkerOptions POImarker;
 
     @Override
@@ -92,6 +96,11 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        try {
+            intent = getIntent();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Si la permission de localisation n'est pas donné une fenêtre la demande
         if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -148,7 +157,7 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
-        imageViewPersonnage.setBackgroundResource(R.drawable.mapcharacteranimation1);
+        imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + modelePerosnage, "drawable", MapActivity.this.getPackageName()));
         animationDrawable1 = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         display = getWindowManager().getDefaultDisplay();
@@ -199,9 +208,11 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
                         persoMarker.setVisible(true);
                     }
                     else{
-                        persoMarker = map.addMarker(new MarkerOptions()
-                                .position(livePos).icon(BitmapDescriptorFactory
-                                        .fromBitmap(smallMarker)));
+                        if(livePos != null){
+                            persoMarker = map.addMarker(new MarkerOptions()
+                                    .position(livePos).icon(BitmapDescriptorFactory
+                                            .fromBitmap(smallMarker)));
+                        }
                     }
 
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
@@ -254,6 +265,15 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
+                    if(prevPos != null){
+                        if(livePos.longitude - prevPos.longitude < 0 && directionRegardee == "droite"){
+                            imageViewPersonnage.setScaleX(-1);
+                            directionRegardee = "gauche";
+                        }else if(livePos.longitude - prevPos.longitude > 0 && directionRegardee == "gauche"){
+                            imageViewPersonnage.setScaleX(1);
+                            directionRegardee = "droite";
+                        }
+                    }
                     translateAnimation = new TranslateAnimation(0,
                             map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                             0,
@@ -373,7 +393,6 @@ class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
                         poiUpdate = livePos;
                     }
-
                     prevPos = livePos;
                 }
 
