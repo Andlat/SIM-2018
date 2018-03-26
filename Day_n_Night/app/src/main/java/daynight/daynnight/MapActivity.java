@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private RelativeLayout.LayoutParams layoutParams;
     private int nbrPage;
     private String pageToken;
+    private String[] filters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +153,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
         layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);
+
+        filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", "school", "stadium", "synagogue", "university", "zoo"};
 
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
@@ -289,62 +293,69 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     //Va chercher les coordonnés des poi dans un rayon de 50km
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                     if(distanceFromPoiUpdate[0] > 20000){
-                        nbrPage = 0;
 
 
-                        try {
-                            do {
-                                final ExecutorService executor = Executors.newSingleThreadExecutor();
-                                HttpRequest request = null;
-                                try {
-                                    if(nbrPage == 0){
-                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude + ","+livePos.longitude + "&type=point_of_interest&radius=50000&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
 
-                                    }else{
-                                        request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + pageToken + "key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                        for(int i = 0; i < filters.length; i++){
+                            nbrPage = 0;
+                            try {
+                                do {
+                                    Log.d("Request", "Entering page " + nbrPage);
+                                    final ExecutorService executor = Executors.newSingleThreadExecutor();
+                                    HttpRequest request = null;
+                                    try {
+                                        if(nbrPage == 0){
+                                            request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ livePos.latitude + ","+livePos.longitude + "&type=" + filters[i] + "&rankby=distance&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+
+                                        }else{
+                                            request = new HttpRequest(new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
+                                        }
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                }
 
-                                final FutureTask<String> future = new FutureTask<>(request);
+                                    final FutureTask<String> future = new FutureTask<>(request);
 
-                                executor.execute(future);
-                                String response = null;
+                                    executor.execute(future);
+                                    String response = null;
 
-                                response = future.get();
-                                jsonPOI = new JSONObject(response);
-                                jsonResults = jsonPOI.getJSONArray("results");
-                                Log.d("Request", String.valueOf(jsonResults.length()));
+                                    response = future.get();
+                                    jsonPOI = new JSONObject(response);
+                                    jsonResults = jsonPOI.getJSONArray("results");
 
-                                //Enregistre tout les position des POI dans le rayon spécifié
-                                for(int i = 0; i < jsonResults.length(); i++){
+                                    Log.d("Request",jsonPOI.toString());
 
-                                    posPOI.add(new LatLng(jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                            jsonResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+                                    //Enregistre tout les position des POI dans le rayon spécifié
+                                    for(int k = 0; k < jsonResults.length(); k++){
 
-                                    tempPos = (LatLng) posPOI.get(posPOI.size()-1);
-                                    map.addMarker(new MarkerOptions()
-                                            .position(tempPos).icon(BitmapDescriptorFactory
-                                                    .fromResource(R.drawable.chest)));
-                                    Log.d("Request","jso " + i + " " + nbrPage);
-                                }
+                                        posPOI.add(new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+
+                                        tempPos = (LatLng) posPOI.get(posPOI.size()-1);
+                                        map.addMarker(new MarkerOptions()
+                                                .position(tempPos).icon(BitmapDescriptorFactory
+                                                        .fromResource(R.drawable.chest)));
+                                        Log.d("Request","jso " + k + " " + nbrPage);
+                                    }
 
 
-                                //Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
+                                    //Log.d("Request", jsonResults.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").toString());
 
-                                pageToken = jsonPOI.getString("next_page_token");
-                                nbrPage++;
-                            }while(jsonPOI.getJSONArray("results").length() < 20);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                            Log.d("Request", "NOPE ça marche pas");
+                                    pageToken = jsonPOI.getString("next_page_token");
+                                    nbrPage++;
+                                    Log.d("Request", pageToken);
+                                    Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
+                                }while(jsonPOI.getJSONArray("results").length() == 20);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                                Log.d("Request", "NOPE ça marche pas");
+                            }
                         }
 
 
-                        //poiUpdate = livePos;
+                        poiUpdate = livePos;
                     }
 
                     prevPos = livePos;
