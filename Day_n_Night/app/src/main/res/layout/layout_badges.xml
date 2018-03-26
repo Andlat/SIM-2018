@@ -13,10 +13,9 @@
 
     <Button
         android:id="@+id/retour"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:background="@drawable/ic_keyboard_backspace_black_24dp"
-        android:backgroundTint="@color/beigeFonce"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/retourgauche1" />
 
 
     <ListView

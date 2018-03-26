@@ -4,151 +4,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="daynight.daynnight.SettingsActivity"
-    android:padding="@dimen/activity_padding">
-
-    <TextView
-        android:id="@+id/sa_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bungee"
-        android:text="@string/sa_title"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/sa_volume"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
-
-    <TextView
-        android:id="@+id/sa_volume"
-        android:layout_width="133dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/black_border"
-        android:drawableEnd="@drawable/ic_volume_up_24dp"
-        android:fontFamily="@font/bungee"
-        android:padding="@dimen/border_padding"
-        android:text="@string/sa_volume"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textSize="@dimen/default_button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sa_title" />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="202dp"
-        android:layout_height="23dp"
-        tools:layout_editor_absoluteX="78dp"
-        tools:layout_editor_absoluteY="141dp" />
-
-    <TextView
-        android:id="@+id/sa_music"
-        android:layout_width="@dimen/sa_option_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/black_border"
-        android:drawableEnd="@drawable/ic_music_note_24dp"
-        android:fontFamily="@font/bungee"
-        android:padding="@dimen/border_padding"
-        android:text="@string/sa_music"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
-
-    <SeekBar
-        android:id="@+id/seekBar2"
-        android:layout_width="202dp"
-        android:layout_height="23dp"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="282dp" />
-
-    <TextView
-        android:id="@+id/sa_avatar"
-        android:layout_width="@dimen/sa_option_width"
-        android:layout_height="33dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/black_border"
-        android:fontFamily="@font/bungee"
-        android:padding="@dimen/border_padding"
-        android:text="@string/sa_character"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textSize="@dimen/default_button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/sa_language"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
-
-    <TextView
-        android:id="@+id/sa_language"
-        android:layout_width="@dimen/sa_option_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/black_border"
-        android:fontFamily="@font/bungee"
-        android:padding="@dimen/border_padding"
-        android:text="@string/sa_language"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textSize="@dimen/default_button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sa_avatar" />
+    android:background="@color/beige"
+    android:padding="@dimen/activity_padding"
+    tools:context="daynight.daynnight.SettingsActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="399dp">
+        tools:layout_editor_absoluteY="15dp">
 
-        <Button
-            android:id="@+id/buttonFrancais"
-            android:layout_width="104dp"
+        <TextView
+            android:id="@+id/sa_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/style_button_ripple_coin"
             android:fontFamily="@font/bungee"
-            android:text="Français"
-            android:textColor="@color/common_google_signin_btn_text_light_default" />
+            android:text="@string/sa_title"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/sa_volume"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
             app:srcCompat="@android:color/transparent" />
 
-        <Button
-            android:id="@+id/buttonAnglais"
-            android:layout_width="114dp"
+        <TextView
+            android:id="@+id/sa_volume"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/style_button_ripple_coin"
+            android:layout_marginBottom="8dp"
+            android:drawableEnd="@drawable/ic_volume_up_24dp"
             android:fontFamily="@font/bungee"
-            android:text="English"
-            android:textColor="@color/common_google_signin_btn_text_light_default" />
+            android:padding="@dimen/border_padding"
+            android:text="@string/sa_volume"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="@dimen/default_button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sa_title" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="200dp"
+            android:layout_height="23dp"
+            tools:layout_editor_absoluteX="78dp"
+            tools:layout_editor_absoluteY="141dp" />
+
+        <TextView
+            android:id="@+id/sa_music"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ic_music_note_24dp"
+            android:fontFamily="@font/bungee"
+            android:padding="@dimen/border_padding"
+            android:text="@string/sa_music"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="200dp"
+            android:layout_height="23dp"
+            tools:layout_editor_absoluteX="77dp"
+            tools:layout_editor_absoluteY="282dp" />
+
+        <TextView
+            android:id="@+id/sa_avatar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bouton_normal"
+            android:fontFamily="@font/bungee"
+            android:padding="@dimen/border_padding"
+            android:text="@string/sa_character"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="@dimen/default_button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/sa_language"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="11dp"
+            app:srcCompat="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/sa_title2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee"
+            android:text="Language"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/sa_volume"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="399dp">
+
+            <Button
+                android:id="@+id/buttonFrancais"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/style_button_ripple_coin"
+                android:fontFamily="@font/bungee"
+                android:text="Français"
+                android:textColor="@color/common_google_signin_btn_text_light_default" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                app:srcCompat="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/buttonAnglais"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/style_button_ripple_coin"
+                android:fontFamily="@font/bungee"
+                android:text="English"
+                android:textColor="@color/common_google_signin_btn_text_light_default" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonOK"
         android:layout_width="150dp"
-        android:layout_height="71dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/style_button_ripple_coin"
         android:fontFamily="@font/bungee"
