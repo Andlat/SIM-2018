@@ -42,9 +42,6 @@ class Game extends GameView {
 
     @Override
     protected void onCreate() {
-        Log.e("111", "11111111");
-        super.onCreate();
-
         World world = new World();
         world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
@@ -86,8 +83,6 @@ class Game extends GameView {
 
     @Override
     protected void onDrawFrame(World world) {
-        Log.e("222", "22222222");
         world.getModel(mHeroID, World.State.VISIBLE).getShader().Use();//Use the shader of the hero. //TODO This is only temp. Shader should be used for each model when drawing. For now, only using this basic shader
-        super.onDrawFrame(world);
     }
 }

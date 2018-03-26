@@ -21,7 +21,7 @@ import daynight.daynnight.engine.Model.Shader;
  * Created by andlat on 2018-02-17.
  */
 
-public class GameView extends GLSurfaceView {
+public abstract class GameView extends GLSurfaceView {
     private Context mContext;
 
     private World mWorld;
@@ -50,20 +50,21 @@ public class GameView extends GLSurfaceView {
 
     public void UseWorld(World world){ Log.e("EEE", "WORLD");mWorld = world; }
 
-    protected void onCreate(){
-    }
+    abstract protected void onCreate();
 
-    protected void onDrawFrame(World world){
-        world.DrawWorld();
-    }
+    /**
+     * Function qui est appelée juste avant que la frame se fasse dessiner
+     * @param world World qui est utilisé
+     */
+    abstract protected void onDrawFrame(World world);
 
     private class Renderer implements GLSurfaceView.Renderer{
-        int[] vao=new int[1], vbo=new int[1];
+        //int[] vao=new int[1], vbo=new int[1];
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             GameView.this.onCreate();
-            GLES30.glClearColor(50.f, 50.f, 0.f, 1.f);
+            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//Black background
 
             /*
             GLES30.glClearColor(50.f, 50.f, 0.f, 1.f);
@@ -116,9 +117,12 @@ public class GameView extends GLSurfaceView {
 
         @Override
         public void onDrawFrame(GL10 gl) {
-            Log.e("FUCK ?", "W: " + mWorld);
-            GameView.this.onDrawFrame(mWorld);
-
+            try {
+                GameView.this.onDrawFrame(mWorld);
+                mWorld.DrawWorld();
+            }catch(NullPointerException ex){
+                Log.e("World is null", "World is null: " + mWorld); //TODO Handle this exception. World to use wasn't set
+            }
             /*
             GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
