@@ -163,12 +163,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
-<<<<<<< HEAD
                     persoMarker.remove();
                     persoMarker = null;
-=======
                     persoMarker.setVisible(false);
->>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
@@ -187,27 +184,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
-<<<<<<< HEAD
                     BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
                     Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
                     if(livePos != null){
-                        persoMarker = map.addMarker(new MarkerOptions()
+                        /*persoMarker = map.addMarker(new MarkerOptions()
                                 .position(livePos).icon(BitmapDescriptorFactory
-                                        .fromBitmap(smallMarker)));
-                    }
-=======
-                    if(persoMarker == null){
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
-                        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
-                        persoMarker = map.addMarker(new MarkerOptions()
-                                .position(livePos).icon(BitmapDescriptorFactory
-                                        .fromBitmap(smallMarker)));
-                    }else{
+                                        .fromBitmap(smallMarker)));*/
                         persoMarker.setPosition(livePos);
                         persoMarker.setVisible(true);
                     }
+                    else{
+                        persoMarker = map.addMarker(new MarkerOptions()
+                                .position(livePos).icon(BitmapDescriptorFactory
+                                        .fromBitmap(smallMarker)));
+                    }
 
->>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
@@ -222,12 +213,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
-<<<<<<< HEAD
                     persoMarker.remove();
                     persoMarker = null;
-=======
                     persoMarker.setVisible(false);
->>>>>>> 52e0e702e89459d30632bc81358dc65a476cf885
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
                     imageViewPersonnage.setVisibility(View.VISIBLE);
