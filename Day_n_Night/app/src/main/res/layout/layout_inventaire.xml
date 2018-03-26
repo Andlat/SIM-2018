@@ -15,12 +15,14 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabObjets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/beigePaleBouton" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/beigePaleBouton" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +45,6 @@
         android:id="@+id/boutique"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@drawable/layout_biscuit_boutique"
-        android:src="@drawable/objet_boutique_biscuit" />
+        android:background="@drawable/panier1" />
 
 </android.support.design.widget.CoordinatorLayout>
