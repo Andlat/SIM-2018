@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -139,11 +140,11 @@ public class Inventaire extends AppCompatActivity
                 case 0:
                     return newInstance(outils);
                 case 1:
-                    return newInstance(outils);
+                    return newInstance(skins);
                 case 2:
-                    return newInstance(outils);
+                    return newInstance(decorations);
                 default:
-                    return newInstance(outils);
+                    return null;
             }
         }
 
