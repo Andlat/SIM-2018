@@ -162,7 +162,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + modelePerosnage, "drawable", MapActivity.this.getPackageName()));
         animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
 
-        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.arthur1_1);
+        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(getResources().getIdentifier("arthur" + modelePerosnage + "_1", "drawable", MapActivity.this.getPackageName()));
+
         smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
 
         display = getWindowManager().getDefaultDisplay();
@@ -182,16 +183,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 if(persoMarker != null){
-                    persoMarker.remove();
-                    persoMarker = null;
                     persoMarker.setVisible(false);
                 }
                 MAP_CENTREE = true;
                 boutonCenter.setVisibility(View.INVISIBLE);
                 if(livePos != null){
                     map.moveCamera(CameraUpdateFactory.newLatLng(livePos));
-                    imageViewPersonnage.setX((Resources.getSystem().getDisplayMetrics().widthPixels/2)-(imageViewPersonnage.getMaxWidth()/2));
-                    imageViewPersonnage.setY((Resources.getSystem().getDisplayMetrics().heightPixels/2)-(imageViewPersonnage.getMaxHeight()/2));
+                    //imageViewPersonnage.setScaleType(ImageView.ScaleType.CENTER);
+                    imageViewPersonnage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    //imageViewPersonnage.setX((Resources.getSystem().getDisplayMetrics().widthPixels/2)-(imageViewPersonnage.getMaxWidth()/2));
+                    //imageViewPersonnage.setY((Resources.getSystem().getDisplayMetrics().heightPixels/2)-(imageViewPersonnage.getMaxHeight()/2));
                     imageViewPersonnage.setVisibility(View.VISIBLE);
                 }
             }
@@ -202,10 +203,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             public void onCameraMoveStarted(int reason) {
                 if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
                     Log.d("MapMovement", "Cause: Gesture");
+                    imageViewPersonnage.setVisibility(View.INVISIBLE);
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
                     if(livePos != null){
+                        if(persoMarker == null){
+                            persoMarker = map.addMarker(new MarkerOptions()
+                                    .position(livePos).icon(BitmapDescriptorFactory
+                                            .fromBitmap(smallMarker)));
+                        }
                         persoMarker.setPosition(livePos);
                         persoMarker.setVisible(true);
                     }
@@ -214,8 +221,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                 .position(livePos).icon(BitmapDescriptorFactory
                                         .fromBitmap(smallMarker)));
                     }
-
-                    imageViewPersonnage.setVisibility(View.INVISIBLE);
                 }
                 else{
                     Log.d("MapMovement", "Cause: Code");
@@ -229,8 +234,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onCameraIdle() {
                 if(persoMarker != null){
-                    persoMarker.remove();
-                    persoMarker = null;
                     persoMarker.setVisible(false);
                     imageViewPersonnage.setX(map.getProjection().toScreenLocation(livePos).x);
                     imageViewPersonnage.setY(map.getProjection().toScreenLocation(livePos).y);
@@ -264,38 +267,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
-                    if(prevPos != null){
-                        if(livePos.longitude - prevPos.longitude < 0 && directionRegardee == "droite"){
+                    if(prevPos != null && livePos != null){
+                        //if(livePos.longitude - prevPos.longitude < 0 && directionRegardee == "droite"){
+                        if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x < 0 && directionRegardee == "droite"){
+                            int i= map.getProjection().toScreenLocation(livePos).x;
                             imageViewPersonnage.setScaleX(-1);
                             directionRegardee = "gauche";
-                        }else if(livePos.longitude - prevPos.longitude > 0 && directionRegardee == "gauche"){
+                        }else if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x > 0 && directionRegardee == "gauche"){
                             imageViewPersonnage.setScaleX(1);
                             directionRegardee = "droite";
                         }
                     }
-                    translateAnimation = new TranslateAnimation(0,
-                            map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
-                            0,
-                            map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getX());
-                    translateAnimation.setRepeatCount(1);
-                    translateAnimation.setFillAfter(true);
-                    imageViewPersonnage.setAnimation(translateAnimation);
-                    translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            animationDrawable.start();
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animationDrawable.stop();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
 
                     Log.d("POS", livePos.toString());
                     //Distance entre la position actuelle et la dernière actualisation
@@ -312,12 +294,43 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
                     if (prevLocation.distanceTo(presentLocation) > 2) {
-                        persoMarker.setVisible(false);
+                        if(persoMarker!= null){
+                            persoMarker.setVisible(false);
+                        }
                         if(MAP_CENTREE){
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
 
                         } else{
-                            translateAnimation.start();
+                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
+                                    map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
+                                    imageViewPersonnage.getY(),
+                                    map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
+                            translateAnimation.setRepeatCount(0);
+                            //translateAnimation.setFillBefore(true);
+                            translateAnimation.setFillAfter(true);
+                            translateAnimation.setDuration(5000);
+                            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    imageViewPersonnage.setVisibility(View.VISIBLE);
+                                    animationDrawable.start();
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    animationDrawable.stop();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+                                    //translateAnimation.cancel();
+                                    //animation.cancel();
+                                    imageViewPersonnage.clearAnimation();
+                                }
+                            });
+                            imageViewPersonnage.setAnimation(translateAnimation);
+                            imageViewPersonnage.startAnimation(translateAnimation);
+                            //translateAnimation.start();
                         }
 
                         Log.d("Location changed", "location changed");
