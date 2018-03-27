@@ -50,11 +50,14 @@ public class ListeBadges extends AppCompatActivity
         Date c = Calendar.getInstance().getTime();
         badges.add(new Badge("objet_badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("objet_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_lune","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_cookie_monster","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_bibliotheque","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("objet_badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
         badges.add(new Badge("objet_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("objet_badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("objet_badge_feu_foret","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
-        badges.add(new Badge("objet_badge_montagnes","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_lune","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_cookie_monster","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
+        badges.add(new Badge("objet_badge_bibliotheque","Quillorama, Marieville, Qc, Ca",c,"Divertissement"));
 
         retour.setOnClickListener(new View.OnClickListener()
         {

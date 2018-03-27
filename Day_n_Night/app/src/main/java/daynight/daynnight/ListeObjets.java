@@ -24,7 +24,7 @@ public class ListeObjets extends Fragment
 {
     //Variables
     GridView gridView;
-    ArrayList<Objet> objets = new ArrayList<>();
+    ArrayList<Outil> objets = new ArrayList<>();
     static AdapteurArrayInventaire adapteur;
     PopupInformationsObjet infosObjetInventaire;
 
@@ -48,10 +48,10 @@ public class ListeObjets extends Fragment
 
         //Ajout d'e cases vides
         for(int j = 0 ; j < 48 ; j++)
-            objets.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Outil.Portee.Nulle, 0, 0, 0, ""));
+            objets.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.",Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, ""));
 
         //Ajout des objets manuellement
-        ArrayList<Objet> transitition = getArguments().getParcelableArrayList("objets");
+        ArrayList<Outil> transitition = getArguments().getParcelableArrayList("objets");
         for(int j = 0 ; j < transitition.size() ; j++)
             objets.set(j, transitition.get(j));
 
@@ -77,7 +77,7 @@ public class ListeObjets extends Fragment
     }
 
     //Méthodes
-    public static ListeObjets newInstance(ArrayList<Objet> objets)
+    public static ListeObjets newInstance(ArrayList<Outil> objets)
     {
         ListeObjets fragment = new ListeObjets();
         Bundle bundle = new Bundle();
@@ -90,13 +90,13 @@ public class ListeObjets extends Fragment
     }
 
     //custom ArrayAdapter
-    class AdapteurArrayInventaire extends ArrayAdapter<Objet>
+    class AdapteurArrayInventaire extends ArrayAdapter<Outil>
     {
         private Context context;
         private int layout;
-        private List<Objet> objets;
+        private List<Outil> objets;
 
-        public AdapteurArrayInventaire(Context context, int resource, ArrayList<Objet> objects)
+        public AdapteurArrayInventaire(Context context, int resource, ArrayList<Outil> objects)
         {
             super(context, resource, objects);
 

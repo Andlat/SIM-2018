@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class PopupInformationsObjet extends Activity
 {
     //Variables
-    Objet objet;
+    Outil objet;
     Boolean objetVendu; //Boutique ou Inventaire
     RelativeLayout boutons;
     Button fermer;
@@ -98,11 +98,11 @@ public class PopupInformationsObjet extends Activity
         nom.setText(objet.getNom());
         prix.setText(String.valueOf(objet.getPrix()));
         description.setText(objet.getDescription());
-        //portee.setText(getString(R.string.portee, String.valueOf(objet.getPortee())));
-        //nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles())); //TODO :p
-        //toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
+        portee.setText(getString(R.string.portee, String.valueOf(objet.getPortee())));
+        nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles()));
+        toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
-        if (objet.getType() == null) {}
+        if (objet.getType().equals(Objet.Type.Nul)) {}
         else if(objet.getType().equals(Objet.Type.Outil))
         {
             caracteristiquesOutil.setVisibility(View.VISIBLE);
@@ -125,7 +125,7 @@ public class PopupInformationsObjet extends Activity
     //Getteurs & setteurs
 
     //Méthodes
-    public void startActivity(Objet objet, Context context, Boolean objetVendu)
+    public void startActivity(Outil objet, Context context, Boolean objetVendu)
     {
         Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);

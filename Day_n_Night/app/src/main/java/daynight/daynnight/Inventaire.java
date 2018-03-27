@@ -37,9 +37,9 @@ public class Inventaire extends AppCompatActivity
     TabLayout tabObjets;
     ViewPager viewPager;
 
-    ArrayList<Objet> outils;
-    ArrayList<Objet> skins;
-    ArrayList<Objet> decorations;
+    ArrayList<Outil> outils;
+    ArrayList<Outil> skins;
+    ArrayList<Outil> decorations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,11 +55,11 @@ public class Inventaire extends AppCompatActivity
         tabObjets.setupWithViewPager(viewPager);
 
         outils = new ArrayList<>();
-        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
-        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
+        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
+        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
         skins = new ArrayList<>();
-        skins.add(new Objet("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?",20,"arthur2_1"));
-        skins.add(new Objet("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!",40,"arthur7_1"));
+        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1"));
+        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1"));
         decorations = new ArrayList<>();
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -146,7 +146,7 @@ public class Inventaire extends AppCompatActivity
                 case 2:
                     return newInstance(decorations);
                 default:
-                    return null;
+                    return newInstance(new ArrayList<Outil>());
             }
         }
 
