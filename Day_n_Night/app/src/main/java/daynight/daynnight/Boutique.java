@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TabHost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ public class Boutique extends AppCompatActivity
 {
     //Créer
     Button retour;
+    TabHost tab;
+    Button outils;
+    Button skins;
+    Button decos;
     static ArrayList<String> nomObjets = new ArrayList<>();
     static AdapteurArrayBoutique adapteur;
 
@@ -37,6 +42,10 @@ public class Boutique extends AppCompatActivity
 
         //Attribuer
         retour = (Button) findViewById(R.id.retour);
+        tab = (TabHost) findViewById(R.id.tab_host);
+        outils = (Button) findViewById(R.id.outils);
+        skins = (Button) findViewById(R.id.skins);
+        decos = (Button) findViewById(R.id.decos);
 
         //Ajout de Badges manuellement
         for(int j = 0 ; j < 48 ; j++)
@@ -62,6 +71,22 @@ public class Boutique extends AppCompatActivity
         });*/
     }
 
+    //Méthodes
+    public void tabHandler(View target){
+        outils.setSelected(false);
+        skins.setSelected(false);
+        decos.setSelected(false);
+        if(target.getId() == R.id.outils){
+            tab.setCurrentTab(0);
+            outils.setSelected(true);
+        } else if(target.getId() == R.id.skins){
+            tab.setCurrentTab(1);
+            skins.setSelected(true);
+        } else if(target.getId() == R.id.decos){
+            tab.setCurrentTab(2);
+            decos.setSelected(true);
+        }
+    }
     //custom ArrayAdapter
     class AdapteurArrayBoutique extends ArrayAdapter<String>
     {
