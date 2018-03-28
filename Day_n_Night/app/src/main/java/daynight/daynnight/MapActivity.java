@@ -163,20 +163,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + modelePerosnage, "drawable", MapActivity.this.getPackageName()));
         animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
 
+        //Creation du marqueur qui sera sur la carte, selon celui sélectionné
         bitmapDrawable = (BitmapDrawable)getResources().getDrawable(getResources().getIdentifier("arthur" + modelePerosnage + "_1", "drawable", MapActivity.this.getPackageName()));
-
         smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
 
+        //
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
         display.getSize(size);
 
-        layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        /*layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
-        layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);
+        layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);*/
 
         filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", /*"school",*/ "stadium", "synagogue", "university", "zoo"};
 
+        //Recentrage de la carte lors du click sur le bouton Center
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
         boutonCenter.setVisibility(View.INVISIBLE);
@@ -203,6 +205,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onCameraMoveStarted(int reason) {
                 if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+                    //Si la caméra bouge à cause d'un geste de l'utilisateur
                     Log.d("MapMovement", "Cause: Gesture");
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
                     if(livePos != null){
@@ -267,7 +270,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    imageViewPersonnage.setVisibility(View.VISIBLE);
+                    //imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
@@ -309,7 +312,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     map.getProjection().toScreenLocation(prevPos).y - map.getProjection().toScreenLocation(firstUncenteredPos).y,
                                     map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setRepeatCount(0);
-                            //translateAnimation.setFillBefore(true);
                             translateAnimation.setFillAfter(true);
                             translateAnimation.setDuration(5000);
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -326,14 +328,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                                 @Override
                                 public void onAnimationRepeat(Animation animation) {
-                                    //translateAnimation.cancel();
-                                    //animation.cancel();
                                     imageViewPersonnage.clearAnimation();
                                 }
                             });
                             imageViewPersonnage.setAnimation(translateAnimation);
                             imageViewPersonnage.startAnimation(translateAnimation);
-                            //translateAnimation.start();
                         }
 
                         Log.d("Location changed", "location changed");
