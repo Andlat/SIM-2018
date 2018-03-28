@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Bouton pour les badges
         Button leSebNouton2 = (Button) findViewById(R.id.leSebBouton2);
         leSebNouton2.setOnClickListener(new View.OnClickListener()
         {
@@ -63,6 +64,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 startActivity(new Intent(MainActivity.this, ListeBadges.class));
+            }
+        });
+
+        //Bouton pour réglages
+        Button boutonReglages = (Button) findViewById(R.id.boutonReglages);
+        boutonReglages.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
     }

@@ -79,22 +79,24 @@
                 android:id="@+id/outils"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:layout_alignEnd="@id/decos"
                 android:layout_alignStart="@id/decos"
                 android:background="@drawable/style_bouton_tab"
-                android:text="Outils" />
+                android:padding="5dp"
+                android:text="Outils"
+                android:textColorLink="@color/common_google_signin_btn_text_light_default" />
 
             <Button
                 android:id="@+id/skins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_below="@id/outils"
                 android:layout_alignEnd="@id/decos"
                 android:layout_alignStart="@id/decos"
+                android:layout_below="@id/outils"
                 android:background="@drawable/style_bouton_tab"
-                android:text="Skins" />
+                android:padding="5dp"
+                android:text="Skins"
+                android:textColorLink="@color/common_google_signin_btn_text_light_default" />
 
             <Button
                 android:id="@+id/decos"

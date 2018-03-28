@@ -2,6 +2,9 @@ package daynight.daynnight;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.widget.SeekBar;
+
+import java.util.logging.Handler;
 
 /**
  * Created by anthonymartin on 18-03-26.
@@ -9,7 +12,13 @@ import android.media.MediaPlayer;
 
 public class Musique
 {
+
+    SeekBar seekBar;
     MediaPlayer backgroundMusique;
+
+    Handler handler;
+    Runnable runnable;
+
 
     Musique()
     {
