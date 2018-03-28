@@ -37,17 +37,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -79,7 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private AnimationDrawable animationDrawable;
     private JSONObject jsonPOI;
     private JSONArray jsonResults;
-    private ArrayList posPOI;
+    private Poi pois;
     private LatLng tempPos;
     private RelativeLayout.LayoutParams layoutParams;
     private int nbrPage;
@@ -89,7 +85,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private URL url;
     Intent intent;
     private int modelePerosnage = 1;
-    private MarkerOptions POImarker;
+    private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
     private LatLng firstUncenteredPos;
@@ -251,7 +247,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         distanceFromPoiUpdate = new float[1];
         prevPos = new LatLng(0, 0);
         poiUpdate = new LatLng(0,0);
-        posPOI = new ArrayList<LatLng>();
 
         //Stylisation de la carte avec JSON d'un Raw.xml
         try {
@@ -377,13 +372,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     //Enregistre tout les position des POI dans le rayon spécifié
                                     for (int k = 0; k < jsonResults.length(); k++) {
 
-                                        posPOI.add(new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                                jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+                                        pois = new Poi(jsonResults.getJSONObject(k).getString("id"), jsonResults.getJSONObject(k).getString("name"), jsonResults.getJSONObject(k).getJSONArray("types"));
 
-                                        tempPos = (LatLng) posPOI.get(posPOI.size() - 1);
-                                        map.addMarker(POImarker = new MarkerOptions().title("POI")
+                                        tempPos = new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
+
+                                        tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
                                                         .fromResource(R.drawable.chest)));
+                                        tempMarker.setTag(pois);
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
                                     }
@@ -392,7 +389,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     pageToken = jsonPOI.getString("next_page_token");
                                     nbrPage++;
                                     Log.d("Request", pageToken);
-                                    Log.d("Request", url.toString());
+                                    Log.d("Request", url.getQuery());
                                     Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
                                 } while (jsonPOI.getJSONArray("results").length() == 20);
                             } catch (JSONException e) {
@@ -433,9 +430,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 distanceFromPoi = new float[1];
                 Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
 
-                if(marker.getTitle().equals("POI") && distanceFromPoi[0]<100){
+                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
+                    Poi ok = (Poi) marker.getTag();
 
-                    Toast.makeText(MapActivity.this, "HEHE", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapActivity.this, ok.getName() , Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
