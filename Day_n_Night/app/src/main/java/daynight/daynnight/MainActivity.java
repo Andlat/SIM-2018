@@ -55,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, Inventaire.class));
             }
         });
+
+        Button leSebNouton2 = (Button) findViewById(R.id.leSebBouton2);
+        leSebNouton2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, ListeBadges.class));
+            }
+        });
     }
 
     //Arrete la musique lorsque l'application est fermée

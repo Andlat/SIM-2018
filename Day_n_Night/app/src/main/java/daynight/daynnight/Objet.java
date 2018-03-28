@@ -14,7 +14,7 @@ public class Objet implements Parcelable
     //Variables
     String nom;
     String description;
-    enum Type{Outil, Skin, Décoration} Type type;
+    enum Type{Outil, Skin, Décoration, Nul} Type type;
 
     int prix;
 
@@ -23,10 +23,11 @@ public class Objet implements Parcelable
 
     //Constructeurs
     Objet() {}
-    Objet(String nom, String description, int prix/*, ArrayList<String> imagePaths*/, String imageDrawableString)
+    Objet(String nom, String description, Type type, int prix/*, ArrayList<String> imagePaths*/, String imageDrawableString)
     {
         this.nom = nom;
         this.description = description;
+        this.type = type;
         this.prix = prix;
         //this.imagePaths = imagePaths;
         this.imageDrawableString = imageDrawableString;
@@ -88,6 +89,7 @@ public class Objet implements Parcelable
     {
         this.nom = in.readString();
         this.description = in.readString();
+        this.type = Type.valueOf(in.readString());
         this.prix = in.readInt();
         //this.imagePaths = (ArrayList<String>) in.readSerializable();
         this.imageDrawableString = in.readString();
@@ -104,6 +106,7 @@ public class Objet implements Parcelable
     {
         out.writeString(this.nom);
         out.writeString(this.description);
+        out.writeString(this.type.name());
         out.writeInt(this.prix);
         //out.writeSerializable(this.imagePaths);
         out.writeString(this.imageDrawableString);

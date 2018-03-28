@@ -301,9 +301,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
 
                         } else{
-                            translateAnimation = new TranslateAnimation(map.getProjection().toScreenLocation(prevPos).x - imageViewPersonnage.getX(),
+                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
                                     map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(prevPos).y - imageViewPersonnage.getY(),
+                                    imageViewPersonnage.getY(),
                                     map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setRepeatCount(0);
                             //translateAnimation.setFillBefore(true);
