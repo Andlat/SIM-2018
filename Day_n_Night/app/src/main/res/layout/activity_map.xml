@@ -58,7 +58,6 @@
         android:maxHeight="52dp"
         android:maxWidth="75dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/arthur1_1"
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintStart_toStartOf="parent"

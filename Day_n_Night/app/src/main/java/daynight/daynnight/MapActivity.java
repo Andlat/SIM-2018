@@ -302,8 +302,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                             persoMarker.setVisible(false);
                         }
                         if(MAP_CENTREE){
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
-
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, map.getCameraPosition().zoom ));
                         } else{
                             translateAnimation = new TranslateAnimation(map.getProjection().toScreenLocation(prevPos).x - map.getProjection().toScreenLocation(firstUncenteredPos).x,
                                     map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
