@@ -92,6 +92,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private MarkerOptions POImarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
+    private LatLng firstUncenteredPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +205,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
                     Log.d("MapMovement", "Cause: Gesture");
                     imageViewPersonnage.setVisibility(View.INVISIBLE);
+                    if(livePos != null){
+                        firstUncenteredPos = livePos;
+                    }
                     MAP_CENTREE = false;
                     boutonCenter.setClickable(true);
                     boutonCenter.setVisibility(View.VISIBLE);
@@ -301,9 +305,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, 19));
 
                         } else{
-                            translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
+                            translateAnimation = new TranslateAnimation(map.getProjection().toScreenLocation(prevPos).x - map.getProjection().toScreenLocation(firstUncenteredPos).x,
                                     map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
-                                    imageViewPersonnage.getY(),
+                                    map.getProjection().toScreenLocation(prevPos).y - map.getProjection().toScreenLocation(firstUncenteredPos).y,
                                     map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setRepeatCount(0);
                             //translateAnimation.setFillBefore(true);
