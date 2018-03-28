@@ -43,8 +43,7 @@ public class PopupInformationsObjet extends Activity
     public PopupInformationsObjet() {}
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_informations_objet);
 
@@ -55,19 +54,16 @@ public class PopupInformationsObjet extends Activity
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-        {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             fermer = (Button) findViewById(R.id.fermerVerticale);
             boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsVerticale);
             acheter = (Button) findViewById(R.id.boutiqueAcheterVerticale);
-            getWindow().setLayout((int)(width*0.85), (int)(height*0.75));
-        }
-        else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-        {
+            getWindow().setLayout((int) (width * 0.85), (int) (height * 0.75));
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             fermer = (Button) findViewById(R.id.fermerHorizontale);
             boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsHorizontale);
             acheter = (Button) findViewById(R.id.boutiqueAcheterHorizontale);
-            getWindow().setLayout((int)(width*0.75), (int)(height*0.85));
+            getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
         boutons.setVisibility(View.VISIBLE);
 
@@ -76,13 +72,10 @@ public class PopupInformationsObjet extends Activity
         MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
 
-        if(!objetVendu)
-        {
+        if (!objetVendu) {
             paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        }
-        else
-        {
+        } else {
             paramsPrix.width = 0;
             paramsAcheter.width = 0;
             paramsAcheter.setMarginEnd(0);
@@ -92,13 +85,7 @@ public class PopupInformationsObjet extends Activity
 
 
         //objet = new Outil("Seau d'eaux","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
-        objet = getIntent().getParcelableExtra("objet");
-        objet.setNbCibles(1);
-        objet.setPortee(Outil.Portee.Éloignée);
-        objet.setToucherParCoup(1);
-        Log.e("SEB", objet.getPortee().name());
-        //NE PASSE PAS ICI
-        Log.e("VERIFICATION", "C'est passé!");
+        objet = getIntent().getExtras().getParcelable("objet");
 
         caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
         nom = (TextView) findViewById(R.id.nom);
@@ -115,7 +102,8 @@ public class PopupInformationsObjet extends Activity
         nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles()));
         toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
-        /*if(objet.getType().equals(Objet.Type.Outil))
+        if (objet.getType().equals(Objet.Type.Nul)) {}
+        else if(objet.getType().equals(Objet.Type.Outil))
         {
             caracteristiquesOutil.setVisibility(View.VISIBLE);
 
@@ -123,7 +111,7 @@ public class PopupInformationsObjet extends Activity
         else
         {
             caracteristiquesOutil.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
         fermer.setOnClickListener(new View.OnClickListener()
         {
@@ -137,12 +125,12 @@ public class PopupInformationsObjet extends Activity
     //Getteurs & setteurs
 
     //Méthodes
-    public void startActivity(Objet objet, Context context, Boolean objetVendu)
+    public void startActivity(Outil objet, Context context, Boolean objetVendu)
     {
         Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);
         intent.putExtra("objetVendu", objetVendu);
-        intent.putExtra("objet", objet); //TODO j'obtiens un erreur sur la valeur de l'enum Portee...
+        intent.putExtra("objet", objet);
         context.startActivity(intent);
     }
 }

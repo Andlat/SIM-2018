@@ -4,12 +4,12 @@
         <shape
             android:shape="rectangle">
             <corners />
-            <solid android:color="@color/noir" />
+            <solid android:color="@color/beigeFonce" />
         </shape>
     </item>
 
-    <item android:top="6dp"
-        android:right="6dp">
+    <item android:top="4dp"
+        android:right="4dp">
         <shape
             android:shape="rectangle">
             <corners />

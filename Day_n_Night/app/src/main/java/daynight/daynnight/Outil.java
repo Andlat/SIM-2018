@@ -13,15 +13,15 @@ import java.util.ArrayList;
 public class Outil extends Objet implements Parcelable
 {
     //Variables
-    enum Portee{Rapprochée, Éloignée} Portee portee;
+    enum Portee{Rapprochée, Éloignée, Nulle} Portee portee;
     int nbCibles;
     int toucherParCoup;
 
     //Constructeurs
     Outil() {}
-    Outil(String nom, String description, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString)
+    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString)
     {
-        super(nom, description, prix/*, imagePaths*/, imageDrawableString);
+        super(nom, description, type, prix/*, imagePaths*/, imageDrawableString);
 
         this.portee = portee;
         this.toucherParCoup = toucherParCoup;
@@ -58,8 +58,7 @@ public class Outil extends Objet implements Parcelable
     //Parceable
     public Outil(Parcel in)
     {
-        super(in.readString(), in.readString(), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString());
-
+        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString());
         this.portee = Portee.valueOf(in.readString());
         this.toucherParCoup = in.readInt();
         this.nbCibles = in.readInt();
@@ -76,12 +75,13 @@ public class Outil extends Objet implements Parcelable
     {
         out.writeString(this.nom);
         out.writeString(this.description);
-        out.writeString(this.portee.name());
+        out.writeString(this.type.name());
         out.writeInt(this.prix);
+        out.writeString(this.imageDrawableString);
+        out.writeString(this.portee.name());
         out.writeInt(this.toucherParCoup);
         out.writeInt(this.nbCibles);
         //out.writeSerializable(this.imagePaths);
-        out.writeString(this.imageDrawableString);
     }
     public static final Parcelable.Creator<Outil> CREATOR = new Parcelable.Creator<Outil>()
     {

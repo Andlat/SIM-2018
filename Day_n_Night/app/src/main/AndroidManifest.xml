@@ -24,8 +24,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".Inventaire" />
-        <activity android:name=".MainActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

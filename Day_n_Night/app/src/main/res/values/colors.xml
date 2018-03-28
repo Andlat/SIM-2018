@@ -7,6 +7,7 @@
     <color name="beigeFonce">#a68553</color>
     <color name="beigeFonce2">#775B35</color>
     <color name="colorAccent">@color/beigeFonce2</color>
+    <color name="grisLayoutBadge">#c7c7c7</color>
 
     <!--Couleurs pour boutons-->
     <color name="beigePale2Bouton">#e9c895</color>
