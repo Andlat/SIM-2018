@@ -1,34 +1,35 @@
 package daynight.daynnight;
 
-import android.app.Activity;
-import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TabHost;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static daynight.daynnight.ListeObjets.newInstance;
 
 public class Boutique extends AppCompatActivity
 {
     //Créer
     Button retour;
-    TabHost tab;
-    Button outils;
-    Button skins;
-    Button decos;
+    Button boutonOutils;
+    Button boutonSkins;
+    Button boutonDecorations;
+    ViewPager viewPager;
+
+    ArrayList<Outil> outils;
+    ArrayList<Outil> skins;
+    ArrayList<Outil> decorations;
+
     static ArrayList<String> nomObjets = new ArrayList<>();
-    static AdapteurArrayBoutique adapteur;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
@@ -42,18 +43,66 @@ public class Boutique extends AppCompatActivity
 
         //Attribuer
         retour = (Button) findViewById(R.id.retour);
-        tab = (TabHost) findViewById(R.id.tab_host);
-        outils = (Button) findViewById(R.id.outils);
-        skins = (Button) findViewById(R.id.skins);
-        decos = (Button) findViewById(R.id.decos);
+        boutonOutils = (Button) findViewById(R.id.outils);
+        boutonSkins = (Button) findViewById(R.id.skins);
+        boutonDecorations = (Button) findViewById(R.id.decos);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
 
-        //Ajout de Badges manuellement
-        for(int j = 0 ; j < 48 ; j++)
-            nomObjets.add("");
-        nomObjets.set(0,"arthur1_1");
-        nomObjets.set(1,"arthur2_1");
+        outils = new ArrayList<>();
+        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
+        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
+        skins = new ArrayList<>();
+        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1"));
+        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1"));
+        decorations = new ArrayList<>();
 
+        //boutonOutils.setPressed(true);
+        boutonOutils.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                view.setSelected(true);
+                boutonSkins.setSelected(false);
+                boutonDecorations.setSelected(false);
+                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonSkins.setTranslationX(0);
+                boutonDecorations.setTranslationX(0);
 
+                viewPager.setCurrentItem(0);
+            }
+        });
+        boutonSkins.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                view.setSelected(true);
+                boutonOutils.setSelected(false);
+                boutonDecorations.setSelected(false);
+                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonOutils.setTranslationX(0);
+                boutonDecorations.setTranslationX(0);
+
+                viewPager.setCurrentItem(1);
+            }
+        });
+        boutonDecorations.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                view.setSelected(true);
+                boutonSkins.setSelected(false);
+                boutonOutils.setSelected(false);
+                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonSkins.setTranslationX(0);
+                boutonOutils.setTranslationX(0);
+
+                viewPager.setCurrentItem(2);
+            }
+        });
         retour.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -62,60 +111,45 @@ public class Boutique extends AppCompatActivity
                 finish();
             }
         });
-        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                //TODO
+    }
+    //custom ArrayAdapters
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return newInstance(outils, false);
+                case 1:
+                    return newInstance(skins, false);
+                case 2:
+                    return newInstance(decorations, false);
+                default:
+                    return newInstance(new ArrayList<Outil>(), false);
             }
-        });*/
-    }
-
-    //Méthodes
-    public void tabHandler(View target){
-        outils.setSelected(false);
-        skins.setSelected(false);
-        decos.setSelected(false);
-        if(target.getId() == R.id.outils){
-            tab.setCurrentTab(0);
-            outils.setSelected(true);
-        } else if(target.getId() == R.id.skins){
-            tab.setCurrentTab(1);
-            skins.setSelected(true);
-        } else if(target.getId() == R.id.decos){
-            tab.setCurrentTab(2);
-            decos.setSelected(true);
-        }
-    }
-    //custom ArrayAdapter
-    class AdapteurArrayBoutique extends ArrayAdapter<String>
-    {
-        private Context context;
-        private int layout;
-        private List<String> nomObjets;
-
-        public AdapteurArrayBoutique(Context context, int resource, ArrayList<String> objects)
-        {
-            super(context, resource, objects);
-
-            this.context = context;
-            this.layout = resource;
-            this.nomObjets = objects;
         }
 
-        public View getView(final int position, View convertView, ViewGroup parent)
-        {
-            String nomObjet = nomObjets.get(position);
+        @Override
+        public int getCount() {
+            return 3;
+        }
 
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.layout_objet, null);
-            view.setPaddingRelative(20,20,20,20);
-
-            ImageViewCarre objet = view.findViewById(R.id.objet);
-            objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getPackageName()));
-
-
-            return view;
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Outils";
+                case 1:
+                    return "Skins";
+                case 2:
+                    return "Décorations";
+                default:
+                    return "Vide";
+            }
         }
     }
 }

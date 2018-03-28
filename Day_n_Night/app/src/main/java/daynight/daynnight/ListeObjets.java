@@ -3,18 +3,15 @@ package daynight.daynnight;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,7 @@ public class ListeObjets extends Fragment
     //Variables
     GridView gridView;
     ArrayList<Outil> objets = new ArrayList<>();
-    static AdapteurArrayInventaire adapteur;
+    static AdapteurArrayaObjets adapteur;
     PopupInformationsObjet infosObjetInventaire;
 
     //Constructeur
@@ -40,7 +37,7 @@ public class ListeObjets extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        adapteur = new AdapteurArrayInventaire(getContext(), 0, objets);
+        adapteur = new AdapteurArrayaObjets(getContext(), 0, objets);
         gridView = (GridView) getView().findViewById(R.id.listeObjets);
         gridView.setAdapter(adapteur);
         infosObjetInventaire = new PopupInformationsObjet();
@@ -62,7 +59,7 @@ public class ListeObjets extends Fragment
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                infosObjetInventaire.startActivity(objets.get(position), getContext(), true);
+                infosObjetInventaire.startActivity(objets.get(position), getContext(), getArguments().getBoolean("objetVendu"));
             }
         });
 
@@ -77,26 +74,24 @@ public class ListeObjets extends Fragment
     }
 
     //Méthodes
-    public static ListeObjets newInstance(ArrayList<Outil> objets)
+    public static ListeObjets newInstance(ArrayList<Outil> objets, Boolean objetVendu)
     {
         ListeObjets fragment = new ListeObjets();
         Bundle bundle = new Bundle();
         bundle.putSerializable("objets", objets);
+        bundle.putBoolean("objetVendu", objetVendu);
         fragment.setArguments(bundle);
-
-        //Log.e("SEB", objets.get(1).getNom());
-
         return fragment;
     }
 
     //custom ArrayAdapter
-    class AdapteurArrayInventaire extends ArrayAdapter<Outil>
+    class AdapteurArrayaObjets extends ArrayAdapter<Outil>
     {
         private Context context;
         private int layout;
         private List<Outil> objets;
 
-        public AdapteurArrayInventaire(Context context, int resource, ArrayList<Outil> objects)
+        public AdapteurArrayaObjets(Context context, int resource, ArrayList<Outil> objects)
         {
             super(context, resource, objects);
 

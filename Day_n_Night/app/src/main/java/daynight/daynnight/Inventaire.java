@@ -140,13 +140,13 @@ public class Inventaire extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return newInstance(outils);
+                    return newInstance(outils, true);
                 case 1:
-                    return newInstance(skins);
+                    return newInstance(skins, true);
                 case 2:
-                    return newInstance(decorations);
+                    return newInstance(decorations, true);
                 default:
-                    return newInstance(new ArrayList<Outil>());
+                    return newInstance(new ArrayList<Outil>(), true);
             }
         }
 

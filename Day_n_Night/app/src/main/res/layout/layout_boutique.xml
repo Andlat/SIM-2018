@@ -49,78 +49,82 @@
 
     </RelativeLayout>
 
-    <TabHost
-        android:id="@android:id/tabhost"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/tabLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:background="@drawable/layout_options_boutique"
+            android:paddingEnd="4dp">
 
-            <TabWidget
-                android:id="@android:id/tabs"
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingEnd="4dp"
-                android:background="@drawable/layout_options_boutique">
-
-                <Button
-                    android:id="@+id/outils"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:background="@drawable/style_button_ripple_coin"
-                    android:onClick="tabHandler"
-                    android:text="Outils" />
-
-                <Button
-                    android:id="@+id/skins"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:background="@drawable/style_button_ripple_coin"
-                    android:onClick="tabHandler"
-                    android:text="Skins" />
-
-                <Button
-                    android:id="@+id/decos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:background="@drawable/style_button_ripple_coin"
-                    android:onClick="tabHandler"
-                    android:text="Décorations" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_gravity="top"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/beigeFonce" />
-
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </LinearLayout>
+                android:padding="5dp"
+                android:text="Décorations"
+                android:visibility="invisible"/>
         </LinearLayout>
-    </TabHost>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="4dp">
+
+            <Button
+                android:id="@+id/outils"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_alignEnd="@id/decos"
+                android:layout_alignStart="@id/decos"
+                android:background="@drawable/style_bouton_tab"
+                android:text="Outils" />
+
+            <Button
+                android:id="@+id/skins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_below="@id/outils"
+                android:layout_alignEnd="@id/decos"
+                android:layout_alignStart="@id/decos"
+                android:background="@drawable/style_bouton_tab"
+                android:text="Skins" />
+
+            <Button
+                android:id="@+id/decos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_below="@id/skins"
+                android:background="@drawable/style_bouton_tab"
+                android:text="Décorations" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/tabLayout"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_gravity="top"
+                android:layout_marginTop="3dp"
+                android:background="@color/beigeFonce" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
