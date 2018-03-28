@@ -37,8 +37,6 @@ public class PopupInformationsObjet extends Activity
     TextView nom, prix, description, portee, nbCibles, toucherParCoup;
     ImageViewCarre imageObjet;
 
-    Context context;
-
     //Constructeurs
     public PopupInformationsObjet() {}
 
@@ -72,9 +70,18 @@ public class PopupInformationsObjet extends Activity
         MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
 
-        if (!objetVendu) {
+        if (!objetVendu)
+        {
             paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+            acheter.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                }
+            });
         } else {
             paramsPrix.width = 0;
             paramsAcheter.width = 0;
@@ -84,7 +91,6 @@ public class PopupInformationsObjet extends Activity
         acheter.setLayoutParams(paramsAcheter);
 
 
-        //objet = new Outil("Seau d'eaux","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau");
         objet = getIntent().getExtras().getParcelable("objet");
 
         caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
