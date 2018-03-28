@@ -37,17 +37,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -377,7 +373,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                         tempPos = (LatLng) posPOI.get(posPOI.size() - 1);
                                         map.addMarker(POImarker = new MarkerOptions().title("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
-                                                        .fromResource(R.drawable.chest)));
+                                                        .fromResource(R.drawable.coffre)));
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
                                     }
