@@ -98,35 +98,54 @@ public class Boutique extends AppCompatActivity
                 viewPager.setCurrentItem(2);
             }
         });
-        switch(viewPager.)
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
-            case 0:
-                boutonOutils.setSelected(true);
-                boutonSkins.setSelected(false);
-                boutonDecorations.setSelected(false);
-                boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonSkins.setTranslationX(0);
-                boutonDecorations.setTranslationX(0);
-                break;
-            case 1:
-                boutonSkins.setSelected(true);
-                boutonOutils.setSelected(false);
-                boutonDecorations.setSelected(false);
-                boutonSkins.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonOutils.setTranslationX(0);
-                boutonDecorations.setTranslationX(0);
-                break;
-            case 2:
-                boutonDecorations.setSelected(true);
-                boutonSkins.setSelected(false);
-                boutonOutils.setSelected(false);
-                boutonDecorations.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonSkins.setTranslationX(0);
-                boutonOutils.setTranslationX(0);
-                break;
-            default:
-                break;
-        }
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
+                switch(position)
+                {
+                    case 0:
+                        boutonOutils.setSelected(true);
+                        boutonSkins.setSelected(false);
+                        boutonDecorations.setSelected(false);
+                        boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                        boutonSkins.setTranslationX(0);
+                        boutonDecorations.setTranslationX(0);
+                        break;
+                    case 1:
+                        boutonSkins.setSelected(true);
+                        boutonOutils.setSelected(false);
+                        boutonDecorations.setSelected(false);
+                        boutonSkins.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                        boutonOutils.setTranslationX(0);
+                        boutonDecorations.setTranslationX(0);
+                        break;
+                    case 2:
+                        boutonDecorations.setSelected(true);
+                        boutonSkins.setSelected(false);
+                        boutonOutils.setSelected(false);
+                        boutonDecorations.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                        boutonSkins.setTranslationX(0);
+                        boutonOutils.setTranslationX(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+
+            }
+        });
         retour.setOnClickListener(new View.OnClickListener()
         {
             @Override
