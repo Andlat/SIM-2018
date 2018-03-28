@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -26,19 +27,12 @@ public class Boutique extends AppCompatActivity
     ArrayList<Outil> skins;
     ArrayList<Outil> decorations;
 
-    static ArrayList<String> nomObjets = new ArrayList<>();
-
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
 
-
-        //adapteur = new AdapteurArrayBoutique(this, 0, nomObjets);
-
-        //GridView gridView = (GridView) findViewById(R.id.boutique);
-        //gridView.setAdapter(adapteur);
 
 
         //Attribuer
@@ -57,7 +51,8 @@ public class Boutique extends AppCompatActivity
         skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1"));
         decorations = new ArrayList<>();
 
-        //boutonOutils.setPressed(true);
+        boutonOutils.setSelected(true);
+        boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
         boutonOutils.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -103,6 +98,35 @@ public class Boutique extends AppCompatActivity
                 viewPager.setCurrentItem(2);
             }
         });
+        switch(viewPager.)
+        {
+            case 0:
+                boutonOutils.setSelected(true);
+                boutonSkins.setSelected(false);
+                boutonDecorations.setSelected(false);
+                boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonSkins.setTranslationX(0);
+                boutonDecorations.setTranslationX(0);
+                break;
+            case 1:
+                boutonSkins.setSelected(true);
+                boutonOutils.setSelected(false);
+                boutonDecorations.setSelected(false);
+                boutonSkins.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonOutils.setTranslationX(0);
+                boutonDecorations.setTranslationX(0);
+                break;
+            case 2:
+                boutonDecorations.setSelected(true);
+                boutonSkins.setSelected(false);
+                boutonOutils.setSelected(false);
+                boutonDecorations.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+                boutonSkins.setTranslationX(0);
+                boutonOutils.setTranslationX(0);
+                break;
+            default:
+                break;
+        }
         retour.setOnClickListener(new View.OnClickListener()
         {
             @Override
