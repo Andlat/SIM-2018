@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ public class ListeBadges extends AppCompatActivity
     Button retour;
     static ArrayList<Badge> badges = new ArrayList<>();
     static AdapteurArrayBadge adapteur;
+    MediaPlayer backgroundMusique;
+    int temps = 0;
 
 
     @Override
@@ -36,6 +39,15 @@ public class ListeBadges extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_badges);
 
+        //Recherche du temps de la musique
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) { temps = Integer.parseInt(extras.getString("TEMPS"));}
+
+        //Commence la musique
+        backgroundMusique = MediaPlayer.create(ListeBadges.this, R.raw.musiquebackground);
+        backgroundMusique.seekTo(temps);
+        backgroundMusique.setLooping(true);
+        backgroundMusique.start();
 
         adapteur = new AdapteurArrayBadge(this, 0, badges);
 
@@ -114,5 +126,13 @@ public class ListeBadges extends AppCompatActivity
 
             return view;
         }
+    }
+
+    //Arrete la musique lorsque l'application est fermée
+    @Override
+    protected void onPause(){
+        super.onPause();
+        backgroundMusique.release();
+        finish();
     }
 }

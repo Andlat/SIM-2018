@@ -4,130 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/common_google_signin_btn_text_light_default"
     tools:context="daynight.daynnight.GameActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/common_google_signin_btn_text_light_default"
-        android:foregroundGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/bestScoreNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="182dp"
-            android:layout_marginStart="100dp"
-            android:fontFamily="@font/bungee"
-            android:text="50"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textSize="85sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/scoreNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="182dp"
-            android:layout_marginEnd="100dp"
-            android:fontFamily="@font/bungee"
-            android:text="36"
-            android:textColor="?attr/colorBackgroundFloating"
-            android:textSize="85sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="287dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="31dp"
-            android:fontFamily="@font/bungee"
-            android:text="Record"
-            android:textAlignment="center"
-            android:textColor="@color/blanc"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/bestScoreNum"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="142dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="84dp"
-            android:layout_marginTop="31dp"
-            android:fontFamily="@font/bungee"
-            android:text="Pointage"
-            android:textAlignment="center"
-            android:textColor="@color/blanc"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/scoreNum"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@android:color/transparent" />
 
         <LinearLayout
-            android:id="@+id/layoutButton3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/layoutMenu"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            android:layout_marginEnd="233dp"
-            android:layout_marginStart="233dp"
-            android:layout_marginTop="133dp">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/bungee"
+                android:foregroundGravity="bottom"
+                android:gravity="bottom"
+                android:text="Record"
+                android:textAlignment="center"
+                android:textColor="@color/blanc"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/bungee"
+                android:foregroundGravity="bottom"
+                android:gravity="bottom"
+                android:text="Pointage"
+                android:textAlignment="center"
+                android:textColor="@color/blanc"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@android:color/transparent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bestScoreNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/bungee"
+                android:foregroundGravity="center_vertical|center_horizontal|center"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="50"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="85sp" />
+
+            <TextView
+                android:id="@+id/scoreNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/bungee"
+                android:foregroundGravity="center_vertical|center_horizontal|center"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="36"
+                android:textColor="?attr/colorBackgroundFloating"
+                android:textSize="85sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                app:srcCompat="@android:color/transparent" />
 
             <Button
                 android:id="@+id/buttonRecommencer"
-                android:layout_width="217dp"
+                android:layout_width="275dp"
                 android:layout_height="45dp"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:background="@drawable/style_button_ripple_coin"
                 android:fontFamily="@font/bungee"
+                android:gravity="center_vertical|center_horizontal|center"
                 android:text="REcommencer"
                 android:textColor="@color/common_google_signin_btn_text_light_default"
                 android:textSize="24sp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutButton3"
-            android:layout_marginBottom="45dp"
-            android:layout_marginEnd="233dp"
-            android:layout_marginStart="233dp"
-            android:layout_marginTop="32dp">
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                app:srcCompat="@android:color/transparent" />
 
             <Button
                 android:id="@+id/buttonMenu"
-                android:layout_width="217dp"
+                android:layout_width="275dp"
                 android:layout_height="45dp"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:background="@drawable/style_button_ripple_coin"
                 android:fontFamily="@font/bungee"
-                android:text="Button"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="Menu"
                 android:textColor="@color/common_google_signin_btn_text_light_default"
                 android:textSize="24sp" />
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            app:srcCompat="@android:color/transparent" />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -9,18 +9,18 @@ import android.media.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
 
+    int temps;
+    MediaPlayer backgroundMusique;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //Musique d'arriere plan
-        /*backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
         backgroundMusique.setLooping(true);
-        backgroundMusique.start();*/
-        Musique musique = new Musique();
-        musique.startMusic(getApplicationContext());
-
+        backgroundMusique.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                temps = backgroundMusique.getCurrentPosition();
+                intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //Ceci est juste un test pour le bouton pause
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                temps = backgroundMusique.getCurrentPosition();
+                intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -52,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, Inventaire.class));
+                Intent intent = new Intent(MainActivity.this, Inventaire.class);
+                temps = backgroundMusique.getCurrentPosition();
+                intent.putExtra("TEMPS", temps);
+                startActivity(intent);
             }
         });
 
@@ -63,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, ListeBadges.class));
+                Intent intent = new Intent(MainActivity.this, ListeBadges.class);
+                temps = backgroundMusique.getCurrentPosition();
+                intent.putExtra("TEMPS", temps);
+                startActivity(intent);
             }
         });
 
@@ -74,7 +84,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                temps = backgroundMusique.getCurrentPosition();
+                intent.putExtra("TEMPS", temps);
+                startActivity(intent);
             }
         });
     }
@@ -83,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        //backgroundMusique.release();
+        backgroundMusique.release();
         finish();
     }
 

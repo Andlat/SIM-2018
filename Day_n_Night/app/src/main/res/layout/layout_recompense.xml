@@ -83,6 +83,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/style_button_ripple_coin"
         android:fontFamily="@font/bungee"
+        android:gravity="center_vertical|center_horizontal|center"
         android:text="Ramasser"
         android:textColor="@color/common_google_signin_btn_text_light_default"
         android:textSize="24sp" />
