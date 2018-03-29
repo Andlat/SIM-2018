@@ -1,5 +1,6 @@
 package daynight.daynnight;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -26,19 +28,12 @@ public class Boutique extends AppCompatActivity
     ArrayList<Outil> skins;
     ArrayList<Outil> decorations;
 
-    static ArrayList<String> nomObjets = new ArrayList<>();
-
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
 
-
-        //adapteur = new AdapteurArrayBoutique(this, 0, nomObjets);
-
-        //GridView gridView = (GridView) findViewById(R.id.boutique);
-        //gridView.setAdapter(adapteur);
 
 
         //Attribuer
@@ -50,26 +45,21 @@ public class Boutique extends AppCompatActivity
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
 
         outils = new ArrayList<>();
-        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
-        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
+        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", false));
+        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", false));
         skins = new ArrayList<>();
-        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1"));
-        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1"));
+        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
+        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
         decorations = new ArrayList<>();
 
-        //boutonOutils.setPressed(true);
+        boutonOutils.setSelected(true);
+        boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
         boutonOutils.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                view.setSelected(true);
-                boutonSkins.setSelected(false);
-                boutonDecorations.setSelected(false);
-                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonSkins.setTranslationX(0);
-                boutonDecorations.setTranslationX(0);
-
+                tabBoutonsSelection(view, boutonSkins, boutonDecorations);
                 viewPager.setCurrentItem(0);
             }
         });
@@ -78,13 +68,7 @@ public class Boutique extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                view.setSelected(true);
-                boutonOutils.setSelected(false);
-                boutonDecorations.setSelected(false);
-                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonOutils.setTranslationX(0);
-                boutonDecorations.setTranslationX(0);
-
+                tabBoutonsSelection(view, boutonOutils, boutonDecorations);
                 viewPager.setCurrentItem(1);
             }
         });
@@ -93,15 +77,36 @@ public class Boutique extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                view.setSelected(true);
-                boutonSkins.setSelected(false);
-                boutonOutils.setSelected(false);
-                view.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
-                boutonSkins.setTranslationX(0);
-                boutonOutils.setTranslationX(0);
-
+                tabBoutonsSelection(view, boutonSkins, boutonOutils);
                 viewPager.setCurrentItem(2);
             }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                switch(position)
+                {
+                    case 0:
+                        tabBoutonsSelection(boutonOutils, boutonSkins, boutonDecorations);
+                        break;
+                    case 1:
+                        tabBoutonsSelection(boutonSkins, boutonOutils, boutonDecorations);
+                        break;
+                    case 2:
+                        tabBoutonsSelection(boutonDecorations, boutonSkins, boutonOutils);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
         });
         retour.setOnClickListener(new View.OnClickListener()
         {
@@ -112,6 +117,35 @@ public class Boutique extends AppCompatActivity
             }
         });
     }
+
+    //Méthodes
+    private void tabBoutonsSelection(View selection, View normal, View normal2)
+    {
+        selection.setSelected(true);
+        normal.setSelected(false);
+        normal2.setSelected(false);
+        selection.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
+        normal.setTranslationX(0);
+        normal2.setTranslationX(0);
+    }
+    public void acheterObjet(int position, Objet.Type type)
+    {
+        //TODO
+        if(type == Objet.Type.Outil)
+        {
+            outils.remove(position);
+        }
+        else if(type == Objet.Type.Skin)
+        {
+            skins.remove(position);
+        }
+        else if(type == Objet.Type.Décoration)
+        {
+            skins.remove(position);
+        }
+    }
+
+
     //custom ArrayAdapters
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
@@ -123,13 +157,13 @@ public class Boutique extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return newInstance(outils, false);
+                    return newInstance(outils);
                 case 1:
-                    return newInstance(skins, false);
+                    return newInstance(skins);
                 case 2:
-                    return newInstance(decorations, false);
+                    return newInstance(decorations);
                 default:
-                    return newInstance(new ArrayList<Outil>(), false);
+                    return newInstance(new ArrayList<Outil>());
             }
         }
 

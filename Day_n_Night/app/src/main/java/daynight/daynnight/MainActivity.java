@@ -96,8 +96,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
+<<<<<<< HEAD
         backgroundMusique.release();
         finish();
+=======
+        //backgroundMusique.release();
+>>>>>>> 14228d6633bcba14a63e69359235330da2e57dd8
     }
 
 }

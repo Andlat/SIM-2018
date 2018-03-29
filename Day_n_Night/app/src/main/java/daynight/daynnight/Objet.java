@@ -21,9 +21,11 @@ public class Objet implements Parcelable
     //ArrayList<String> imagePaths;
     String imageDrawableString;
 
+    Boolean acquis;
+
     //Constructeurs
     Objet() {}
-    Objet(String nom, String description, Type type, int prix/*, ArrayList<String> imagePaths*/, String imageDrawableString)
+    Objet(String nom, String description, Type type, int prix/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis)
     {
         this.nom = nom;
         this.description = description;
@@ -31,6 +33,7 @@ public class Objet implements Parcelable
         this.prix = prix;
         //this.imagePaths = imagePaths;
         this.imageDrawableString = imageDrawableString;
+        this.acquis = acquis;
     }
 
     //Getteurs & Setteurs
@@ -58,6 +61,10 @@ public class Objet implements Parcelable
     {
         return imageDrawableString;
     }
+    public Boolean getAcquis()
+    {
+        return acquis;
+    }
 
     public void setNom(String nom)
     {
@@ -83,6 +90,10 @@ public class Objet implements Parcelable
     {
         this.imageDrawableString = imageDrawableString;
     }
+    public void setAcquis(Boolean acquis)
+    {
+        this.acquis = acquis;
+    }
 
     //Parceable
     public Objet(Parcel in)
@@ -93,6 +104,7 @@ public class Objet implements Parcelable
         this.prix = in.readInt();
         //this.imagePaths = (ArrayList<String>) in.readSerializable();
         this.imageDrawableString = in.readString();
+        this.acquis = Boolean.valueOf(in.readString());
     }
 
     @Override
@@ -110,6 +122,7 @@ public class Objet implements Parcelable
         out.writeInt(this.prix);
         //out.writeSerializable(this.imagePaths);
         out.writeString(this.imageDrawableString);
+        out.writeString(this.acquis.toString());
     }
     public static final Parcelable.Creator<Objet> CREATOR = new Parcelable.Creator<Objet>()
     {

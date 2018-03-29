@@ -44,8 +44,8 @@ public class ListeObjets extends Fragment
 
 
         //Ajout d'e cases vides
-        for(int j = 0 ; j < 48 ; j++)
-            objets.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.",Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, ""));
+        for(int j = 0 ; j < 28 ; j++)
+            objets.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.",Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
 
         //Ajout des objets manuellement
         ArrayList<Outil> transitition = getArguments().getParcelableArrayList("objets");
@@ -59,7 +59,7 @@ public class ListeObjets extends Fragment
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                infosObjetInventaire.startActivity(objets.get(position), getContext(), getArguments().getBoolean("objetVendu"));
+                infosObjetInventaire.startActivity(objets.get(position), getContext(), objets.get(position).getAcquis());
             }
         });
 
@@ -74,12 +74,11 @@ public class ListeObjets extends Fragment
     }
 
     //Méthodes
-    public static ListeObjets newInstance(ArrayList<Outil> objets, Boolean objetVendu)
+    public static ListeObjets newInstance(ArrayList<Outil> objets)
     {
         ListeObjets fragment = new ListeObjets();
         Bundle bundle = new Bundle();
         bundle.putSerializable("objets", objets);
-        bundle.putBoolean("objetVendu", objetVendu);
         fragment.setArguments(bundle);
         return fragment;
     }
