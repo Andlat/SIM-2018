@@ -29,8 +29,8 @@ public class ListeBadges extends AppCompatActivity
     Button retour;
     static ArrayList<Badge> badges = new ArrayList<>();
     static AdapteurArrayBadge adapteur;
-    MediaPlayer backgroundMusique;
-    int temps = 0;
+    //MediaPlayer backgroundMusique;
+    //int temps = 0;
 
 
     @Override
@@ -40,14 +40,14 @@ public class ListeBadges extends AppCompatActivity
         setContentView(R.layout.layout_badges);
 
         //Recherche du temps de la musique
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) { temps = Integer.parseInt(extras.getString("TEMPS"));}
+        //Bundle extras = getIntent().getExtras();
+        //if(extras != null) { temps = Integer.parseInt(extras.getString("TEMPS"));}
 
         //Commence la musique
-        backgroundMusique = MediaPlayer.create(ListeBadges.this, R.raw.musiquebackground);
-        backgroundMusique.seekTo(temps);
-        backgroundMusique.setLooping(true);
-        backgroundMusique.start();
+        //backgroundMusique = MediaPlayer.create(ListeBadges.this, R.raw.musiquebackground);
+        //backgroundMusique.seekTo(temps);
+        //backgroundMusique.setLooping(true);
+        //backgroundMusique.start();
 
         adapteur = new AdapteurArrayBadge(this, 0, badges);
 
@@ -129,10 +129,10 @@ public class ListeBadges extends AppCompatActivity
     }
 
     //Arrete la musique lorsque l'application est fermée
-    @Override
-    protected void onPause(){
-        super.onPause();
-        backgroundMusique.release();
-        finish();
-    }
+    //@Override
+    //protected void onPause(){
+    //    super.onPause();
+    //    backgroundMusique.release();
+    //    finish();
+    //}
 }

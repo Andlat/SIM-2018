@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                temps = backgroundMusique.getCurrentPosition();
-                intent.putExtra("TEMPS", temps);
+                //temps = backgroundMusique.getCurrentPosition();
+                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //Ceci est juste un test pour le bouton pause
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                temps = backgroundMusique.getCurrentPosition();
-                intent.putExtra("TEMPS", temps);
+                //temps = backgroundMusique.getCurrentPosition();
+                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 Intent intent = new Intent(MainActivity.this, Inventaire.class);
-                temps = backgroundMusique.getCurrentPosition();
-                intent.putExtra("TEMPS", temps);
+                //temps = backgroundMusique.getCurrentPosition();
+                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 Intent intent = new Intent(MainActivity.this, ListeBadges.class);
-                temps = backgroundMusique.getCurrentPosition();
-                intent.putExtra("TEMPS", temps);
+                //temps = backgroundMusique.getCurrentPosition();
+                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                temps = backgroundMusique.getCurrentPosition();
-                intent.putExtra("TEMPS", temps);
+                //temps = backgroundMusique.getCurrentPosition();
+                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -97,6 +97,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        backgroundMusique.release();
+        //backgroundMusique.release();
     }
 }
