@@ -1,15 +1,5 @@
 package daynight.daynnight;
 
-<<<<<<< HEAD
-/**
- * Created by anthonymartin on 18-03-28.
- */
-
-public class Joueur {
-
-    //string nom
-    //bool musiqueOnOff
-=======
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +9,8 @@ import java.util.List;
 
 public class Joueur
 {
+    //TODO bool musiqueOnOff
+
     //Variables
     String prenom;
     String nom;
@@ -74,7 +66,4 @@ public class Joueur
     }
 
     //Méthodes
-
->>>>>>> 14228d6633bcba14a63e69359235330da2e57dd8
-
 }
