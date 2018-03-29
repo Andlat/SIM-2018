@@ -19,9 +19,9 @@ public class Outil extends Objet implements Parcelable
 
     //Constructeurs
     Outil() {}
-    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString)
+    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis)
     {
-        super(nom, description, type, prix/*, imagePaths*/, imageDrawableString);
+        super(nom, description, type, prix/*, imagePaths*/, imageDrawableString, acquis);
 
         this.portee = portee;
         this.toucherParCoup = toucherParCoup;
@@ -58,7 +58,7 @@ public class Outil extends Objet implements Parcelable
     //Parceable
     public Outil(Parcel in)
     {
-        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString());
+        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString(), Boolean.valueOf(in.readString()));
         this.portee = Portee.valueOf(in.readString());
         this.toucherParCoup = in.readInt();
         this.nbCibles = in.readInt();
@@ -78,6 +78,7 @@ public class Outil extends Objet implements Parcelable
         out.writeString(this.type.name());
         out.writeInt(this.prix);
         out.writeString(this.imageDrawableString);
+        out.writeString(this.acquis.toString());
         out.writeString(this.portee.name());
         out.writeInt(this.toucherParCoup);
         out.writeInt(this.nbCibles);

@@ -31,15 +31,21 @@ import static daynight.daynnight.ListeObjets.newInstance;
 
 public class Inventaire extends AppCompatActivity
 {
-    //Créer
+    //Variables
     ImageView boutique;
 
     TabLayout tabObjets;
     ViewPager viewPager;
 
-    ArrayList<Outil> outils;
-    ArrayList<Outil> skins;
-    ArrayList<Outil> decorations;
+    static ArrayList<Outil> outils;
+    static ArrayList<Outil> skins;
+    static ArrayList<Outil> decorations;
+
+    //Constructeurs
+    Inventaire()
+    {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,11 +61,14 @@ public class Inventaire extends AppCompatActivity
         tabObjets.setupWithViewPager(viewPager);
 
         outils = new ArrayList<>();
-        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau"));
-        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball"));
+        //Ajout d'e cases vides
+        //for(int j = 0 ; j < 48 ; j++)
+            //outils.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.",Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, ""));
+        //outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", true));
+        //outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", true));
         skins = new ArrayList<>();
-        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1"));
-        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1"));
+        //skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", true));
+        //skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", true));
         decorations = new ArrayList<>();
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -129,6 +138,23 @@ public class Inventaire extends AppCompatActivity
         }
     }
 
+    //Méthodes
+    public void ajoutInventaire(Outil objetAcheter)
+    {
+        if(objetAcheter.getType() == Objet.Type.Outil)
+        {
+            outils.add(objetAcheter);
+        }
+        else if(objetAcheter.getType() == Objet.Type.Skin)
+        {
+            skins.add(objetAcheter);
+        }
+        else if(objetAcheter.getType() == Objet.Type.Décoration)
+        {
+            skins.add(objetAcheter);
+        }
+    }
+
     //custom ArrayAdapter
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
@@ -140,13 +166,13 @@ public class Inventaire extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return newInstance(outils, true);
+                    return newInstance(outils);
                 case 1:
-                    return newInstance(skins, true);
+                    return newInstance(skins);
                 case 2:
-                    return newInstance(decorations, true);
+                    return newInstance(decorations);
                 default:
-                    return newInstance(new ArrayList<Outil>(), true);
+                    return newInstance(new ArrayList<Outil>());
             }
         }
 

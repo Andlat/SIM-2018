@@ -49,9 +49,9 @@ public class PopupInformationsObjet extends Activity
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 
+        //Attribuer
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             fermer = (Button) findViewById(R.id.fermerVerticale);
             boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsVerticale);
@@ -69,28 +69,6 @@ public class PopupInformationsObjet extends Activity
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
-
-        if (!objetVendu)
-        {
-            paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-            acheter.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                }
-            });
-        } else {
-            paramsPrix.width = 0;
-            paramsAcheter.width = 0;
-            paramsAcheter.setMarginEnd(0);
-        }
-        prixLayout.setLayoutParams(paramsPrix);
-        acheter.setLayoutParams(paramsAcheter);
-
-
         objet = getIntent().getExtras().getParcelable("objet");
 
         caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
@@ -108,6 +86,45 @@ public class PopupInformationsObjet extends Activity
         nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles()));
         toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
+
+        if (!objetVendu)
+        {
+            paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+            acheter.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    //TODO pour l'instant, il va falloir aller chercher l'inventaire de la classe joueur par un Get avec le constructeur de l'inventaire
+                    //Inventaire inventaire = new Inventaire();
+                    //inventaire.ajoutInventaire(objet);
+                    objet.setAcquis(true);
+                    if(objet.getType() == Objet.Type.Outil)
+                    {
+                        Inventaire.outils.add(objet);
+                    }
+                    else if(objet.getType() == Objet.Type.Skin)
+                    {
+                        Inventaire.skins.add(objet);
+                    }
+                    else if(objet.getType() == Objet.Type.Décoration)
+                    {
+                        Inventaire.decorations.add(objet);
+                    }
+                    //TODO débiter le montant de biscuits de son compte
+                    finish();
+                }
+            });
+        } else {
+            paramsPrix.width = 0;
+            paramsAcheter.width = 0;
+            paramsAcheter.setMarginEnd(0);
+        }
+        prixLayout.setLayoutParams(paramsPrix);
+        acheter.setLayoutParams(paramsAcheter);
+
         if (objet.getType().equals(Objet.Type.Nul)) {}
         else if(objet.getType().equals(Objet.Type.Outil))
         {
