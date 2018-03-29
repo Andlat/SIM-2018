@@ -373,12 +373,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                                         tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
-<<<<<<< HEAD
-                                                        .fromResource(R.drawable.chest)));
-                                        tempMarker.setTag(pois);
-=======
                                                         .fromResource(R.drawable.coffre)));
->>>>>>> f5802f791eef6cf72a625b08a9e29bac2f1ee0b5
+                                        tempMarker.setTag(pois);
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
                                     }
