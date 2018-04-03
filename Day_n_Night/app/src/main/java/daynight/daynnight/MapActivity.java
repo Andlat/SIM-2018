@@ -152,6 +152,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        final RelativeLayout loading = findViewById(R.id.loadingPanel);
+        loading.setVisibility(View.VISIBLE);
+
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
@@ -334,6 +337,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     if(distanceFromPoiUpdate[0] > 20000){
 
 
+
                         for (String filter : filters) {
                             nbrPage = 0;
                             try {
@@ -395,6 +399,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                             }
                         }
                         poiUpdate = livePos;
+
+                        loading.setVisibility(View.GONE);
                     }
                     prevPos = livePos;
                 }

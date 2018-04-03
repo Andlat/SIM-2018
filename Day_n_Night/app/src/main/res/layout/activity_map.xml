@@ -63,4 +63,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
+    <!--Trouver sur stackoverflow  https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
