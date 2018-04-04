@@ -47,6 +47,7 @@ class Game extends GameView {
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
+        //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
         try {//Load the shader files
             texShader.Load("shaders/tex_shader.vglsl", Shader.Type.VERTEX)
@@ -90,4 +91,8 @@ class Game extends GameView {
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
     }
+
+    //private Shader createShader(){
+
+    //}
 }
