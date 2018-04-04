@@ -15,12 +15,14 @@ import java.util.List;
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.util.Util;
 
 /**
  * Created by zelovini on 2018-02-05.
  */
 
-class ObjParser {
+//TODO This parser is made for glDrawArrays. For faster processing and drawing, it should parse for glDrawElements and the World class should use glDrawElements
+public class ObjParser {
     /**
      * Charger un fichier .obj en Modèle
      * @param context Contexte de l'application (ou de l'activité). Utilisé pour ouvrir le dossier "assets"
@@ -29,14 +31,18 @@ class ObjParser {
      * @throws IOException If the .obj file couldn't be read
      */
     @SuppressWarnings("all")
-    static List<Model> Parse(Context context, String file) throws IOException{
+    public static List<Model> Parse(Context context, String directory, String file) throws IOException{
         List<Model> list = new ArrayList<>();
         BufferedReader reader = null;
+
+
         try{
-            reader = new BufferedReader(new InputStreamReader(context.getAssets().open(file)));
+            reader = new BufferedReader(new InputStreamReader(context.getAssets().open(directory + '/' + file)));
 
             final List<Vec3> tmp_vertices = new ArrayList<>(), tmp_normals = new ArrayList<>();
             final List<Vec2> tmp_uvs = new ArrayList<>();
+            final List<Float> facesVbo = new ArrayList<>();
+
             Model tmp_model = null;
 
             String mtl_lib="";
@@ -48,10 +54,22 @@ class ObjParser {
                 switch(parts[0]){
                     case "o":
                         if(tmp_model != null) {
+                            //Allocate the real VBO
+                            final int vboSize = facesVbo.size() * Util.FLOAT_SIZE;// 3 floats per vertex, 3 floats per normal, 2 float per uv (texture coordinates)
+                            FloatBuffer vbo = ByteBuffer.allocateDirect(vboSize).order(ByteOrder.nativeOrder()).asFloatBuffer();
+                            vbo.put(Util.FloatListToArray(facesVbo));
+                            vbo.position(0);
+
+                            tmp_model.setVBO(vbo);
                             list.add(tmp_model);
                         }
 
                         tmp_model = new Model();
+
+                        tmp_vertices.clear();
+                        tmp_uvs.clear();
+                        tmp_normals.clear();
+                        facesVbo.clear();
                         break;
                     case "v":
                         tmp_vertices.add(new Vec3(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3])));
@@ -63,59 +81,75 @@ class ObjParser {
                         tmp_normals.add(new Vec3(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3])));
                         break;
                     case "f":
-                        //Create the VBO
-                        final int vboSize = (((tmp_vertices.size() + tmp_normals.size()) * 3) + (tmp_uvs.size() * 2)) * Float.SIZE;// 3 floats per vertex, 3 floats per normal, 2 float per uv (texture coordinates)
-                        final FloatBuffer vbo = ByteBuffer.allocateDirect(vboSize).order(ByteOrder.nativeOrder()).asFloatBuffer();
+                            //3 vertices per face (a face is a triangle)
+                            for (byte i = 1; i < parts.length; ++i) {
+                                String[] vertex = parts[i].split("/");
+                                Vec3 v, vn;
+                                Vec2 vt;
 
+                                //---- Add the items to the vbo -----\\
 
-                        //Set the offsets of the VBO
-                        if(!tmp_vertices.isEmpty())
-                            tmp_model.setVerticesOffset(0);
+                                //Vertices
+                                if (!tmp_vertices.isEmpty()) {
+                                    v = tmp_vertices.get(Integer.parseInt(vertex[0]) - 1);
+                                    facesVbo.add(v.x());
+                                    facesVbo.add(v.y());
+                                    facesVbo.add(v.z());
+                                }
 
-                        if(!tmp_uvs.isEmpty())
-                            tmp_model.setVerticesOffset(3);
+                                //Texture UVs
+                                if (!tmp_uvs.isEmpty()) {
+                                    vt = tmp_uvs.get(Integer.parseInt(vertex[1]) - 1);
+                                    facesVbo.add(vt.x());
+                                    facesVbo.add(1-vt.y());
+                                }
 
-                        if(!tmp_normals.isEmpty())
-                            tmp_model.setNormalsOffset(5);
-
-
-                        //3 vertices per face (a face is a triangle)
-                        for(byte i=1; i < parts.length-1; ++i){
-                            String[] corner = parts[i].split("/");
-                            Vec3 v, vn;
-                            Vec2 vt;
-
-                            //---- Add the items to the vbo -----\\
-
-                            //Vertices
-                            if(!tmp_vertices.isEmpty()) {
-                                v = tmp_vertices.get(Integer.parseInt(corner[0]));
-                                vbo.put(v.x());     vbo.put(v.y());     vbo.put(v.z());
+                                //Normals
+                                if (!tmp_normals.isEmpty()) {
+                                    vn = tmp_normals.get(Integer.parseInt(vertex[2]) - 1);
+                                    facesVbo.add(vn.x());
+                                    facesVbo.add(vn.y());
+                                    facesVbo.add(vn.z());
+                                }
                             }
 
-                            //Texture UVs
-                            if(!tmp_uvs.isEmpty()) {
-                                vt = tmp_uvs.get(Integer.parseInt(corner[1]));
-                                vbo.put(vt.x());    vbo.put(vt.y());
-                            }
-
-                            //Normals
-                            if(!tmp_normals.isEmpty()) {
-                                vn = tmp_normals.get(Integer.parseInt(corner[2]));
-                                vbo.put(vn.x());    vbo.put(vn.y());    vbo.put(vn.z());
-                            }
-                        }
-
-                        tmp_model.setVBO(vbo);
                         break;
                     case "usemtl"://Material of the model
-                        tmp_model.setTexture(getTexture(context, mtl_lib, parts[1]));
+                        tmp_model.setTextureSource(getTexture(context, directory + '/' + mtl_lib, parts[1]));
                         break;
                     case "mtllib": //Once per file. At the beginning of the file
                         mtl_lib = parts[1];
                         break;
                 }
             }
+            //Add last model. Exactly the same code as case "o". //TODO Not urgent. Find a way to reuse this code and not have it at 2 different places.
+            if(tmp_model != null) {
+                //Allocate the real VBO
+                final int vboSize = facesVbo.size() * Util.FLOAT_SIZE;// 3 floats per vertex, 3 floats per normal, 2 float per uv (texture coordinates)
+                FloatBuffer vbo = ByteBuffer.allocateDirect(vboSize).order(ByteOrder.nativeOrder()).asFloatBuffer();
+                vbo.put(Util.FloatListToArray(facesVbo));
+                vbo.position(0);
+
+                tmp_model.setVBO(vbo);
+                list.add(tmp_model);
+            }
+
+            /*-------- Set the offsets of the VBO --------*/
+            int offset = 0;
+            if(!tmp_vertices.isEmpty()) {
+                tmp_model.setVerticesOffset(offset);
+                offset += 3;
+            }
+
+            if(!tmp_uvs.isEmpty()) {
+                tmp_model.setTexOffset(offset);
+                offset += 2;
+            }
+
+            if(!tmp_normals.isEmpty())
+                tmp_model.setNormalsOffset(offset);
+
+            /*---------------------------------------------*/
 
         }catch(NullPointerException ex) {
             Log.e("Object Parser", "Failed to parse .obj file. File's format is wrong.");
@@ -150,7 +184,6 @@ class ObjParser {
             if(reader != null)
                 reader.close();
         }
-
         return texture;
     }
 }

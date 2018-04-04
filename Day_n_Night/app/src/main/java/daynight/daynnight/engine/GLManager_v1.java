@@ -12,8 +12,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 //import daynight.daynnight.engine.Model.Shader;
 import daynight.daynnight.engine.Model.Shader;
-import daynight.daynnight.engine.math.Mat4;
-import daynight.daynnight.engine.math.Vec3;
 
 /**
  * Created by andlat on 2018-02-02.
@@ -59,8 +57,8 @@ public class GLManager_v1 {
             mShader = new Shader(mContext);
 
             try {//Load the mShader files
-                mShader.Load("basic_shader.vglsl", Shader.Type.VERTEX)
-                        .Load("basic_shader.fglsl", Shader.Type.FRAGMENT);
+                mShader.Load("shaders/basic_shader.vglsl", Shader.Type.VERTEX)
+                        .Load("shaders/basic_shader.fglsl", Shader.Type.FRAGMENT);
             }catch(IOException ex){
                 Log.e("SHADER IO", ex.getMessage());
             }

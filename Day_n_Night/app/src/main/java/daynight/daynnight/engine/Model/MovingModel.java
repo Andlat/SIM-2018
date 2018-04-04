@@ -20,4 +20,5 @@ public class MovingModel extends Model {
     public void setPhysics(PhysicsAttributes.MovingModelAttr attr){
         mPhysics = attr;
     }
+    public PhysicsAttributes.MovingModelAttr getPhysics(){ return mPhysics; }
 }

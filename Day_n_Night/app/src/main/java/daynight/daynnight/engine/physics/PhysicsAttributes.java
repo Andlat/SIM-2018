@@ -1,11 +1,16 @@
 package daynight.daynnight.engine.physics;
 
+import daynight.daynnight.engine.math.Vec3;
+
 /**
  * Created by andlat on 2018-02-05.
  */
 
 public class PhysicsAttributes {
     public static class StaticModelAttr {
+        /**
+         * Mass is in grams
+         */
         private float mMass, mElasticity, mFricitonCoef;
 
         public StaticModelAttr(){}
@@ -42,6 +47,7 @@ public class PhysicsAttributes {
     public static class MovingModelAttr extends StaticModelAttr {
         public enum Movement{ SLIDING, BALL, WALKING }
         private Movement mMovement = Movement.SLIDING;
+
         private float mSpeed = 0.f;
 
         public MovingModelAttr(){
@@ -59,14 +65,14 @@ public class PhysicsAttributes {
         public float getSpeed() {
             return mSpeed;
         }
-        public void setMovement(float speed) {
+        public void setSpeed(float speed) {
             mSpeed = speed;
         }
 
-        public Movement getMovement() {
+        public Movement getMovementType() {
             return mMovement;
         }
-        public void setMovement(Movement movement) {
+        public void setMovementType(Movement movement) {
             mMovement = movement;
         }
     }

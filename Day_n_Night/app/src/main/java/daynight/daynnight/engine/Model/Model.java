@@ -1,8 +1,13 @@
 package daynight.daynnight.engine.Model;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.nio.FloatBuffer;
+
+import daynight.daynnight.engine.math.Mat4;
+import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.util.Util;
 
 /**
  * Created by zelovini on 2018-02-05.
@@ -10,14 +15,21 @@ import java.nio.FloatBuffer;
 
 public class Model {
     private static long NxtModelID = 1;//Static variable incremented when a new Model is created
-    private long mWorldVBOOffset = -1;//TODO Check usage. How to create a big world VBO, and modify it at runtime if needed? (Like if I want to add or remove objects at runtime)
+    private long mWorldVBOOffset = -1;
 
     private Shader mShader;
 
     private int mVerticesOffset=-1, mNormalsOffset=-1, mTexOffset=-1;
     private FloatBuffer mModelVBO = null;
 
-    private String mTexture = null, mName="";
+    private String mName=""; //TODO Remove this ?
+
+    private String mTextureSrc = null;
+    private Texture mTexture = null;
+
+    private Vec3 mCurrentTranslation = new Vec3();
+
+    private Mat4 mModelMatrix = new Mat4();//Position of the model from its origin. Default is an identity matrix (it's origin)
 
     private long mID;
 
@@ -65,13 +77,17 @@ public class Model {
         mModelVBO = VBO;
     }
 
-    public String getTexture() {
-        return mTexture;
+    public int getModelVBOSize(){ return mModelVBO.capacity() * Util.FLOAT_SIZE; }
+
+    public String getTextureSource() {
+        return mTextureSrc;
     }
 
-    public void setTexture(String Texture) {
-        mTexture = mTexture;
-    }
+    public void setTextureSource(String texture) { mTextureSrc = texture; }
+
+    public Texture getTexture() { return mTexture; }
+
+    public void setTexture(Texture texture) { mTexture = texture; }
 
     public String getName() {
         return mName;
@@ -85,6 +101,17 @@ public class Model {
 
     public long getVBOWorldOffset(){ return mWorldVBOOffset; }
     public void setVBOWorldOffset(long offset){ mWorldVBOOffset = offset; }
+
+    public Mat4 getModelMatrix(){ return mModelMatrix; }
+    public void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
+
+    public Vec3 setTranslation(Vec3 translation){
+        mCurrentTranslation = (Vec3)mCurrentTranslation.add(translation);
+        return mCurrentTranslation;
+    }
+    public void ResetTranslation(){
+        mCurrentTranslation.clear();
+    }
 
     /**
      * Clone model to a new MovingModel
@@ -115,7 +142,7 @@ public class Model {
         clone.mNormalsOffset = this.mNormalsOffset;
 
         clone.mName = this.mName;
-        clone.mTexture = this.mTexture;
+        clone.mTextureSrc = this.mTextureSrc;
     }
 
     /**

@@ -3,6 +3,7 @@ package daynight.daynnight.engine.Model;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +37,8 @@ public class Shader {
     private boolean mIsLinked;
 
     public enum Type {VERTEX, FRAGMENT};
+
+    private boolean mIsInUse = false;
 
     /**
      * Constructeur d'objets Shader
@@ -167,7 +170,18 @@ public class Shader {
 
         return this;
     }
-    public Shader Use(){ GLES30.glUseProgram(mProgram); return this; }
+
+    //So as not to do an OpenGL call is the program is already in use
+    public Shader Use() {
+        if (!mIsInUse) {
+            GLES30.glUseProgram(mProgram);
+
+            mIsInUse = true;
+
+            Log.e("USE SHADER", "USE SHADER");
+        }
+        return this;
+    }
 
     public int getProgram(){ return mProgram; }
     public boolean isLinked(){ return mIsLinked; }

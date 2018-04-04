@@ -11,12 +11,14 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
+
+import daynight.daynnight.engine.util.Util;
 
 /**
  * Created by andlat on 2018-02-18.
  */
 
+//TODO Delete VBO & VAO & Attributes ?
 /**
  * VBO: Vertex Buffer Object
  *
@@ -53,7 +55,7 @@ class VBOManager {
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
 
         mVBOData.position(floatBufferOffset);
-        GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset*4, dataSize, mVBOData);
+        GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset* Util.FLOAT_SIZE, dataSize, mVBOData);
     }
 
     /**
@@ -63,7 +65,7 @@ class VBOManager {
      */
     int addData(FloatBuffer data){
         int count = data.remaining();
-        int dataSize = count * 4;
+        int dataSize = count * Util.FLOAT_SIZE;
 
         CheckSizeForIncrease(dataSize);
         mDataSizeInBytes += dataSize;
@@ -82,8 +84,7 @@ class VBOManager {
      * @param floatCount Number of floats to be removed
      */
     void removeData(int floatBufferOffset, int floatCount){
-        //TODO When drawing the VBO, skip the removed parts. For that, keep track of removed offsets and removed parts' size in bytes.
-        int dataSize = floatCount * 4, VBOOffset = floatBufferOffset * 4;
+        int dataSize = floatCount * Util.FLOAT_SIZE, VBOOffset = floatBufferOffset * Util.FLOAT_SIZE;
 
         mEmptyVBOPools.add(new Pair<>(VBOOffset, dataSize));
     }
@@ -94,7 +95,7 @@ class VBOManager {
      *
      * Shift data in the gpu as to fill the empty pools. Shouldn't really be used because it is kinda slow, unless memory usage is too high.
      */
-    private void ShiftDataGPU(){
+    /*private void ShiftDataGPU(){
         this.SortOrderEmptyPoolsArray();
 
         int subIndex = 0;//glSubDataIndex
@@ -104,7 +105,7 @@ class VBOManager {
             final int poolIndex = pool.first, poolSize = pool.second;
             if(dataIndex < poolIndex) {
                 final int indexDiff = poolIndex - dataIndex;
-                final int writeDataSize = indexDiff*4;
+                final int writeDataSize = indexDiff*FLOAT_SIZE;
 
                 mVBOData.position(dataIndex);
                 GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, subIndex, writeDataSize, mVBOData);
@@ -118,30 +119,36 @@ class VBOManager {
 
         mEmptyVBOPools.clear();
     }
+    */
 
     private void CreateVBO(){
         GLES30.glGenBuffers(1, mVBO, 0);
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
 
         mVBOData.position(0);
-        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mVBOData.capacity()*4, mVBOData, GLES30.GL_DYNAMIC_DRAW);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mVBOData.capacity()*Util.FLOAT_SIZE, mVBOData, GLES30.GL_DYNAMIC_DRAW);
 
         CreateAttribs();
     }
 
     //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.
     private void CreateAttribs(){
-        GLES30.glVertexAttribPointer(VERTEX_ATTRIB, 3, GLES30.GL_FLOAT, false, 3*4, 0);
+        GLES30.glVertexAttribPointer(VERTEX_ATTRIB, 3, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 0);
+        GLES30.glVertexAttribPointer(UV_ATTRIB, 2, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 3*Util.FLOAT_SIZE);
+        GLES30.glVertexAttribPointer(NORMAL_ATTRIB, 3, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 5*Util.FLOAT_SIZE);
+
         ActivateAttribs();//TODO Remove this and put it somewhere where it makes sense. This is only temporary for debugging.
     }
 
     void ActivateAttribs(){
         GLES30.glEnableVertexAttribArray(VERTEX_ATTRIB);
+        GLES30.glEnableVertexAttribArray(UV_ATTRIB);
+        GLES30.glEnableVertexAttribArray(NORMAL_ATTRIB);
     }
     //TODO Make a DisableAttribs function with glDisableVertexAttrib calls.
 
     private void CheckSizeForIncrease(int newDataSizeInBytes){
-        if(mDataSizeInBytes + newDataSizeInBytes > mVBOData.capacity()*4) {
+        if(mDataSizeInBytes + newDataSizeInBytes > mVBOData.capacity()*Util.FLOAT_SIZE) {
             IncreaseVBO();
         }
     }
@@ -202,12 +209,10 @@ class VBOManager {
      * @return A list containing pairs of the offset in the VBO and size of sequential vertices (a model). List<Pair<Offset in VBO, Size in bytes>>
      */
     List<Pair<Integer, Integer>> getDrawOffsets(){
-
-        Log.e("TRIANGLE VBO", mVBOData.get(0) + ", " + mVBOData.get(1) + ", " +  mVBOData.get(2) + ", " +  mVBOData.get(3) + ", " +  mVBOData.get(4) + ", " +  mVBOData.get(5) + ", " +  mVBOData.get(6) + ", " +  mVBOData.get(7) + ", " +  mVBOData.get(8));
-        Log.e("TRIANGLE VBO", mVBOData.get(9) + ", " + mVBOData.get(10) + ", " +  mVBOData.get(11) + ", " +  mVBOData.get(12) + ", " +  mVBOData.get(13));
         List<Pair<Integer, Integer>> drawOffsets = new ArrayList<>();
 
-        //TODO Repair this loop. Will not work if there is no empty pools
+        SortOrderEmptyPoolsArray();
+
         int offset=0, sizeInBytes;
         for(Pair<Integer, Integer> empty : mEmptyVBOPools){
             sizeInBytes = empty.first - offset;
@@ -217,8 +222,11 @@ class VBOManager {
             offset = empty.first + empty.second;
         }
 
-        Log.e("LIST DRAW OFFSETS", drawOffsets.toString());
-        drawOffsets.add(new Pair<>(0, 36));//TODO Remove this. This is for testing
+        //If no empty pools
+        if(drawOffsets.isEmpty()){
+            drawOffsets.add(new Pair<>(0, this.mDataSizeInBytes));
+        }
+
         return drawOffsets;
     }
 }

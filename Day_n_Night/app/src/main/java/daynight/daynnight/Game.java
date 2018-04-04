@@ -5,14 +5,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.Shader;
+import daynight.daynnight.engine.Model.StaticModel;
+import daynight.daynnight.engine.Model.Texture;
+import daynight.daynnight.engine.ObjParser;
 import daynight.daynnight.engine.World;
+import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
@@ -22,7 +23,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Game extends GameView {
     private Context mContext;
 
-    private long mHeroID;
+    private long mHeroID, mTileID;
 
     public Game(Context context) {
         super(context);
@@ -43,46 +44,50 @@ class Game extends GameView {
     @Override
     protected void onCreate() {
         World world = new World();
-        world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
+        //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
-        Shader basicShader = new Shader(mContext);
-        try {//Load the mShader files
-            basicShader.Load("basic_shader.vglsl", Shader.Type.VERTEX)
-                    .Load("basic_shader.fglsl", Shader.Type.FRAGMENT);
+        Shader texShader = new Shader(mContext);
+        try {//Load the shader files
+            texShader.Load("shaders/tex_shader.vglsl", Shader.Type.VERTEX)
+                    .Load("shaders/tex_shader.fglsl", Shader.Type.FRAGMENT);
+
+            //Compile the shader
+            try{ texShader.Compile().Link().DeleteShaders(); }catch(Shader.Exception ex){ Log.e("Shader Exception", ex.getMessage()); }
+
+            //Create a tile
+            MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
+            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
+
+            //TODO Use Model's texture source to load the texture, but check first if it wasn't already loaded. This here is temporary.
+            //Load the kitchen texture
+            Texture tex = Texture.Load(mContext, R.drawable.kitchen);
+
+            tile.AssociateShader(texShader);
+            tile.setTexture(tex);
+            mTileID = world.addModel(tile);
+
+            world.Translate(tile, new Vec3(-3, -3, 0));
+
+            for(int i=0; i < 1000; ++i) {
+                StaticModel tmp = ObjParser.Parse(mContext, "models", "tuile_cuisine.obj").get(0).toStaticModel();
+                tmp.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
+                tmp.AssociateShader(texShader);
+                tmp.setTexture(tex);
+                world.addModel(tmp);
+            }
+
         }catch(IOException ex){
-            Log.e("SHADER IO", ex.getMessage());
+            Log.e("Game Creation", ex.getMessage());
         }
-        try{
-            basicShader.Compile()
-                    .Link()
-                    .DeleteShaders();
-        }catch(Shader.Exception ex){
-            Log.e("SHADER EXCEPTION", ex.getMessage());
-        }
+    }
 
-
-        MovingModel hero = new MovingModel();
-        hero.setPhysics(new PhysicsAttributes.MovingModelAttr(80, 0.5f, 0.4f, 1.f));
-        hero.AssociateShader(basicShader);
-
-        FloatBuffer buff = ByteBuffer.allocateDirect(9*4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        buff.put(new float[]
-                {-1, -1, 0,
-                 1, -1, 0,
-                 0.5f, 1.f, 0
-                });
-        buff.position(0);
-        hero.setVBO(buff);
-        hero.setVerticesOffset(0);
-
-        mHeroID = world.addModel(hero);
-
-        Log.e("HERO ID", "ID: " + mHeroID);
+    @Override
+    protected void onSurfaceChanged(int width, int height) {
     }
 
     @Override
     protected void onDrawFrame(World world) {
-        world.getModel(mHeroID, World.State.VISIBLE).getShader().Use();//Use the shader of the hero. //TODO This is only temp. Shader should be used for each model when drawing. For now, only using this basic shader
+        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
     }
 }
