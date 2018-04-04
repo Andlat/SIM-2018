@@ -70,4 +70,16 @@ public class Mat4 {
 
         return (Vec4)Vector.make(Vector.VecSize.V4, result, 0);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder().append("Mat4{");
+
+        for(float v : mMatrix){
+            b.append(v + ", ");
+        }
+        b.replace(b.length(), b.length()+1, "}");
+
+        return b.toString();
+    }
 }
