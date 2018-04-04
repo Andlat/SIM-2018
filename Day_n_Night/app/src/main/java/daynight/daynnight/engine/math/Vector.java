@@ -73,6 +73,13 @@ abstract class Vector {
         return new_vec;
     }
 
+
+    public void clear(){
+        for(byte i=0; i < this.Dimensions(); ++i){
+            this.components[i] = 0;
+        }
+    }
+
     /**
      * Nombre de composantes (ou dimensions) du vecteur
      * @return Nombre de composantes du vecteur
@@ -203,5 +210,17 @@ abstract class Vector {
         } else {
             throw new TooLargeException();
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder().append("Vector{");
+
+        for(float v : components){
+            b.append(v + ", ");
+        }
+        b.replace(b.length(), b.length()+1, "}");
+
+        return b.toString();
     }
 }
