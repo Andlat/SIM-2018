@@ -1,12 +1,19 @@
 package daynight.daynnight;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 
+import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
+
+import java.util.List;
 
 import daynight.daynnight.engine.GLManager_v1;
 import daynight.daynnight.engine.GameView;
@@ -20,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      
+
+        //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
 
         //Musique d'arriere plan
@@ -103,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        //backgroundMusique.release();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        backgroundMusique.release();
     }
 }
