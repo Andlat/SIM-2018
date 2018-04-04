@@ -84,7 +84,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private String directionRegardee = "droite";
     private URL url;
     Intent intent;
-    private int modelePerosnage = 1;
+    private int modelePerosnage = 5;
     private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
