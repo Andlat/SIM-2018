@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beigePale"
+    tools:context="daynight.daynnight.Inventaire">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabObjets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/beigePaleBouton" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/beigePaleBouton" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_barreDOutils"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="4dp"
+        android:background="@drawable/layout_barre_doutils">
+
+        <fragment
+            android:id="@+id/barreDOutils"
+            android:name="daynight.daynnight.BarreDOutils"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/boutique"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/logo_boutique"
+        android:layout_gravity="end"
+        android:background="@drawable/style_button_ripple_coin" />
+</android.support.design.widget.CoordinatorLayout>

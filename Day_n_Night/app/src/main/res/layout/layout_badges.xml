@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="6dp"
+    android:background="@color/beige"
+    tools:context="daynight.daynnight.ListeBadges">
+
+    <Button
+        android:id="@+id/retour"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/retourgauche1" />
+
+
+    <ListView
+        android:id="@+id/listeBadges"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_liste_badges"
+        android:paddingTop="30dip"
+        android:paddingStart="6dip"
+        android:paddingEnd="6dip"
+        android:paddingBottom="0dp"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical" />
+</LinearLayout>
+

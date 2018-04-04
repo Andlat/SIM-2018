@@ -1,18 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigePale2"
+    android:orientation="vertical"
+    android:clipToPadding="false"
     tools:context="daynight.daynnight.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        app:srcCompat="@drawable/logo" />
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/nuitButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/style_button_ripple_coin"
+            android:fontFamily="@font/bungee"
+            android:text="Nuit"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/jourButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/style_button_ripple_coin"
+            android:fontFamily="@font/bungee"
+            android:text="Jour"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="5dp"
+        android:clipToPadding="false">
+
+        <Button
+            android:id="@+id/boutonReglages"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/style_button_ripple_coin"
+            android:fontFamily="@font/bungee"
+            android:text="Options"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/leSebBouton2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/style_button_ripple_coin"
+            android:fontFamily="@font/bungee"
+            android:text="Badges"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/leSebBouton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/style_button_ripple_coin"
+            android:fontFamily="@font/bungee"
+            android:text="Inventaire"
+            android:textColor="@color/common_google_signin_btn_text_light_default"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_weight="5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</android.support.v7.widget.LinearLayoutCompat>

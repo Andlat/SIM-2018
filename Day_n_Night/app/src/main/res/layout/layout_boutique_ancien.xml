@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+
+    android:orientation="vertical"
+    tools:context="daynight.daynnight.ListeBadges">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/retour"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/gauche1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/retour"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:text="324"
+                android:textColor="@color/beigeFonce"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/boutonBoutique"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/objet_biscuit" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutOptionsBoutique"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/beige"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/style_button_ripple_coin"
+                android:paddingBottom="3dp"
+                android:text="Outils" />
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/style_button_ripple_coin"
+                android:paddingBottom="3dp"
+                android:text="Skins" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/style_button_ripple_coin"
+                android:paddingBottom="3dp"
+                android:text="Déco" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dip"
+                android:layout_gravity="fill"
+                android:layout_marginTop="4dp"
+                android:background="@color/noir" />
+
+            <GridView
+                android:id="@+id/boutique"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="4"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

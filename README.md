@@ -34,7 +34,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 ### Développement
 
-**Version Android Minimum: 4.3 (api 18, 91.4% des appareils)**
+**Version Android Minimum: 5.0 Lolipop (api 21, 71.3% des appareils)**
 
 **Tâches**
 - Design des pesonnages, pièces \[Anthony - leader design\]
@@ -62,9 +62,12 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 **Outils**
 - Android Studio 3.0.1
 
-- (? Pixel art editor)
+- PixilArt.com
 
 - Blender (Éditeur 3d)
+
+**API**
+- Google maps
 
 **Frameworks**
 - OpenGl ES 3.0 (api 18, android 4.3+)
