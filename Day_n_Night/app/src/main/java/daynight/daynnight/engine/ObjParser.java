@@ -12,7 +12,9 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import daynight.daynnight.R;
 import daynight.daynnight.engine.Model.Model;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
@@ -115,7 +117,16 @@ public class ObjParser {
 
                         break;
                     case "usemtl"://Material of the model
-                        tmp_model.setTextureSource(getTexture(context, directory + '/' + mtl_lib, parts[1]));
+                        String texSource = ObjParser.getTexture(context, directory + '/' + mtl_lib, parts[1]).split("\\.")[0];//Delete the extension
+                        tmp_model.setTextureSource(texSource);
+
+                        try {
+                            tmp_model.setTexture(Texture.Load(context, context.getResources().getIdentifier(texSource, "drawable", context.getPackageName())));
+                            Log.e("SET", tmp_model.getTexture().toString());
+                        }catch(IOException | RuntimeException ex){
+                            Log.e("OBJ Parser", "Failed to load texture");
+                            Log.e("Loading tex exception", ex.getMessage());
+                        }
                         break;
                     case "mtllib": //Once per file. At the beginning of the file
                         mtl_lib = parts[1];

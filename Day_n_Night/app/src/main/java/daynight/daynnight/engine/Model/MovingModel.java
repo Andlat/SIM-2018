@@ -21,4 +21,10 @@ public class MovingModel extends Model {
         mPhysics = attr;
     }
     public PhysicsAttributes.MovingModelAttr getPhysics(){ return mPhysics; }
+
+    public void CloneTo(MovingModel clone) {
+        super.CloneTo(clone);
+
+        clone.mPhysics = this.mPhysics;
+    }
 }

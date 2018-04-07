@@ -23,7 +23,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Game extends GameView {
     private Context mContext;
 
-    private long mHeroID, mTileID;
+    private long mTileID, mTile2ID;
 
     public Game(Context context) {
         super(context);
@@ -58,25 +58,16 @@ class Game extends GameView {
 
             //Create a tile
             MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
-            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
-
-            //TODO Use Model's texture source to load the texture, but check first if it wasn't already loaded. This here is temporary.
-            //Load the kitchen texture
-            Texture tex = Texture.Load(mContext, R.drawable.kitchen);
-
+            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             tile.AssociateShader(texShader);
-            tile.setTexture(tex);
+
+            MovingModel tile2 = new MovingModel(tile);
+
             mTileID = world.addModel(tile);
+            mTile2ID = world.addModel(tile2);
 
             world.Translate(tile, new Vec3(-3, -3, 0));
-
-            for(int i=0; i < 1000; ++i) {
-                StaticModel tmp = ObjParser.Parse(mContext, "models", "tuile_cuisine.obj").get(0).toStaticModel();
-                tmp.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
-                tmp.AssociateShader(texShader);
-                tmp.setTexture(tex);
-                world.addModel(tmp);
-            }
+            world.Translate(tile2, new Vec3(3, 3, 0));
 
         }catch(IOException ex){
             Log.e("Game Creation", ex.getMessage());
@@ -90,9 +81,6 @@ class Game extends GameView {
     @Override
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
+        world.Move(mTile2ID, new Vec3(-0.1f, 0.8f, 0.f), getElapsedFrameTime());
     }
-
-    //private Shader createShader(){
-
-    //}
 }

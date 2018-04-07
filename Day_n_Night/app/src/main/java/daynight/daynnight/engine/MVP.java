@@ -24,7 +24,7 @@ class MVP {
 
         //Make a default perspective projection of 45 degrees
         float[] projection = new float[16];
-        Matrix.frustumM(projection, 0, -viewportRatio, viewportRatio, -1, 1, 1f, 10);
+        Matrix.frustumM(projection, 0, -viewportRatio, viewportRatio, -1, 1, 5, 30);
         mProjection = new Mat4(projection, 0);
     }
 

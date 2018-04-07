@@ -2,17 +2,21 @@ package daynight.daynnight;
 
 import android.content.Intent;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
 
-import daynight.daynnight.engine.GLManager_v1;
-import daynight.daynnight.engine.GameView;
-
 public class MainActivity extends AppCompatActivity {
-    private GLSurfaceView mGLSurface;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(new Game(this));
+    }
+    /*
 
     int temps;
     MediaPlayer backgroundMusique;
@@ -105,4 +109,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         //backgroundMusique.release();
     }
+
+    */
 }

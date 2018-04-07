@@ -1,7 +1,6 @@
 package daynight.daynnight.engine.Model;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.nio.FloatBuffer;
 
@@ -14,7 +13,7 @@ import daynight.daynnight.engine.util.Util;
  */
 
 public class Model {
-    private static long NxtModelID = 1;//Static variable incremented when a new Model is created
+    private static long mNxtModelID = 1;//Static variable incremented when a new Model is created
     private long mWorldVBOOffset = -1;
 
     private Shader mShader;
@@ -34,17 +33,17 @@ public class Model {
     private long mID;
 
     public Model(){
-        mID = NxtModelID;
-        ++NxtModelID;
+        mID = mNxtModelID;
+        ++mNxtModelID;
     }
 
     public Model AssociateShader(Shader shader){
         mShader = shader;
         return this;
     }
-    public Shader getShader(){ return mShader; }
+    public final Shader getShader(){ return mShader; }
 
-    public int getVerticesOffset() {
+    public final int getVerticesOffset() {
         return mVerticesOffset;
     }
 
@@ -52,60 +51,60 @@ public class Model {
         mVerticesOffset = verticesOffset;
     }
 
-    public int getNormalsOffset() {
+    public final int getNormalsOffset() {
         return mNormalsOffset;
     }
 
-    public void setNormalsOffset(int normalsOffset) {
+    public final void setNormalsOffset(int normalsOffset) {
         mNormalsOffset = normalsOffset;
     }
 
-    public int getTexOffset() {
+    public final int getTexOffset() {
         return mTexOffset;
     }
 
-    public void setTexOffset(int texOffset) {
+    public final void setTexOffset(int texOffset) {
         mTexOffset = texOffset;
     }
 
     @Nullable
-    public FloatBuffer getVBO() {
+    public final FloatBuffer getVBO() {
         return mModelVBO;
     }
 
-    public void setVBO(FloatBuffer VBO) {
+    public final void setVBO(FloatBuffer VBO) {
         mModelVBO = VBO;
     }
 
-    public int getModelVBOSize(){ return mModelVBO.capacity() * Util.FLOAT_SIZE; }
+    public final int getModelVBOSize(){ return mModelVBO.capacity() * Util.FLOAT_SIZE; }
 
-    public String getTextureSource() {
+    public final String getTextureSource() {
         return mTextureSrc;
     }
 
-    public void setTextureSource(String texture) { mTextureSrc = texture; }
+    public final void setTextureSource(String texture) { mTextureSrc = texture; }
 
-    public Texture getTexture() { return mTexture; }
+    public final Texture getTexture() { return mTexture; }
 
-    public void setTexture(Texture texture) { mTexture = texture; }
+    public final void setTexture(Texture texture) { mTexture = texture; }
 
-    public String getName() {
+    public final String getName() {
         return mName;
     }
 
-    public void setName(String modelName) {
+    public final void setName(String modelName) {
         mName = modelName;
     }
 
-    public long getID(){ return mID; }
+    public final long getID(){ return mID; }
 
-    public long getVBOWorldOffset(){ return mWorldVBOOffset; }
-    public void setVBOWorldOffset(long offset){ mWorldVBOOffset = offset; }
+    public final long getVBOWorldOffset(){ return mWorldVBOOffset; }
+    public final void setVBOWorldOffset(long offset){ mWorldVBOOffset = offset; }
 
-    public Mat4 getModelMatrix(){ return mModelMatrix; }
-    public void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
+    public final Mat4 getModelMatrix(){ return mModelMatrix; }
+    public final void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
 
-    public Vec3 setTranslation(Vec3 translation){
+    public final Vec3 setTranslation(Vec3 translation){
         mCurrentTranslation = (Vec3)mCurrentTranslation.add(translation);
         return mCurrentTranslation;
     }
@@ -117,7 +116,7 @@ public class Model {
      * Clone model to a new MovingModel
      * @return The new MovingModel created from this Model
      */
-    public MovingModel toMovingModel(){
+    public final MovingModel toMovingModel(){
         return new MovingModel(this);
     }
 
@@ -125,7 +124,7 @@ public class Model {
      * Clone model to a new StaticModel
      * @return The new StaticModel created from this Model
      */
-    public StaticModel toStaticModel(){
+    public final StaticModel toStaticModel(){
         return new StaticModel(this);
     }
 
@@ -134,22 +133,30 @@ public class Model {
      * @param clone The model to clone
      */
     public void CloneTo(Model clone){
+        clone.mName = this.mName;
+
         clone.mShader = this.mShader;
+
+        clone.mTextureSrc = this.mTextureSrc;
+        clone.mTexture = this.mTexture;
+
+        clone.mCurrentTranslation = this.mCurrentTranslation;
+        clone.mModelMatrix = this.mModelMatrix;
+
         clone.mModelVBO = this.mModelVBO;
 
         clone.mVerticesOffset = this.mVerticesOffset;
         clone.mTexOffset = this.mTexOffset;
         clone.mNormalsOffset = this.mNormalsOffset;
 
-        clone.mName = this.mName;
-        clone.mTextureSrc = this.mTextureSrc;
+        clone.mWorldVBOOffset = this.mWorldVBOOffset;
     }
 
     /**
      * Clone this Model's attributes to another Model
      * @param model Model which will be cloned with this one's attributes
      */
-    public void CloneFrom(Model model){
+    public final void CloneFrom(Model model){
         model.CloneTo(this);
     }
 }

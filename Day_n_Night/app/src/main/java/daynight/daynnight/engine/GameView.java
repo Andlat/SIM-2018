@@ -87,7 +87,7 @@ public abstract class GameView extends GLSurfaceView {
 
             MVP mvp = new MVP((float)width/(float)height);
             mvp.getCamera().setCenter(new Vec3(0,0,0))
-                           .setEye(new Vec3(0,0,5.f))
+                           .setEye(new Vec3(0,0,30.f))
                             .setUp(new Vec3(0, 1, 0));
             mWorld.setMVP(mvp);
 

@@ -20,4 +20,10 @@ public class StaticModel extends Model {
     public void setPhysics(PhysicsAttributes.StaticModelAttr attr){
         mPhysics = attr;
     }
+
+    public void CloneTo(StaticModel clone) {
+        super.CloneTo(clone);
+
+        clone.mPhysics = this.mPhysics;
+    }
 }
