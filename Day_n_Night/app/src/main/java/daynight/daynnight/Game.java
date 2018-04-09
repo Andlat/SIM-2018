@@ -25,10 +25,10 @@ class Game extends GameView {
     private Context mContext;
 
     private long mHeroID, mTileID;
-    /*private ArrayList<Long> mBallesID;
+    private ArrayList<Long> mBallesID;
     private ArrayList<MovingModel> mBalles;
     private ArrayList<Long> mDirectionsBallesX;
-    private ArrayList<Long> mDirectionsBallesY;*/
+    private ArrayList<Long> mDirectionsBallesY;
 
     public Game(Context context) {
         super(context);
@@ -52,6 +52,8 @@ class Game extends GameView {
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
+
+
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
         try {//Load the shader files
@@ -65,9 +67,9 @@ class Game extends GameView {
             MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
             tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
 
-            /*MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mBalles.add(bullet);*/
+            mBalles.add(bullet);
 
             //TODO Use Model's texture source to load the texture, but check first if it wasn't already loaded. This here is temporary.
             //Load the kitchen texture
@@ -100,9 +102,9 @@ class Game extends GameView {
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
         //int temp=0;
-        /*for(Long monsieurMovingModelID : mBallesID){
+        for(Long monsieurMovingModelID : mBallesID){
             //world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX[temp], mDirectionsBallesY[temp], mDirectionsBallesY[temp]), getElapsedFrameTime());
-        }*/
+        }
     }
 
     //private Shader createShader(){
