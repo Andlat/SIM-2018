@@ -83,12 +83,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-<<<<<<< HEAD
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, ListeBadges.class);
-=======
-                Intent intent = new Intent(MainActivity.this, testjoystick.class);
->>>>>>> 2c825237c9e133a7b3c40cfce48f07ceb6b63200
                 //temps = backgroundMusique.getCurrentPosition();
                 //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
