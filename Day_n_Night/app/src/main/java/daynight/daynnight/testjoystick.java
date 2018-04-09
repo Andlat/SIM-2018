@@ -12,6 +12,7 @@ public class testjoystick extends AppCompatActivity implements Joystick.Joystick
         setContentView(R.layout.activity_testjoystick);
 
         Joystick jstest = (Joystick) findViewById(R.id.joystick);
+        jstest.setZOrderOnTop(true);
 
     }
 
