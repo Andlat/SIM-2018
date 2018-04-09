@@ -139,6 +139,14 @@
             android:layout_height="63dp"
             app:srcCompat="@android:color/transparent" />
 
+        <daynight.daynnight.Joystick
+            android:id="@+id/joystickTir"
+            android:layout_width="120dp"
+            android:layout_height="127dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

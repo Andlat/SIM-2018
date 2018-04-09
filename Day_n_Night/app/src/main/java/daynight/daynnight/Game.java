@@ -21,14 +21,15 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  * Created by andlat on 2018-02-17.
  */
 
-class Game extends GameView {
+class Game extends GameView implements Joystick.JoystickListener{
     private Context mContext;
 
     private long mHeroID, mTileID;
     private ArrayList<Long> mBallesID;
     private ArrayList<MovingModel> mBalles;
-    private ArrayList<Long> mDirectionsBallesX;
-    private ArrayList<Long> mDirectionsBallesY;
+    private ArrayList<Float> mDirectionsBallesX;
+    private ArrayList<Float> mDirectionsBallesY;
+    private Joystick joystickTir;
 
     public Game(Context context) {
         super(context);
@@ -52,6 +53,7 @@ class Game extends GameView {
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
+        joystickTir = findViewById(R.id.joystickTir);
 
 
         //TODO Generate the shader in the model
@@ -66,10 +68,6 @@ class Game extends GameView {
             //Create a tile
             MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
             tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
-
-            MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
-            bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mBalles.add(bullet);
 
             //TODO Use Model's texture source to load the texture, but check first if it wasn't already loaded. This here is temporary.
             //Load the kitchen texture
@@ -101,10 +99,30 @@ class Game extends GameView {
     @Override
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        //int temp=0;
+        int temp=0;
         for(Long monsieurMovingModelID : mBallesID){
-            //world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX[temp], mDirectionsBallesY[temp], mDirectionsBallesY[temp]), getElapsedFrameTime());
+            world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
+            temp++;
+            //if(positionBalle == positionAutreShit) destroyBalle(temp);
         }
+    }
+
+    @Override
+    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+        if(source == 1){
+            MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mBalles.add(bullet);
+            mDirectionsBallesX.add(xPercent);
+            mDirectionsBallesY.add(yPercent);
+        }
+    }
+
+    public void destroyBalle(int i){
+        mBalles.remove(i);
+        mDirectionsBallesX.remove(i);
+        mDirectionsBallesY.remove(i);
+        mBallesID.remove(i);
     }
 
     //private Shader createShader(){

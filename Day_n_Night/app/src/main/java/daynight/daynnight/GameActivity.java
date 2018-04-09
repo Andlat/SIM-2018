@@ -6,9 +6,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class GameActivity extends AppCompatActivity {
-    Button buttonRecommencer;
-    Button buttonMenu;
+public class GameActivity extends AppCompatActivity{
+    private Button buttonRecommencer;
+    private Button buttonMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

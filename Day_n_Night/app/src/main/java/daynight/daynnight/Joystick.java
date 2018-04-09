@@ -14,6 +14,8 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.io.IOException;
+
 /**
  * Created by Antoine Mascolo on 2018-04-04.
  */
@@ -82,24 +84,27 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
 
         if(view.equals(this)){
             float displacement = (float) Math.sqrt(Math.pow(motionEvent.getX() - centerX, 2) + Math.pow(motionEvent.getY() - centerY, 2));
+            try {
+                if(motionEvent.getAction() != MotionEvent.ACTION_UP){
+                    if (displacement < jsBottom){
+                        draw(motionEvent.getX(), motionEvent.getY());
+                            joystickCallback.onJoystickMoved((motionEvent.getX() - centerX) / jsBottom, ((motionEvent.getY() - centerY) / jsBottom)*-1, getId());
 
-            if(motionEvent.getAction() != MotionEvent.ACTION_UP){
-                if (displacement < jsBottom){
-                    draw(motionEvent.getX(), motionEvent.getY());
-                    joystickCallback.onJoystickMoved((motionEvent.getX() - centerX) / jsBottom, ((motionEvent.getY() - centerY) / jsBottom)*-1, getId());
+                    }
+                    else{
+                        float ratio = jsBottom / displacement;
+                        float constrainedX = centerX + (motionEvent.getX() - centerX) * ratio;
+                        float constrainedY = centerY + (motionEvent.getY() - centerY) * ratio;
+                        draw(constrainedX, constrainedY);
+                        joystickCallback.onJoystickMoved((constrainedX - centerX) / jsBottom, ((constrainedY - centerY) / jsBottom) *-1, getId());
+                    }
+                }else{
+                    draw(centerX,centerY);
+                    joystickCallback.onJoystickMoved(0, 0, getId());
                 }
-                else{
-                    float ratio = jsBottom / displacement;
-                    float constrainedX = centerX + (motionEvent.getX() - centerX) * ratio;
-                    float constrainedY = centerY + (motionEvent.getY() - centerY) * ratio;
-                    draw(constrainedX, constrainedY);
-                    joystickCallback.onJoystickMoved((constrainedX - centerX) / jsBottom, ((constrainedY - centerY) / jsBottom) *-1, getId());
-                }
-            }else{
-                draw(centerX,centerY);
-                joystickCallback.onJoystickMoved(0, 0, getId());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
         }
         return true;
     }
@@ -111,6 +116,7 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         jsTop = Math.min(getWidth(), getHeight()) / 5;
 
     }
+
     private void draw(float x,float y){
 
         if(getHolder().getSurface().isValid()){
@@ -129,7 +135,7 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
 
     public interface JoystickListener
     {
-        void onJoystickMoved(float xPercent, float yPercent, int source);
+        void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException;
     }
 
 }
