@@ -1,60 +1,58 @@
 package daynight.daynnight;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
 
-import java.util.List;
-
-import daynight.daynnight.engine.GLManager_v1;
-import daynight.daynnight.engine.GameView;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     private GLSurfaceView mGLSurface;
 
+    public static boolean onPause = false;
+    public static boolean SurChangementActivity = false;
+
     int temps;
-    MediaPlayer backgroundMusique;
+    public static MediaPlayer MusiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
 
         //Musique d'arriere plan
-        backgroundMusique = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        backgroundMusique.setLooping(true);
-        backgroundMusique.start();
+        MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        MusiqueDeFond.setLooping(true);
+        MusiqueDeFond.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
-        buttonDay.setOnClickListener(new View.OnClickListener() {
+        buttonDay.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
 
-
         //Bouton jeu de nuit
         Button buttonNight = (Button) findViewById(R.id.nuitButton);
-        buttonNight.setOnClickListener(new View.OnClickListener() {
+        buttonNight.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
+                SurChangementActivity = true;
                 //Ceci est juste un test pour le bouton pause
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 //temps = backgroundMusique.getCurrentPosition();
@@ -70,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, Inventaire.class);
                 //temps = backgroundMusique.getCurrentPosition();
                 //intent.putExtra("TEMPS", temps);
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, ListeBadges.class);
                 //temps = backgroundMusique.getCurrentPosition();
                 //intent.putExtra("TEMPS", temps);
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 //temps = backgroundMusique.getCurrentPosition();
                 //intent.putExtra("TEMPS", temps);
@@ -106,17 +107,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Arrete la musique lorsque l'application est fermée
+    //Arrête la musique lorsque l'application ferme et commence quand elle ouvre
     @Override
     protected void onPause()
     {
         super.onPause();
+        onPause = true;
     }
 
     @Override
-    protected void onDestroy()
+    protected void onResume()
     {
-        super.onDestroy();
-        backgroundMusique.release();
+        super.onResume();
+        MusiqueDeFond.start();
     }
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        if(onPause && !SurChangementActivity)
+        {
+            MusiqueDeFond.pause();
+            onPause = false;
+
+        }
+    }
+
 }
