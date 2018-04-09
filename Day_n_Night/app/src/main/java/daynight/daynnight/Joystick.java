@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -33,17 +34,17 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     public Joystick(Context context) {
         super(context);
         getHolder().addCallback(this);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
         setOnTouchListener(this);
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
-
-
     }
 
     public Joystick(Context context, AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
         setOnTouchListener(this);
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
@@ -54,6 +55,7 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     public Joystick(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         getHolder().addCallback(this);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
         setOnTouchListener(this);
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
@@ -112,7 +114,7 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     public void setDimension(){
         centerX = getWidth()/2;
         centerY = getHeight()/2;
-        jsBottom = Math.min(getWidth(), getHeight()) / 3;
+        jsBottom = Math.min(getWidth(), getHeight()) / 2;
         jsTop = Math.min(getWidth(), getHeight()) / 5;
 
     }
