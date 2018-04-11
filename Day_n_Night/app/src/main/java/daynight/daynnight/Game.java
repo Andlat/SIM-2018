@@ -1,11 +1,18 @@
 package daynight.daynnight;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
@@ -30,6 +37,11 @@ class Game extends GameView implements Joystick.JoystickListener{
     private ArrayList<Float> mDirectionsBallesX;
     private ArrayList<Float> mDirectionsBallesY;
     private Joystick joystickTir;
+    private float xPercentDirectionBalle = 0;
+    private float yPercentDirectionBalle = 0;
+    private CountDownTimer countDownTimer;
+    private CountDownTimer countDownTimerReload;
+    private int nbrBallesLancees = 0;
 
     public Game(Context context) {
         super(context);
@@ -47,6 +59,7 @@ class Game extends GameView implements Joystick.JoystickListener{
         mContext = context;
     }
 
+
     @Override
     protected void onCreate() {
         World world = new World();
@@ -54,7 +67,30 @@ class Game extends GameView implements Joystick.JoystickListener{
         super.UseWorld(world);
 
         joystickTir = findViewById(R.id.joystickTir);
+        joystickTir.joystickCallback(new Joystick.JoystickListener() {
+            @Override
+            public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+                if(source == 0){
+                    //Mouvements
+                }else if(source == 1){
+                    //Tirs
+                    xPercentDirectionBalle = xPercent;
+                    yPercentDirectionBalle = yPercent;
+                }
+            }
+        });
 
+        /*countDownTimer = new CountDownTimer() {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };*/
 
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
@@ -103,26 +139,32 @@ class Game extends GameView implements Joystick.JoystickListener{
         for(Long monsieurMovingModelID : mBallesID){
             world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
             temp++;
-            //if(positionBalle == positionAutreShit) destroyBalle(temp);
+            //if(positionBalle == positionAutreShit) {
+            //  destroyMrBalle(temp, world);
+            // }
+
         }
     }
 
-    @Override
-    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        if(source == 1){
-            MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
-            bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mBalles.add(bullet);
-            mDirectionsBallesX.add(xPercent);
-            mDirectionsBallesY.add(yPercent);
-        }
+    public void makeMrBalle() throws IOException {
+        MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+        bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+        mBalles.add(bullet);
+        mDirectionsBallesX.add(this.xPercentDirectionBalle);
+        mDirectionsBallesY.add(this.yPercentDirectionBalle);
     }
 
-    public void destroyBalle(int i){
+    public void destroyMrBalle(int i, World world){
+        world.removeModel(mBallesID.get(i));
         mBalles.remove(i);
         mDirectionsBallesX.remove(i);
         mDirectionsBallesY.remove(i);
         mBallesID.remove(i);
+    }
+
+    @Override
+    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+
     }
 
     //private Shader createShader(){

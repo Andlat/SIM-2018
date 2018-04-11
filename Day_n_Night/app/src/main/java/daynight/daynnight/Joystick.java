@@ -135,6 +135,9 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
 
     }
 
+    public void joystickCallback(JoystickListener joystickListener) {
+    }
+
     public interface JoystickListener
     {
         void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException;

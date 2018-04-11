@@ -25,8 +25,8 @@ public class Joueur
     //Constructeurs
     Joueur()
     {
-        this.prenom = "Athur";
-        this.nom = "Ça rie, Sarry pu";
+        this.prenom = "Arthur";
+        this.nom = "Ça rie, Sarry pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
         inventaire = new ArrayList<>(3);
         inventaire.add(new ArrayList<Outil>());//Outils
