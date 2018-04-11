@@ -1,0 +1,8 @@
+Toutou 1
+	40
+Toutou 2
+	60
+Toutou 3
+	100
+Toutou 4
+	150

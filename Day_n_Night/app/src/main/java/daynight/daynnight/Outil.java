@@ -16,6 +16,7 @@ public class Outil extends Objet implements Parcelable
     enum Portee{Rapprochée, Éloignée, Nulle} Portee portee;
     int nbCibles;
     int toucherParCoup;
+    //TODO int intervalleParCoup;
 
     //Constructeurs
     Outil() {}

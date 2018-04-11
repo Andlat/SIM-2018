@@ -15,6 +15,7 @@ public class Objet implements Parcelable
     String nom;
     String description;
     enum Type{Outil, Skin, Décoration, Nul} Type type;
+    //TODO int identifiant;
 
     int prix;
 
