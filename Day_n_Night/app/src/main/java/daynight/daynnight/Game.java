@@ -55,7 +55,6 @@ class Game extends GameView implements Joystick.JoystickListener{
 
         joystickTir = findViewById(R.id.joystickTir);
 
-
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
         try {//Load the shader files
@@ -103,13 +102,19 @@ class Game extends GameView implements Joystick.JoystickListener{
         for(Long monsieurMovingModelID : mBallesID){
             world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
             temp++;
-            //if(positionBalle == positionAutreShit) destroyBalle(temp);
+            //if(positionBalle == positionAutreShit) {
+            //  destroyMrBalle(temp, world);
+            // }
+
         }
     }
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        if(source == 1){
+        if(source == 0){
+        //Mouvements
+        }else if(source == 1){
+            //Tires
             MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mBalles.add(bullet);
@@ -118,7 +123,8 @@ class Game extends GameView implements Joystick.JoystickListener{
         }
     }
 
-    public void destroyBalle(int i){
+    public void destroyMrBalle(int i, World world){
+        world.removeModel(mBallesID.get(i));
         mBalles.remove(i);
         mDirectionsBallesX.remove(i);
         mDirectionsBallesY.remove(i);
