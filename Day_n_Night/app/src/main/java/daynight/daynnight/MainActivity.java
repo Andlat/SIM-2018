@@ -112,10 +112,6 @@ public class MainActivity extends AppCompatActivity
     protected void onPause()
     {
         super.onPause();
-
-        //backgroundMusique.release();
-        backgroundMusique.release();
-
         onPause = true;
     }
 
