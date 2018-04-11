@@ -50,7 +50,6 @@
             android:name=".BackgroundSoundService"
             android:enabled="true" />
 
-        <activity android:name=".testjoystick"></activity>
     </application>
 
 </manifest>

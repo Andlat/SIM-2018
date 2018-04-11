@@ -21,7 +21,7 @@ import java.io.IOException;
  * Created by Antoine Mascolo on 2018-04-04.
  */
 //Inspiré par le tutoriel suivant
-//http://www.instructables.com/id/A-Simple-Android-UI-Joystick/
+//Par  EfficentIsoceles
 
 public class Joystick extends SurfaceView implements Callback, View.OnTouchListener {
 
@@ -30,6 +30,7 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     float jsBottom;
     float jsTop;
     JoystickListener joystickCallback;
+    Paint color;
 
     public Joystick(Context context) {
         super(context);
@@ -39,6 +40,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100,255,0,0);
     }
 
     public Joystick(Context context, AttributeSet attrs) {
@@ -49,6 +52,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100,255,0,0);
 
     }
 
@@ -60,6 +65,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100,255,0,0);
 
     }
 
@@ -114,8 +121,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     public void setDimension(){
         centerX = getWidth()/2;
         centerY = getHeight()/2;
-        jsBottom = Math.min(getWidth(), getHeight()) / 2;
-        jsTop = Math.min(getWidth(), getHeight()) / 5;
+        jsBottom = Math.min(getWidth(), getHeight()) / 3;
+        jsTop = Math.min(getWidth(), getHeight()) / 7;
 
     }
 
@@ -124,15 +131,19 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(getHolder().getSurface().isValid()){
             Canvas canvas = this.getHolder().lockCanvas();
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            Paint color = new Paint();
+            Paint colorBottom = new Paint();
 
-            color.setARGB(100, 50,50,50);
-            canvas.drawCircle(centerX, centerY, jsBottom, color);
+            colorBottom.setARGB(100, 50,50,50);
+            canvas.drawCircle(centerX, centerY, jsBottom, colorBottom);
             color.setARGB(100, 255,0,0);
             canvas.drawCircle(x, y, jsTop, color);
             getHolder().unlockCanvasAndPost(canvas);
         }
 
+    }
+
+    public void setColor(int a, int r, int g, int b) {
+        color.setARGB(a,r,g,b);
     }
 
     public interface JoystickListener
