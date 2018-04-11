@@ -84,7 +84,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private String directionRegardee = "droite";
     private URL url;
     Intent intent;
-    private int modelePerosnage = 1;
+    private int modelePerosnage = 5;
     private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
@@ -152,6 +152,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        //Initialisation de variables
         final RelativeLayout loading = findViewById(R.id.loadingPanel);
         loading.setVisibility(View.VISIBLE);
 
@@ -174,6 +175,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
         layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);*/
 
+        //types de poi
         filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", /*"school",*/ "stadium", "synagogue", "university", "zoo"};
 
         //Recentrage de la carte lors du click sur le bouton Center
@@ -261,20 +263,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             Log.e("MapsActivity", "Impossible de trouver le style", e);
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     //imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
-                    if(prevPos != null && livePos != null){
+                    if (prevPos != null && livePos != null) {
                         //if(livePos.longitude - prevPos.longitude < 0 && directionRegardee == "droite"){
-                        if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x < 0 && directionRegardee == "droite"){
-                            int i= map.getProjection().toScreenLocation(livePos).x;
+                        if (map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x < 0 && directionRegardee == "droite") {
+                            int i = map.getProjection().toScreenLocation(livePos).x;
                             imageViewPersonnage.setScaleX(-1);
                             directionRegardee = "gauche";
-                        }else if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x > 0 && directionRegardee == "gauche"){
+                        } else if (map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x > 0 && directionRegardee == "gauche") {
                             imageViewPersonnage.setScaleX(1);
                             directionRegardee = "droite";
                         }
@@ -295,14 +298,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
                     if (prevLocation.distanceTo(presentLocation) > 2) {
-                        if(persoMarker!= null){
+                        if (persoMarker != null) {
                             persoMarker.setVisible(false);
                         }
-                        if(MAP_CENTREE){
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, map.getCameraPosition().zoom ));
-                        } else{
+                        if (MAP_CENTREE) {
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, map.getCameraPosition().zoom));
+                        } else {
                             translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
+                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                                     imageViewPersonnage.getY(),
                                     map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setRepeatCount(0);
@@ -334,8 +337,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Va chercher les coordonnés des poi
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                    if(distanceFromPoiUpdate[0] > 20000){
-
+                    if (distanceFromPoiUpdate[0] > 20000) {
 
 
                         for (String filter : filters) {
@@ -406,7 +408,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 }
 
                 @Override
-                public void onStatusChanged (String s,int i, Bundle bundle){
+                public void onStatusChanged(String s, int i, Bundle bundle) {
                     Log.d("status", "status changed: " + s);
                 }
 
@@ -421,7 +423,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-
+        }catch(SecurityException e){
+            e.printStackTrace();
+        }
         //Réaction au clique sur un marqueur
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override

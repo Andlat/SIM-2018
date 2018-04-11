@@ -46,7 +46,10 @@
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />
 
-        <service android:enabled="true" android:name=".BackgroundSoundService" />
+        <service
+            android:name=".BackgroundSoundService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

@@ -1,0 +1,21 @@
+#version 300 es
+
+layout (location=0) in vec3 position;
+layout (location=1) in vec2 UV;
+layout (location=2) in vec3 normal;
+
+layout (location=4) uniform mat4 MVP;
+
+out vec2 fUV;
+
+void main(){
+mat4 o = mat4(
+vec4(1.4, 0.f, 0.f, 0.f),
+vec4(0.f, 1.f, 0.f, 0.f),
+vec4(0.f, 0.f, -0.02f, 0.f),
+vec4(0.f, 0.f, -0.90f, 1.f)
+);
+    gl_Position = MVP * vec4(position, 1);
+
+    fUV = UV;
+}

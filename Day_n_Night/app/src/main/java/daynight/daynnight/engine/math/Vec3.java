@@ -32,7 +32,7 @@ public class Vec3 extends Vector {
      * @param vec vecteur à multiplier qui à le même nombre de dimensions ou moins.
      * @return Le vecteur résultant "this" après le produit vectoriel
      */
-    public Vector cross(Vec3 vec){
+    public Vec3 cross(Vec3 vec){
         this.x( this.y() * vec.z() - this.z() * vec.y() );
         this.y( this.z() * vec.x() - this.x() * vec.z() );
         this.z( this.x() * vec.y() - this.y() * vec.x() );

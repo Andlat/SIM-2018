@@ -9,21 +9,24 @@ import java.util.List;
 
 public class Joueur
 {
-    //TODO bool musiqueOnOff
-
-    //Variables
+    //Propriétés
     String prenom;
     String nom;
     String addresseElectronique;
 
     List<List<Outil>> inventaire;
+    List<List<Outil>> boutique;
+    List<Badge> badges;
+
+    //Préférences
+    Boolean musique;
 
 
     //Constructeurs
     Joueur()
     {
-        this.prenom = "Athur";
-        this.nom = "Ça rie, Sarry pu";
+        this.prenom = "Arthur";
+        this.nom = "Ça rie, Sarry pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
         inventaire = new ArrayList<>(3);
         inventaire.add(new ArrayList<Outil>());//Outils

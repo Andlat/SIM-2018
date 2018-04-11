@@ -1,6 +1,7 @@
 package daynight.daynnight.engine;
 
 import android.opengl.Matrix;
+import android.util.Log;
 
 import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec3;
@@ -23,18 +24,28 @@ class MVP {
 
         //Make a default perspective projection of 45 degrees
         float[] projection = new float[16];
-        Matrix.perspectiveM(projection, 0, 45, viewportRatio, 0.1f, 100.f);
+        Matrix.frustumM(projection, 0, -viewportRatio, viewportRatio, -1, 1, 1f, 10);
         mProjection = new Mat4(projection, 0);
     }
 
     /**
-     * Calcule la matrice de vue dans l'espace. Model View Projection matrix
+     * Calcule la matrice de vue dans l'espace. Model View Projection matrix. L'ordre de multiplication des matrices est important.
+     * @param modelMat4 Position du modèle. Utiliser une matrice d'identité pour un objet à l'origine.
      * @return La matrice MVP
      */
-    public Mat4 get(){
-        Mat4 mvp = new Mat4();
-        mvp.mult(mCamera.lookAt()).mult(mProjection);
+    Mat4 get(Mat4 modelMat4){
+        Mat4 mvp = new Mat4(mProjection.toArray(), 0);
+        mvp.mult(mCamera.lookAt());
+        mvp.mult(modelMat4);
+
         return mvp;
+    }
+
+    Camera getCamera(){ return mCamera; }
+
+    @Override
+    public String toString() {
+        return "(M)VP{ Projection: " + mProjection.toString() + "; " + mCamera.toString() + " }";
     }
 
     static class Camera{
@@ -61,25 +72,29 @@ class MVP {
             mUp = up;
         }
 
-        public Vec3 getEye() { return mEye; }
-        public void setEye(Vec3 pos) { mEye = pos; }
+        Vec3 getEye() { return mEye; }
+        Camera setEye(Vec3 pos) { mEye = pos; return this; }
 
-        public Vec3 getCenter() { return mCenter; }
-        public void setCenter(Vec3 eye) { mCenter = eye; }
+        Vec3 getCenter() { return mCenter; }
+        Camera setCenter(Vec3 eye) { mCenter = eye; return this; }
 
 
-        public Vec3 getUp() { return mUp; }
-        public void setUp(Vec3 head) { mUp = head; }
+        Vec3 getUp() { return mUp; }
+        Camera setUp(Vec3 head) { mUp = head; return this; }
 
         /**
          * Calcule la matrice de ce que la caméra voit
          * @return La matrice spécifiant ce que la caméra voit
          */
-        public Mat4 lookAt(){
+        Mat4 lookAt(){
             float[] lookat = new float[16];
-
             Matrix.setLookAtM(lookat, 0, mEye.x(), mEye.y(), mEye.z(), mCenter.x(), mCenter.y(), mCenter.z(), mUp.x(), mUp.y(), mUp.z());
             return new Mat4(lookat, 0);
+        }
+
+        @Override
+        public String toString() {
+            return "Camera{ Eye: " + mEye.toString() + "; Center: " + mCenter.toString() + "; Up: " + mUp.toString() + "; }";
         }
     }
 }
