@@ -98,5 +98,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onPause();
         //backgroundMusique.release();
+        backgroundMusique.release();
     }
 }
