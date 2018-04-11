@@ -98,36 +98,6 @@ class Game extends GameView implements Joystick.JoystickListener{
                             }
                         };
                         break;
-                    case MotionEvent.ACTION_MOVE:
-                        countDownTimer = new CountDownTimer(10000, 500) {
-                            @Override
-                            public void onTick(long l) {
-                                try {
-                                    makeMrBalle();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                joystickTir.setClickable(false);
-                                joystickTir.setLongClickable(false);
-                                countDownTimerReload = new CountDownTimer(2000, 2000) {
-                                    @Override
-                                    public void onTick(long l) {
-
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        joystickTir.setClickable(true);
-                                        joystickTir.setLongClickable(true);
-                                    }
-                                };
-                            }
-                        };
-                        break;
                     case MotionEvent.ACTION_UP:
                         if(countDownTimer != null){
                             countDownTimer.cancel();
