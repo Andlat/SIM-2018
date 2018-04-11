@@ -106,10 +106,7 @@ class Game extends GameView implements Joystick.JoystickListener{
                         }
                         break;
                    default:
-                       if(countDownTimer != null){
-                           countDownTimer.cancel();
-                       }
-                       break;
+
                 }
                 return false;
             }
