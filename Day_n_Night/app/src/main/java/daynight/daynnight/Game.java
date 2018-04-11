@@ -36,10 +36,11 @@ class Game extends GameView implements Joystick.JoystickListener{
     private ArrayList<Float> mDirectionsBallesX;
     private ArrayList<Float> mDirectionsBallesY;
     private Joystick joystickTir;
-    private float xPercentDirectionBalle;
-    private float yPercentDirectionBalle;
+    private float xPercentDirectionBalle = 0;
+    private float yPercentDirectionBalle = 0;
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerReload;
+    private int nbrBallesLancees = 0;
 
     public Game(Context context) {
         super(context);
@@ -64,51 +65,30 @@ class Game extends GameView implements Joystick.JoystickListener{
         super.UseWorld(world);
 
         joystickTir = findViewById(R.id.joystickTir);
-        joystickTir.setOnTouchListener(new OnTouchListener() {
+        joystickTir.joystickCallback(new Joystick.JoystickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        countDownTimer = new CountDownTimer(10000, 500) {
-                            @Override
-                            public void onTick(long l) {
-                                try {
-                                    makeMrBalle();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                joystickTir.setClickable(false);
-                                joystickTir.setLongClickable(false);
-                                countDownTimerReload = new CountDownTimer(2000, 2000) {
-                                    @Override
-                                    public void onTick(long l) {
-
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        joystickTir.setClickable(true);
-                                        joystickTir.setLongClickable(true);
-                                    }
-                                };
-                            }
-                        };
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if(countDownTimer != null){
-                            countDownTimer.cancel();
-                        }
-                        break;
-                   default:
-
+            public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+                if(source == 0){
+                    //Mouvements
+                }else if(source == 1){
+                    //Tirs
+                    xPercentDirectionBalle = xPercent;
+                    yPercentDirectionBalle = yPercent;
                 }
-                return false;
             }
         });
+
+        /*countDownTimer = new CountDownTimer() {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };*/
 
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
@@ -164,17 +144,6 @@ class Game extends GameView implements Joystick.JoystickListener{
         }
     }
 
-    @Override
-    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        if(source == 0){
-        //Mouvements
-        }else if(source == 1){
-            //Tirs
-            xPercentDirectionBalle = xPercent;
-            yPercentDirectionBalle = yPercent;
-        }
-    }
-
     public void makeMrBalle() throws IOException {
         MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
         bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -189,6 +158,11 @@ class Game extends GameView implements Joystick.JoystickListener{
         mDirectionsBallesX.remove(i);
         mDirectionsBallesY.remove(i);
         mBallesID.remove(i);
+    }
+
+    @Override
+    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+
     }
 
     //private Shader createShader(){
