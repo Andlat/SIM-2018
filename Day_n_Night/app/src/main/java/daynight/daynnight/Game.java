@@ -1,5 +1,6 @@
 package daynight.daynnight;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
@@ -57,6 +58,7 @@ class Game extends GameView implements Joystick.JoystickListener{
     private void init(Context context){
         mContext = context;
     }
+
 
     @Override
     protected void onCreate() {
