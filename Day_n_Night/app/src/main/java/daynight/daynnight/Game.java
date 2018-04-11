@@ -1,11 +1,17 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
@@ -30,6 +36,10 @@ class Game extends GameView implements Joystick.JoystickListener{
     private ArrayList<Float> mDirectionsBallesX;
     private ArrayList<Float> mDirectionsBallesY;
     private Joystick joystickTir;
+    private float xPercentDirectionBalle;
+    private float yPercentDirectionBalle;
+    private CountDownTimer countDownTimer;
+    private CountDownTimer countDownTimerReload;
 
     public Game(Context context) {
         super(context);
@@ -54,6 +64,84 @@ class Game extends GameView implements Joystick.JoystickListener{
         super.UseWorld(world);
 
         joystickTir = findViewById(R.id.joystickTir);
+        joystickTir.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        countDownTimer = new CountDownTimer(10000, 500) {
+                            @Override
+                            public void onTick(long l) {
+                                try {
+                                    makeMrBalle();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                joystickTir.setClickable(false);
+                                joystickTir.setLongClickable(false);
+                                countDownTimerReload = new CountDownTimer(2000, 2000) {
+                                    @Override
+                                    public void onTick(long l) {
+
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        joystickTir.setClickable(true);
+                                        joystickTir.setLongClickable(true);
+                                    }
+                                };
+                            }
+                        };
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        countDownTimer = new CountDownTimer(10000, 500) {
+                            @Override
+                            public void onTick(long l) {
+                                try {
+                                    makeMrBalle();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                joystickTir.setClickable(false);
+                                joystickTir.setLongClickable(false);
+                                countDownTimerReload = new CountDownTimer(2000, 2000) {
+                                    @Override
+                                    public void onTick(long l) {
+
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        joystickTir.setClickable(true);
+                                        joystickTir.setLongClickable(true);
+                                    }
+                                };
+                            }
+                        };
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if(countDownTimer != null){
+                            countDownTimer.cancel();
+                        }
+                        break;
+                   default:
+                       if(countDownTimer != null){
+                           countDownTimer.cancel();
+                       }
+                       break;
+                }
+                return false;
+            }
+        });
 
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
@@ -114,13 +202,18 @@ class Game extends GameView implements Joystick.JoystickListener{
         if(source == 0){
         //Mouvements
         }else if(source == 1){
-            //Tires
-            MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
-            bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mBalles.add(bullet);
-            mDirectionsBallesX.add(xPercent);
-            mDirectionsBallesY.add(yPercent);
+            //Tirs
+            xPercentDirectionBalle = xPercent;
+            yPercentDirectionBalle = yPercent;
         }
+    }
+
+    public void makeMrBalle() throws IOException {
+        MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+        bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+        mBalles.add(bullet);
+        mDirectionsBallesX.add(this.xPercentDirectionBalle);
+        mDirectionsBallesY.add(this.yPercentDirectionBalle);
     }
 
     public void destroyMrBalle(int i, World world){
