@@ -283,11 +283,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         }
                     }
 
-                    Log.d("POS", livePos.toString());
-                    //Distance entre la position actuelle et la dernière actualisation
-                    Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
-                    Log.d("Move", String.valueOf(move[0]));
-
                     Location prevLocation = new Location("");
                     prevLocation.setLatitude(prevPos.latitude);
                     prevLocation.setLongitude(prevPos.longitude);
@@ -339,7 +334,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
                     if (distanceFromPoiUpdate[0] > 20000) {
 
-
+                        //Utilise chacun des filtres dans l'url pour avoir chaque type de POI
                         for (String filter : filters) {
                             nbrPage = 0;
                             try {
@@ -349,9 +344,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     HttpRequest request = null;
                                     try {
                                         if (nbrPage == 0) {
+                                            //Si c'est la premiere page avec ce filtre, on utilise l'url normal
                                             request = new HttpRequest(url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + livePos.latitude + "," + livePos.longitude + "&type=" + filter + "&rankby=distance&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
 
                                         } else {
+                                            //Sinon on utilise le page token fouri dans la page precedante
                                             request = new HttpRequest(url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
                                         }
                                     } catch (MalformedURLException e) {
@@ -364,6 +361,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     String response = null;
 
                                     response = future.get();
+                                    //Lit le Json du site
                                     jsonPOI = new JSONObject(response);
                                     jsonResults = jsonPOI.getJSONArray("results");
 
@@ -380,6 +378,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                         tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
                                                         .fromResource(R.drawable.coffre)));
+                                        //affecte l'objet poi au markeur pour y avoir acces ensuite
                                         tempMarker.setTag(pois);
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
@@ -388,20 +387,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                                     pageToken = jsonPOI.getString("next_page_token");
                                     nbrPage++;
-                                    Log.d("Request", pageToken);
-                                    Log.d("Request", url.getQuery());
-                                    Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
+
+                                    //La boucle se realise tant qu'il y a 20item dans la page, ce qui est la quantité maximal de donnés par pages
                                 } while (jsonPOI.getJSONArray("results").length() == 20);
-                            } catch (JSONException e) {
+                            } catch (JSONException | InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
-                                Log.d("Request", "Malformed url");
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
-                                Log.d("Request", "NOPE ça marche pas");
                             }
                         }
                         poiUpdate = livePos;
 
+                        //Arrete l'animation de chargement
                         loading.setVisibility(View.GONE);
                     }
                     prevPos = livePos;
@@ -434,7 +429,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 distanceFromPoi = new float[1];
                 Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
 
-                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
+                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<100){
+                    //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur
                     Poi ok = (Poi) marker.getTag();
 
                     Toast.makeText(MapActivity.this, ok.getName() , Toast.LENGTH_SHORT).show();

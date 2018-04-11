@@ -145,7 +145,16 @@
             android:layout_height="127dp"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="0dp"
-            android:layout_marginEnd="0dp" />
+            android:layout_marginEnd="0dp"
+            tools:ignore="RtlHardcoded" />
+        <daynight.daynnight.Joystick
+            android:id="@+id/joystickPerso"
+            android:layout_width="120dp"
+            android:layout_height="127dp"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 
