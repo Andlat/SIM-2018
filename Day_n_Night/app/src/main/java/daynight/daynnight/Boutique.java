@@ -44,13 +44,9 @@ public class Boutique extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
 
-        outils = new ArrayList<>();
-        outils.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", false));
-        outils.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", false));
-        skins = new ArrayList<>();
-        skins.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skins.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
-        decorations = new ArrayList<>();
+        outils = MainActivity.joueur.getOutilsBoutique();
+        skins = MainActivity.joueur.getSkinsBoutique();
+        decorations = MainActivity.joueur.getDecorationsBoutique();
 
         boutonOutils.setSelected(true);
         boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
@@ -114,6 +110,7 @@ public class Boutique extends AppCompatActivity
             public void onClick(View view)
             {
                 finish();
+                startActivity(new Intent(Boutique.this, Inventaire.class));
             }
         });
     }

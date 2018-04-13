@@ -73,7 +73,7 @@ class Game extends GameView implements Joystick.JoystickListener{
         joystickTir = findViewById(R.id.joystickTir);
         joystickPerso = findViewById(R.id.joystickPerso);
         joystickPerso.setColor(100,0,255,0);
-        joystickTir.joystickCallback(new Joystick.JoystickListener() {
+        /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
             @Override
             public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
                 if(source == 0){
@@ -84,7 +84,7 @@ class Game extends GameView implements Joystick.JoystickListener{
                     yPercentDirectionBalle = yPercent;
                 }
             }
-        });
+        });*/
 
         /*countDownTimer = new CountDownTimer() {
             @Override
