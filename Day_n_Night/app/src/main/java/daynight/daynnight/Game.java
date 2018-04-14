@@ -1,6 +1,7 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.opengl.GLES30;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -46,7 +47,7 @@ class Game extends GameView {
         World world = new World();
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
-
+        Log.e("ERROR 1 GL", ""+ GLES30.glGetError());
         //TODO Generate the shader in the model
         Shader texShader = new Shader(mContext);
         try {//Load the shader files
@@ -55,19 +56,23 @@ class Game extends GameView {
 
             //Compile the shader
             try{ texShader.Compile().Link().DeleteShaders(); }catch(Shader.Exception ex){ Log.e("Shader Exception", ex.getMessage()); }
-
+            Log.e("ERROR 2 GL", ""+ GLES30.glGetError());
             //Create a tile
             MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
-            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            Log.e("ERROR 3 GL", ""+ GLES30.glGetError());
+            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
+            Log.e("ERROR 4 GL", ""+ GLES30.glGetError());
             tile.AssociateShader(texShader);
-
-            MovingModel tile2 = new MovingModel(tile);
+            Log.e("ERROR 5 GL", ""+ GLES30.glGetError());
+            //MovingModel tile2 = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();//new MovingModel(tile);
+            //tile2.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
+            //tile2.AssociateShader(texShader);
 
             mTileID = world.addModel(tile);
-            mTile2ID = world.addModel(tile2);
+//            mTile2ID = world.addModel(tile2);
 
             world.Translate(tile, new Vec3(-3, -3, 0));
-            world.Translate(tile2, new Vec3(3, 3, 0));
+            //world.Translate(tile2, new Vec3(3, 3, 0));
 
         }catch(IOException ex){
             Log.e("Game Creation", ex.getMessage());
@@ -81,6 +86,6 @@ class Game extends GameView {
     @Override
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mTile2ID, new Vec3(-0.1f, 0.8f, 0.f), getElapsedFrameTime());
+        //world.Move(mTile2ID, new Vec3(-0.1f, -0.4f, 0.f), getElapsedFrameTime());
     }
 }

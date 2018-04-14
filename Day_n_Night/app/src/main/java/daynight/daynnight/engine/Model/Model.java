@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 
 import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.math.Vector;
 import daynight.daynnight.engine.util.Util;
 
 /**
@@ -140,10 +141,10 @@ public class Model {
         clone.mTextureSrc = this.mTextureSrc;
         clone.mTexture = this.mTexture;
 
-        clone.mCurrentTranslation = this.mCurrentTranslation;
-        clone.mModelMatrix = this.mModelMatrix;
+        clone.mCurrentTranslation = new Vec3(this.mCurrentTranslation);//(Vec3)Vector.make(Vector.VecSize.V3, this.mCurrentTranslation.toArray(), 0);
+        clone.mModelMatrix = new Mat4(this.mModelMatrix.toArray(), 0);
 
-        clone.mModelVBO = this.mModelVBO;
+        clone.mModelVBO = Util.CloneBuffer(this.mModelVBO);
 
         clone.mVerticesOffset = this.mVerticesOffset;
         clone.mTexOffset = this.mTexOffset;

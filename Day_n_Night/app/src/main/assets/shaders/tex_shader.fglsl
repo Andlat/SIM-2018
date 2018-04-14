@@ -1,11 +1,13 @@
 #version 300 es
 
-layout (location=5) uniform sampler2D tex;
+//layout (location=5) uniform sampler2D tex;
+uniform sampler2D tex;
 
 in vec2 fUV;
+in mat4 mvpcolor;
 
 out vec4 color;
 
 void main(){
-    color = texture(tex, fUV);
+    color = mvpcolor * texture(tex, fUV);
 }

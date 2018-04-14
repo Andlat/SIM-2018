@@ -1,5 +1,6 @@
 package daynight.daynnight.engine;
 
+import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
 import android.util.Pair;
@@ -29,6 +30,7 @@ import daynight.daynnight.engine.util.Util;
  */
 class VBOManager {
     private FloatBuffer mVBOData;
+    private int mLastDataPosition = 0;
 
     private int[] mVBO = new int[1];
 
@@ -55,7 +57,8 @@ class VBOManager {
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
 
         mVBOData.position(floatBufferOffset);
-        GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset* Util.FLOAT_SIZE, dataSize, mVBOData);
+
+        GLES30.glBufferSubData(GLES30.GL_ARRAY_BUFFER, floatBufferOffset*Util.FLOAT_SIZE, dataSize, mVBOData);
     }
 
     /**
@@ -64,15 +67,19 @@ class VBOManager {
      * @return Offset des données du modèle dans le VBO global
      */
     int addData(FloatBuffer data){
-        int count = data.remaining();
-        int dataSize = count * Util.FLOAT_SIZE;
+        int dataSize = data.remaining() * Util.FLOAT_SIZE;
 
         CheckSizeForIncrease(dataSize);
         mDataSizeInBytes += dataSize;
 
-        mVBOData.put(data);
-        int offset = mVBOData.position() - count;
+        mVBOData.position(mLastDataPosition);//Go to the end of the data
+        mVBOData.put(data);//Put the data into the VBO buffer
 
+        int offset = mLastDataPosition;//Offset of the start of this data
+        mLastDataPosition = mVBOData.position();//Keep track of the end data
+
+
+        //Send data to OpenGL
         WriteToVBO(offset, dataSize);
 
         return offset;

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.List;
 
@@ -137,6 +139,7 @@ public class World {
     //TODO MVP uniform does not respect the location set in the shader. Because of that, I have to use glGetUniformLocation
     public void DrawWorld(){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+        Log.e("ERROR GL", ""+GLES30.glGetError());
 
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -145,17 +148,26 @@ public class World {
         for(int i=0; i < size; ++i){
             Model model = mModels.valueAt(i);
 
+            FloatBuffer g = ((ByteBuffer)GLES30.glMapBufferRange(GLES30.GL_ARRAY_BUFFER, (int)model.getVBOWorldOffset()*Util.FLOAT_SIZE, model.getModelVBOSize(), GLES30.GL_MAP_READ_BIT)).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            StringBuilder s = new StringBuilder(g.capacity()).append("{");
+            for(int h=0; h < g.capacity(); ++h){
+                s.append(g.get()).append(", ");
+            }
+            s.append("}");
+            Log.e("GL DATA " + model.getModelVBOSize()/Util.FLOAT_SIZE, s.toString());
+            GLES30.glUnmapBuffer(GLES20.GL_ARRAY_BUFFER);
+
             model.getShader().Use();
 
             final int texUnit = model.getTexture().getUnit();
-            Texture.ActivateUnit(texUnit);
-            model.getTexture().Bind();
-            GLES30.glUniform1i(TEXTURE_LOCATION, texUnit);
-
+            //Texture.ActivateUnit(texUnit);
+            GLES30.glActiveTexture(texUnit);
+            GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
 
-            GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset(), model.getModelVBOSize() / Util.FLOAT_SIZE);
+            //GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset(),  model.getModelVBOSize()/Util.FLOAT_SIZE);
+            GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0,  model.getModelVBOSize()/Util.FLOAT_SIZE);
         }
         //----------------------------------------------------------------------\\
 

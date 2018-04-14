@@ -20,10 +20,11 @@ import java.util.List;
 public class Texture {
     private final static SparseArray<Texture> mLoadedTextures = new SparseArray<>();
 
+    private static Texture mBoundTexture=null;
+
     private static int mActivatedUnit=-1;
 
     private int mHandle;
-    private boolean mIsBound = false;
 
     private int mUnit = GLES30.GL_TEXTURE0;
     private static byte mUnitCount = 0;
@@ -41,20 +42,20 @@ public class Texture {
     }
 
     public void Bind(){
-        if(!mIsBound) {
+        if(mBoundTexture != this) {
             GLES30.glBindTexture(GLES20.GL_TEXTURE_2D, mHandle);
-            mIsBound = true;
+            mBoundTexture = this;
         }
     }
     public void UnBind(){
-        if(mIsBound) {
+        if(mBoundTexture == this) {
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
-            mIsBound = false;
+            mBoundTexture = null;
         }
     }
 
     public boolean IsBound(){
-        return mIsBound;
+        return (mBoundTexture == this);
     }
 
     public int getTextureHandle(){

@@ -43,15 +43,10 @@ public abstract class GameView extends GLSurfaceView {
     private void init(){
         setEGLContextClientVersion(3);
 
-        GLES30.glEnable(GLES30.GL_DEPTH_TEST);
-        GLES30.glDepthFunc(GLES30.GL_LESS);
-
-        //GLES30.glEnable(GLES30.GL_CULL_FACE);//Backface culling. Not necessary, because the game is in 2d
-
         Renderer renderer = new Renderer();
         setRenderer(renderer);
 
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO Remove RENDER_WHEN_DIRTY
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO Remove RENDER_WHEN_DIRTY
     }
 
     final public void UseWorld(World world){ mWorld = world; }
@@ -71,9 +66,17 @@ public abstract class GameView extends GLSurfaceView {
 
 
     private class Renderer implements GLSurfaceView.Renderer{
+        private void glInit(){
+            GLES30.glEnable(GLES30.GL_DEPTH_TEST);
+            GLES30.glDepthFunc(GLES30.GL_LESS);
+            //GLES30.glEnable(GLES30.GL_CULL_FACE);//Backface culling. Not necessary, because the game is in 2d
+
+            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//Black background by default
+        }
+
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//Black background by default
+            glInit();
 
             GameView.this.onCreate();
 
@@ -98,8 +101,6 @@ public abstract class GameView extends GLSurfaceView {
         public void onDrawFrame(GL10 gl) {
             mLastFrameTime = mCurrentTime;
             mCurrentTime = SystemClock.elapsedRealtime();//Keep track of frame time
-
-            Log.e("Elapsed time", ""+getElapsedFrameTime());
 
             GameView.this.onDrawFrame(mWorld);
 
