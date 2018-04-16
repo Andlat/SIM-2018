@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static Joueur joueur;
     private GLSurfaceView mGLSurface;
 
     public static boolean onPause = false;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
+
+        //Création du joueur
+        joueur = new Joueur();
 
         //Musique d'arriere plan
         MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);

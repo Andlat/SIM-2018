@@ -103,15 +103,19 @@ public class PopupInformationsObjet extends Activity
                     objet.setAcquis(true);
                     if(objet.getType() == Objet.Type.Outil)
                     {
-                        Inventaire.outils.add(objet);
+                        MainActivity.joueur.getOutilsInventaire().add(objet);
+                        //MainActivity.joueur.setOutilsInventaire();
+                        //Inventaire.outils.add(objet);
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
-                        Inventaire.skins.add(objet);
+                        MainActivity.joueur.getSkinsInventaire().add(objet);
+                        //Inventaire.skins.add(objet);
                     }
                     else if(objet.getType() == Objet.Type.Décoration)
                     {
-                        Inventaire.decorations.add(objet);
+                        MainActivity.joueur.getDecorationsInventaire().add(objet);
+                        //Inventaire.decorations.add(objet);
                     }
                     //TODO débiter le montant de biscuits de son compte
                     finish();

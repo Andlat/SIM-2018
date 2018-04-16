@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Switch;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,13 +38,19 @@ class Game extends GameView implements Joystick.JoystickListener{
     private ArrayList<Float> mDirectionsBallesX;
     private ArrayList<Float> mDirectionsBallesY;
     private Joystick joystickTir;
+    private Joystick joystickPerso;
     private float xPercentDirectionBalle = 0;
     private float yPercentDirectionBalle = 0;
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerReload;
     private int nbrBallesLancees = 0;
+<<<<<<< HEAD
     private Shader texShader;
     private Texture tex;
+=======
+    private MovingModel perso;
+    private Vec3 persoVec;
+>>>>>>> 0c7be92e41ab19618d8e4550b9a8de8098d91190
 
     public Game(Context context) {
         super(context);
@@ -69,14 +76,16 @@ class Game extends GameView implements Joystick.JoystickListener{
         super.UseWorld(world);
 
         joystickTir = findViewById(R.id.joystickTir);
-        joystickTir.joystickCallback(new Joystick.JoystickListener() {
+        joystickPerso = findViewById(R.id.joystickPerso);
+        joystickPerso.setColor(100,0,255,0);
+        /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
             @Override
             public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
                 //Tirs
                 xPercentDirectionBalle = xPercent;
                 yPercentDirectionBalle = yPercent;
             }
-        });
+        });*/
 
         countDownTimer = new CountDownTimer(1000, 500) {
             @Override
@@ -148,6 +157,11 @@ class Game extends GameView implements Joystick.JoystickListener{
                 world.addModel(tmp);
             }
 
+            //creation personnage
+            perso = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            perso.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 1));
+            persoVec = new Vec3();
+
         }catch(IOException ex){
             Log.e("Game Creation", ex.getMessage());
         }
@@ -170,6 +184,9 @@ class Game extends GameView implements Joystick.JoystickListener{
             // }
 
         }
+
+        world.Move(perso.getID() ,persoVec,getElapsedFrameTime());
+
     }
 
     public void makeMrBalle() throws IOException {
@@ -194,6 +211,18 @@ class Game extends GameView implements Joystick.JoystickListener{
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+        switch(source){
+            case R.id.joystickPerso:
+
+                persoVec.x(xPercent);
+                persoVec.y(yPercent * -1);
+                break;
+
+            case R.id.joystickTir:
+
+                break;
+
+        }
 
     }
 

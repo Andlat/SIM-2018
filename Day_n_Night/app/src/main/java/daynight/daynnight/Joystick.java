@@ -25,12 +25,15 @@ import java.io.IOException;
 
 public class Joystick extends SurfaceView implements Callback, View.OnTouchListener {
 
-    float centerX;
-    float centerY;
-    float jsBottom;
-    float jsTop;
-    JoystickListener joystickCallback;
+    private float centerX;
+    private float centerY;
+    private float jsBottom;
+    private float jsTop;
+    private JoystickListener joystickCallback;
+    private Paint color;
 
+
+    //Constructeurs
     public Joystick(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -39,6 +42,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100, 255,0,0);
     }
 
     public Joystick(Context context, AttributeSet attrs) {
@@ -49,6 +54,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100, 255,0,0);
 
     }
 
@@ -60,6 +67,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(context instanceof JoystickListener){
             joystickCallback = (JoystickListener) context;
         }
+        color = new Paint();
+        color.setARGB(100, 255,0,0);
 
     }
 
@@ -87,20 +96,29 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         if(view.equals(this)){
             float displacement = (float) Math.sqrt(Math.pow(motionEvent.getX() - centerX, 2) + Math.pow(motionEvent.getY() - centerY, 2));
             try {
+                //Vérifie quel est le type de l'action
                 if(motionEvent.getAction() != MotionEvent.ACTION_UP){
+                    //Si est autre chose que de relacher l'écran
                     if (displacement < jsBottom){
+                        //si le contact à lieu à l'interieur de la base du joystick
+                        //Affecte les valeurs de direction au joystick
                         draw(motionEvent.getX(), motionEvent.getY());
-                            joystickCallback.onJoystickMoved((motionEvent.getX() - centerX) / jsBottom, ((motionEvent.getY() - centerY) / jsBottom)*-1, getId());
+                        joystickCallback.onJoystickMoved((motionEvent.getX() - centerX) / jsBottom, ((motionEvent.getY() - centerY) / jsBottom)*-1, getId());
 
                     }
                     else{
+                        //si le contact à ieu à l'exterieur de la base
+                        //Limite l'affichage du joystick à la limite de la base
                         float ratio = jsBottom / displacement;
                         float constrainedX = centerX + (motionEvent.getX() - centerX) * ratio;
                         float constrainedY = centerY + (motionEvent.getY() - centerY) * ratio;
+                        //Affecte les valeurs de direction au joystick
                         draw(constrainedX, constrainedY);
                         joystickCallback.onJoystickMoved((constrainedX - centerX) / jsBottom, ((constrainedY - centerY) / jsBottom) *-1, getId());
                     }
                 }else{
+                    //Si on relache l'écran
+                    //recentre le joystick
                     draw(centerX,centerY);
                     joystickCallback.onJoystickMoved(0, 0, getId());
                 }
@@ -112,8 +130,10 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     }
 
     public void setDimension(){
+        //Utilise les dimensions du SurfaceView pour placer le centre
         centerX = getWidth()/2;
         centerY = getHeight()/2;
+        //Utilise les dimensions du SurfaceView pour calculer la grosseur du joystick
         jsBottom = Math.min(getWidth(), getHeight()) / 2;
         jsTop = Math.min(getWidth(), getHeight()) / 5;
 
@@ -121,21 +141,24 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
 
     private void draw(float x,float y){
 
+        //Dessine le joystick dans le SurfaceView
         if(getHolder().getSurface().isValid()){
             Canvas canvas = this.getHolder().lockCanvas();
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            Paint color = new Paint();
+            Paint colorBottom = new Paint();
 
-            color.setARGB(100, 50,50,50);
-            canvas.drawCircle(centerX, centerY, jsBottom, color);
-            color.setARGB(100, 255,0,0);
+            colorBottom.setARGB(100, 50,50,50);
+            canvas.drawCircle(centerX, centerY, jsBottom, colorBottom);
             canvas.drawCircle(x, y, jsTop, color);
             getHolder().unlockCanvasAndPost(canvas);
+
         }
 
     }
 
-    public void joystickCallback(JoystickListener joystickListener) {
+    //Permet de changer la couleur du baton du Joystick
+    public void setColor(int a, int r, int g, int b) {
+        this.color.setARGB(a,r,g,b);
     }
 
     public interface JoystickListener
