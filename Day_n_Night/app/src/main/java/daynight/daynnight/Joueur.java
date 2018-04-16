@@ -28,21 +28,40 @@ public class Joueur
         this.prenom = "Arthur";
         this.nom = "Ça rie, Sarry pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
-        inventaire = new ArrayList<>(3);
-        inventaire.add(new ArrayList<Outil>());
-        inventaire.add(new ArrayList<Outil>());
-        inventaire.add(new ArrayList<Outil>());
 
         boutique = new ArrayList<>(3);
+        inventaire = new ArrayList<>(3);
+
         ArrayList<Outil> outilsBout = new ArrayList<>();
-        outilsBout.add(new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.add(new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", false));
-        boutique.add(outilsBout);
         ArrayList<Outil> skinsBout = new ArrayList<>();
-        skinsBout.add(new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skinsBout.add(new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+        ArrayList<Outil> decorationsBout = new ArrayList<>();
+        ArrayList<Outil> outilsInv = new ArrayList<>();
+        ArrayList<Outil> skinsInv = new ArrayList<>();
+        ArrayList<Outil> decorationsInv = new ArrayList<>();
+
+        //Ajout de cases vides
+        for(int j = 0 ; j < 56 ; j++)
+        {
+            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+
+            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+        }
+
+        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", false));
+        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
+        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+
+        boutique.add(outilsBout);
         boutique.add(skinsBout);
-        boutique.add(new ArrayList<Outil>());
+        boutique.add(decorationsBout);
+        inventaire.add(outilsInv);
+        inventaire.add(skinsInv);
+        inventaire.add(decorationsInv);
     }
     Joueur(String prenom, String nom, String addresseElectronique, List<ArrayList<Outil>> inventaire)
     {

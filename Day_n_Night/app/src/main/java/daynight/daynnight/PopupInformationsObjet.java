@@ -103,25 +103,27 @@ public class PopupInformationsObjet extends Activity
                     objet.setAcquis(true);
                     if(objet.getType() == Objet.Type.Outil)
                     {
-                        MainActivity.joueur.getOutilsInventaire().add(objet);
+                        MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
                         //MainActivity.joueur.setOutilsInventaire();
                         //Inventaire.outils.add(objet);
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
-                        MainActivity.joueur.getSkinsInventaire().add(objet);
+                        MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
                         //Inventaire.skins.add(objet);
                     }
                     else if(objet.getType() == Objet.Type.Décoration)
                     {
-                        MainActivity.joueur.getDecorationsInventaire().add(objet);
+                        MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
                         //Inventaire.decorations.add(objet);
                     }
                     //TODO débiter le montant de biscuits de son compte
                     finish();
                 }
             });
-        } else {
+        }
+        else
+        {
             paramsPrix.width = 0;
             paramsAcheter.width = 0;
             paramsAcheter.setMarginEnd(0);
@@ -152,12 +154,13 @@ public class PopupInformationsObjet extends Activity
     //Getteurs & setteurs
 
     //Méthodes
-    public void startActivity(Outil objet, Context context, Boolean objetVendu)
+    public void startActivity(Outil objet, int position, Context context, Boolean objetVendu)
     {
         Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);
         intent.putExtra("objetVendu", objetVendu);
         intent.putExtra("objet", objet);
+        intent.putExtra("position", position);
         context.startActivity(intent);
     }
 }

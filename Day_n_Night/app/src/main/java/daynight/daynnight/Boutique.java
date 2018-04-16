@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -24,9 +25,9 @@ public class Boutique extends AppCompatActivity
     Button boutonDecorations;
     ViewPager viewPager;
 
-    ArrayList<Outil> outils;
-    ArrayList<Outil> skins;
-    ArrayList<Outil> decorations;
+    Fragment outilsFragment = newInstance(MainActivity.joueur.getOutilsBoutique());
+    Fragment skinsFragment = newInstance(MainActivity.joueur.getSkinsBoutique());
+    Fragment decorationsFragment = newInstance(MainActivity.joueur.getDecorationsBoutique());
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -44,9 +45,10 @@ public class Boutique extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
 
-        outils = MainActivity.joueur.getOutilsBoutique();
-        skins = MainActivity.joueur.getSkinsBoutique();
-        decorations = MainActivity.joueur.getDecorationsBoutique();
+        //outils = MainActivity.joueur.getOutilsBoutique();
+        //skins = MainActivity.joueur.getSkinsBoutique();
+        //decorations = MainActivity.joueur.getDecorationsBoutique();
+
 
         boutonOutils.setSelected(true);
         boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
@@ -125,7 +127,7 @@ public class Boutique extends AppCompatActivity
         normal.setTranslationX(0);
         normal2.setTranslationX(0);
     }
-    public void acheterObjet(int position, Objet.Type type)
+    /*public void acheterObjet(int position, Objet.Type type)
     {
         //TODO
         if(type == Objet.Type.Outil)
@@ -140,7 +142,7 @@ public class Boutique extends AppCompatActivity
         {
             skins.remove(position);
         }
-    }
+    }*/
 
 
     //custom ArrayAdapters
@@ -154,11 +156,11 @@ public class Boutique extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return newInstance(outils);
+                    return outilsFragment;
                 case 1:
-                    return newInstance(skins);
+                    return skinsFragment;
                 case 2:
-                    return newInstance(decorations);
+                    return decorationsFragment;
                 default:
                     return newInstance(new ArrayList<Outil>());
             }
