@@ -42,6 +42,8 @@ class Game extends GameView implements Joystick.JoystickListener{
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerReload;
     private int nbrBallesLancees = 0;
+    private Shader texShader;
+    private Texture tex;
 
     public Game(Context context) {
         super(context);
@@ -70,30 +72,53 @@ class Game extends GameView implements Joystick.JoystickListener{
         joystickTir.joystickCallback(new Joystick.JoystickListener() {
             @Override
             public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-                if(source == 0){
-                    //Mouvements
-                }else if(source == 1){
-                    //Tirs
-                    xPercentDirectionBalle = xPercent;
-                    yPercentDirectionBalle = yPercent;
-                }
+                //Tirs
+                xPercentDirectionBalle = xPercent;
+                yPercentDirectionBalle = yPercent;
             }
         });
 
-        /*countDownTimer = new CountDownTimer() {
+        countDownTimer = new CountDownTimer(1000, 500) {
             @Override
             public void onTick(long l) {
-
+                if(xPercentDirectionBalle != 0 && yPercentDirectionBalle != 0){
+                    try {
+                        makeMrBalle();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onFinish() {
+                if(nbrBallesLancees >= 10){
+                    if(countDownTimer != null){
+                        countDownTimer.cancel();
+                    }
+                    countDownTimerReload = new CountDownTimer(2000,2000) {
+                        @Override
+                        public void onTick(long l) {
 
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            countDownTimer.start();
+                        }
+                    };
+                    countDownTimerReload.start();
+                }else{
+                    countDownTimer.start();
+                }
             }
-        };*/
+        };
+        if(countDownTimer != null){
+            countDownTimer.start();
+        }
 
         //TODO Generate the shader in the model
-        Shader texShader = new Shader(mContext);
+        texShader = new Shader(mContext);
         try {//Load the shader files
             texShader.Load("shaders/tex_shader.vglsl", Shader.Type.VERTEX)
                     .Load("shaders/tex_shader.fglsl", Shader.Type.FRAGMENT);
@@ -107,7 +132,7 @@ class Game extends GameView implements Joystick.JoystickListener{
 
             //TODO Use Model's texture source to load the texture, but check first if it wasn't already loaded. This here is temporary.
             //Load the kitchen texture
-            Texture tex = Texture.Load(mContext, R.drawable.kitchen);
+            tex = Texture.Load(mContext, R.drawable.kitchen);
 
             tile.AssociateShader(texShader);
             tile.setTexture(tex);
@@ -136,6 +161,7 @@ class Game extends GameView implements Joystick.JoystickListener{
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
         int temp=0;
+        //world.getModel()
         for(Long monsieurMovingModelID : mBallesID){
             world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
             temp++;
@@ -152,6 +178,10 @@ class Game extends GameView implements Joystick.JoystickListener{
         mBalles.add(bullet);
         mDirectionsBallesX.add(this.xPercentDirectionBalle);
         mDirectionsBallesY.add(this.yPercentDirectionBalle);
+        nbrBallesLancees++;
+        bullet.AssociateShader(texShader);
+        bullet.setTexture(tex);
+        mBallesID.add(bullet.getID());
     }
 
     public void destroyMrBalle(int i, World world){

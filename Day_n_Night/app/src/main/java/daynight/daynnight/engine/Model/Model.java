@@ -68,6 +68,11 @@ public class Model {
         mTexOffset = texOffset;
     }
 
+    public Vec3 getPosition(){
+        //TODO équation de la position de son objet au moment demandé
+        return mCurrentTranslation;
+    }
+
     @Nullable
     public FloatBuffer getVBO() {
         return mModelVBO;
