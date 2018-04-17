@@ -157,8 +157,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
     }
 
     //Permet de changer la couleur du baton du Joystick
-    public void setColor(int a, int r, int g, int b) {
-        this.color.setARGB(a,r,g,b);
+    public void setColor(int r, int g, int b) {
+        this.color.setARGB(100,r,g,b);
     }
 
     public interface JoystickListener
