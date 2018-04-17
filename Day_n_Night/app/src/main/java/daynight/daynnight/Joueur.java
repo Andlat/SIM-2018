@@ -14,6 +14,7 @@ public class Joueur
     String nom;
     String addresseElectronique;
 
+    int biscuits;
     List<ArrayList<Outil>> inventaire;
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
@@ -29,6 +30,7 @@ public class Joueur
         this.nom = "Ça rie, Sarry pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
 
+        this.biscuits = 30;
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
 
@@ -72,6 +74,10 @@ public class Joueur
     }
 
     //Getteurs & Setteurs
+    public int getBiscuits()
+    {
+        return biscuits;
+    }
     public List<ArrayList<Outil>> getInventaire() {
         return inventaire;
     }
@@ -103,6 +109,10 @@ public class Joueur
         return boutique.get(2);
     }
 
+    public void setBiscuits(int biscuits)
+    {
+        this.biscuits = biscuits;
+    }
     public void setInventaire(List<ArrayList<Outil>> inventaire) {
         this.inventaire = inventaire;
     }
