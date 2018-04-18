@@ -44,13 +44,10 @@ class Game extends GameView implements Joystick.JoystickListener{
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerReload;
     private int nbrBallesLancees = 0;
-<<<<<<< HEAD
     private Shader texShader;
     private Texture tex;
-=======
     private MovingModel perso;
     private Vec3 persoVec;
->>>>>>> 0c7be92e41ab19618d8e4550b9a8de8098d91190
 
     public Game(Context context) {
         super(context);
