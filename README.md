@@ -59,6 +59,8 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 
 <img src="images/tasks_01.jpg" alt="tasks" height="300" />
 
+<img src="images/a_faire.jpg" alt="tasks" height="300" />
+
 **Outils**
 - Android Studio 3.0.1
 
