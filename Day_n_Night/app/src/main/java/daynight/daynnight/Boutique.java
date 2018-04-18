@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,15 +20,17 @@ import static daynight.daynnight.ListeObjets.newInstance;
 public class Boutique extends AppCompatActivity
 {
     //Créer
+    static TextView biscuits;
     Button retour;
     Button boutonOutils;
     Button boutonSkins;
     Button boutonDecorations;
-    ViewPager viewPager;
+    static ViewPager viewPager;
+    static SectionPagerAdapter adapteurDeSection;
 
-    ArrayList<Outil> outils;
-    ArrayList<Outil> skins;
-    ArrayList<Outil> decorations;
+    Fragment outilsFragment = newInstance(MainActivity.joueur.getOutilsBoutique());
+    Fragment skinsFragment = newInstance(MainActivity.joueur.getSkinsBoutique());
+    Fragment decorationsFragment = newInstance(MainActivity.joueur.getDecorationsBoutique());
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -34,20 +38,17 @@ public class Boutique extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
 
-
-
         //Attribuer
+        biscuits = (TextView) findViewById(R.id.biscuits);
         retour = (Button) findViewById(R.id.retour);
         boutonOutils = (Button) findViewById(R.id.outils);
         boutonSkins = (Button) findViewById(R.id.skins);
         boutonDecorations = (Button) findViewById(R.id.decos);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        adapteurDeSection = new SectionPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapteurDeSection);
 
-        outils = MainActivity.joueur.getOutilsBoutique();
-        skins = MainActivity.joueur.getSkinsBoutique();
-        decorations = MainActivity.joueur.getDecorationsBoutique();
-
+        biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));
         boutonOutils.setSelected(true);
         boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
         boutonOutils.setOnClickListener(new View.OnClickListener()
@@ -125,43 +126,34 @@ public class Boutique extends AppCompatActivity
         normal.setTranslationX(0);
         normal2.setTranslationX(0);
     }
-    public void acheterObjet(int position, Objet.Type type)
-    {
-        //TODO
-        if(type == Objet.Type.Outil)
-        {
-            outils.remove(position);
-        }
-        else if(type == Objet.Type.Skin)
-        {
-            skins.remove(position);
-        }
-        else if(type == Objet.Type.Décoration)
-        {
-            skins.remove(position);
-        }
-    }
-
 
     //custom ArrayAdapters
-    public class SectionPagerAdapter extends FragmentPagerAdapter {
+    public class SectionPagerAdapter extends FragmentPagerAdapter
+    {
 
         public SectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int position) {
-            switch (position) {
+        public Fragment getItem(int position)
+        {
+            switch (position)
+            {
                 case 0:
-                    return newInstance(outils);
+                    return outilsFragment;
                 case 1:
-                    return newInstance(skins);
+                    return skinsFragment;
                 case 2:
-                    return newInstance(decorations);
+                    return decorationsFragment;
                 default:
                     return newInstance(new ArrayList<Outil>());
             }
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
         }
 
         @Override
@@ -170,8 +162,10 @@ public class Boutique extends AppCompatActivity
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
+        public CharSequence getPageTitle(int position)
+        {
+            switch (position)
+            {
                 case 0:
                     return "Outils";
                 case 1:

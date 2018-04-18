@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -87,7 +88,7 @@ public class PopupInformationsObjet extends Activity
         toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
 
-        if (!objetVendu)
+        if (!objet.getAcquis())
         {
             paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -97,31 +98,41 @@ public class PopupInformationsObjet extends Activity
                 @Override
                 public void onClick(View view)
                 {
-                    //TODO pour l'instant, il va falloir aller chercher l'inventaire de la classe joueur par un Get avec le constructeur de l'inventaire
-                    //Inventaire inventaire = new Inventaire();
-                    //inventaire.ajoutInventaire(objet);
-                    objet.setAcquis(true);
-                    if(objet.getType() == Objet.Type.Outil)
+                    if(MainActivity.joueur.getBiscuits() >= objet.getPrix())
                     {
-                        MainActivity.joueur.getOutilsInventaire().add(objet);
-                        //MainActivity.joueur.setOutilsInventaire();
-                        //Inventaire.outils.add(objet);
+                        objet.setAcquis(true);
+                        if(objet.getType() == Objet.Type.Outil)
+                        {
+                            MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            //ListeObjets.adapteur.retirementView(getIntent().getExtras().getInt("position"));
+                            //ListeObjets.adapteur.notifyDataSetChanged();
+                            //Boutique.viewPager.getAdapter().notifyDataSetChanged();
+                            //Boutique.adapteurDeSection.notifyDataSetChanged();
+                        }
+                        else if(objet.getType() == Objet.Type.Skin)
+                        {
+                            MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                        }
+                        else if(objet.getType() == Objet.Type.Décoration)
+                        {
+                            MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                        }
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits()-objet.getPrix());
+                        Boutique.biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));
+                        finish();
                     }
-                    else if(objet.getType() == Objet.Type.Skin)
+                    else
                     {
-                        MainActivity.joueur.getSkinsInventaire().add(objet);
-                        //Inventaire.skins.add(objet);
+                        Toast.makeText(PopupInformationsObjet.this, "Maman- Arthur, arrête de manger des biscuits, tu vas devenir obèse!", Toast.LENGTH_LONG).show();
                     }
-                    else if(objet.getType() == Objet.Type.Décoration)
-                    {
-                        MainActivity.joueur.getDecorationsInventaire().add(objet);
-                        //Inventaire.decorations.add(objet);
-                    }
-                    //TODO débiter le montant de biscuits de son compte
-                    finish();
                 }
             });
-        } else {
+        }
+        else
+        {
             paramsPrix.width = 0;
             paramsAcheter.width = 0;
             paramsAcheter.setMarginEnd(0);
@@ -152,12 +163,13 @@ public class PopupInformationsObjet extends Activity
     //Getteurs & setteurs
 
     //Méthodes
-    public void startActivity(Outil objet, Context context, Boolean objetVendu)
+    public void startActivity(Outil objet, int position, Context context, Boolean objetVendu)
     {
         Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);
-        intent.putExtra("objetVendu", objetVendu);
+        //intent.putExtra("objetVendu", objetVendu);
         intent.putExtra("objet", objet);
+        intent.putExtra("position", position);
         context.startActivity(intent);
     }
 }

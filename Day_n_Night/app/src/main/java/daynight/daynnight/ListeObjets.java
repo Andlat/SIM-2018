@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,7 @@ import java.util.List;
 public class ListeObjets extends Fragment
 {
     //Variables
-    GridView gridView;
-    ArrayList<Outil> objets = new ArrayList<>();
+    static GridView gridView;
     static AdapteurArrayaObjets adapteur;
     PopupInformationsObjet infosObjetInventaire;
 
@@ -37,29 +37,22 @@ public class ListeObjets extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
+        final ArrayList<Outil> objets = new ArrayList<>();
         adapteur = new AdapteurArrayaObjets(getContext(), 0, objets);
-        gridView = (GridView) getView().findViewById(R.id.listeObjets);
+        gridView = getView().findViewById(R.id.listeObjets);
         gridView.setAdapter(adapteur);
         infosObjetInventaire = new PopupInformationsObjet();
-
-
-        //Ajout d'e cases vides
-        for(int j = 0 ; j < 28 ; j++)
-            objets.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.",Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
 
         //Ajout des objets manuellement
         ArrayList<Outil> transitition = getArguments().getParcelableArrayList("objets");
         for(int j = 0 ; j < transitition.size() ; j++)
-            objets.set(j, transitition.get(j));
-
-
-
+            objets.add(j, transitition.get(j));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                infosObjetInventaire.startActivity(objets.get(position), getContext(), objets.get(position).getAcquis());
+                infosObjetInventaire.startActivity(objets.get(position), position, getContext(), objets.get(position).getAcquis());
             }
         });
 
@@ -112,6 +105,11 @@ public class ListeObjets extends Fragment
 
 
             return view;
+        }
+
+        public void retirementView(int position)
+        {
+            objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
         }
     }
 }
