@@ -67,7 +67,7 @@ class Game extends GameView{
 
     @Override
     protected void onCreate() {
-        World world = new World();
+        world = new World();
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
@@ -177,8 +177,6 @@ class Game extends GameView{
             // }
 
         }
-
-        world.Move(perso.getID() ,persoVec,getElapsedFrameTime());
 
     }
 
