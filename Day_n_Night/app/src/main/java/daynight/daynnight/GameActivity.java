@@ -6,33 +6,47 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class GameActivity extends AppCompatActivity{
+import java.io.IOException;
+
+import daynight.daynnight.engine.math.Vec3;
+
+
+public class GameActivity extends AppCompatActivity implements Joystick.JoystickListener{
     private Button buttonRecommencer;
     private Button buttonMenu;
+    private Joystick joystickTir;
+    private Joystick joystickPerso;
+    private Vec3 persoVec;
+    private Game game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        buttonRecommencer = (Button)findViewById(R.id.buttonRecommencer);
-        //Changement couleur bouton lorsque touché
-        buttonRecommencer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+        game = (Game) findViewById(R.id.game1);
+        joystickTir = (Joystick) findViewById(R.id.joystickTir);
+        joystickPerso = (Joystick) findViewById(R.id.joystickPerso);
+        joystickPerso.setColor(105,105,105);
 
-        buttonMenu = (Button)findViewById(R.id.buttonMenu);
-        //Changement couleur bouton lorsque touché
-        buttonMenu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN ) {
-                }else if(event.getAction() == MotionEvent.ACTION_UP){
-                }
-                return false;
-            }
-        });
+
+    }
+
+    @Override
+    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+        switch(source){
+            case R.id.joystickPerso:
+
+                persoVec.x(xPercent);
+                persoVec.y(yPercent * -1);
+                game.movePerso(persoVec);
+                break;
+
+            case R.id.joystickTir:
+
+                break;
+
+        }
+
     }
 }

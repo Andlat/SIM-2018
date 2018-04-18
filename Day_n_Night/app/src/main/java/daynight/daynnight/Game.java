@@ -29,7 +29,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  * Created by andlat on 2018-02-17.
  */
 
-class Game extends GameView implements Joystick.JoystickListener{
+class Game extends GameView{
     private Context mContext;
 
     private long mHeroID, mTileID;
@@ -37,8 +37,6 @@ class Game extends GameView implements Joystick.JoystickListener{
     private ArrayList<MovingModel> mBalles;
     private ArrayList<Float> mDirectionsBallesX;
     private ArrayList<Float> mDirectionsBallesY;
-    private Joystick joystickTir;
-    private Joystick joystickPerso;
     private float xPercentDirectionBalle = 0;
     private float yPercentDirectionBalle = 0;
     private CountDownTimer countDownTimer;
@@ -48,6 +46,7 @@ class Game extends GameView implements Joystick.JoystickListener{
     private Texture tex;
     private MovingModel perso;
     private Vec3 persoVec;
+    private World world;
 
     public Game(Context context) {
         super(context);
@@ -68,13 +67,10 @@ class Game extends GameView implements Joystick.JoystickListener{
 
     @Override
     protected void onCreate() {
-        World world = new World();
+        world = new World();
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
-        joystickTir = findViewById(R.id.joystickTir);
-        joystickPerso = findViewById(R.id.joystickPerso);
-        joystickPerso.setColor(100,0,255,0);
         /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
             @Override
             public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
@@ -182,8 +178,6 @@ class Game extends GameView implements Joystick.JoystickListener{
 
         }
 
-        world.Move(perso.getID() ,persoVec,getElapsedFrameTime());
-
     }
 
     public void makeMrBalle() throws IOException {
@@ -206,21 +200,8 @@ class Game extends GameView implements Joystick.JoystickListener{
         mBallesID.remove(i);
     }
 
-    @Override
-    public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        switch(source){
-            case R.id.joystickPerso:
-
-                persoVec.x(xPercent);
-                persoVec.y(yPercent * -1);
-                break;
-
-            case R.id.joystickTir:
-
-                break;
-
-        }
-
+    public void movePerso(Vec3 vector){
+        world.Move(perso.getID() ,persoVec,getElapsedFrameTime());
     }
 
     //private Shader createShader(){

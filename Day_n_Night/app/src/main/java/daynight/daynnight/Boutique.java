@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,13 @@ import static daynight.daynnight.ListeObjets.newInstance;
 public class Boutique extends AppCompatActivity
 {
     //Créer
+    static TextView biscuits;
     Button retour;
     Button boutonOutils;
     Button boutonSkins;
     Button boutonDecorations;
-    ViewPager viewPager;
+    static ViewPager viewPager;
+    static SectionPagerAdapter adapteurDeSection;
 
     Fragment outilsFragment = newInstance(MainActivity.joueur.getOutilsBoutique());
     Fragment skinsFragment = newInstance(MainActivity.joueur.getSkinsBoutique());
@@ -35,21 +38,17 @@ public class Boutique extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
 
-
-
         //Attribuer
+        biscuits = (TextView) findViewById(R.id.biscuits);
         retour = (Button) findViewById(R.id.retour);
         boutonOutils = (Button) findViewById(R.id.outils);
         boutonSkins = (Button) findViewById(R.id.skins);
         boutonDecorations = (Button) findViewById(R.id.decos);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        adapteurDeSection = new SectionPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapteurDeSection);
 
-        //outils = MainActivity.joueur.getOutilsBoutique();
-        //skins = MainActivity.joueur.getSkinsBoutique();
-        //decorations = MainActivity.joueur.getDecorationsBoutique();
-
-
+        biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));
         boutonOutils.setSelected(true);
         boutonOutils.setTranslationX(getResources().getDimension(R.dimen.translation_bouton_tab));
         boutonOutils.setOnClickListener(new View.OnClickListener()
@@ -127,34 +126,20 @@ public class Boutique extends AppCompatActivity
         normal.setTranslationX(0);
         normal2.setTranslationX(0);
     }
-    /*public void acheterObjet(int position, Objet.Type type)
-    {
-        //TODO
-        if(type == Objet.Type.Outil)
-        {
-            outils.remove(position);
-        }
-        else if(type == Objet.Type.Skin)
-        {
-            skins.remove(position);
-        }
-        else if(type == Objet.Type.Décoration)
-        {
-            skins.remove(position);
-        }
-    }*/
-
 
     //custom ArrayAdapters
-    public class SectionPagerAdapter extends FragmentPagerAdapter {
+    public class SectionPagerAdapter extends FragmentPagerAdapter
+    {
 
         public SectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int position) {
-            switch (position) {
+        public Fragment getItem(int position)
+        {
+            switch (position)
+            {
                 case 0:
                     return outilsFragment;
                 case 1:
@@ -167,13 +152,20 @@ public class Boutique extends AppCompatActivity
         }
 
         @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
         public int getCount() {
             return 3;
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
+        public CharSequence getPageTitle(int position)
+        {
+            switch (position)
+            {
                 case 0:
                     return "Outils";
                 case 1:

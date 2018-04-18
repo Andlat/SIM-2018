@@ -21,7 +21,7 @@ import java.util.List;
 public class ListeObjets extends Fragment
 {
     //Variables
-    GridView gridView;
+    static GridView gridView;
     static AdapteurArrayaObjets adapteur;
     PopupInformationsObjet infosObjetInventaire;
 
@@ -43,14 +43,10 @@ public class ListeObjets extends Fragment
         gridView.setAdapter(adapteur);
         infosObjetInventaire = new PopupInformationsObjet();
 
-
         //Ajout des objets manuellement
         ArrayList<Outil> transitition = getArguments().getParcelableArrayList("objets");
         for(int j = 0 ; j < transitition.size() ; j++)
             objets.add(j, transitition.get(j));
-
-
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -109,6 +105,11 @@ public class ListeObjets extends Fragment
 
 
             return view;
+        }
+
+        public void retirementView(int position)
+        {
+            objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
         }
     }
 }
