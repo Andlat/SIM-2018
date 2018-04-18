@@ -45,6 +45,8 @@
         <activity
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />
+        <activity android:name="PopupRecompenses"
+            android:theme="@style/AppTheme.PopupRTheme" />
 
     </application>
 

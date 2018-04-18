@@ -15,8 +15,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -121,6 +123,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCALISATION_REQUEST);
             }
         }
+        distanceFromPoiUpdate = new float[1];
+        prevPos = new LatLng(0, 0);
+        poiUpdate = new LatLng(0,0);
+
     }
 
 
@@ -339,7 +345,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                             nbrPage = 0;
                             try {
                                 do {
-                                    Log.d("Request", "Entering page " + nbrPage);
                                     final ExecutorService executor = Executors.newSingleThreadExecutor();
                                     HttpRequest request = null;
                                     try {
@@ -364,8 +369,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     //Lit le Json du site
                                     jsonPOI = new JSONObject(response);
                                     jsonResults = jsonPOI.getJSONArray("results");
-
-                                    Log.d("Request", jsonPOI.toString());
 
                                     //Enregistre tout les position des POI dans le rayon spécifié
                                     for (int k = 0; k < jsonResults.length(); k++) {
@@ -429,13 +432,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 distanceFromPoi = new float[1];
                 Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
 
-                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<100){
+                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
                     //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur
                     Poi ok = (Poi) marker.getTag();
 
-                    Toast.makeText(MapActivity.this, ok.getName() , Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), PopupRecompenses.class));
                 }
-                return false;
+                return true;
             }
         });
     }
