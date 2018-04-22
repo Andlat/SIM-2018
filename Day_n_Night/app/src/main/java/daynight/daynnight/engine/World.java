@@ -46,7 +46,7 @@ public class World {
         GLES30.glGenVertexArrays(1, mVAO, 0);
         GLES30.glBindVertexArray(mVAO[0]);
 
-        mVBOMan = new VBOManager();
+        mVBOMan = new VBOManager(mVAO[0]);
     }
 
     public long addModel(Model model){
@@ -139,7 +139,6 @@ public class World {
     //TODO MVP uniform does not respect the location set in the shader. Because of that, I have to use glGetUniformLocation
     public void DrawWorld(){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
-        Log.e("ERROR GL", ""+GLES30.glGetError());
 
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -160,14 +159,11 @@ public class World {
             model.getShader().Use();
 
             final int texUnit = model.getTexture().getUnit();
-            //Texture.ActivateUnit(texUnit);
-            GLES30.glActiveTexture(texUnit);
-            GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit);
+            Texture.ActivateUnit(texUnit);
+            GLES30.glUniform1i(1, texUnit - GLES30.GL_TEXTURE0);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
-
-            //GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset(),  model.getModelVBOSize()/Util.FLOAT_SIZE);
-            GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0,  model.getModelVBOSize()/Util.FLOAT_SIZE);
+            GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset()/8,  model.getModelVBOSize()/Util.FLOAT_SIZE/8);
         }
         //----------------------------------------------------------------------\\
 

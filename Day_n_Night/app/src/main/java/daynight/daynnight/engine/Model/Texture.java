@@ -81,7 +81,7 @@ public class Texture {
      */
     public static Texture Load(final Context context, final int resID) throws RuntimeException, IOException
     {
-        Texture tex=null;
+        Texture tex;
 
         int indexOfKey = mLoadedTextures.indexOfKey(resID);
 
@@ -101,8 +101,8 @@ public class Texture {
                 GLES30.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
 
                 //Set filtering
-                GLES30.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES30.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
+                GLES30.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
+                GLES30.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
                 // Load the bitmap into the bound texture.
                 GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
@@ -112,6 +112,7 @@ public class Texture {
 
                 //Generate mipmaps
                 GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
+
             }
 
             if (textureHandle[0] == 0) {
@@ -119,10 +120,13 @@ public class Texture {
             }
 
             tex = new Texture(textureHandle[0]);
+
             mLoadedTextures.put(resID, tex);
+
 
         }else{//Texture already exists
             tex = mLoadedTextures.valueAt(indexOfKey);
+
         }
 
         return tex;

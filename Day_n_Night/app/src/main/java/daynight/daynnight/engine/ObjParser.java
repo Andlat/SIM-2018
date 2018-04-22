@@ -38,7 +38,6 @@ public class ObjParser {
         List<Model> list = new ArrayList<>();
         BufferedReader reader = null;
 
-        Log.e("PARSER ERROR GL 1", ""+ GLES30.glGetError());
         try{
             reader = new BufferedReader(new InputStreamReader(context.getAssets().open(directory + '/' + file)));
 
@@ -50,7 +49,6 @@ public class ObjParser {
 
             String mtl_lib="";
 
-            Log.e("PARSER ERROR GL 2", ""+ GLES30.glGetError());
             String line;
             while((line = reader.readLine()) != null){
                 String[] parts = line.split(" ");
@@ -66,7 +64,6 @@ public class ObjParser {
 
                             tmp_model.setVBO(vbo);
                             list.add(tmp_model);
-                            Log.e("PARSER ERROR GL 3", ""+ GLES30.glGetError());
                         }
 
                         tmp_model = new Model();
@@ -75,19 +72,15 @@ public class ObjParser {
                         tmp_uvs.clear();
                         tmp_normals.clear();
                         facesVbo.clear();
-                        Log.e("PARSER ERROR GL 4", ""+ GLES30.glGetError());
                         break;
                     case "v":
                         tmp_vertices.add(new Vec3(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3])));
-                        Log.e("PARSER ERROR GL 5", ""+ GLES30.glGetError());
                         break;
                     case "vt":
                         tmp_uvs.add(new Vec2(Float.parseFloat(parts[1]), Float.parseFloat(parts[2])));
-                        Log.e("PARSER ERROR GL 6", ""+ GLES30.glGetError());
                         break;
                     case "vn":
                         tmp_normals.add(new Vec3(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3])));
-                        Log.e("PARSER ERROR GL 7", ""+ GLES30.glGetError());
                         break;
                     case "f":
                             //3 vertices per face (a face is a triangle)

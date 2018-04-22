@@ -33,6 +33,7 @@ class VBOManager {
     private int mLastDataPosition = 0;
 
     private int[] mVBO = new int[1];
+    private final int mWorldVAO;
 
     private int mDataSizeInBytes = 0;
     private float mVBOSizeInMB = .5f;
@@ -46,13 +47,16 @@ class VBOManager {
      */
     private final List<Pair<Integer, Integer>> mEmptyVBOPools = new ArrayList<>();
 
-    VBOManager(){
+    VBOManager(int worldVAO){
+        mWorldVAO = worldVAO;
+
         mVBOData = allocateDirect(mVBOSizeInMB);
 
         CreateVBO();
     }
 
     private void WriteToVBO(int floatBufferOffset, int dataSize){
+        GLES30.glBindVertexArray(mWorldVAO);
         //Bind VBO in case it was unbound. (Maybe another vbo was bound outside of the engine)
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
 
@@ -129,6 +133,7 @@ class VBOManager {
     */
 
     private void CreateVBO(){
+        GLES30.glBindVertexArray(mWorldVAO);
         GLES30.glGenBuffers(1, mVBO, 0);
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBO[0]);
 
@@ -139,7 +144,8 @@ class VBOManager {
     }
 
     //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.
-    private void CreateAttribs(){
+    void CreateAttribs(){
+        GLES30.glBindVertexArray(mWorldVAO);
         GLES30.glVertexAttribPointer(VERTEX_ATTRIB, 3, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 0);
         GLES30.glVertexAttribPointer(UV_ATTRIB, 2, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 3*Util.FLOAT_SIZE);
         GLES30.glVertexAttribPointer(NORMAL_ATTRIB, 3, GLES30.GL_FLOAT, false, 8*Util.FLOAT_SIZE, 5*Util.FLOAT_SIZE);
@@ -148,6 +154,7 @@ class VBOManager {
     }
 
     void ActivateAttribs(){
+        GLES30.glBindVertexArray(mWorldVAO);
         GLES30.glEnableVertexAttribArray(VERTEX_ATTRIB);
         GLES30.glEnableVertexAttribArray(UV_ATTRIB);
         GLES30.glEnableVertexAttribArray(NORMAL_ATTRIB);
