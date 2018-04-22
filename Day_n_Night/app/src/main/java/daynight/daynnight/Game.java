@@ -1,11 +1,19 @@
 package daynight.daynnight;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.opengl.GLES30;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Switch;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
@@ -21,10 +29,24 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
  * Created by andlat on 2018-02-17.
  */
 
-class Game extends GameView {
+class Game extends GameView{
     private Context mContext;
 
-    private long mTileID, mTile2ID;
+    private long mHeroID, mTileID;
+    private ArrayList<Long> mBallesID;
+    private ArrayList<MovingModel> mBalles;
+    private ArrayList<Float> mDirectionsBallesX;
+    private ArrayList<Float> mDirectionsBallesY;
+    private float xPercentDirectionBalle = 0;
+    private float yPercentDirectionBalle = 0;
+    private CountDownTimer countDownTimer;
+    private CountDownTimer countDownTimerReload;
+    private int nbrBallesLancees = 0;
+    private Shader texShader;
+    private Texture tex;
+    private MovingModel perso;
+    private Vec3 persoVec;
+    private World world;
 
     public Game(Context context) {
         super(context);
@@ -42,14 +64,63 @@ class Game extends GameView {
         mContext = context;
     }
 
+
     @Override
     protected void onCreate() {
-        World world = new World();
+        world = new World();
         //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
+        /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
+            @Override
+            public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
+                //Tirs
+                xPercentDirectionBalle = xPercent;
+                yPercentDirectionBalle = yPercent;
+            }
+        });*/
+
+        countDownTimer = new CountDownTimer(1000, 500) {
+            @Override
+            public void onTick(long l) {
+                if(xPercentDirectionBalle != 0 && yPercentDirectionBalle != 0){
+                    try {
+                        makeMrBalle();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if(nbrBallesLancees >= 10){
+                    if(countDownTimer != null){
+                        countDownTimer.cancel();
+                    }
+                    countDownTimerReload = new CountDownTimer(2000,2000) {
+                        @Override
+                        public void onTick(long l) {
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            countDownTimer.start();
+                        }
+                    };
+                    countDownTimerReload.start();
+                }else{
+                    countDownTimer.start();
+                }
+            }
+        };
+        if(countDownTimer != null){
+            countDownTimer.start();
+        }
+
         //TODO Generate the shader in the model
-        Shader texShader = new Shader(mContext);
+        texShader = new Shader(mContext);
         try {//Load the shader files
             texShader.Load("shaders/tex_shader.vglsl", Shader.Type.VERTEX)
                     .Load("shaders/tex_shader.fglsl", Shader.Type.FRAGMENT);
@@ -78,6 +149,40 @@ class Game extends GameView {
     @Override
     protected void onDrawFrame(World world) {
         world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        //world.Move(mTile2ID, new Vec3(-0.1f, -0.4f, 0.f), getElapsedFrameTime());
+        int temp=0;
+        //world.getModel()
+        for(Long monsieurMovingModelID : mBallesID){
+            world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
+            temp++;
+            //if(positionBalle == positionAutreShit) {
+            //  destroyMrBalle(temp, world);
+            // }
+
+        }
+
+    }
+
+    public void makeMrBalle() throws IOException {
+        MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+        bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+        mBalles.add(bullet);
+        mDirectionsBallesX.add(this.xPercentDirectionBalle);
+        mDirectionsBallesY.add(this.yPercentDirectionBalle);
+        nbrBallesLancees++;
+        bullet.AssociateShader(texShader);
+        bullet.setTexture(tex);
+        mBallesID.add(bullet.getID());
+    }
+
+    public void destroyMrBalle(int i, World world){
+        world.removeModel(mBallesID.get(i));
+        mBalles.remove(i);
+        mDirectionsBallesX.remove(i);
+        mDirectionsBallesY.remove(i);
+        mBallesID.remove(i);
+    }
+
+    public void movePerso(Vec3 vector){
+        world.Move(perso.getID() ,persoVec,getElapsedFrameTime());
     }
 }

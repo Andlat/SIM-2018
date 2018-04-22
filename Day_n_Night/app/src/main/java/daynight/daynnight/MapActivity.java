@@ -15,8 +15,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -84,7 +86,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private String directionRegardee = "droite";
     private URL url;
     Intent intent;
-    private int modelePerosnage = 1;
+    private int modelePerosnage = 5;
     private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
@@ -121,6 +123,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCALISATION_REQUEST);
             }
         }
+        distanceFromPoiUpdate = new float[1];
+        prevPos = new LatLng(0, 0);
+        poiUpdate = new LatLng(0,0);
+
     }
 
 
@@ -152,6 +158,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        //Initialisation de variables
         final RelativeLayout loading = findViewById(R.id.loadingPanel);
         loading.setVisibility(View.VISIBLE);
 
@@ -174,6 +181,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         layoutParams.leftMargin = (size.x/2)-(imageViewPersonnage.getWidth()/2);
         layoutParams.topMargin = (size.y/2)-(imageViewPersonnage.getHeight()/2);*/
 
+        //types de poi
         filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", /*"school",*/ "stadium", "synagogue", "university", "zoo"};
 
         //Recentrage de la carte lors du click sur le bouton Center
@@ -261,29 +269,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             Log.e("MapsActivity", "Impossible de trouver le style", e);
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     //imageViewPersonnage.setVisibility(View.VISIBLE);
                     livePos = new LatLng(location.getLatitude(), location.getLongitude());
                     Log.d("Localisation", "Recue: " + livePos.toString());
 
-                    if(prevPos != null && livePos != null){
+                    if (prevPos != null && livePos != null) {
                         //if(livePos.longitude - prevPos.longitude < 0 && directionRegardee == "droite"){
-                        if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x < 0 && directionRegardee == "droite"){
-                            int i= map.getProjection().toScreenLocation(livePos).x;
+                        if (map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x < 0 && directionRegardee == "droite") {
+                            int i = map.getProjection().toScreenLocation(livePos).x;
                             imageViewPersonnage.setScaleX(-1);
                             directionRegardee = "gauche";
-                        }else if(map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x > 0 && directionRegardee == "gauche"){
+                        } else if (map.getProjection().toScreenLocation(livePos).x - map.getProjection().toScreenLocation(prevPos).x > 0 && directionRegardee == "gauche") {
                             imageViewPersonnage.setScaleX(1);
                             directionRegardee = "droite";
                         }
                     }
-
-                    Log.d("POS", livePos.toString());
-                    //Distance entre la position actuelle et la dernière actualisation
-                    Location.distanceBetween(prevPos.latitude, prevPos.longitude, livePos.latitude, livePos.longitude, move);
-                    Log.d("Move", String.valueOf(move[0]));
 
                     Location prevLocation = new Location("");
                     prevLocation.setLatitude(prevPos.latitude);
@@ -295,14 +299,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Si la distance entre deux actualisations est supérieure à 2m, alors le personnage se déplace
                     if (prevLocation.distanceTo(presentLocation) > 2) {
-                        if(persoMarker!= null){
+                        if (persoMarker != null) {
                             persoMarker.setVisible(false);
                         }
-                        if(MAP_CENTREE){
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, map.getCameraPosition().zoom ));
-                        } else{
+                        if (MAP_CENTREE) {
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(livePos, map.getCameraPosition().zoom));
+                        } else {
                             translateAnimation = new TranslateAnimation(imageViewPersonnage.getX(),
-                                    map.getProjection().toScreenLocation(livePos).x- imageViewPersonnage.getX(),
+                                    map.getProjection().toScreenLocation(livePos).x - imageViewPersonnage.getX(),
                                     imageViewPersonnage.getY(),
                                     map.getProjection().toScreenLocation(livePos).y - imageViewPersonnage.getY());
                             translateAnimation.setRepeatCount(0);
@@ -334,22 +338,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Va chercher les coordonnés des poi
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                    if(distanceFromPoiUpdate[0] > 20000){
+                    if (distanceFromPoiUpdate[0] > 20000) {
 
-
-
+                        //Utilise chacun des filtres dans l'url pour avoir chaque type de POI
                         for (String filter : filters) {
                             nbrPage = 0;
                             try {
                                 do {
-                                    Log.d("Request", "Entering page " + nbrPage);
                                     final ExecutorService executor = Executors.newSingleThreadExecutor();
                                     HttpRequest request = null;
                                     try {
                                         if (nbrPage == 0) {
+                                            //Si c'est la premiere page avec ce filtre, on utilise l'url normal
                                             request = new HttpRequest(url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + livePos.latitude + "," + livePos.longitude + "&type=" + filter + "&rankby=distance&sensor=false&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
 
                                         } else {
+                                            //Sinon on utilise le page token fouri dans la page precedante
                                             request = new HttpRequest(url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" + pageToken + "&key=AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk"));
                                         }
                                     } catch (MalformedURLException e) {
@@ -362,10 +366,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     String response = null;
 
                                     response = future.get();
+                                    //Lit le Json du site
                                     jsonPOI = new JSONObject(response);
                                     jsonResults = jsonPOI.getJSONArray("results");
-
-                                    Log.d("Request", jsonPOI.toString());
 
                                     //Enregistre tout les position des POI dans le rayon spécifié
                                     for (int k = 0; k < jsonResults.length(); k++) {
@@ -378,6 +381,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                         tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
                                                 .position(tempPos).icon(BitmapDescriptorFactory
                                                         .fromResource(R.drawable.coffre)));
+                                        //affecte l'objet poi au markeur pour y avoir acces ensuite
                                         tempMarker.setTag(pois);
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
@@ -386,27 +390,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                                     pageToken = jsonPOI.getString("next_page_token");
                                     nbrPage++;
-                                    Log.d("Request", pageToken);
-                                    Log.d("Request", url.getQuery());
-                                    Log.d("Request", String.valueOf(jsonPOI.getJSONArray("results").length()));
+
+                                    //La boucle se realise tant qu'il y a 20item dans la page, ce qui est la quantité maximal de donnés par pages
                                 } while (jsonPOI.getJSONArray("results").length() == 20);
-                            } catch (JSONException e) {
+                            } catch (JSONException | InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
-                                Log.d("Request", "Malformed url");
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
-                                Log.d("Request", "NOPE ça marche pas");
                             }
                         }
                         poiUpdate = livePos;
 
+                        //Arrete l'animation de chargement
                         loading.setVisibility(View.GONE);
                     }
                     prevPos = livePos;
                 }
 
                 @Override
-                public void onStatusChanged (String s,int i, Bundle bundle){
+                public void onStatusChanged(String s, int i, Bundle bundle) {
                     Log.d("status", "status changed: " + s);
                 }
 
@@ -421,7 +421,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     Log.d("disabled provider", "provider disabled: " + s);
                 }
             });
-
+        }catch(SecurityException e){
+            e.printStackTrace();
+        }
         //Réaction au clique sur un marqueur
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -431,11 +433,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
 
                 if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
+                    //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur
                     Poi ok = (Poi) marker.getTag();
 
-                    Toast.makeText(MapActivity.this, ok.getName() , Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), PopupRecompenses.class));
                 }
-                return false;
+                return true;
             }
         });
     }

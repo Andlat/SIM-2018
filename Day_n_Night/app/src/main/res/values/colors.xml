@@ -19,4 +19,5 @@
     <!--Couleurs générales-->
     <color name="blanc">#ffffff</color>
     <color name="noir">#000000</color>
+    <color name="rouge">#ea0000</color>
 </resources>
