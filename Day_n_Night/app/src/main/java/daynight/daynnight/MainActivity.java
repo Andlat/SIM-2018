@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(new Game(this));
+/*
+        super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity
             onPause = false;
 
         }
-    }
 
+*/
+    }
 }
