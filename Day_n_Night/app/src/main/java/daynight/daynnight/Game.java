@@ -32,7 +32,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Game extends GameView{
     private Context mContext;
 
-    private long mHeroID, mTileID;
+    private long mHeroID, mTileID, mSID;
     private ArrayList<Long> mBallesID;
     private ArrayList<MovingModel> mBalles;
     private ArrayList<Float> mDirectionsBallesX;
@@ -68,7 +68,6 @@ class Game extends GameView{
     @Override
     protected void onCreate() {
         world = new World();
-        //world.setPhysics(new PhysicsAttributes.WorldAttr(9.81f));
         super.UseWorld(world);
 
         /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
@@ -119,27 +118,33 @@ class Game extends GameView{
             countDownTimer.start();
         }
 
-        //TODO Generate the shader in the model
-        texShader = new Shader(mContext);
-        try {//Load the shader files
-            texShader.Load("shaders/tex_shader.vglsl", Shader.Type.VERTEX)
-                    .Load("shaders/tex_shader.fglsl", Shader.Type.FRAGMENT);
-
-            //Compile the shader
-            try{ texShader.Compile().Link().DeleteShaders(); }catch(Shader.Exception ex){ Log.e("Shader Exception", ex.getMessage()); }
-
+/*
+        try{
             //Create a tile
             MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
             tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
-            tile.AssociateShader(texShader);
+
+            MovingModel tile2 = new MovingModel(tile);
+            tile2.getPhysics().setSpeed(1.5f);
+
+            StaticModel tile3 = new StaticModel(tile2);
 
             mTileID = world.addModel(tile);
+            mHeroID = world.addModel(tile2);
+            world.addModel(tile3);
+
+            MovingModel s = ObjParser.Parse(mContext, "models", "strange.obj").get(0).toMovingModel();
+            s.setPhysics(new PhysicsAttributes.MovingModelAttr(50000, 0, 0, 3.5f));
+            mSID = world.addModel(s);
 
             world.Translate(tile, new Vec3(-3, -3, 0));
+            world.Translate(tile2, new Vec3(3, 3, 0));
+            world.Translate(mSID, new Vec3(-3, 3, 0));
 
         }catch(IOException ex){
-            Log.e("Shader 1", ex.getMessage());
+            Log.e("Models creation", ex.getMessage());
         }
+        */
     }
 
     @Override
@@ -148,7 +153,7 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
+
         int temp=0;
         //world.getModel()
         for(Long monsieurMovingModelID : mBallesID){
@@ -160,6 +165,11 @@ class Game extends GameView{
 
         }
 
+/*
+        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
+        world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
+        world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
+        */
     }
 
     public void makeMrBalle() throws IOException {

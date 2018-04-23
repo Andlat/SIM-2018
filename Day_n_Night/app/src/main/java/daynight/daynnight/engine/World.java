@@ -146,7 +146,7 @@ public class World {
         final int size = mModels.size();
         for(int i=0; i < size; ++i){
             Model model = mModels.valueAt(i);
-
+/*
             FloatBuffer g = ((ByteBuffer)GLES30.glMapBufferRange(GLES30.GL_ARRAY_BUFFER, (int)model.getVBOWorldOffset()*Util.FLOAT_SIZE, model.getModelVBOSize(), GLES30.GL_MAP_READ_BIT)).order(ByteOrder.nativeOrder()).asFloatBuffer();
             StringBuilder s = new StringBuilder(g.capacity()).append("{");
             for(int h=0; h < g.capacity(); ++h){
@@ -155,12 +155,12 @@ public class World {
             s.append("}");
             Log.e("GL DATA " + model.getModelVBOSize()/Util.FLOAT_SIZE, s.toString());
             GLES30.glUnmapBuffer(GLES20.GL_ARRAY_BUFFER);
-
+*/
             model.getShader().Use();
 
             final int texUnit = model.getTexture().getUnit();
             Texture.ActivateUnit(texUnit);
-            GLES30.glUniform1i(1, texUnit - GLES30.GL_TEXTURE0);
+            GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit - GLES30.GL_TEXTURE0);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
             GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset()/8,  model.getModelVBOSize()/Util.FLOAT_SIZE/8);

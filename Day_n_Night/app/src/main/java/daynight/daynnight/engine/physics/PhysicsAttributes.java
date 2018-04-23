@@ -11,7 +11,7 @@ public class PhysicsAttributes {
         /**
          * Mass is in grams
          */
-        private float mMass, mElasticity, mFricitonCoef;
+        private float mMass=0, mElasticity=0, mFricitonCoef=0;
 
         public StaticModelAttr(){}
         public StaticModelAttr(float mass, float elasticity, float fricitonCoef){
@@ -42,6 +42,12 @@ public class PhysicsAttributes {
 
         public void setFricitonCoef(float fricitonCoef) {
             mFricitonCoef = fricitonCoef;
+        }
+
+        public void CloneTo(StaticModelAttr attr){
+            attr.mMass = this.mMass;
+            attr.mElasticity = this.mElasticity;
+            attr.mFricitonCoef = this.mFricitonCoef;
         }
     }
     public static class MovingModelAttr extends StaticModelAttr {
@@ -75,6 +81,13 @@ public class PhysicsAttributes {
         public void setMovementType(Movement movement) {
             mMovement = movement;
         }
+
+        public void CloneTo(MovingModelAttr attr){
+            super.CloneTo(attr);
+
+            attr.mMovement = this.mMovement;
+            attr.mSpeed = this.mSpeed;
+        }
     }
 
 
@@ -103,6 +116,11 @@ public class PhysicsAttributes {
 
         public void setFluidCoeff(float fluidCoeff) {
             mFluidCoeff = fluidCoeff;
+        }
+
+        public void CloneTo(WorldAttr attr){
+            attr.mGravity = this.mGravity;
+            attr.mFluidCoeff = this.mFluidCoeff;
         }
     }
 }
