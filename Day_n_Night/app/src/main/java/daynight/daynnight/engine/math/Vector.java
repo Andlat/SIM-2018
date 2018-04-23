@@ -4,7 +4,7 @@ package daynight.daynnight.engine.math;
  * Created by andlat on 2018-02-02.
  */
 
-abstract class Vector {
+public abstract class Vector {
     /**
      * Exception qui est jeté quand le vecteur passé en argument pour l'opération mathématique à plus de composantes que "this".
      */

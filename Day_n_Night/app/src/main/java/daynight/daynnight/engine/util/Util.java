@@ -1,5 +1,8 @@
 package daynight.daynnight.engine.util;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.List;
 
 /**
@@ -18,5 +21,18 @@ public final class Util {
         }
 
         return array;
+    }
+
+    public static FloatBuffer CloneBuffer(FloatBuffer src){
+        FloatBuffer clone = ByteBuffer.allocateDirect(src.capacity() * FLOAT_SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+        src.position(0);
+        clone.put(src);
+
+        //Reset the positions
+        src.position(0);
+        clone.position(0);
+
+        return clone;
     }
 }

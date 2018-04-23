@@ -1,6 +1,7 @@
 package daynight.daynnight.engine;
 
 import android.content.Context;
+import android.opengl.GLES30;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,7 +13,10 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import daynight.daynnight.R;
 import daynight.daynnight.engine.Model.Model;
+import daynight.daynnight.engine.Model.TShaderSingleton;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
@@ -34,7 +38,6 @@ public class ObjParser {
     public static List<Model> Parse(Context context, String directory, String file) throws IOException{
         List<Model> list = new ArrayList<>();
         BufferedReader reader = null;
-
 
         try{
             reader = new BufferedReader(new InputStreamReader(context.getAssets().open(directory + '/' + file)));
@@ -65,6 +68,10 @@ public class ObjParser {
                         }
 
                         tmp_model = new Model();
+
+                        //Add shader. TODO NOTE: Adding this shader is highly dependant on this app. Shouldn't do this if the engine is to be used for anything else or the structure of the app's VBO's is changed
+                        tmp_model.AssociateShader(TShaderSingleton.getInstance(context));
+                        Log.e("SET SHA", tmp_model.getShader().toString());
 
                         tmp_vertices.clear();
                         tmp_uvs.clear();
@@ -115,7 +122,16 @@ public class ObjParser {
 
                         break;
                     case "usemtl"://Material of the model
-                        tmp_model.setTextureSource(getTexture(context, directory + '/' + mtl_lib, parts[1]));
+                        String texSource = ObjParser.getTexture(context, directory + '/' + mtl_lib, parts[1]).split("\\.")[0];//Delete the extension
+                        tmp_model.setTextureSource(texSource);
+
+                        try {
+                            tmp_model.setTexture(Texture.Load(context, context.getResources().getIdentifier(texSource, "drawable", context.getPackageName())));
+                            Log.e("SET", tmp_model.getTexture().toString());
+                        }catch(IOException | RuntimeException ex){
+                            Log.e("OBJ Parser", "Failed to load texture");
+                            Log.e("Loading tex exception", ex.getMessage());
+                        }
                         break;
                     case "mtllib": //Once per file. At the beginning of the file
                         mtl_lib = parts[1];

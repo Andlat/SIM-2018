@@ -1,6 +1,8 @@
 #version 300 es
+precision mediump float;
 
-layout (location=5) uniform sampler2D tex;
+//layout (location=5) uniform sampler2D tex;
+uniform sampler2D tex;
 
 in vec2 fUV;
 

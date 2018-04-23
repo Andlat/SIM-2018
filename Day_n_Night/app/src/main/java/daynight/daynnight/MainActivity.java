@@ -2,7 +2,7 @@ package daynight.daynnight;
 
 import android.content.Intent;
 
-import android.opengl.GLSurfaceView;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.media.MediaPlayer;
 public class MainActivity extends AppCompatActivity
 {
     public static Joueur joueur;
-    private GLSurfaceView mGLSurface;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
