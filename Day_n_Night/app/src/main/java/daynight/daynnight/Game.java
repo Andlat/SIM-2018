@@ -252,6 +252,7 @@ class Game extends GameView{
             mListeMonstresID.add(ami.getID());
             mListeMonstreVie.add(25*27+round*4);
             mListeMonstreDMG.add(34);
+            mCoordonnesMonstres.add(new Coord(0,0));
         }
         for(int i=0; i<nbrMonstreVert17;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
@@ -263,6 +264,7 @@ class Game extends GameView{
             mListeMonstresID.add(ami.getID());
             mListeMonstreVie.add(25*9+round*3);
             mListeMonstreDMG.add(25);
+            mCoordonnesMonstres.add(new Coord(0,0));
         }
         for(int i=0; i<nbrMonstreBleu4;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
@@ -274,6 +276,7 @@ class Game extends GameView{
             mListeMonstresID.add(ami.getID());
             mListeMonstreVie.add(25*3+round*2);
             mListeMonstreDMG.add(20);
+            mCoordonnesMonstres.add(new Coord(0,0));
         }
         for(int i=0; i<nbrMonstreVert17;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
@@ -285,6 +288,7 @@ class Game extends GameView{
             mListeMonstresID.add(ami.getID());
             mListeMonstreVie.add(25+round);
             mListeMonstreDMG.add(17);
+            mCoordonnesMonstres.add(new Coord(0,0));
         }
     }
 
