@@ -47,6 +47,16 @@ class Game extends GameView{
     private MovingModel perso;
     private Vec3 persoVec;
     private World world;
+    private int round=0;
+    private int nbrMonstreMauve69;
+    private int vieMonstreMauve69=675;
+    private int nbrMonstreVert17;
+    private int vieMonstreVert17=225;
+    private int nbrMonstreBleu4;
+    private int vieMonstreBleu4=75;
+    private int nbrMonstreJaune1;
+    private int vieMonstreJaune1=25;
+    private int qttDifficulte;
 
     public Game(Context context) {
         super(context);
@@ -182,6 +192,15 @@ class Game extends GameView{
         bullet.AssociateShader(texShader);
         bullet.setTexture(tex);
         mBallesID.add(bullet.getID());
+    }
+
+    public void updateLevel(){
+        round++;
+        qttDifficulte = (int)Math.floor((round*round+1)/2) + round*round;
+        nbrMonstreMauve69 = (int)Math.floor(qttDifficulte/69) - (int)Math.floor(round/16)^2;
+        nbrMonstreVert17 = (int)Math.floor((qttDifficulte-nbrMonstreMauve69*69)/17)+(int)Math.floor(round/12);
+        nbrMonstreBleu4 = (int)Math.floor((qttDifficulte-nbrMonstreVert17*17-nbrMonstreMauve69*69)/4)+(int)Math.floor(round/7);
+        nbrMonstreJaune1 = (int)Math.abs(qttDifficulte-nbrMonstreBleu4*4-nbrMonstreVert17*17-nbrMonstreMauve69*69+3+Math.floor(round/5));
     }
 
     public void destroyMrBalle(int i, World world){
