@@ -158,8 +158,9 @@ public class World {
             model.getShader().Use();
 
             final int texUnit = model.getTexture().getUnit();
-            model.getTexture().Bind();
+
             Texture.ActivateUnit(texUnit);
+            model.getTexture().Bind();
             GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit - GLES30.GL_TEXTURE0);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
