@@ -1,10 +1,12 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
@@ -23,38 +25,25 @@ class Game extends GameView{
     private Context mContext;
 
     private long mHeroID, mTileID, mSID;
-    private ArrayList<Long> mBallesID;
-    private ArrayList<MovingModel> mBalles;
-    private ArrayList<Integer> mBallesPuissance;
-    private ArrayList<Float> mDirectionsBallesX;
-    private ArrayList<Float> mDirectionsBallesY;
-    private ArrayList<Coord> mCoordonnesBalles;
-    private ArrayList<Long> mListeMonstresID;
-    private ArrayList<MovingModel> mListeMonstres;
-    private ArrayList<Integer> mListeMonstreVie;
-    private ArrayList<Integer> mListeMonstreDMG;
-    private ArrayList<Coord> mCoordonnesMonstres;
     private float xPercentDirectionBalle = 0;
     private float yPercentDirectionBalle = 0;
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerReload;
     private int nbrBallesLancees = 0;
-    private Shader texShader;
-    private Texture tex;
     private MovingModel perso;
     private Vec3 persoVec;
     private World world;
     private int round=0;
     private int nbrMonstreMauve69;
-    private int vieMonstreMauve69=675;
     private int nbrMonstreVert17;
-    private int vieMonstreVert17=225;
     private int nbrMonstreBleu4;
-    private int vieMonstreBleu4=75;
     private int nbrMonstreJaune1;
-    private int vieMonstreJaune1=25;
     private int qttDifficulte;
     private int vieJoueur = 100;
+    private Arthur mArthur;
+    private Long mArthurID;
+    private ArrayList<Toutou> mListeToutou;
+    private ArrayList<Projectile> mListeProjectile;
 
     public Game(Context context) {
         super(context);
@@ -80,6 +69,8 @@ class Game extends GameView{
 
         mArthur = new Arthur(mContext);
         mArthurID = world.addModel(mArthur.getModel());
+        mListeToutou = new ArrayList<Toutou>();
+        mListeProjectile = new ArrayList<Projectile>();
     }
 
     @Override
@@ -93,24 +84,20 @@ class Game extends GameView{
         int temp=0;
         int temp2=0;
         //world.getModel()
-        for(Coord monsieurCoordonneBalle: mCoordonnesBalles){
-            monsieurCoordonneBalle.setX(this.getX()+mDirectionsBallesX.get(temp));
-            monsieurCoordonneBalle.setY(this.getY()+mDirectionsBallesY.get(temp));
+        for(Projectile projectile: mListeProjectile){
+            projectile.setCoord(new Coord(this.getX()+ projectile.getmDirectionX(), this.getY()+ projectile.getmDirectionY()));
         }
         temp=0;
-        for(Long monsieurMovingModelID : mBallesID){
-            world.Move(monsieurMovingModelID, new Vec3(mDirectionsBallesX.get(temp), mDirectionsBallesY.get(temp), 0.f), getElapsedFrameTime());
-            for(Long monsieurMovingAmiID:mListeMonstresID){
-                if(Math.sqrt(Math.pow(mCoordonnesBalles.get(temp).getX() - mCoordonnesMonstres.get(temp2).getX(),2) + Math.pow(mCoordonnesBalles.get(temp).getY() - mCoordonnesMonstres.get(temp2).getY(),2)) < 0.2){
-                    destroyMrBalle(temp, world);
-                    mListeMonstreVie.set(temp2, mListeMonstreVie.get(temp2) - mBallesPuissance.get(temp));
-                    if(mListeMonstreVie.get(temp2)<=0){
-                        mListeMonstreVie.remove(temp2);
-                        mCoordonnesMonstres.remove(temp2);
-                        mListeMonstres.remove(temp2);
-                        mListeMonstresID.remove(temp2);
-                        mListeMonstreDMG.remove(temp2);
+        for(Projectile projectile : mListeProjectile){
+            world.Move(projectile.getmID(), new Vec3(projectile.getmDirectionX(), projectile.getmDirectionY(), 0.f), getElapsedFrameTime());
+            for(Toutou monsieurMovingAmiID:mListeToutou){
+                if(Math.sqrt(Math.pow(projectile.getCoord().getX() - mListeToutou.get(temp2).getCoord().getX(),2) + Math.pow(projectile.getCoord().getY() - mListeToutou.get(temp2).getCoord().getY(),2)) < 0.2){
+                    mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
+                    if(mListeToutou.get(temp2).getmVie()<=0){
+                        mListeToutou.remove(temp2);
                     }
+                    world.removeModel(projectile.getmID());
+                    mListeProjectile.remove(temp);
                 }
                 temp2++;
             }
@@ -118,14 +105,14 @@ class Game extends GameView{
         }
         temp=0;
         float angle=0;
-        for(Long monsieurMovingAmiID:mListeMonstresID){
+        for(Toutou monsieurMovingAmiID:mListeToutou){
             //TODO determiner si l'origine est le personnage ou alors un point dans la carte
-            angle=(float)Math.atan2(-mCoordonnesMonstres.get(temp).getY(), -mCoordonnesMonstres.get(temp).getX());
-            world.Move(monsieurMovingAmiID, new Vec3((float)Math.sin(angle), (float)Math.cos(angle), 0), getElapsedFrameTime());
-            if(mCoordonnesMonstres.get(temp).getX() < 0.5){
-                world.Move(monsieurMovingAmiID, new Vec3(-(float)Math.sin(angle)*20, -(float)Math.cos(angle)*20, 0), getElapsedFrameTime());
-                if(mListeMonstreDMG.get(temp) != null){
-                    this.vieJoueur -= mListeMonstreDMG.get(temp);
+            angle=(float)Math.atan2(-mListeToutou.get(temp2).getCoord().getY(), -mListeToutou.get(temp2).getCoord().getX());
+            world.Move(mListeToutou.get(temp).getmID(), new Vec3((float)Math.sin(angle), (float)Math.cos(angle), 0), getElapsedFrameTime());
+            if(mListeToutou.get(temp2).getCoord().getX() < 0.5){
+                world.Move(mListeToutou.get(temp).getmID(), new Vec3(-(float)Math.sin(angle)*20, -(float)Math.cos(angle)*20, 0), getElapsedFrameTime());
+                if(mListeToutou.get(temp).getmDMG() != 0){
+                    this.vieJoueur -= mListeToutou.get(temp).getmDMG();
                 }
             }
             temp++;
@@ -140,16 +127,8 @@ class Game extends GameView{
     public void makeMrBalle() throws IOException {
         MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
         bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-        mBalles.add(bullet);
-        mDirectionsBallesX.add(this.xPercentDirectionBalle);
-        mDirectionsBallesY.add(this.yPercentDirectionBalle);
-        mCoordonnesBalles.add(new Coord(0,0));
-        //TODO get la puissance des balles
-        mBallesPuissance.add(15);
+        mListeProjectile.add(new Projectile(15,this.xPercentDirectionBalle, this.yPercentDirectionBalle, new Coord(0,0), bullet, bullet.getID()));
         nbrBallesLancees++;
-        bullet.AssociateShader(texShader);
-        bullet.setTexture(tex);
-        mBallesID.add(bullet.getID());
     }
 
     public void updateLevel() throws IOException {
@@ -162,59 +141,23 @@ class Game extends GameView{
         for(int i=0; i<nbrMonstreMauve69;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeMonstres.add(ami);
-            //TODO associer les bonnes textures aux monstres
-            ami.AssociateShader(texShader);
-            ami.setTexture(tex);
-            mListeMonstresID.add(ami.getID());
-            mListeMonstreVie.add(25*27+round*4);
-            mListeMonstreDMG.add(34);
-            mCoordonnesMonstres.add(new Coord(0,0));
+            mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(0,0), ami.getID()));
         }
         for(int i=0; i<nbrMonstreVert17;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeMonstres.add(ami);
-            //TODO associer les bonnes textures aux monstres
-            ami.AssociateShader(texShader);
-            ami.setTexture(tex);
-            mListeMonstresID.add(ami.getID());
-            mListeMonstreVie.add(25*9+round*3);
-            mListeMonstreDMG.add(25);
-            mCoordonnesMonstres.add(new Coord(0,0));
+            mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(0,0), ami.getID()));
         }
         for(int i=0; i<nbrMonstreBleu4;i++){
-            MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeMonstres.add(ami);
-            //TODO associer les bonnes textures aux monstres
-            ami.AssociateShader(texShader);
-            ami.setTexture(tex);
-            mListeMonstresID.add(ami.getID());
-            mListeMonstreVie.add(25*3+round*2);
-            mListeMonstreDMG.add(20);
-            mCoordonnesMonstres.add(new Coord(0,0));
+            mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(0,0), ami.getID()));
         }
         for(int i=0; i<nbrMonstreVert17;i++){
-            MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeMonstres.add(ami);
-            //TODO associer les bonnes textures aux monstres
-            ami.AssociateShader(texShader);
-            ami.setTexture(tex);
-            mListeMonstresID.add(ami.getID());
-            mListeMonstreVie.add(25+round);
-            mListeMonstreDMG.add(17);
-            mCoordonnesMonstres.add(new Coord(0,0));
+            mListeToutou.add(new Toutou(25+round, 17, new Coord(0,0), ami.getID()));
         }
-    }
-
-    public void destroyMrBalle(int i, World world){
-        world.removeModel(mBallesID.get(i));
-        mBalles.remove(i);
-        mDirectionsBallesX.remove(i);
-        mDirectionsBallesY.remove(i);
-        mBallesID.remove(i);
     }
 
     public void movePerso(Vec3 vector){
