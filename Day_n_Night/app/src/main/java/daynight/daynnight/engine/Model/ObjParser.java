@@ -1,7 +1,6 @@
-package daynight.daynnight.engine;
+package daynight.daynnight.engine.Model;
 
 import android.content.Context;
-import android.opengl.GLES30;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -13,10 +12,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import daynight.daynnight.R;
-import daynight.daynnight.engine.Model.Model;
-import daynight.daynnight.engine.Model.TShaderSingleton;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;

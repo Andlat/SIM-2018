@@ -1,26 +1,15 @@
 package daynight.daynnight;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Switch;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
-import daynight.daynnight.engine.Model.Shader;
 import daynight.daynnight.engine.Model.StaticModel;
-import daynight.daynnight.engine.Model.Texture;
-import daynight.daynnight.engine.ObjParser;
+import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -86,90 +75,18 @@ class Game extends GameView{
 
     @Override
     protected void onCreate() {
-        world = new World();
+        World world = new World();
         super.UseWorld(world);
 
-        /*joystickTir.joystickCallback(new Joystick.JoystickListener() {
-            @Override
-            public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-                //Tirs
-                xPercentDirectionBalle = xPercent;
-                yPercentDirectionBalle = yPercent;
-            }
-        });*/
-
-        countDownTimer = new CountDownTimer(1000, 500) {
-            @Override
-            public void onTick(long l) {
-                if(xPercentDirectionBalle != 0 && yPercentDirectionBalle != 0){
-                    try {
-                        makeMrBalle();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                if(nbrBallesLancees >= 10){
-                    if(countDownTimer != null){
-                        countDownTimer.cancel();
-                    }
-                    countDownTimerReload = new CountDownTimer(2000,2000) {
-                        @Override
-                        public void onTick(long l) {
-
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            countDownTimer.start();
-                        }
-                    };
-                    countDownTimerReload.start();
-                }else{
-                    countDownTimer.start();
-                }
-            }
-        };
-        if(countDownTimer != null){
-            countDownTimer.start();
-        }
-
-/*
-        try{
-            //Create a tile
-            MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
-            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
-
-            MovingModel tile2 = new MovingModel(tile);
-            tile2.getPhysics().setSpeed(1.5f);
-
-            StaticModel tile3 = new StaticModel(tile2);
-
-            mTileID = world.addModel(tile);
-            mHeroID = world.addModel(tile2);
-            world.addModel(tile3);
-
-            MovingModel s = ObjParser.Parse(mContext, "models", "strange.obj").get(0).toMovingModel();
-            s.setPhysics(new PhysicsAttributes.MovingModelAttr(50000, 0, 0, 3.5f));
-            mSID = world.addModel(s);
-
-            world.Translate(tile, new Vec3(-3, -3, 0));
-            world.Translate(tile2, new Vec3(3, 3, 0));
-            world.Translate(mSID, new Vec3(-3, 3, 0));
-
-        }catch(IOException ex){
-            Log.e("Models creation", ex.getMessage());
-        }
-        */
+        mArthur = new Arthur(mContext);
+        mArthurID = world.addModel(mArthur.getModel());
     }
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
     }
 
+    float time=0;
     @Override
     protected void onDrawFrame(World world) {
 

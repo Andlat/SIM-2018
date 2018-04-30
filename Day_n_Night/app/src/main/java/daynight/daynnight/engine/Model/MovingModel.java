@@ -1,5 +1,7 @@
 package daynight.daynnight.engine.Model;
 
+import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
@@ -8,6 +10,14 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 public class MovingModel extends Model {
     private PhysicsAttributes.MovingModelAttr mPhysics = new PhysicsAttributes.MovingModelAttr();
+
+    private Vec3 mLastDirection = new Vec3();
+
+
+    public static abstract class onCollisionListener{
+        abstract public void onCollision(Model object);
+    }
+    private onCollisionListener mOnCollisionListener;
 
     /**
      * Constructor for a MovingModel.
@@ -34,17 +44,26 @@ public class MovingModel extends Model {
         this.CloneFrom(model);
     }
 
+    public Vec3 getLastDirection(){ return mLastDirection; }
+    public void setLastDirection(Vec3 dir){ mLastDirection = dir; }
+
     public void setPhysics(PhysicsAttributes.MovingModelAttr attr){
         mPhysics = attr;
     }
     public PhysicsAttributes.MovingModelAttr getPhysics(){ return mPhysics; }
+
+    public void setOnCollisionListener(onCollisionListener listener){
+        mOnCollisionListener = listener;
+    }
+    public onCollisionListener getOnCollisionListener(){
+        return mOnCollisionListener;
+    }
 
     public void CloneTo(MovingModel clone) {
         super.CloneTo(clone);
 
         this.mPhysics.CloneTo(clone.mPhysics);
     }
-
 
     /**
      * Clone this Model's attributes to another Model
