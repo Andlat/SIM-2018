@@ -45,16 +45,12 @@
         <activity
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />
-<<<<<<< HEAD
         <activity android:name=".PopupRecompenses"
             android:theme="@style/AppTheme.PopupRTheme" />
         <activity android:name=".PopupConnexion"
             android:theme="@style/AppTheme.PopupRTheme" />
-=======
         <activity android:name="PopupRecompenses"
             android:theme="@style/AppTheme.PopupTheme" />
-
->>>>>>> 03a2ee4bb73c876278f8f44a3b324e401b51e25b
     </application>
 
 </manifest>

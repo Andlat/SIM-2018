@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
     public String lireJoueur()
     {
         FileInputStream joueur = null;
@@ -341,6 +340,4 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }*/
-=======
->>>>>>> 03a2ee4bb73c876278f8f44a3b324e401b51e25b
 }

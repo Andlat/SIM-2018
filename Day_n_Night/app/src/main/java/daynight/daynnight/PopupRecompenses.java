@@ -1,11 +1,8 @@
 package daynight.daynnight;
 
 import android.app.Activity;
-<<<<<<< HEAD
-=======
 import android.app.Fragment;
 import android.content.Intent;
->>>>>>> 03a2ee4bb73c876278f8f44a3b324e401b51e25b
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
