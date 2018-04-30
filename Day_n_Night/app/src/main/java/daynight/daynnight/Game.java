@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import daynight.daynnight.engine.GameView;
+import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.Model.ObjParser;
@@ -108,11 +109,21 @@ class Game extends GameView{
         for(Toutou monsieurMovingAmiID:mListeToutou){
             //TODO determiner si l'origine est le personnage ou alors un point dans la carte
             angle=(float)Math.atan2(-mListeToutou.get(temp2).getCoord().getY(), -mListeToutou.get(temp2).getCoord().getX());
+            if(angle > 7*Math.PI/4 && angle < Math.PI/4){
+                monsieurMovingAmiID.setDernierDeplacement('d');
+            }else if(angle > Math.PI/4 && angle < 3*Math.PI/4){
+                monsieurMovingAmiID.setDernierDeplacement('h');
+            }else if(angle > 3*Math.PI/4 && angle < 5*Math.PI/4){
+                monsieurMovingAmiID.setDernierDeplacement('g');
+            }else if(angle > 5*Math.PI/4 && angle < 7*Math.PI/4){
+                monsieurMovingAmiID.setDernierDeplacement('b');
+            }
             world.Move(mListeToutou.get(temp).getmID(), new Vec3((float)Math.sin(angle), (float)Math.cos(angle), 0), getElapsedFrameTime());
             if(mListeToutou.get(temp2).getCoord().getX() < 0.5){
                 world.Move(mListeToutou.get(temp).getmID(), new Vec3(-(float)Math.sin(angle)*20, -(float)Math.cos(angle)*20, 0), getElapsedFrameTime());
-                if(mListeToutou.get(temp).getmDMG() != 0){
-                    this.vieJoueur -= mListeToutou.get(temp).getmDMG();
+                this.vieJoueur -= mListeToutou.get(temp).getmDMG();
+                if(this.vieJoueur <=0){
+                    endGame();
                 }
             }
             temp++;
@@ -122,6 +133,17 @@ class Game extends GameView{
         world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
         world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
         */
+    }
+
+    private void endGame() {
+        for(Projectile projectile : mListeProjectile){
+            world.removeModel(projectile.getmID());
+        }
+        mListeProjectile.clear();
+        for(Toutou toutou: mListeToutou){
+            world.removeModel(toutou.getmID());
+        }
+        mListeToutou.clear();
     }
 
     public void makeMrBalle() throws IOException {
@@ -142,21 +164,53 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(0,0), ami.getID()));
+            mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
+            this.mListeToutou.get(i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    int i=0;
+                    int j=0;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        /*for(Toutou toutou:mListeToutou){
+                            if()
+                        }
+                        if(mListeToutou.get(i).getDernierDeplacement()=='d'){
+
+                        }*/
+                    }
+                }
+            });
         }
         for(int i=0; i<nbrMonstreVert17;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(0,0), ami.getID()));
+            mListeToutou.get(i).setMovingModel(getContext(), "toutou3");
         }
         for(int i=0; i<nbrMonstreBleu4;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(0,0), ami.getID()));
+            mListeToutou.get(i).setMovingModel(getContext(), "toutou2");
         }
         for(int i=0; i<nbrMonstreVert17;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25+round, 17, new Coord(0,0), ami.getID()));
+            mListeToutou.get(i).setMovingModel(getContext(), "toutou1");
         }
     }
 

@@ -22,6 +22,7 @@ public class Toutou {
     private Coord coord;
     private Long mID;
     private MovingModel movingModel;
+    private char dernierDeplacement;
 
     public Toutou(){
         this.mVie=25;
@@ -29,6 +30,7 @@ public class Toutou {
         this.mID=null;
         this.coord = new Coord();
         this.movingModel = null;
+        this.dernierDeplacement = 'd';
     }
 
     public Toutou(int mVie, int mDMG, Coord coord, Long mID) {
@@ -36,6 +38,8 @@ public class Toutou {
         this.mDMG = mDMG;
         this.coord = coord;
         this.mID = mID;
+        this.movingModel = null;
+        this.dernierDeplacement = 'd';
     }
 
     public int getmVie() {
@@ -79,10 +83,27 @@ public class Toutou {
         this.coord.setY(this.coord.getY() - y);
     }
 
+    public void setMovingModel(Context context, String movingModel){
+        try {
+            this.movingModel = ObjParser.Parse(context, "models", movingModel +".obj").get(0).toMovingModel();
+            this.movingModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 1.5f));
+        }catch(IOException ex){
+            Log.e("Arthur Init", "Failed to load the Arthur model");
+        }
+    }
+
     public MovingModel getModel(){ return movingModel; }
 
     public void setSkin(int skinResID, Context context) throws IOException{
         movingModel.setTextureSource(context.getResources().getResourceEntryName(skinResID));
         movingModel.setTexture(Texture.Load(context, skinResID));
+    }
+
+    public char getDernierDeplacement() {
+        return dernierDeplacement;
+    }
+
+    public void setDernierDeplacement(char dernierDeplacement) {
+        this.dernierDeplacement = dernierDeplacement;
     }
 }
