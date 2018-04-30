@@ -1,8 +1,12 @@
 package daynight.daynnight.engine.util;
 
+import android.util.LongSparseArray;
+import android.util.SparseArray;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,5 +38,24 @@ public final class Util {
         clone.position(0);
 
         return clone;
+    }
+
+    public static <T> List<T> SparseArrayToArrayList(SparseArray<T> array){
+        List<T> list = new ArrayList<>();
+
+        final int size = array.size();
+        for(int i=0; i < size; ++i){
+            list.add(array.valueAt(i));
+        }
+        return list;
+    }
+    public static <T> List<T> LongSparseArrayToArrayList(LongSparseArray<T> array){
+        List<T> list = new ArrayList<>();
+
+        final int size = array.size();
+        for(int i=0; i < size; ++i){
+            list.add(array.valueAt(i));
+        }
+        return list;
     }
 }

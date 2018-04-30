@@ -9,7 +9,7 @@ import java.io.IOException;
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.StaticModel;
-import daynight.daynnight.engine.ObjParser;
+import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -21,7 +21,8 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Game extends GameView{
     private Context mContext;
 
-    private long mHeroID, mTileID, mSID;
+    private Arthur mArthur;
+    private long mArthurID;
 
     public Game(Context context) {
         super(context);
@@ -45,41 +46,26 @@ class Game extends GameView{
         World world = new World();
         super.UseWorld(world);
 
-        try{
-            //Create a tile
-            MovingModel tile = ObjParser.Parse(mContext, "models","tuile_cuisine.obj").get(0).toMovingModel();
-            tile.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
-
-            MovingModel tile2 = new MovingModel(tile);
-            tile2.getPhysics().setSpeed(1.5f);
-
-            StaticModel tile3 = new StaticModel(tile2);
-
-            mTileID = world.addModel(tile);
-            mHeroID = world.addModel(tile2);
-            world.addModel(tile3);
-
-            MovingModel s = ObjParser.Parse(mContext, "models", "strange.obj").get(0).toMovingModel();
-            s.setPhysics(new PhysicsAttributes.MovingModelAttr(50000, 0, 0, 3.5f));
-            mSID = world.addModel(s);
-
-            world.Translate(tile, new Vec3(-3, -3, 0));
-            world.Translate(tile2, new Vec3(3, 3, 0));
-            world.Translate(mSID, new Vec3(-3, 3, 0));
-
-        }catch(IOException ex){
-            Log.e("Models creation", ex.getMessage());
-        }
+        mArthur = new Arthur(mContext);
+        mArthurID = world.addModel(mArthur.getModel());
     }
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
     }
 
+    float time=0;
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
+        world.Move(mArthurID, new Vec3(1.5f, 1.5f, 0), getElapsedFrameTime());
+        time += getElapsedFrameTime()/1000.f;
+        Log.e("TIME", ""+time);
+        if(time >= 1) {
+            try {
+                mArthur.setSkin(R.drawable.arthur11_1);
+            }catch(IOException ex){
+                Log.e("Change Skin", ex.getMessage(), ex);
+            }
+        }
     }
 }
