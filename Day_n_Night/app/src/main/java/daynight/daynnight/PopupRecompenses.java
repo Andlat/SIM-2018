@@ -1,6 +1,11 @@
 package daynight.daynnight;
 
 import android.app.Activity;
+<<<<<<< HEAD
+=======
+import android.app.Fragment;
+import android.content.Intent;
+>>>>>>> 03a2ee4bb73c876278f8f44a3b324e401b51e25b
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,11 +20,13 @@ import static daynight.daynnight.MainActivity.joueur;
 public class PopupRecompenses extends Activity {
 
     private Button ramasser;
+    private String ok;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_recompense);
 
+        ok = "non";
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -30,6 +37,10 @@ public class PopupRecompenses extends Activity {
         ramasser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ok = "ok";
+                Intent intent = new Intent(PopupRecompenses.this, MapActivity.class);
+                intent.putExtra("RECUPERER", ok);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

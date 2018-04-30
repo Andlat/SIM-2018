@@ -31,7 +31,6 @@ public class Shader {
         Exception(String msg){ super("Shader exception: " + msg); }
     }
 
-    private Context mContext;
     private String m_vert_shader_src, m_frag_shader_src;//Shader sources
     private int mProgram, mVertexShader, mFragmentShader;//IDs
     private boolean mIsLinked;
@@ -41,12 +40,9 @@ public class Shader {
     private boolean mIsInUse = false;
 
     /**
-     * Constructeur d'objets Shader
-     * @param context Context de l'activité
+     * Constructeur vide d'objets Shader
      */
-    public Shader(Context context){
-        mContext = context;
-    }
+    public Shader(){}
 
     /**
      * Charge un vertex ou fragment shader
@@ -55,11 +51,11 @@ public class Shader {
      * @return this. Pour faire du "chaining" de fonctions
      * @throws IOException Si le fichier n'a pas pu être lu
      */
-    public Shader Load(String file, Type type) throws IOException{
+    public Shader Load(Context context, String file, Type type) throws IOException{
 
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(mContext.getAssets().open(file)));
+            reader = new BufferedReader(new InputStreamReader(context.getAssets().open(file)));
 
             StringBuilder content = new StringBuilder();
 

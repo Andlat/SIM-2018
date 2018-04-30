@@ -20,4 +20,18 @@ public class Coord {
     public float distanceTo(Coord target){
         return (float)Math.sqrt(Math.pow(target.X - this.X, 2) + Math.pow(target.Y - this.Y, 2));
     }
+
+    public void setX(float x){
+        this.X=x;
+    }
+    public void setY(float y){
+        this.Y=y;
+    }
+
+    public float getX(){
+        return this.X;
+    }
+    public float getY(){
+        return this.Y;
+    }
 }

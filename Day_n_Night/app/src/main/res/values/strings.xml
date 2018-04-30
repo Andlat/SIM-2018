@@ -48,5 +48,7 @@
     <string name="portee">Portée : %1$s</string>
     <string name="menuJeu">Menu</string>
     <string name="recommencer">Recommencer</string>
+    <string name="recompense_dipo_dans">Récompense disponible dans</string>
+    <string name="secondes">secondes</string>
     <!-- ************ -->
 </resources>

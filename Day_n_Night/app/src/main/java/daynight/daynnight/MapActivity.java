@@ -92,6 +92,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
+    private Poi actualPoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -446,9 +447,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                 if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
                     //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur
-                    Poi ok = (Poi) marker.getTag();
+                    actualPoi = (Poi) marker.getTag();
+                    if(Objects.requireNonNull(actualPoi).isActive()){
+                        startActivityForResult(new Intent(getApplicationContext(), PopupRecompenses.class),1);
+                    }else{
+                        Toast.makeText(getApplicationContext(),getString(R.string.recompense_dipo_dans) + String.valueOf(actualPoi.getTimeLeft()) + getString(R.string.secondes), Toast.LENGTH_SHORT).show();
+                    }
 
-                    startActivity(new Intent(getApplicationContext(), PopupRecompenses.class));
                 }
                 return true;
             }
@@ -473,6 +478,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
                 Toast.makeText(getApplicationContext(), "Le jeu de jour a été désactivé.\nActivez la géolocalisation dansles réglages pour l'activer!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //Désactive le poi si l'utilisateur à récuperer la récompense
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                if(data.getStringExtra("RECUPERER").equals("ok")){
+                    actualPoi.setTimer(600000);
+                    actualPoi.setActive(false);
+                }
             }
         }
     }

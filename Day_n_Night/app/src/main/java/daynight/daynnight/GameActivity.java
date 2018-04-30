@@ -42,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
 
                 persoVec.x(xPercent);
                 persoVec.y(yPercent * -1);
-                game.movePerso(persoVec);
+                //game.movePerso(persoVec);
                 break;
 
             case R.id.joystickTir:

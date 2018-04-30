@@ -1,23 +1,19 @@
 package daynight.daynnight.engine;
 
-import android.opengl.GLES20;
 import android.opengl.GLES30;
-import android.opengl.Matrix;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.Texture;
-import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Util;
 
@@ -35,6 +31,7 @@ public class World {
     private MVP mMVP = null;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
+    private final List<MovingModel> mMovingModels = new ArrayList<>();//Models in this list are also included in mModels
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
     private boolean mArePhysicsOn = false;
@@ -55,17 +52,25 @@ public class World {
 
         model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
 
+        //Add to movingModels list if necessary
+        if(model instanceof MovingModel)
+            mMovingModels.add((MovingModel)model);
+
         return modelID;
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
-
 
         FloatBuffer modelVBO = toRemoveModel.getVBO();
         int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
         mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
 
         mModels.remove(id_model);
+
+
+        //Remove from mMovingModels if necessary
+        if(toRemoveModel instanceof MovingModel)
+            mMovingModels.remove(toRemoveModel);
     }
 
     public void hideModel(long id_model){
@@ -113,6 +118,8 @@ public class World {
 
             this.Translate(model, translate);
 
+            model.setLastDirection(dir);
+
         }catch(ClassCastException ex){
             return false;
         }
@@ -124,19 +131,11 @@ public class World {
         this.Translate(mModels.get(id_model), translate);
     }
     public void Translate(Model model, Vec3 translate){
-        Vec3 position = model.setTranslation(translate);
-
-        float[] translateBuffer = new Mat4().toArray();//Identity matrix
-        Matrix.translateM(translateBuffer, 0, position.x(), position.y(), position.z());
-        Mat4 translateMat4 = new Mat4(translateBuffer, 0);
-
-        model.setModelMatrix(translateMat4);
+        model.addTranslation(translate);
     }
 
-    //TODO Use the Specified shaders.
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
-    //TODO MVP uniform does not respect the location set in the shader. Because of that, I have to use glGetUniformLocation
     public void DrawWorld(){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
@@ -146,7 +145,7 @@ public class World {
         final int size = mModels.size();
         for(int i=0; i < size; ++i){
             Model model = mModels.valueAt(i);
-
+/*
             FloatBuffer g = ((ByteBuffer)GLES30.glMapBufferRange(GLES30.GL_ARRAY_BUFFER, (int)model.getVBOWorldOffset()*Util.FLOAT_SIZE, model.getModelVBOSize(), GLES30.GL_MAP_READ_BIT)).order(ByteOrder.nativeOrder()).asFloatBuffer();
             StringBuilder s = new StringBuilder(g.capacity()).append("{");
             for(int h=0; h < g.capacity(); ++h){
@@ -155,16 +154,18 @@ public class World {
             s.append("}");
             Log.e("GL DATA " + model.getModelVBOSize()/Util.FLOAT_SIZE, s.toString());
             GLES30.glUnmapBuffer(GLES20.GL_ARRAY_BUFFER);
-
+*/
             model.getShader().Use();
 
             final int texUnit = model.getTexture().getUnit();
+            model.getTexture().Bind();
             Texture.ActivateUnit(texUnit);
-            GLES30.glUniform1i(1, texUnit - GLES30.GL_TEXTURE0);
+            GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit - GLES30.GL_TEXTURE0);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
             GLES30.glDrawArrays(GLES30.GL_TRIANGLES, (int)model.getVBOWorldOffset()/8,  model.getModelVBOSize()/Util.FLOAT_SIZE/8);
         }
+
         //----------------------------------------------------------------------\\
 
         /*          OPTION 1. FASTEST, BUT CAN'T USE MULTIPLE MVPs
@@ -193,5 +194,14 @@ public class World {
             GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second/4);
         }
         */
+
+        //Detect and execute collisions
+        ExcecuteCollisions(CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels)));
+    }
+
+    private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){
+        for(Pair<MovingModel, Model> collision : collisions){
+            collision.first.getOnCollisionListener().onCollision(collision.second);
+        }
     }
 }

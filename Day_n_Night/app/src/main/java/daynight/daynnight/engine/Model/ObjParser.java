@@ -1,7 +1,6 @@
-package daynight.daynnight.engine;
+package daynight.daynnight.engine.Model;
 
 import android.content.Context;
-import android.opengl.GLES30;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -13,9 +12,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import daynight.daynnight.R;
-import daynight.daynnight.engine.Model.Model;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
@@ -67,6 +63,10 @@ public class ObjParser {
                         }
 
                         tmp_model = new Model();
+
+                        //Add shader. TODO NOTE: Adding this shader is highly dependant on this app. Shouldn't do this if the engine is to be used for anything else or the structure of the app's VBO's is changed
+                        tmp_model.AssociateShader(TShaderSingleton.getInstance(context));
+                        Log.e("SET SHA", tmp_model.getShader().toString());
 
                         tmp_vertices.clear();
                         tmp_uvs.clear();
