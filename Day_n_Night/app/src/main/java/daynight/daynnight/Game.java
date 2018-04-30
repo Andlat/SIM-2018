@@ -25,6 +25,8 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
+import static daynight.daynnight.MainActivity.onPause;
+
 /**
  * Created by andlat on 2018-02-17.
  */

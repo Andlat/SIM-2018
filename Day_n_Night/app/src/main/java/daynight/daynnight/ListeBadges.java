@@ -23,6 +23,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
+
 public class ListeBadges extends AppCompatActivity
 {
     //Créer
@@ -86,6 +89,20 @@ public class ListeBadges extends AppCompatActivity
                 //TODO
             }
         });
+    }
+
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
     }
 
     //custom ArrayAdapter

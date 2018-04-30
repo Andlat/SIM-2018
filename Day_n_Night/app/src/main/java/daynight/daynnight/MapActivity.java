@@ -54,6 +54,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import static daynight.daynnight.MainActivity.joueur;
+
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -134,18 +136,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
      *Arrete la demande de localisation lorsque l'app n'est pas active
      */
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
 
         if (locationManager != null) locationManager.removeUpdates(locationListener);
     }
 
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
 
     /**
      * Rappel la fonction OnMapReady() lorsque l'app devient active
      */
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
         super.onResume();
 
         //Quand la map est disponible, on appel la fonction OnMapReady()

@@ -3,6 +3,8 @@ package daynight.daynnight;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import static daynight.daynnight.MainActivity.joueur;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -11,7 +13,19 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
     }
 
-
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
+    }
 }
 
 /*

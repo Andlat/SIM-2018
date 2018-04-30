@@ -27,7 +27,7 @@ public class Joueur
     Joueur()
     {
         this.prenom = "Arthur";
-        this.nom = "Ça rie, Sarry pu";//wow
+        this.nom = "ca&rie,&Sarry&pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
 
         this.biscuits = 30;
@@ -65,15 +65,27 @@ public class Joueur
         inventaire.add(skinsInv);
         inventaire.add(decorationsInv);
     }
-    Joueur(String prenom, String nom, String addresseElectronique, List<ArrayList<Outil>> inventaire)
+    Joueur(String prenom, String nom, String addresseElectronique, int biscuits)
     {
         this.prenom = prenom;
         this.nom = nom;
         this.addresseElectronique = addresseElectronique;
-        this.inventaire = inventaire;
+        this.biscuits = biscuits;
     }
 
     //Getteurs & Setteurs
+    public String getPrenom()
+    {
+        return prenom;
+    }
+    public String getNom()
+    {
+        return nom;
+    }
+    public String getAddresseElectronique()
+    {
+        return addresseElectronique;
+    }
     public int getBiscuits()
     {
         return biscuits;
@@ -109,6 +121,18 @@ public class Joueur
         return boutique.get(2);
     }
 
+    public void setPrenom(String prenom)
+    {
+        this.prenom = prenom;
+    }
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
+    public void setAddresseElectronique(String addresseElectronique)
+    {
+        this.addresseElectronique = addresseElectronique;
+    }
     public void setBiscuits(int biscuits)
     {
         this.biscuits = biscuits;
