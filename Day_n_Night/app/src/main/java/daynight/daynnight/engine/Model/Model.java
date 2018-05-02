@@ -151,10 +151,11 @@ public class Model {
     public final void setOrgTexture(Texture texture) { mOrgTexture = texture; }
 
     public final Animation addFrame(Texture texture, int milliseconds){
-        Log.e("MILLIS", ""+milliseconds);
         return mAnimation.addFrame(new Pair<>(texture, milliseconds));
     }
     public final Animation getAnimation(){ return mAnimation; }
+    public final void setAnimation(Animation animation){ mAnimation = animation; }
+
 
     public final long getID(){ return mID; }
 

@@ -1,15 +1,12 @@
 package daynight.daynnight;
 
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import daynight.daynnight.engine.GameView;
-import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.Model.ObjParser;
@@ -17,8 +14,6 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
-
-import static daynight.daynnight.MainActivity.onPause;
 
 /**
  * Created by andlat on 2018-02-17.
@@ -69,9 +64,18 @@ class Game extends GameView{
         World world = new World();
         super.UseWorld(world);
 
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setType(StaticModel.Type.WALL_TOP);
+            world.addModel(mur);
+        }catch(IOException ex){
+            Log.e("Load Model", ex.getMessage(), ex);
+        }
 
-        mListeToutou = new ArrayList<Toutou>();
-        mListeProjectile = new ArrayList<Projectile>();
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        mArthur.setInWorldID(world.addModel(mArthur.getModel()));
+        //world.Translate(mArthur.getInWorldID(), new Vec3(0, 4, 0));
     }
 
     @Override

@@ -1,22 +1,13 @@
 package daynight.daynnight;
 
-import android.content.Context;
 import android.content.Intent;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -27,7 +18,9 @@ public class MainActivity extends AppCompatActivity
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
-    public static MediaPlayer musiqueDeFond;
+
+    int temps;
+    public static MediaPlayer MusiqueDeFond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +40,9 @@ public class MainActivity extends AppCompatActivity
         joueur = new Joueur();
 
         //Musique d'arriere plan
-        musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        musiqueDeFond.setLooping(true);
-        musiqueDeFond.start();
+        MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        MusiqueDeFond.setLooping(true);
+        MusiqueDeFond.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
@@ -63,6 +56,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton jeu de nuit
         Button buttonNight = (Button) findViewById(R.id.nuitButton);
         buttonNight.setOnClickListener(new View.OnClickListener()
@@ -78,6 +72,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour l'inventaire
         Button leSebBouton = (Button) findViewById(R.id.leSebBouton);
         leSebBouton.setOnClickListener(new View.OnClickListener()
@@ -92,6 +87,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour les badges
         Button leSebNouton2 = (Button) findViewById(R.id.leSebBouton2);
         leSebNouton2.setOnClickListener(new View.OnClickListener()
@@ -106,6 +102,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour réglages
         Button boutonReglages = (Button) findViewById(R.id.boutonReglages);
         boutonReglages.setOnClickListener(new View.OnClickListener()
@@ -134,7 +131,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        musiqueDeFond.start();
+        MusiqueDeFond.start();
     }
     @Override
     protected void onStop()
@@ -143,205 +140,9 @@ public class MainActivity extends AppCompatActivity
 
         if(onPause && !SurChangementActivity)
         {
-            musiqueDeFond.pause();
-            sauvegardeJoueur(joueur);
+            MusiqueDeFond.pause();
             onPause = false;
+
         }
     }
-
-    @Override
-    public void finish()
-    {
-        super.finish();
-    }
-
-    //Méthodes
-    public void sauvegardeJoueur(Joueur joueur)
-    {
-        //Lire le joueur sauvegardé
-        String sauvegarDeJoueur = lireJoueur();
-        if(sauvegarDeJoueur == null)
-            sauvegarDeJoueur = "";
-
-        //nouvelle souvegarde du joueur en string
-        String nouvJoueur = joueur.getPrenom().replaceAll(" ", "&") + " " + joueur.getNom().replaceAll(" ", "&") + " " + joueur.getAddresseElectronique() + " " + joueur.getBiscuits(); //TODO À mettre les autres
-
-        //Écrire dans le fichier
-        FileOutputStream enregistrer = null;
-
-        try
-        {
-            enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-            enregistrer.write(nouvJoueur.getBytes());
-
-            Log.wtf("J sauvegardé MAINTENANT :", nouvJoueur);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                enregistrer.close();//Fermer le fichier
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void actualiserJoueur(Joueur joueur)
-    {
-        //Lire le joueur sauvegardé
-        String sauvegarDeJoueur = lireJoueur();
-        if(sauvegarDeJoueur == null)
-            sauvegarDeJoueur = "";
-
-        Scanner verifier = new Scanner(sauvegarDeJoueur).useLocale(Locale.US);;//Sert à lire valeur par valeur dans le String listeComptes
-
-        try
-        {
-            /*while((verifier.hasNext() || verifier.hasNextLine()))
-            {
-                String identifiant = verifier.next();
-                int id = verifier.nextInt();
-                Double montant = verifier.nextDouble();
-
-                payeurs.add(new Payeur(identifiant, id, montant));
-            }*/
-            joueur = new Joueur(verifier.next().replaceAll("&", " "), verifier.next().replaceAll("&", " "), verifier.next(), verifier.nextInt());
-            Log.wtf("J actualisé :", joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAddresseElectronique() + " " + joueur.getBiscuits());
-
-        }
-        catch(NoSuchElementException e)
-        {
-            //Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
-            //toast.setGravity(Gravity.CENTER, 0, 0);
-            //toast.show();
-            e.printStackTrace();
-        }
-    }
-    public String lireJoueur()
-    {
-        FileInputStream joueur = null;
-
-
-        if(!fichierJoueur.isFile() && !fichierJoueur.canRead())
-        {
-            Joueur j = new Joueur();
-            String nouvJoueur = j.getPrenom().replaceAll(" ", "&") + " " + j.getNom().replaceAll(" ", "&") + " " + j.getAddresseElectronique() + " " + j.getBiscuits(); //TODO À mettre les autres
-            FileOutputStream enregistrer = null;
-            try
-            {
-                enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-                enregistrer.write(nouvJoueur.getBytes());
-
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    if (enregistrer != null)
-                    {
-                        enregistrer.close();//Fermer le fichier
-                    }
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        try
-        {
-            joueur = openFileInput(fichierJoueur.getName());
-            byte[] buffer = new byte[1];
-            StringBuilder sauvegarDeJoueur = new StringBuilder();
-
-            while((joueur.read(buffer)) != -1)
-            {
-                sauvegarDeJoueur.append(new String(buffer));
-            }
-            Log.wtf("Fichier :", "Lecture de " + joueur.toString() + " réussi");
-            Log.wtf("J sauvergardé :", sauvegarDeJoueur.toString());
-            return sauvegarDeJoueur.toString();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        finally
-        {
-            if(joueur != null)
-            {
-                try
-                {
-                    joueur.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-    }
-    /*public void supprimerJoueur(Joueur joueur)
-    {
-        String payeurASupprimer = payeur.getIdentifiant() + " " + payeur.getId() + " " + payeur.getMontant();
-        StringBuilder nouvListePayeurs = new StringBuilder();
-
-        //Lire comptes présents
-        String listePayeurs = lireJoueur();
-        if(listePayeurs == null)
-            listePayeurs = "";
-
-        //Écrire dans le fichier
-        FileOutputStream enregistrer = null;
-
-        try
-        {
-            BufferedReader br = new BufferedReader(new StringReader(listePayeurs));
-            String line;
-            while ((line = br.readLine()) != null)
-            {
-                if (!line.trim().equals(payeurASupprimer))
-                {
-                    nouvListePayeurs.append(line).append(System.lineSeparator());
-                }
-            }
-            br.close();
-
-            enregistrer = openFileOutput("payeurs", Context.MODE_PRIVATE);
-            enregistrer.write(nouvListePayeurs.toString().getBytes());
-            //System.out.println("Liste de payeurs de base :" + listePayeurs);
-            //System.out.println("Payeur supprimé :" + payeurASupprimer);
-            //System.out.println("Écriture réussie");
-            //System.out.println("Écriture :" + nouvListePayeurs);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                enregistrer.close();//Fermer le fichier
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }*/
 }
