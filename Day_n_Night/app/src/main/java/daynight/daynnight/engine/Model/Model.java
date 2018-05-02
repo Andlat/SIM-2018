@@ -89,7 +89,7 @@ public class Model {
         float midX = (topLeft.x() + bottomRight.x()) / 2;
         float midY = (bottomRight.y() + topLeft.y()) / 2;
 
-        return new Vec3(midX, midY, 0);
+        return (Vec3)new Vec3(midX, midY, 0).add(mCurrentTranslation);
     }
 
     //TODO Fonction getBottomPolyline dépendante à l'application
@@ -98,9 +98,9 @@ public class Model {
      * CETTE FONCTION EST DÉPENDANTE DE LA FAÇON DONT LES FICHIERS OBJ ONT ÉTÉS FAITS. ELLE NE FONCTIONNE QUE POUR DES RECTANGLES ET EST DÉPENDANTE À CETTE APPLICATION
      * @return Les coordonnées de la ligne du bas du modèle
      */
-    public Pair<Vec2, Vec2> getBottomPolyline(){
-        Vec2 bottomLeft = new Vec2(mModelVBO.get(16), mModelVBO.get(17)),
-                bottomRight = new Vec2(mModelVBO.get(0), mModelVBO.get(1));
+    public Pair<Vec3, Vec3> getBottomPolyline(){
+        Vec3 bottomLeft = (Vec3)new Vec3(mModelVBO.get(16), mModelVBO.get(17), 0).add(mCurrentTranslation),
+                bottomRight = (Vec3)new Vec3(mModelVBO.get(0), mModelVBO.get(1), 0).add(mCurrentTranslation);
 
         return new Pair<>(bottomLeft, bottomRight);
     }
@@ -115,11 +115,15 @@ public class Model {
     public List<Vec3> getCorners(){
         final List<Vec3> corners = new ArrayList<>();
 
+        //Get spawn coordinates
         corners.add(new Vec3(mModelVBO.get(32), mModelVBO.get(33), mModelVBO.get(34)));
         corners.add(new Vec3(mModelVBO.get(8), mModelVBO.get(9), mModelVBO.get(10)));
         corners.add(new Vec3(mModelVBO.get(16), mModelVBO.get(17), mModelVBO.get(18)));
         corners.add(new Vec3(mModelVBO.get(0), mModelVBO.get(1), mModelVBO.get(2)));
 
+        //Add the current translation
+        for(Vec3 corner : corners)
+            corner.add(mCurrentTranslation);
 
         return corners;
     }
@@ -153,13 +157,17 @@ public class Model {
     public final Mat4 getModelMatrix(){ return mModelMatrix; }
     public final void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
 
+    public final void RewindTranslation(){
+        mCurrentTranslation = mLastTranslation;
+    }
+
     public final void setTranslation(Vec3 position){
         mLastTranslation = mCurrentTranslation;
         mCurrentTranslation = position;
         this.CalculateModelMat();
     }
     public final void addTranslation(Vec3 translation){
-        this.setTranslation((Vec3)mCurrentTranslation.add(translation));
+        this.setTranslation((Vec3)new Vec3(mCurrentTranslation).add(translation));
     }
     public void ResetTranslation(){
         this.setTranslation(new Vec3());
@@ -175,6 +183,19 @@ public class Model {
         Mat4 translateMat4 = new Mat4(translateBuffer, 0);
 
         this.setModelMatrix(translateMat4);
+    }
+
+    /**
+     * Translation des coordonnées absolue du modèle et non de la matrice modèle. Doit être appelé AVANT d'ajouter le modèle à un monde, si elle est utilisée.
+     * @param translation Translation à faire
+     */
+    public void StaticTranslate(Vec3 translation){
+        final int vboSize = mModelVBO.capacity();
+        for(int i=0; i < vboSize; i+=6){
+            mModelVBO.put(i, mModelVBO.get(i) + translation.x());
+            mModelVBO.put(++i, mModelVBO.get(i) + translation.y());
+            mModelVBO.put(++i, mModelVBO.get(i) + translation.z());
+        }
     }
 
     /**

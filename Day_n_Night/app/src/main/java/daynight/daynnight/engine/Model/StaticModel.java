@@ -8,7 +8,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 public class StaticModel extends Model {
     private PhysicsAttributes.StaticModelAttr mPhysics = new PhysicsAttributes.StaticModelAttr();
-    public enum Type {FLOOR, WALL_BOTTOM, WALL_TOP, WALL}
+    public enum Type {FLOOR, BLOCK, WALL_BOTTOM, WALL_TOP}
     private Type mType = Type.FLOOR;
 
     /**

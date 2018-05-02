@@ -1,5 +1,6 @@
 package daynight.daynnight.engine.Model;
 
+import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -15,7 +16,7 @@ public class MovingModel extends Model {
 
 
     public static abstract class onCollisionListener{
-        abstract public void onCollision(Model object);
+        abstract public void onCollision(World world, Model object);
     }
     private onCollisionListener mOnCollisionListener;
 

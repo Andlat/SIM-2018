@@ -1,20 +1,22 @@
-package daynight.daynnight.engine.Model;
+package daynight.daynnight.engine;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import daynight.daynnight.engine.Model.Model;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Mat4;
 
 /**
  * Created by andlat on 2018-04-29.
  */
 
-public class DrawGroup {
+class DrawGroup {
     private List<Model> mList = new ArrayList<>();
     private Texture mTexture;
     private Mat4 mModelMatrix;
 
-    public static class WrongGroupException extends Exception{
+    static class WrongGroupException extends Exception{
         WrongGroupException(){ super("Model has a model matrix or a Texture that is not the same as this group's"); }
         WrongGroupException(String msg){ super(msg); }
     }
@@ -38,7 +40,7 @@ public class DrawGroup {
         mModelMatrix = first.getModelMatrix();
     }
 
-    public void addModel(Model model) throws WrongGroupException {
+    void addModel(Model model) throws WrongGroupException {
         if(mList.isEmpty()){
             initGroup(model);
         }else{

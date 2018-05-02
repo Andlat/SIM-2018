@@ -202,7 +202,7 @@ public class World {
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){
         for(Pair<MovingModel, Model> collision : collisions){
-            collision.first.getOnCollisionListener().onCollision(collision.second);
+            collision.first.getOnCollisionListener().onCollision(this, collision.second);
         }
     }
 }

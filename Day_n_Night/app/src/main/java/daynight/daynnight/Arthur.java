@@ -9,6 +9,7 @@ import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.Texture;
+import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
@@ -18,18 +19,19 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 public class Arthur{
     private MovingModel mModel = null;
     private final Context mContext;
+    private long mInWorldID;
 
     public Arthur(Context context){
         mContext = context;
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj").get(0).toMovingModel();
-            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 1.5f));
+            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
-                    mModel.setTranslation(mModel.getLastTranslation());
+                public void onCollision(World world, Model object) {
+                    mModel.RewindTranslation();
                 }
             });
         }catch(IOException ex){
@@ -38,6 +40,11 @@ public class Arthur{
     }
 
     public MovingModel getModel(){ return mModel; }
+
+    public void setInWorldID(long id){
+        mInWorldID = id;
+    }
+    public long getInWorldID(){ return mInWorldID; }
 
     public void setSkin(int skinResID) throws IOException{
         mModel.setTextureSource(mContext.getResources().getResourceEntryName(skinResID));
