@@ -62,7 +62,7 @@ public abstract class GameView extends GLSurfaceView {
      * Function qui est appelée juste avant que la frame se fasse dessiner
      * @param world World qui est utilisé
      */
-    abstract protected void onDrawFrame(World world) throws IOException;
+    abstract protected void onDrawFrame(World world);
 
 
     private class Renderer implements GLSurfaceView.Renderer{

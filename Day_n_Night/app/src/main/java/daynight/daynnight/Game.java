@@ -45,6 +45,8 @@ class Game extends GameView{
     private int vieJoueur = 100;
     private ArrayList<Toutou> mListeToutou;
     private ArrayList<Projectile> mListeProjectile;
+    private ArrayList<StaticModel> mListePlancher;
+    private ArrayList<StaticModel> mListeMur;
     private int i,j,h,k;
 
     public Game(Context context) {
@@ -68,10 +70,89 @@ class Game extends GameView{
     protected void onCreate() {
         World world = new World();
         super.UseWorld(world);
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            Vec3 vec3 = new Vec3((mur.getCorners().get(0).x()-mur.getCorners().get(1).x()), mur.getCorners().get(1).y()-mur.getCorners().get(2).y(), 0);
+            for(int hauteur=0; hauteur<22;hauteur++){
+                for(int largeur=0; largeur<22;largeur++){
+                    if(hauteur==21){
+                        placerMurBas(hauteur, largeur, vec3);
+                    }else if(hauteur ==0){
+                        placerMurHaut(hauteur, largeur, vec3);
+                    }else if(largeur==0||largeur==21){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    } else if((hauteur==1||hauteur==2||hauteur==5||hauteur==6||hauteur==8||hauteur==9||
+                            hauteur==12||hauteur==13||hauteur==15||hauteur==16||hauteur==19||hauteur==20)
+                            &&((largeur==0||largeur==7||largeur==14||largeur==21))){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    }else if((hauteur==7||hauteur==14)&&(largeur<3||(largeur>4&&largeur<10)||(largeur>11&&largeur<17)||largeur>18)){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    }else{
+                        placerPlancher(hauteur, largeur, vec3);
+                    }
+                }
+            }
+        }catch(IOException e){
+
+        }
+
 
 
         mListeToutou = new ArrayList<Toutou>();
         mListeProjectile = new ArrayList<Projectile>();
+    }
+
+    private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.FLOOR);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurBlock(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.BLOCK);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurBas(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_BOTTOM);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurHaut(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_TOP);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
     }
 
     @Override
@@ -80,7 +161,7 @@ class Game extends GameView{
 
     float time=0;
     @Override
-    protected void onDrawFrame(World world) throws IOException {
+    protected void onDrawFrame(World world) {
 
         int temp=0;
         int temp2=0;
@@ -97,7 +178,11 @@ class Game extends GameView{
                     if(mListeToutou.get(temp2).getmVie()<=0){
                         mListeToutou.remove(temp2);
                         if(mListeToutou.isEmpty()){
-                            updateLevel();
+                            try{
+                                updateLevel();
+                            }catch(IOException e){
+
+                            }
                         }
                     }
                     world.removeModel(projectile.getmID());
@@ -152,6 +237,7 @@ class Game extends GameView{
     public void makeMrBalle() throws IOException {
         MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
         bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+        world.addModel(bullet);
         mListeProjectile.add(new Projectile(15,this.xPercentDirectionBalle, this.yPercentDirectionBalle, new Coord(0,0), bullet, bullet.getID()));
         nbrBallesLancees++;
     }
@@ -166,11 +252,14 @@ class Game extends GameView{
         for(i=0; i<nbrMonstreMauve69;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(0,0), ami.getID()));
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
             this.mListeToutou.get(i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -202,11 +291,14 @@ class Game extends GameView{
         for(j=0; j<nbrMonstreVert17;j++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(0,0), ami.getID()));
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(j+i).setMovingModel(getContext(), "toutou3");
             this.mListeToutou.get(j+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -238,11 +330,14 @@ class Game extends GameView{
         for(h=0; h<nbrMonstreBleu4;h++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(0,0), ami.getID()));
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(vec3.x(), vec3.y()), ami.getID()));
             mListeToutou.get(h+i).setMovingModel(getContext(), "toutou2");
             this.mListeToutou.get(h+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -274,11 +369,14 @@ class Game extends GameView{
         for(k=0; k<nbrMonstreVert17;k++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25+round, 17, new Coord(0,0), ami.getID()));
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25+round, 17, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(k+i).setMovingModel(getContext(), "toutou1");
             this.mListeToutou.get(k+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -306,6 +404,11 @@ class Game extends GameView{
                 }
             });
         }
+    }
+
+    private Vec3 getCoordonnesMonstre() {
+        Vec3 vec3 = new Vec3((float)Math.random()*5 +1, (float)Math.random()*5 +1, 0);
+        return vec3;
     }
 
     public void movePerso(Vec3 vector){
