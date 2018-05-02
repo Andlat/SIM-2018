@@ -3,38 +3,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/layout_popup_informations_objet"
     tools:context="daynight.daynnight.ListeBadges">
 
-    <EditText
-        android:id="@+id/prenom"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="fill_horizontal"
-        android:gravity="center"
-        android:hint="Prénom"
-        android:inputType="textPersonName"
-        android:textSize="18sp" />
+        android:layout_margin="5dp"
 
-    <EditText
-        android:id="@+id/nom"
+        android:gravity="center"
+        android:text="connexion"
+        android:fontFamily="@font/bungee"
+        android:textColor="@color/common_google_signin_btn_text_light_default"
+        android:textSize="24sp"/>
+
+    <!-- Ligne de séparation -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dip"
+        android:layout_gravity="fill"
+        android:background="@color/beigeFonce" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="fill_horizontal"
-        android:gravity="center"
-        android:hint="Nom"
-        android:inputType="textPersonName"
-        android:textSize="18sp" />
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-    <Button
-        android:id="@+id/confirmation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/style_button_ripple_coin"
-        android:layout_gravity="center"
-        android:text="Confirmer" />
+        <EditText
+            android:id="@+id/prenom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="center"
+            android:hint="Prénom"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/nom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="center"
+            android:hint="Nom"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="5dp">
+
+            <Button
+                android:id="@+id/confirmation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/style_button_ripple_coin"
+                android:fontFamily="@font/bungee"
+                android:text="Confirmer"
+                android:textColor="@color/common_google_signin_btn_text_light_default"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/commencerPartie"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/style_button_ripple_coin"
+                android:fontFamily="@font/bungee"
+                android:text="Commencer\nune partie"
+                android:textColor="@color/common_google_signin_btn_text_light_default"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

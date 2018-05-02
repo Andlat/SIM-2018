@@ -43,8 +43,6 @@ class Game extends GameView{
     private int nbrMonstreJaune1;
     private int qttDifficulte;
     private int vieJoueur = 100;
-    private Arthur mArthur;
-    private Long mArthurID;
     private ArrayList<Toutou> mListeToutou;
     private ArrayList<Projectile> mListeProjectile;
     private int i,j,h,k;
@@ -71,8 +69,7 @@ class Game extends GameView{
         World world = new World();
         super.UseWorld(world);
 
-        mArthur = new Arthur(mContext);
-        mArthurID = world.addModel(mArthur.getModel());
+
         mListeToutou = new ArrayList<Toutou>();
         mListeProjectile = new ArrayList<Projectile>();
     }

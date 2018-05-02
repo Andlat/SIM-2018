@@ -1,7 +1,14 @@
 package daynight.daynnight;
 
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Created by sebastien on 18-03-28.
@@ -13,6 +20,7 @@ public class Joueur
     String prenom;
     String nom;
     String addresseElectronique;
+    Boolean connexion = false;
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -169,4 +177,45 @@ public class Joueur
     }
 
     //Méthodes
+    //Pour connecter,cette metode sert à vérifier si le joueur voulu est celui existant
+    Boolean connexion(Context c, String prenom, String nom, String sauvegarDeJoueur) throws IOException
+    {
+        Scanner verifier = new Scanner(sauvegarDeJoueur);//Sert à lire valeur par valeur dans le String sauvegardeDeJoueur
+
+        try
+        {
+            if(!connexion)
+            {
+                String motA = verifier.next().replaceAll("&", " ");
+                String motB = verifier.next().replaceAll("&", " ");
+
+                if (motA.equals(prenom) && motB.equals(nom))
+                {
+                    this.prenom = prenom;
+                    this.nom = nom;
+                    this.addresseElectronique = verifier.next();
+                    this.biscuits = verifier.nextInt();
+                    this.connexion = true;
+
+                    Toast toast = Toast.makeText(c,"Connexion réussie...", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+                else if(!motA.equals(prenom) || !motB.equals(nom))
+                {
+                    Toast toast = Toast.makeText(c,"Le prénom et/ou le nom ne correspond(ent) pas au joueur...", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+        }
+        catch(NoSuchElementException e)
+        {
+            Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            e.printStackTrace();
+        }
+        return connexion;
+    }
 }

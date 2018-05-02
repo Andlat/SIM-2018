@@ -21,16 +21,16 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity
 {
     static MainActivity ma;
-    File fichierJoueur = new File("joueurDNN");
+    static File fichierJoueur = new File("joueurDNN");
     public static Joueur joueur;
+    static boolean connexion = false;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
     public static MediaPlayer musiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -38,11 +38,13 @@ public class MainActivity extends AppCompatActivity
         ma = this;
 
         //Connexion
-        //startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+        if(!connexion)
+        {
+            startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+        }
 
         //Création du joueur
         joueur = new Joueur();
-        actualiserJoueur(joueur);
 
         //Musique d'arriere plan
         musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
@@ -290,6 +292,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+
+
     }
     /*public void supprimerJoueur(Joueur joueur)
     {

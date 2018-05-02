@@ -67,12 +67,11 @@ public abstract class GameView extends GLSurfaceView {
 
     private class Renderer implements GLSurfaceView.Renderer{
         private void glInit(){
-            //Not necessary, because the game is in 2d
-            //GLES30.glEnable(GLES30.GL_DEPTH_TEST);
-            //GLES30.glDepthFunc(GLES30.GL_LESS);
-            //GLES30.glEnable(GLES30.GL_CULL_FACE);//Backface culling.
+            //So the empty background of models does not appear in front of other models
+            GLES30.glEnable(GLES30.GL_BLEND);
+            GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//Black background by default
+            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//black background by default
         }
 
         @Override
@@ -105,7 +104,7 @@ public abstract class GameView extends GLSurfaceView {
 
             GameView.this.onDrawFrame(mWorld);
 
-            mWorld.DrawWorld();
+            mWorld.DrawWorld(getElapsedFrameTime());
         }
     }
 /*
