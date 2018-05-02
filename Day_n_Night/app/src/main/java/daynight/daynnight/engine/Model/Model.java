@@ -2,6 +2,7 @@ package daynight.daynnight.engine.Model;
 
 import android.opengl.Matrix;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 
 import java.nio.FloatBuffer;
@@ -11,7 +12,6 @@ import java.util.List;
 import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
-import daynight.daynnight.engine.math.Vector;
 import daynight.daynnight.engine.util.Util;
 
 /**
@@ -27,8 +27,9 @@ public class Model {
     private int mVerticesOffset=-1, mNormalsOffset=-1, mTexOffset=-1;
     private FloatBuffer mModelVBO = null;
 
-    private String mTextureSrc = null;
-    private Texture mTexture = null;
+    private String mOrgTextureSrc = null;
+    private Texture mOrgTexture = null;
+    private Animation mAnimation = new Animation();
 
     private Vec3 mCurrentTranslation = new Vec3(), mLastTranslation = new Vec3();
 
@@ -139,15 +140,21 @@ public class Model {
 
     public final int getModelVBOSize(){ return mModelVBO.capacity() * Util.FLOAT_SIZE; }
 
-    public final String getTextureSource() {
-        return mTextureSrc;
+    public final String getOrgTextureSource() {
+        return mOrgTextureSrc;
     }
 
-    public final void setTextureSource(String texture) { mTextureSrc = texture; }
+    public final void setOrgTextureSource(String texture) { mOrgTextureSrc = texture; }
 
-    public final Texture getTexture() { return mTexture; }
+    public final Texture getOrgTexture() { return mOrgTexture; }
 
-    public final void setTexture(Texture texture) { mTexture = texture; }
+    public final void setOrgTexture(Texture texture) { mOrgTexture = texture; }
+
+    public final Animation addFrame(Texture texture, int milliseconds){
+        Log.e("MILLIS", ""+milliseconds);
+        return mAnimation.addFrame(new Pair<>(texture, milliseconds));
+    }
+    public final Animation getAnimation(){ return mAnimation; }
 
     public final long getID(){ return mID; }
 
@@ -221,8 +228,9 @@ public class Model {
     public void CloneTo(Model clone){
         clone.mShader = this.mShader;
 
-        clone.mTextureSrc = this.mTextureSrc;
-        clone.mTexture = this.mTexture;
+        clone.mOrgTextureSrc = this.mOrgTextureSrc;
+        clone.mOrgTexture = this.mOrgTexture;
+        this.mAnimation.CloneTo(clone.mAnimation);
 
         clone.mCurrentTranslation = new Vec3(this.mCurrentTranslation);
         clone.mLastTranslation = new Vec3(this.mLastTranslation);

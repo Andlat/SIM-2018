@@ -22,15 +22,30 @@ import daynight.daynnight.engine.util.Util;
 
 //TODO This parser is made for glDrawArrays. For faster processing and drawing, it should parse for glDrawElements and the World class should use glDrawElements
 public class ObjParser {
+
     /**
-     * Charger un fichier .obj en Modèle
+     * Charger un fichier .obj en Modèle. La texture chargée dans le modèle sera une animation statique. (Toujours la même image.) Utiliser {@link #Parse(Context, String, String, int)} pour "setter" le temps d'animation de la première frame ou le modifier manuellement plus tard avec {@link Model#getAnimation()}.
      * @param context Contexte de l'application (ou de l'activité). Utilisé pour ouvrir le dossier "assets"
+     * @param directory Dossier contenant le modèle .obj
      * @param file Fichier .obj qui se trouve dans le dossier "assets"
      * @return List of models from the the object file
      * @throws IOException If the .obj file couldn't be read
      */
-    @SuppressWarnings("all")
     public static List<Model> Parse(Context context, String directory, String file) throws IOException{
+        return ObjParser.Parse(context, directory, file, 0);
+    }
+
+    /**
+     * Charger un fichier .obj en Modèle
+     * @param context Contexte de l'application (ou de l'activité). Utilisé pour ouvrir le dossier "assets"
+     * @param directory Dossier contenant le modèle .obj
+     * @param file Fichier .obj qui se trouve dans le dossier "assets"
+     * @param frameTime Temps d'affichage de cette texture dans l'animation
+     * @return List of models from the the object file
+     * @throws IOException If the .obj file couldn't be read
+     */
+    @SuppressWarnings("all")
+    public static List<Model> Parse(Context context, String directory, String file, int frameTime) throws IOException{
         List<Model> list = new ArrayList<>();
         BufferedReader reader = null;
 
@@ -118,11 +133,13 @@ public class ObjParser {
                         break;
                     case "usemtl"://Material of the model
                         String texSource = ObjParser.getTexture(context, directory + '/' + mtl_lib, parts[1]).split("\\.")[0];//Delete the extension
-                        tmp_model.setTextureSource(texSource);
+                        tmp_model.setOrgTextureSource(texSource);
 
                         try {
-                            tmp_model.setTexture(Texture.Load(context, context.getResources().getIdentifier(texSource, "drawable", context.getPackageName())));
-                            Log.e("SET", tmp_model.getTexture().toString());
+                            Texture tex = Texture.Load(context, context.getResources().getIdentifier(texSource, "drawable", context.getPackageName()));
+                            tmp_model.setOrgTexture(tex);
+                            tmp_model.addFrame(tex, frameTime);
+                            Log.e("SET", tmp_model.getAnimation().getFrames().get(0).first.toString());
                         }catch(IOException | RuntimeException ex){
                             Log.e("OBJ Parser", "Failed to load texture");
                             Log.e("Loading tex exception", ex.getMessage());

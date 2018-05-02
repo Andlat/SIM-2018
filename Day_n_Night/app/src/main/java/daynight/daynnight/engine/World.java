@@ -136,7 +136,7 @@ public class World {
 
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
-    public void DrawWorld(){
+    void DrawWorld(long frameElapsedTime){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
@@ -157,10 +157,13 @@ public class World {
 */
             model.getShader().Use();
 
-            final int texUnit = model.getTexture().getUnit();
+            final Texture texture = model.getAnimation().getCurrentTexture(frameElapsedTime);
+            final int texUnit = texture.getUnit();
+            //final int texUnit = model.getOrgTexture().getUnit();
 
             Texture.ActivateUnit(texUnit);
-            model.getTexture().Bind();
+            //model.getOrgTexture().Bind();
+            texture.Bind();
             GLES30.glUniform1i(GLES30.glGetUniformLocation(model.getShader().getProgram(), "tex"), texUnit - GLES30.GL_TEXTURE0);
 
             GLES30.glUniformMatrix4fv(GLES30.glGetUniformLocation(model.getShader().getProgram(), "MVP"), 1, false, mMVP.get(model.getModelMatrix()).toArray(), 0);
@@ -176,7 +179,7 @@ public class World {
         //----------TEMPORARY----------------\\
         Model model = mModels.valueAt(0);
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
-        model.getTexture().Bind();
+        model.getOrgTexture().Bind();
         GLES30.glUniform1i(TEXTURE_LOCATION, 0);//Assign texture unit 0 to shader location 5
 
         if(mMVP != null) {

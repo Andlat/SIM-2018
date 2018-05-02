@@ -36,7 +36,7 @@ class DrawGroup {
 
     private void initGroup(Model first){
         mList.add(first);
-        mTexture = first.getTexture();
+        mTexture = first.getOrgTexture();
         mModelMatrix = first.getModelMatrix();
     }
 
@@ -45,7 +45,7 @@ class DrawGroup {
             initGroup(model);
         }else{
             //Check if texture and model matrix is the same as the group's
-            if(model.getTexture() != mTexture || model.getModelMatrix() != mModelMatrix)
+            if(model.getOrgTexture() != mTexture || model.getModelMatrix() != mModelMatrix)
                 throw new WrongGroupException();
             else
                 mList.add(model);

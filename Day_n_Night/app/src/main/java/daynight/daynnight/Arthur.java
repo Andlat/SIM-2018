@@ -25,8 +25,13 @@ public class Arthur{
         mContext = context;
 
         try {
-            mModel = ObjParser.Parse(context, "models", "arthur.obj").get(0).toMovingModel();
+            mModel = ObjParser.Parse(context, "models", "arthur.obj", 200).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
+
+            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_2), 200);
+            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_3), 200);
+            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_4), 200);
+            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_5), 200);
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
@@ -47,7 +52,7 @@ public class Arthur{
     public long getInWorldID(){ return mInWorldID; }
 
     public void setSkin(int skinResID) throws IOException{
-        mModel.setTextureSource(mContext.getResources().getResourceEntryName(skinResID));
-        mModel.setTexture(Texture.Load(mContext, skinResID));
+        mModel.setOrgTextureSource(mContext.getResources().getResourceEntryName(skinResID));
+        mModel.setOrgTexture(Texture.Load(mContext, skinResID));
     }
 }
