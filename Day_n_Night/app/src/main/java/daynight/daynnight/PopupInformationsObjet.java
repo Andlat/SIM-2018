@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static daynight.daynnight.MainActivity.joueur;
+
 /**
  * Created by sebastien on 18-03-17.
  */
@@ -160,6 +162,21 @@ public class PopupInformationsObjet extends Activity
             }
         });
     }
+
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
+    }
+
     //Getteurs & setteurs
 
     //Méthodes

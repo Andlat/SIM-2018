@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static daynight.daynnight.ListeObjets.newInstance;
+import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 public class Inventaire extends AppCompatActivity
 {
@@ -123,6 +125,20 @@ public class Inventaire extends AppCompatActivity
             params.width = height;
             layoutBarreDOutils.setLayoutParams(params);
         }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
     }
 
     //Méthodes

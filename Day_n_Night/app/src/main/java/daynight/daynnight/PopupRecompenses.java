@@ -5,18 +5,15 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import daynight.daynnight.R;
+import static daynight.daynnight.MainActivity.joueur;
 
 /**
  * Created by Antoine Mascolo on 2018-04-17.
@@ -41,7 +38,7 @@ public class PopupRecompenses extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_recompense);
+        setContentView(R.layout.popup_recompense);
 
         //Parametre pour que l'activity ne prenne pas tout l'écran
         DisplayMetrics dm = new DisplayMetrics();
@@ -153,5 +150,19 @@ public class PopupRecompenses extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
     }
 }

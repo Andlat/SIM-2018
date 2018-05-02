@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import static daynight.daynnight.ListeObjets.newInstance;
+import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 public class Boutique extends AppCompatActivity
 {
@@ -114,6 +116,20 @@ public class Boutique extends AppCompatActivity
                 startActivity(new Intent(Boutique.this, Inventaire.class));
             }
         });
+    }
+
+    @Override
+    protected void onStop()
+    {
+        MainActivity.ma.sauvegardeJoueur(joueur);
+        MainActivity.musiqueDeFond.pause();
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
     }
 
     //Méthodes

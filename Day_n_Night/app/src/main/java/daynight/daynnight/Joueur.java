@@ -6,8 +6,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Created by sebastien on 18-03-28.
@@ -19,6 +26,7 @@ public class Joueur
     String prenom;
     String nom;
     String addresseElectronique;
+    Boolean connexion = false;
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -37,7 +45,7 @@ public class Joueur
     Joueur(Context context)
     {
         this.prenom = "Arthur";
-        this.nom = "Ça rie, Sarry pu";//wow
+        this.nom = "ca&rie,&Sarry&pu";//wow
         this.addresseElectronique = "baguettefrancaise@hotmail.com";
 
         this.biscuits = 30;
@@ -78,15 +86,27 @@ public class Joueur
         this.context = context;
         items = readItemFile();
     }
-    Joueur(String prenom, String nom, String addresseElectronique, List<ArrayList<Outil>> inventaire)
+    Joueur(String prenom, String nom, String addresseElectronique, int biscuits)
     {
         this.prenom = prenom;
         this.nom = nom;
         this.addresseElectronique = addresseElectronique;
-        this.inventaire = inventaire;
+        this.biscuits = biscuits;
     }
 
     //Getteurs & Setteurs
+    public String getPrenom()
+    {
+        return prenom;
+    }
+    public String getNom()
+    {
+        return nom;
+    }
+    public String getAddresseElectronique()
+    {
+        return addresseElectronique;
+    }
     public int getBiscuits()
     {
         return biscuits;
@@ -122,6 +142,18 @@ public class Joueur
         return boutique.get(2);
     }
 
+    public void setPrenom(String prenom)
+    {
+        this.prenom = prenom;
+    }
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
+    public void setAddresseElectronique(String addresseElectronique)
+    {
+        this.addresseElectronique = addresseElectronique;
+    }
     public void setBiscuits(int biscuits)
     {
         this.biscuits = biscuits;
@@ -158,6 +190,47 @@ public class Joueur
     }
 
     //Méthodes
+    //Pour connecter,cette metode sert à vérifier si le joueur voulu est celui existant
+    Boolean connexion(Context c, String prenom, String nom, String sauvegarDeJoueur) throws IOException
+    {
+        Scanner verifier = new Scanner(sauvegarDeJoueur);//Sert à lire valeur par valeur dans le String sauvegardeDeJoueur
+
+        try
+        {
+            if(!connexion)
+            {
+                String motA = verifier.next().replaceAll("&", " ");
+                String motB = verifier.next().replaceAll("&", " ");
+
+                if (motA.equals(prenom) && motB.equals(nom))
+                {
+                    this.prenom = prenom;
+                    this.nom = nom;
+                    this.addresseElectronique = verifier.next();
+                    this.biscuits = verifier.nextInt();
+                    this.connexion = true;
+
+                    Toast toast = Toast.makeText(c,"Connexion réussie...", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+                else if(!motA.equals(prenom) || !motB.equals(nom))
+                {
+                    Toast toast = Toast.makeText(c,"Le prénom et/ou le nom ne correspond(ent) pas au joueur...", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+        }
+        catch(NoSuchElementException e)
+        {
+            Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            e.printStackTrace();
+        }
+        return connexion;
+    }
 
     private ArrayList<Outil> readItemFile(){
         ArrayList<Outil> outils = new ArrayList<Outil>();

@@ -8,6 +8,8 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 public class StaticModel extends Model {
     private PhysicsAttributes.StaticModelAttr mPhysics = new PhysicsAttributes.StaticModelAttr();
+    public enum Type {FLOOR, BLOCK, WALL_BOTTOM, WALL_TOP}
+    private Type mType = Type.FLOOR;
 
     /**
      * Constructor for a StaticModel.
@@ -37,6 +39,7 @@ public class StaticModel extends Model {
     public void setPhysics(PhysicsAttributes.StaticModelAttr attr){
         mPhysics = attr;
     }
+    public PhysicsAttributes.StaticModelAttr getPhysics(){ return mPhysics; }
 
     public void CloneTo(StaticModel clone) {
         super.CloneTo(clone);
@@ -52,4 +55,8 @@ public class StaticModel extends Model {
     public final void CloneFrom(StaticModel model){
         model.CloneTo(this);
     }
+
+
+    public Type getType(){ return mType; }
+    public void setType(Type type){ mType = type; }
 }

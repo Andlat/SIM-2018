@@ -45,9 +45,9 @@
         <activity
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />
-        <activity android:name="PopupRecompenses"
-            android:theme="@style/AppTheme.PopupTheme" />
-
+        <activity android:name=".PopupRecompenses"
+            android:theme="@style/AppTheme.PopupRTheme" />
+        <activity android:name=".PopupConnexion"
+            android:theme="@style/AppTheme.PopupRTheme" />
     </application>
-
 </manifest>

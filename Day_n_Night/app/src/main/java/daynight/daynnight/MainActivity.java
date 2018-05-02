@@ -11,7 +11,10 @@ import android.media.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity
 {
+    static MainActivity ma;
+    static File fichierJoueur = new File("joueurDNN");
     public static Joueur joueur;
+    static boolean connexion = false;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
@@ -20,12 +23,18 @@ public class MainActivity extends AppCompatActivity
     public static MediaPlayer MusiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
+        ma = this;
+
+        //Connexion
+        if(!connexion)
+        {
+            startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+        }
 
         //Création du joueur
         joueur = new Joueur(getApplicationContext());
@@ -136,5 +145,4 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-
 }
