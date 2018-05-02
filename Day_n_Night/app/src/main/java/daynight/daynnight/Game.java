@@ -1,12 +1,15 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import daynight.daynnight.engine.GameView;
+import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.Model.ObjParser;
@@ -42,6 +45,7 @@ class Game extends GameView{
     private ArrayList<Projectile> mListeProjectile;
     private int i,j,h,k;
 
+    private Arthur mArthur;
     public Game(Context context) {
         super(context);
 
@@ -75,7 +79,6 @@ class Game extends GameView{
         mArthur = new Arthur(mContext);
         mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
         mArthur.setInWorldID(world.addModel(mArthur.getModel()));
-        //world.Translate(mArthur.getInWorldID(), new Vec3(0, 4, 0));
     }
 
     @Override
@@ -84,7 +87,7 @@ class Game extends GameView{
 
     float time=0;
     @Override
-    protected void onDrawFrame(World world) throws IOException {
+    protected void onDrawFrame(World world){
 
         int temp=0;
         int temp2=0;
@@ -100,8 +103,12 @@ class Game extends GameView{
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
                         mListeToutou.remove(temp2);
-                        if(mListeToutou.isEmpty()){
-                            updateLevel();
+                        try {
+                            if (mListeToutou.isEmpty()) {
+                                updateLevel();
+                            }
+                        }catch(IOException ex){
+                            Log.e("DrawFrame Exc", ex.getMessage(), ex);
                         }
                     }
                     world.removeModel(projectile.getmID());
@@ -135,11 +142,6 @@ class Game extends GameView{
             }
             temp++;
         }
-/*
-        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
-        */
     }
 
     private void endGame() {
@@ -174,7 +176,7 @@ class Game extends GameView{
             mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
             this.mListeToutou.get(i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -210,7 +212,7 @@ class Game extends GameView{
             mListeToutou.get(j+i).setMovingModel(getContext(), "toutou3");
             this.mListeToutou.get(j+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -246,7 +248,7 @@ class Game extends GameView{
             mListeToutou.get(h+i).setMovingModel(getContext(), "toutou2");
             this.mListeToutou.get(h+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
@@ -282,7 +284,7 @@ class Game extends GameView{
             mListeToutou.get(k+i).setMovingModel(getContext(), "toutou1");
             this.mListeToutou.get(k+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     for(Toutou toutou:mListeToutou){
