@@ -16,4 +16,6 @@ public class PopupInformationAnthony {
     private Button boutonMenu;
     private TextView textViewScore;
     private TextView textViewBestScore;
+
+
 }

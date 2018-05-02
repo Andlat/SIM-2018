@@ -18,8 +18,6 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
 
-import static daynight.daynnight.MainActivity.onPause;
-
 /**
  * Created by andlat on 2018-02-17.
  */
@@ -49,6 +47,7 @@ class Game extends GameView{
     private ArrayList<StaticModel> mListeMur;
     private int i,j,h,k;
 
+    private Arthur mArthur;
     public Game(Context context) {
         super(context);
 
@@ -98,9 +97,17 @@ class Game extends GameView{
         }
 
 
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setType(StaticModel.Type.WALL_TOP);
+            world.addModel(mur);
+        }catch(IOException ex){
+            Log.e("Load Model", ex.getMessage(), ex);
+        }
 
-        mListeToutou = new ArrayList<Toutou>();
-        mListeProjectile = new ArrayList<Projectile>();
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        mArthur.setInWorldID(world.addModel(mArthur.getModel()));
     }
 
     private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
@@ -216,11 +223,6 @@ class Game extends GameView{
             }
             temp++;
         }
-/*
-        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
-        */
     }
 
     private void endGame() {

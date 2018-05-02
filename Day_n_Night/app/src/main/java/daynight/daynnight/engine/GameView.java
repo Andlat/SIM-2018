@@ -105,6 +105,8 @@ public abstract class GameView extends GLSurfaceView {
             GameView.this.onDrawFrame(mWorld);
 
             mWorld.DrawWorld(getElapsedFrameTime());
+
+            //Log.e("ElapsedTime", ""+getElapsedFrameTime() + " ms");
         }
     }
 /*

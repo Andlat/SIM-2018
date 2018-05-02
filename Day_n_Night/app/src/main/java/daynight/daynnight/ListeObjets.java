@@ -109,7 +109,7 @@ public class ListeObjets extends Fragment
 
         public void retirementView(int position)
         {
-            objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            //objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
         }
     }
 }

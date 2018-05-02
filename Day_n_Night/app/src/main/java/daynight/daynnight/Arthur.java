@@ -2,9 +2,11 @@ package daynight.daynnight;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.IOException;
 
+import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.ObjParser;
@@ -21,17 +23,16 @@ public class Arthur{
     private final Context mContext;
     private long mInWorldID;
 
+    private final int FRAME_LENGTH = 200;
+    private final int SKIN = R.drawable.arthur1_1;//TODO Remove this after getting the current skin from saved data. This is only temporary.
+
     public Arthur(Context context){
         mContext = context;
 
         try {
-            mModel = ObjParser.Parse(context, "models", "arthur.obj", 200).get(0).toMovingModel();
+            mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
-
-            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_2), 200);
-            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_3), 200);
-            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_4), 200);
-            mModel.addFrame(Texture.Load(context, R.drawable.arthur1_5), 200);
+            this.setSkin(SKIN);
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
@@ -51,8 +52,11 @@ public class Arthur{
     }
     public long getInWorldID(){ return mInWorldID; }
 
-    public void setSkin(int skinResID) throws IOException{
-        mModel.setOrgTextureSource(mContext.getResources().getResourceEntryName(skinResID));
-        mModel.setOrgTexture(Texture.Load(mContext, skinResID));
+    public void setSkin(int firstFrameSkinResID) throws IOException{
+        Animation skin = new Animation();
+        for(byte i=0; i < 5; ++i)
+            skin.addFrame(new Pair<>(Texture.Load(mContext, firstFrameSkinResID+i), FRAME_LENGTH));
+
+        mModel.setAnimation(skin);
     }
 }
