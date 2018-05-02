@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         //Création du joueur
-        joueur = new Joueur();
+        joueur = new Joueur(getApplicationContext());
 
         //Musique d'arriere plan
         MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);

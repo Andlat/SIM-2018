@@ -1,5 +1,11 @@
 package daynight.daynnight;
 
+import android.content.Context;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +25,16 @@ public class Joueur
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
+    //TODO Je comprend pas ce que seb a fait donc je fait ca
+    ArrayList<Outil> items;
+    Context context;
+
     //Préférences
     Boolean musique;
 
 
     //Constructeurs
-    Joueur()
+    Joueur(Context context)
     {
         this.prenom = "Arthur";
         this.nom = "Ça rie, Sarry pu";//wow
@@ -53,8 +63,8 @@ public class Joueur
             decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
         }
 
-        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Éloignée,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Éloignée,20,3,1,"objet_outil_masterball", false));
+        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
         skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
         skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
 
@@ -64,6 +74,9 @@ public class Joueur
         inventaire.add(outilsInv);
         inventaire.add(skinsInv);
         inventaire.add(decorationsInv);
+
+        this.context = context;
+        items = readItemFile();
     }
     Joueur(String prenom, String nom, String addresseElectronique, List<ArrayList<Outil>> inventaire)
     {
@@ -145,4 +158,87 @@ public class Joueur
     }
 
     //Méthodes
+
+    private ArrayList<Outil> readItemFile(){
+        ArrayList<Outil> outils = new ArrayList<Outil>();
+        try{
+            InputStream inputStream = context.getResources().openRawResource(R.raw.objets);
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader buffReader = new BufferedReader(isr);
+            String line;
+            StringBuilder text = new StringBuilder();
+
+            int id;
+            String drwable;
+            String nom;
+            int touche;
+            float frequence;
+            int nbCible;
+            int rarete;
+            String porte;
+            int prix;
+            String description;
+
+            while (( line = buffReader.readLine()) != null) {
+
+
+                //Lire chaque ligne et donner les valeurs
+                text.setLength(0);
+                text.append(line);
+                id = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                drwable = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nom = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                touche = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                frequence = Float.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nbCible = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                rarete = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                porte = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                prix = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                description = text.toString();
+
+                //items.add(new Objet());
+            }
+
+        } catch (IOException e) {
+            return null;
+        }
+
+        return outils;
+    }
 }

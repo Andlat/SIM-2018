@@ -15,10 +15,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -77,7 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private AnimationDrawable animationDrawable;
     private JSONObject jsonPOI;
     private JSONArray jsonResults;
-    private Poi pois;
+    private Poi tempPoi;
     private LatLng tempPos;
     private RelativeLayout.LayoutParams layoutParams;
     private int nbrPage;
@@ -91,6 +89,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
     private Poi actualPoi;
+    private ArrayList<String> idPois;
+    private boolean addPoi;
+    private String tempId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         }
         distanceFromPoiUpdate = new float[1];
         prevPos = new LatLng(0, 0);
+        livePos = new LatLng(0,0);
         poiUpdate = new LatLng(0,0);
 
     }
@@ -339,7 +341,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                     //Va chercher les coordonnés des poi
                     Location.distanceBetween(poiUpdate.latitude, poiUpdate.longitude, livePos.latitude, livePos.longitude, distanceFromPoiUpdate);
-                    if (distanceFromPoiUpdate[0] > 20000) {
+                    if (distanceFromPoiUpdate[0] > 10000) {
 
                         //Utilise chacun des filtres dans l'url pour avoir chaque type de POI
                         for (String filter : filters) {
@@ -374,16 +376,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     //Enregistre tout les position des POI dans le rayon spécifié
                                     for (int k = 0; k < jsonResults.length(); k++) {
 
-                                        pois = new Poi(jsonResults.getJSONObject(k).getString("id"), jsonResults.getJSONObject(k).getString("name"), jsonResults.getJSONObject(k).getJSONArray("types"));
+                                        //TODO commenter cette section
+                                        addPoi = true;
+                                        tempId = jsonResults.getJSONObject(k).getString("id");
+                                        for(int u = 0; u < idPois.size(); u++){
+                                            if(tempId.equals(idPois.get(u))){
+                                                addPoi = false;
+                                                break;
+                                            }
+                                        }
+                                        if(addPoi){
 
-                                        tempPos = new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                                jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
+                                            tempPoi = new Poi(tempId, jsonResults.getJSONObject(k).getString("name"), jsonResults.getJSONObject(k).getJSONArray("types"));
 
-                                        tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
-                                                .position(tempPos).icon(BitmapDescriptorFactory
-                                                        .fromResource(R.drawable.coffre)));
-                                        //affecte l'objet poi au markeur pour y avoir acces ensuite
-                                        tempMarker.setTag(pois);
+                                            tempPos = new LatLng(jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                                    jsonResults.getJSONObject(k).getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
+
+                                            tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
+                                                    .position(tempPos).icon(BitmapDescriptorFactory
+                                                            .fromResource(R.drawable.coffre)));
+                                            //affecte l'objet poi au markeur pour y avoir acces ensuite
+                                            tempMarker.setTag(tempPoi);
+                                            idPois.add(tempId);
+                                        }
 
                                         Log.d("Request", "json " + k + " " + nbrPage);
                                     }
@@ -465,7 +480,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     || !Objects.equals(permissions[0], Manifest.permission.ACCESS_FINE_LOCATION)
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(getApplicationContext(), "Le jeu de jour a été désactivé.\nActivez la géolocalisation dansles réglages pour l'activer!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.jeu_de_jour_desactive, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -473,7 +488,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     //Désactive le poi si l'utilisateur à récuperer la récompense
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //vérifie la source du retour
         if (requestCode == 1) {
+            //vérifie que l'utilisateur à bien récuperé la récompense
             if (resultCode == RESULT_OK) {
                 if(data.getStringExtra("RECUPERER").equals("ok")){
                     actualPoi.setTimer(600000);

@@ -40,6 +40,7 @@ public class Poi extends Object {
         return name;
     }
 
+    //Extrait une liste de string du JSONArray et la retourne
     public ArrayList<String> getTypes() {
 
         ArrayList<String> typesString = new ArrayList<>();
@@ -65,12 +66,13 @@ public class Poi extends Object {
         this.timer = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long l) {
-                //Stock le temps restant avant que le poi se réactive
+                //Stock le temps restant en seconde avant que le poi se réactive
                 timeLeft = l/1000;
             }
 
             @Override
             public void onFinish() {
+                //Lorsque le minuteur est terminé réactive le poi
                 active = true;
             }
         }.start();
