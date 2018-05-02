@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity
     public static MediaPlayer musiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -293,6 +292,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+
+
     }
     /*public void supprimerJoueur(Joueur joueur)
     {
