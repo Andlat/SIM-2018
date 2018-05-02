@@ -21,8 +21,9 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity
 {
     static MainActivity ma;
-    File fichierJoueur = new File("joueurDNN");
+    static File fichierJoueur = new File("joueurDNN");
     public static Joueur joueur;
+    static boolean connexion = false;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
@@ -38,11 +39,13 @@ public class MainActivity extends AppCompatActivity
         ma = this;
 
         //Connexion
-        //startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+        if(!connexion)
+        {
+            startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+        }
 
         //Création du joueur
         joueur = new Joueur();
-        actualiserJoueur(joueur);
 
         //Musique d'arriere plan
         musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
