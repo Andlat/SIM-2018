@@ -95,8 +95,8 @@ public class Toutou {
     public MovingModel getModel(){ return movingModel; }
 
     public void setSkin(int skinResID, Context context) throws IOException{
-        movingModel.setTextureSource(context.getResources().getResourceEntryName(skinResID));
-        movingModel.setTexture(Texture.Load(context, skinResID));
+        movingModel.setOrgTextureSource(context.getResources().getResourceEntryName(skinResID));
+        movingModel.setOrgTexture(Texture.Load(context, skinResID));
     }
 
     public char getDernierDeplacement() {

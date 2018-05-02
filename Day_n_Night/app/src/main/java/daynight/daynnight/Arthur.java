@@ -24,15 +24,14 @@ public class Arthur{
     private long mInWorldID;
 
     private final int FRAME_LENGTH = 200;
-    private final int SKIN = R.drawable.arthur10_1;//TODO Remove this after getting the current skin from saved data. This is only temporary.
+    private final int SKIN = R.drawable.arthur1_1;//TODO Remove this after getting the current skin from saved data. This is only temporary.
 
     public Arthur(Context context){
         mContext = context;
 
         try {
-            mModel = ObjParser.Parse(context, "models", "arthur.obj").get(0).toMovingModel();
+            mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
-
             this.setSkin(SKIN);
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
@@ -56,7 +55,7 @@ public class Arthur{
     public void setSkin(int firstFrameSkinResID) throws IOException{
         Animation skin = new Animation();
         for(byte i=0; i < 5; ++i)
-            skin.addFrame(new Pair<>(Texture.Load(mContext, firstFrameSkinResID+1), FRAME_LENGTH));
+            skin.addFrame(new Pair<>(Texture.Load(mContext, firstFrameSkinResID+i), FRAME_LENGTH));
 
         mModel.setAnimation(skin);
     }
