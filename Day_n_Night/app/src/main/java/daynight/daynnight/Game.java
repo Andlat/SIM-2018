@@ -47,6 +47,7 @@ class Game extends GameView{
     private Long mArthurID;
     private ArrayList<Toutou> mListeToutou;
     private ArrayList<Projectile> mListeProjectile;
+    private int i,j,h,k;
 
     public Game(Context context) {
         super(context);
@@ -82,7 +83,7 @@ class Game extends GameView{
 
     float time=0;
     @Override
-    protected void onDrawFrame(World world) {
+    protected void onDrawFrame(World world) throws IOException {
 
         int temp=0;
         int temp2=0;
@@ -98,6 +99,9 @@ class Game extends GameView{
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
                         mListeToutou.remove(temp2);
+                        if(mListeToutou.isEmpty()){
+                            updateLevel();
+                        }
                     }
                     world.removeModel(projectile.getmID());
                     mListeProjectile.remove(temp);
@@ -162,7 +166,7 @@ class Game extends GameView{
         nbrMonstreVert17 = (int)Math.floor((qttDifficulte-nbrMonstreMauve69*69)/17)+(int)Math.floor(round/12);
         nbrMonstreBleu4 = (int)Math.floor((qttDifficulte-nbrMonstreVert17*17-nbrMonstreMauve69*69)/4)+(int)Math.floor(round/7);
         nbrMonstreJaune1 = (int)Math.abs(qttDifficulte-nbrMonstreBleu4*4-nbrMonstreVert17*17-nbrMonstreMauve69*69+3+Math.floor(round/5));
-        for(int i=0; i<nbrMonstreMauve69;i++){
+        for(i=0; i<nbrMonstreMauve69;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(0,0), ami.getID()));
@@ -172,8 +176,6 @@ class Game extends GameView{
                 public void onCollision(Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
-                    int i=0;
-                    int j=0;
                     for(Toutou toutou:mListeToutou){
                         if(object.getID() == toutou.getmID()){
                             estUnToutouOuUneBalle = true;
@@ -186,33 +188,126 @@ class Game extends GameView{
                     }
                     if(!estUnToutouOuUneBalle){
                         //Contact avec mur
-                        /*for(Toutou toutou:mListeToutou){
-                            if()
+                        if(mListeToutou.get(i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
                         }
-                        if(mListeToutou.get(i).getDernierDeplacement()=='d'){
-
-                        }*/
                     }
                 }
             });
         }
-        for(int i=0; i<nbrMonstreVert17;i++){
+        i = mListeToutou.size();
+        for(j=0; j<nbrMonstreVert17;j++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou3");
+            mListeToutou.get(j+i).setMovingModel(getContext(), "toutou3");
+            this.mListeToutou.get(j+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(j+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
-        for(int i=0; i<nbrMonstreBleu4;i++){
+        i=mListeToutou.size();
+        for(h=0; h<nbrMonstreBleu4;h++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou2");
+            mListeToutou.get(h+i).setMovingModel(getContext(), "toutou2");
+            this.mListeToutou.get(h+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(h+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
-        for(int i=0; i<nbrMonstreVert17;i++){
+        i=mListeToutou.size();
+        for(k=0; k<nbrMonstreVert17;k++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mListeToutou.add(new Toutou(25+round, 17, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou1");
+            mListeToutou.get(k+i).setMovingModel(getContext(), "toutou1");
+            this.mListeToutou.get(k+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(k+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
     }
 
