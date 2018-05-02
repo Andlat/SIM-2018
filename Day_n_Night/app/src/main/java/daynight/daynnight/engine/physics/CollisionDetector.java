@@ -1,5 +1,6 @@
 package daynight.daynnight.engine.physics;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import daynight.daynnight.engine.math.Vec3;
 
 public class CollisionDetector {
     /**
-     * Detects collisions between models. A MovingModel can collide with another MovingModel or a StaticModel of type WALL
+     * Detects collisions between models. A MovingModel can collide with another MovingModel or a StaticModel of type BLOCK
      * @param movingModels
      * @param models
      */
@@ -26,17 +27,20 @@ public class CollisionDetector {
 
         for(MovingModel moving : movingModels){
             for(Model model : models){
+                if(moving == model)//Skip if checking collision against themselves
+                    continue;
+
                 boolean checkCollision = false;
                 boolean checkYWallCollision = false;
 
                 //Verify if need to check for collision against another model
-                if(movingModels.contains(model)){
+                if(movingModels.contains(model)){//Check against another moving model
                     checkCollision = true;
-                }else if(model instanceof StaticModel){
+                }else if(model instanceof StaticModel){//Check against a static model
                     StaticModel.Type t = ((StaticModel)model).getType();
-                    if(t == StaticModel.Type.WALL){
+                    if(t == StaticModel.Type.BLOCK){//If the static model is of normal type
                         checkCollision = true;
-                    }else if(t == StaticModel.Type.WALL_BOTTOM || t == StaticModel.Type.WALL_TOP){
+                    }else if(t == StaticModel.Type.WALL_BOTTOM || t == StaticModel.Type.WALL_TOP){//If the static model is of a top or bottom wall type, then check for a collision using their specific function
                         checkYWallCollision = true;
                     }
                 }
@@ -65,19 +69,24 @@ public class CollisionDetector {
         float wallHeight = cornersWall.get(1).y() - cornersWall.get(2).y();//taking the wall's height as Y bound. Subject to change
 
         final Vec3 wallCornerBottomLeft = cornersWall.get(2), wallCornerBottomRight = cornersWall.get(3);
-        for(Vec3 cornerMvg : cornersMvg){
+
+        //Only check for bottom of moving model
+        for(byte i=2; i < 4; ++i){
+            Vec3 cornerMvg = cornersMvg.get(i);
+
             //Check if x coord is in bound of wall
-            if(cornerMvg.x() > wallCornerBottomLeft.x() && cornerMvg.x() < wallCornerBottomRight.x()){
+            if(cornerMvg.x() >= wallCornerBottomLeft.x() && cornerMvg.x() <= wallCornerBottomRight.x()){
 
                 //Check if y coord in in bound (taking the wall's height as bound. Subject to change)
                 final float mvgY = cornerMvg.y(),
                         wallY = wallCornerBottomRight.y();
 
                 return (wallType == StaticModel.Type.WALL_TOP ?
-                        (mvgY > wallY && mvgY < (wallY + wallHeight)) ://Top wall. Between over bottom line of wall and height of wall
-                        mvgY < wallY && mvgY > (wallY + wallHeight));//Bottom wall. Between under bottom line of wall and height bound.
+                        (mvgY >= wallY && mvgY <= (wallY + wallHeight)) ://Top wall. Between over bottom line of wall and height of wall
+                        mvgY <= wallY && mvgY >= (wallY - wallHeight));//Bottom wall. Between under bottom line of wall and height bound. TODO problems when going under a bottom wall. Detecs a collision on an empty space the height of the wall and passes through the wall coming from the side
             }
         }
+
         return false;
     }
 
@@ -88,8 +97,8 @@ public class CollisionDetector {
         for(Vec3 cornerMvg : cornersMvg){
             for(Vec3 cornerMdl : cornersMdl){
                 //Is X coordinate inside the other model X coordinates. Same for Y
-                boolean isColX = (cornerMvg.x() > cornerMdl.x() && cornerMvg.x() < orgMvg.x()) || (cornerMvg.x() < cornerMdl.x() && cornerMvg.x() > orgMvg.x());
-                boolean isColY = (cornerMvg.y() > cornerMdl.y() && cornerMvg.y() < orgMvg.y()) || (cornerMvg.y() < cornerMdl.y() && cornerMvg.y() > orgMvg.y());
+                boolean isColX = (cornerMvg.x() >= cornerMdl.x() && cornerMvg.x() <= orgMdl.x()) || (cornerMvg.x() <= cornerMdl.x() && cornerMvg.x() >= orgMdl.x());
+                boolean isColY = (cornerMvg.y() >= cornerMdl.y() && cornerMvg.y() <= orgMdl.y()) || (cornerMvg.y() <= cornerMdl.y() && cornerMvg.y() >= orgMdl.y());
 
                 if(isColX && isColY)
                     return true;
