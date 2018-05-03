@@ -106,7 +106,7 @@ public class PopupInformationsObjet extends Activity
                         if(objet.getType() == Objet.Type.Outil)
                         {
                             MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
                             //ListeObjets.adapteur.retirementView(getIntent().getExtras().getInt("position"));
                             //ListeObjets.adapteur.notifyDataSetChanged();
                             //Boutique.viewPager.getAdapter().notifyDataSetChanged();
@@ -115,12 +115,12 @@ public class PopupInformationsObjet extends Activity
                         else if(objet.getType() == Objet.Type.Skin)
                         {
                             MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
                         }
                         else if(objet.getType() == Objet.Type.Décoration)
                         {
                             MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
                         }
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits()-objet.getPrix());
                         Boutique.biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));

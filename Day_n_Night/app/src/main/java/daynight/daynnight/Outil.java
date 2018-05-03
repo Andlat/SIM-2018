@@ -16,14 +16,13 @@ public class Outil extends Objet implements Parcelable
     enum Portee{Rapprochee, Eloignee, Nulle} Portee portee;
     int nbCibles;
     int toucherParCoup;
-    int rarete;
     //TODO int intervalleParCoup;
 
     //Constructeurs
     Outil() {}
-    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis, int rarete)
+    Outil(String nom, String description, Type type, int rarete, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis)
     {
-        super(nom, description, type, prix/*, imagePaths*/, imageDrawableString, acquis);
+        super(nom, description, type, rarete, prix/*, imagePaths*/, imageDrawableString, acquis);
 
         this.portee = portee;
         this.toucherParCoup = toucherParCoup;
@@ -61,7 +60,7 @@ public class Outil extends Objet implements Parcelable
     //Parceable
     public Outil(Parcel in)
     {
-        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString(), Boolean.valueOf(in.readString()));
+        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt(), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString(), Boolean.valueOf(in.readString()));
         this.portee = Portee.valueOf(in.readString());
         this.toucherParCoup = in.readInt();
         this.nbCibles = in.readInt();
@@ -79,6 +78,7 @@ public class Outil extends Objet implements Parcelable
         out.writeString(this.nom);
         out.writeString(this.description);
         out.writeString(this.type.name());
+        out.writeInt(this.rarete);
         out.writeInt(this.prix);
         out.writeString(this.imageDrawableString);
         out.writeString(this.acquis.toString());
@@ -99,8 +99,4 @@ public class Outil extends Objet implements Parcelable
             return new Outil[size];
         }
     };
-
-    public int getRarete() {
-        return rarete;
-    }
 }
