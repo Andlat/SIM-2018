@@ -23,28 +23,32 @@ public class MainActivity extends AppCompatActivity
     static MainActivity ma;
     static File fichierJoueur = new File("joueurDNN");
     public static Joueur joueur;
-    static boolean connexion = false;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
     public static MediaPlayer musiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
         ma = this;
 
-        //Connexion
-        if(!connexion)
-        {
-            startActivity(new Intent(MainActivity.this, PopupConnexion.class));
-        }
 
-        //Création du joueur
-        joueur = new Joueur();
+        //getApplicationContext().deleteFile(fichierJoueur.getName());
+        if(fileExists(getApplicationContext(), fichierJoueur.getName()))
+        {
+            Scanner actualiser = new Scanner(lireJoueur());
+            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt());
+            Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
+        }
+        else
+        {
+            startActivity(new Intent(MainActivity.this, PopupNouveauJoueur.class));
+        }
 
         //Musique d'arriere plan
         musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
@@ -156,39 +160,52 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Méthodes
+    public boolean fileExists(Context context, String filename)
+    {
+        File file = context.getFileStreamPath(filename);
+        if(file == null || !file.exists())
+        {
+            return false;
+        }
+        return true;
+    }
     public void sauvegardeJoueur(Joueur joueur)
     {
-        //Lire le joueur sauvegardé
-        String sauvegarDeJoueur = lireJoueur();
-        if(sauvegarDeJoueur == null)
-            sauvegarDeJoueur = "";
-
-        //nouvelle souvegarde du joueur en string
-        String nouvJoueur = joueur.getPrenom().replaceAll(" ", "&") + " " + joueur.getNom().replaceAll(" ", "&") + " " + joueur.getAddresseElectronique() + " " + joueur.getBiscuits(); //TODO À mettre les autres
-
-        //Écrire dans le fichier
-        FileOutputStream enregistrer = null;
-
-        try
+        if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
-            enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-            enregistrer.write(nouvJoueur.getBytes());
+            //Lire le joueur sauvegardé
+            String sauvegarDeJoueur = lireJoueur();
+            if(sauvegarDeJoueur == null)
+                sauvegarDeJoueur = "";
 
-            Log.wtf("J sauvegardé MAINTENANT :", nouvJoueur);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
+
+            //nouvelle souvegarde du joueur en string
+            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getBiscuits(); //TODO À mettre les autres
+
+            //Écrire dans le fichier
+            FileOutputStream enregistrer = null;
+
             try
             {
-                enregistrer.close();//Fermer le fichier
+                enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
+                enregistrer.write(nouvJoueur.getBytes());
+
+                Log.wtf("J sauvegardé MAINTENANT :", nouvJoueur);
             }
             catch (IOException e)
             {
                 e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    enregistrer.close();//Fermer le fichier
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -199,27 +216,16 @@ public class MainActivity extends AppCompatActivity
         if(sauvegarDeJoueur == null)
             sauvegarDeJoueur = "";
 
-        Scanner verifier = new Scanner(sauvegarDeJoueur).useLocale(Locale.US);;//Sert à lire valeur par valeur dans le String listeComptes
+        Scanner verifier = new Scanner(sauvegarDeJoueur).useLocale(Locale.US);
 
         try
         {
-            /*while((verifier.hasNext() || verifier.hasNextLine()))
-            {
-                String identifiant = verifier.next();
-                int id = verifier.nextInt();
-                Double montant = verifier.nextDouble();
-
-                payeurs.add(new Payeur(identifiant, id, montant));
-            }*/
-            joueur = new Joueur(verifier.next().replaceAll("&", " "), verifier.next().replaceAll("&", " "), verifier.next(), verifier.nextInt());
-            Log.wtf("J actualisé :", joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAddresseElectronique() + " " + joueur.getBiscuits());
+            //joueur = new Joueur(verifier.next().replaceAll("&", " "), verifier.next().replaceAll("&", " "), verifier.next(), verifier.nextInt());
+            Log.wtf("J actualisé :", joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getBiscuits());
 
         }
         catch(NoSuchElementException e)
         {
-            //Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
-            //toast.setGravity(Gravity.CENTER, 0, 0);
-            //toast.show();
             e.printStackTrace();
         }
     }
@@ -228,16 +234,15 @@ public class MainActivity extends AppCompatActivity
         FileInputStream joueur = null;
 
 
-        if(!fichierJoueur.isFile() && !fichierJoueur.canRead())
+        /*if(!fichierJoueur.isFile() && !fichierJoueur.canRead())
         {
-            Joueur j = new Joueur();
+            /*Joueur j = new Joueur();
             String nouvJoueur = j.getPrenom().replaceAll(" ", "&") + " " + j.getNom().replaceAll(" ", "&") + " " + j.getAddresseElectronique() + " " + j.getBiscuits(); //TODO À mettre les autres
             FileOutputStream enregistrer = null;
             try
             {
                 enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-                enregistrer.write(nouvJoueur.getBytes());
-
+                //enregistrer.write(nouvJoueur.getBytes());
             }
             catch (IOException e)
             {
@@ -257,7 +262,7 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
         try
         {

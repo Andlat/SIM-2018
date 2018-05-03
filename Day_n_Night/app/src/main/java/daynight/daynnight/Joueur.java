@@ -19,8 +19,7 @@ public class Joueur
     //Propriétés
     String prenom;
     String nom;
-    String addresseElectronique;
-    Boolean connexion = false;
+    String adresseElectronique;
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -35,8 +34,8 @@ public class Joueur
     Joueur()
     {
         this.prenom = "Arthur";
-        this.nom = "ca&rie,&Sarry&pu";//wow
-        this.addresseElectronique = "baguettefrancaise@hotmail.com";
+        this.nom = "s";
+        this.adresseElectronique = "baguettefrancaise@hotmail.com";
 
         this.biscuits = 30;
         boutique = new ArrayList<>(3);
@@ -77,8 +76,15 @@ public class Joueur
     {
         this.prenom = prenom;
         this.nom = nom;
-        this.addresseElectronique = addresseElectronique;
+        this.adresseElectronique = addresseElectronique;
         this.biscuits = biscuits;
+    }
+    Joueur(String prenom, String nom, String adresseElectronique)
+    {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresseElectronique = adresseElectronique;
+        this.biscuits = 30;
     }
 
     //Getteurs & Setteurs
@@ -90,9 +96,9 @@ public class Joueur
     {
         return nom;
     }
-    public String getAddresseElectronique()
+    public String getAdresseElectronique()
     {
-        return addresseElectronique;
+        return adresseElectronique;
     }
     public int getBiscuits()
     {
@@ -139,7 +145,7 @@ public class Joueur
     }
     public void setAddresseElectronique(String addresseElectronique)
     {
-        this.addresseElectronique = addresseElectronique;
+        this.adresseElectronique = addresseElectronique;
     }
     public void setBiscuits(int biscuits)
     {
@@ -177,45 +183,5 @@ public class Joueur
     }
 
     //Méthodes
-    //Pour connecter,cette metode sert à vérifier si le joueur voulu est celui existant
-    Boolean connexion(Context c, String prenom, String nom, String sauvegarDeJoueur) throws IOException
-    {
-        Scanner verifier = new Scanner(sauvegarDeJoueur);//Sert à lire valeur par valeur dans le String sauvegardeDeJoueur
 
-        try
-        {
-            if(!connexion)
-            {
-                String motA = verifier.next().replaceAll("&", " ");
-                String motB = verifier.next().replaceAll("&", " ");
-
-                if (motA.equals(prenom) && motB.equals(nom))
-                {
-                    this.prenom = prenom;
-                    this.nom = nom;
-                    this.addresseElectronique = verifier.next();
-                    this.biscuits = verifier.nextInt();
-                    this.connexion = true;
-
-                    Toast toast = Toast.makeText(c,"Connexion réussie...", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-                else if(!motA.equals(prenom) || !motB.equals(nom))
-                {
-                    Toast toast = Toast.makeText(c,"Le prénom et/ou le nom ne correspond(ent) pas au joueur...", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-            }
-        }
-        catch(NoSuchElementException e)
-        {
-            Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            e.printStackTrace();
-        }
-        return connexion;
-    }
 }

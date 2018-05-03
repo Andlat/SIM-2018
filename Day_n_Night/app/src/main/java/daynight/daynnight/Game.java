@@ -166,7 +166,7 @@ class Game extends GameView{
             mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
             this.mListeToutou.get(i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
-                public void onCollision(Model object) {
+                public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
                     int i=0;
