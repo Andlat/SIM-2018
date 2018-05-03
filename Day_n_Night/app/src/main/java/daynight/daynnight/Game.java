@@ -18,8 +18,6 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
 
-import static daynight.daynnight.MainActivity.onPause;
-
 /**
  * Created by andlat on 2018-02-17.
  */
@@ -45,7 +43,11 @@ class Game extends GameView{
     private int vieJoueur = 100;
     private ArrayList<Toutou> mListeToutou;
     private ArrayList<Projectile> mListeProjectile;
+    private ArrayList<StaticModel> mListePlancher;
+    private ArrayList<StaticModel> mListeMur;
+    private int i,j,h,k;
 
+    private Arthur mArthur;
     public Game(Context context) {
         super(context);
 
@@ -67,10 +69,97 @@ class Game extends GameView{
     protected void onCreate() {
         World world = new World();
         super.UseWorld(world);
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            Vec3 vec3 = new Vec3((mur.getCorners().get(0).x()-mur.getCorners().get(1).x()), mur.getCorners().get(1).y()-mur.getCorners().get(2).y(), 0);
+            for(int hauteur=0; hauteur<22;hauteur++){
+                for(int largeur=0; largeur<22;largeur++){
+                    if(hauteur==21){
+                        placerMurBas(hauteur, largeur, vec3);
+                    }else if(hauteur ==0){
+                        placerMurHaut(hauteur, largeur, vec3);
+                    }else if(largeur==0||largeur==21){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    } else if((hauteur==1||hauteur==2||hauteur==5||hauteur==6||hauteur==8||hauteur==9||
+                            hauteur==12||hauteur==13||hauteur==15||hauteur==16||hauteur==19||hauteur==20)
+                            &&((largeur==0||largeur==7||largeur==14||largeur==21))){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    }else if((hauteur==7||hauteur==14)&&(largeur<3||(largeur>4&&largeur<10)||(largeur>11&&largeur<17)||largeur>18)){
+                        placerMurBlock(hauteur, largeur, vec3);
+                    }else{
+                        placerPlancher(hauteur, largeur, vec3);
+                    }
+                }
+            }
+        }catch(IOException e){
+
+        }
 
 
-        mListeToutou = new ArrayList<Toutou>();
-        mListeProjectile = new ArrayList<Projectile>();
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setType(StaticModel.Type.WALL_TOP);
+            world.addModel(mur);
+        }catch(IOException ex){
+            Log.e("Load Model", ex.getMessage(), ex);
+        }
+
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        mArthur.setInWorldID(world.addModel(mArthur.getModel()));
+    }
+
+    private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.FLOOR);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurBlock(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.BLOCK);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurBas(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_BOTTOM);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
+    }
+
+    private void placerMurHaut(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_TOP);
+            world.addModel(mur);
+            world.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
+
+        }
     }
 
     @Override
@@ -95,6 +184,13 @@ class Game extends GameView{
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
                         mListeToutou.remove(temp2);
+                        if(mListeToutou.isEmpty()){
+                            try{
+                                updateLevel();
+                            }catch(IOException e){
+
+                            }
+                        }
                     }
                     world.removeModel(projectile.getmID());
                     mListeProjectile.remove(temp);
@@ -127,11 +223,6 @@ class Game extends GameView{
             }
             temp++;
         }
-/*
-        world.Move(mTileID, new Vec3(0.1f, 0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mHeroID, new Vec3(0.1f, -0.8f, 0.f), getElapsedFrameTime());
-        world.Move(mSID, new Vec3(-1, 0, 0), getElapsedFrameTime());
-        */
     }
 
     private void endGame() {
@@ -148,6 +239,7 @@ class Game extends GameView{
     public void makeMrBalle() throws IOException {
         MovingModel bullet = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
         bullet.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+        world.addModel(bullet);
         mListeProjectile.add(new Projectile(15,this.xPercentDirectionBalle, this.yPercentDirectionBalle, new Coord(0,0), bullet, bullet.getID()));
         nbrBallesLancees++;
     }
@@ -159,18 +251,19 @@ class Game extends GameView{
         nbrMonstreVert17 = (int)Math.floor((qttDifficulte-nbrMonstreMauve69*69)/17)+(int)Math.floor(round/12);
         nbrMonstreBleu4 = (int)Math.floor((qttDifficulte-nbrMonstreVert17*17-nbrMonstreMauve69*69)/4)+(int)Math.floor(round/7);
         nbrMonstreJaune1 = (int)Math.abs(qttDifficulte-nbrMonstreBleu4*4-nbrMonstreVert17*17-nbrMonstreMauve69*69+3+Math.floor(round/5));
-        for(int i=0; i<nbrMonstreMauve69;i++){
+        for(i=0; i<nbrMonstreMauve69;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(0,0), ami.getID()));
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
             this.mListeToutou.get(i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
                 public void onCollision(World world, Model object) {
                     //mModel.setTranslation(mModel.getLastTranslation());
                     boolean estUnToutouOuUneBalle = false;
-                    int i=0;
-                    int j=0;
                     for(Toutou toutou:mListeToutou){
                         if(object.getID() == toutou.getmID()){
                             estUnToutouOuUneBalle = true;
@@ -183,34 +276,141 @@ class Game extends GameView{
                     }
                     if(!estUnToutouOuUneBalle){
                         //Contact avec mur
-                        /*for(Toutou toutou:mListeToutou){
-                            if()
+                        if(mListeToutou.get(i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
                         }
-                        if(mListeToutou.get(i).getDernierDeplacement()=='d'){
-
-                        }*/
                     }
                 }
             });
         }
-        for(int i=0; i<nbrMonstreVert17;i++){
+        i = mListeToutou.size();
+        for(j=0; j<nbrMonstreVert17;j++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou3");
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(vec3.x(),vec3.y()), ami.getID()));
+            mListeToutou.get(j+i).setMovingModel(getContext(), "toutou3");
+            this.mListeToutou.get(j+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(World world, Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(j+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(j+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(j+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
-        for(int i=0; i<nbrMonstreBleu4;i++){
+        i=mListeToutou.size();
+        for(h=0; h<nbrMonstreBleu4;h++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou2");
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(vec3.x(), vec3.y()), ami.getID()));
+            mListeToutou.get(h+i).setMovingModel(getContext(), "toutou2");
+            this.mListeToutou.get(h+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(World world, Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(h+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(h+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(h+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
-        for(int i=0; i<nbrMonstreVert17;i++){
+        i=mListeToutou.size();
+        for(k=0; k<nbrMonstreVert17;k++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-            mListeToutou.add(new Toutou(25+round, 17, new Coord(0,0), ami.getID()));
-            mListeToutou.get(i).setMovingModel(getContext(), "toutou1");
+            world.addModel(ami);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(ami, vec3);
+            mListeToutou.add(new Toutou(25+round, 17, new Coord(vec3.x(),vec3.y()), ami.getID()));
+            mListeToutou.get(k+i).setMovingModel(getContext(), "toutou1");
+            this.mListeToutou.get(k+i).getModel().setOnCollisionListener(new MovingModel.onCollisionListener() {
+                @Override
+                public void onCollision(World world, Model object) {
+                    //mModel.setTranslation(mModel.getLastTranslation());
+                    boolean estUnToutouOuUneBalle = false;
+                    for(Toutou toutou:mListeToutou){
+                        if(object.getID() == toutou.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    for(Projectile projectile:mListeProjectile){
+                        if(object.getID() == projectile.getmID()){
+                            estUnToutouOuUneBalle = true;
+                        }
+                    }
+                    if(!estUnToutouOuUneBalle){
+                        //Contact avec mur
+                        if(mListeToutou.get(k+i).getDernierDeplacement() == 'h'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.f, -0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'd'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(-0.1f, 0.0f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'b'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.f, 0.1f, 0.f), getElapsedFrameTime());
+                        }else if(mListeToutou.get(k+i).getDernierDeplacement() == 'g'){
+                            world.Move(mListeToutou.get(k+i).getmID(), new Vec3(0.1f, 0.f, 0.f), getElapsedFrameTime());
+                        }
+                    }
+                }
+            });
         }
+    }
+
+    private Vec3 getCoordonnesMonstre() {
+        Vec3 vec3 = new Vec3((float)Math.random()*5 +1, (float)Math.random()*5 +1, 0);
+        return vec3;
     }
 
     public void movePerso(Vec3 vector){

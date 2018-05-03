@@ -50,5 +50,6 @@
     <string name="recommencer">Recommencer</string>
     <string name="recompense_dipo_dans">Récompense disponible dans</string>
     <string name="secondes">secondes</string>
+    <string name="jeu_de_jour_desactive">Le jeu de jour a été désactivé. Activez la géolocalisation dansles réglages pour l\'activer!</string>
     <!-- ************ -->
 </resources>

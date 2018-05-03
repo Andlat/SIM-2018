@@ -13,20 +13,22 @@ import java.util.ArrayList;
 public class Outil extends Objet implements Parcelable
 {
     //Variables
-    enum Portee{Rapprochée, Éloignée, Nulle} Portee portee;
+    enum Portee{Rapprochee, Eloignee, Nulle} Portee portee;
     int nbCibles;
     int toucherParCoup;
+    int rarete;
     //TODO int intervalleParCoup;
 
     //Constructeurs
     Outil() {}
-    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis)
+    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis, int rarete)
     {
         super(nom, description, type, prix/*, imagePaths*/, imageDrawableString, acquis);
 
         this.portee = portee;
         this.toucherParCoup = toucherParCoup;
         this.nbCibles = nbCibles;
+        this.rarete = rarete;
     }
 
     //Getteurs & Setteurs
@@ -97,4 +99,8 @@ public class Outil extends Objet implements Parcelable
             return new Outil[size];
         }
     };
+
+    public int getRarete() {
+        return rarete;
+    }
 }

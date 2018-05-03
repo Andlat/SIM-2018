@@ -21,7 +21,6 @@ public class Animation {
      * @param frame La texture à utiliser pour la frame et son temps d'affichage
      */
     public Animation addFrame(Pair<Texture, Integer> frame){
-        Log.e("MILLIS 2", ""+frame.second);
         mFrames.add(frame);
         return this;
     }

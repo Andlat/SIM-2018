@@ -1,22 +1,15 @@
 package daynight.daynnight;
 
-import android.content.Context;
 import android.content.Intent;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -26,7 +19,9 @@ public class MainActivity extends AppCompatActivity
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
-    public static MediaPlayer musiqueDeFond;
+
+    int temps;
+    public static MediaPlayer MusiqueDeFond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,11 +44,17 @@ public class MainActivity extends AppCompatActivity
         {
             startActivity(new Intent(MainActivity.this, PopupNouveauJoueur.class));
         }
+<<<<<<< HEAD
+=======
+
+        //Création du joueur
+        joueur = new Joueur(getApplicationContext());
+>>>>>>> 0724bacd8cafc94b84940eacbc71d436e7465541
 
         //Musique d'arriere plan
-        musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        musiqueDeFond.setLooping(true);
-        musiqueDeFond.start();
+        MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        MusiqueDeFond.setLooping(true);
+        MusiqueDeFond.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton jeu de nuit
         Button buttonNight = (Button) findViewById(R.id.nuitButton);
         buttonNight.setOnClickListener(new View.OnClickListener()
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour l'inventaire
         Button leSebBouton = (Button) findViewById(R.id.leSebBouton);
         leSebBouton.setOnClickListener(new View.OnClickListener()
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour les badges
         Button leSebNouton2 = (Button) findViewById(R.id.leSebBouton2);
         leSebNouton2.setOnClickListener(new View.OnClickListener()
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         //Bouton pour réglages
         Button boutonReglages = (Button) findViewById(R.id.boutonReglages);
         boutonReglages.setOnClickListener(new View.OnClickListener()
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        musiqueDeFond.start();
+        MusiqueDeFond.start();
     }
     @Override
     protected void onStop()
@@ -147,9 +152,9 @@ public class MainActivity extends AppCompatActivity
 
         if(onPause && !SurChangementActivity)
         {
-            musiqueDeFond.pause();
-            sauvegardeJoueur(joueur);
+            MusiqueDeFond.pause();
             onPause = false;
+<<<<<<< HEAD
         }
     }
 
@@ -296,57 +301,9 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
+=======
+
+>>>>>>> 0724bacd8cafc94b84940eacbc71d436e7465541
         }
-
-
     }
-    /*public void supprimerJoueur(Joueur joueur)
-    {
-        String payeurASupprimer = payeur.getIdentifiant() + " " + payeur.getId() + " " + payeur.getMontant();
-        StringBuilder nouvListePayeurs = new StringBuilder();
-
-        //Lire comptes présents
-        String listePayeurs = lireJoueur();
-        if(listePayeurs == null)
-            listePayeurs = "";
-
-        //Écrire dans le fichier
-        FileOutputStream enregistrer = null;
-
-        try
-        {
-            BufferedReader br = new BufferedReader(new StringReader(listePayeurs));
-            String line;
-            while ((line = br.readLine()) != null)
-            {
-                if (!line.trim().equals(payeurASupprimer))
-                {
-                    nouvListePayeurs.append(line).append(System.lineSeparator());
-                }
-            }
-            br.close();
-
-            enregistrer = openFileOutput("payeurs", Context.MODE_PRIVATE);
-            enregistrer.write(nouvListePayeurs.toString().getBytes());
-            //System.out.println("Liste de payeurs de base :" + listePayeurs);
-            //System.out.println("Payeur supprimé :" + payeurASupprimer);
-            //System.out.println("Écriture réussie");
-            //System.out.println("Écriture :" + nouvListePayeurs);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                enregistrer.close();//Fermer le fichier
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }*/
 }

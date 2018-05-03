@@ -92,7 +92,9 @@ public class Toutou {
         }
     }
 
-    public MovingModel getModel(){ return movingModel; }
+    public MovingModel getModel(){
+        return movingModel;
+    }
 
     public void setSkin(int skinResID, Context context) throws IOException{
         movingModel.setOrgTextureSource(context.getResources().getResourceEntryName(skinResID));
