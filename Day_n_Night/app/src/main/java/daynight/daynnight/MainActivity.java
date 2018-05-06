@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
 
-    int temps;
     public static MediaPlayer musiqueDeFond;
 
     @Override
@@ -35,16 +34,14 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
         ma = this;
-
 
         //getApplicationContext().deleteFile(fichierJoueur.getName());
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
             Scanner actualiser = new Scanner(lireJoueur());
-            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt());
+            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt());
             Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
         }
         else
@@ -78,10 +75,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 SurChangementActivity = true;
-                //Ceci est juste un test pour le bouton pause
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -95,8 +89,6 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, Inventaire.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -110,8 +102,6 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, ListeBadges.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -125,21 +115,16 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
     }
-
-    //Arrête la musique lorsque l'application ferme et commence quand elle ouvre
     @Override
     protected void onPause()
     {
         super.onPause();
         onPause = true;
     }
-
     @Override
     protected void onResume()
     {
@@ -158,7 +143,6 @@ public class MainActivity extends AppCompatActivity
             onPause = false;
         }
     }
-
     @Override
     public void finish()
     {
@@ -186,7 +170,7 @@ public class MainActivity extends AppCompatActivity
 
 
             //nouvelle souvegarde du joueur en string
-            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getBiscuits(); //TODO À mettre les autres
+            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getSkin() + " " + joueur.getBiscuits(); //TODO À mettre les autres
 
             //Écrire dans le fichier
             FileOutputStream enregistrer = null;
@@ -196,7 +180,7 @@ public class MainActivity extends AppCompatActivity
                 enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
                 enregistrer.write(nouvJoueur.getBytes());
 
-                Log.wtf("J sauvegardé MAINTENANT :", nouvJoueur);
+                Log.wtf("J sauvegardé MAINTENANT ", nouvJoueur);
             }
             catch (IOException e)
             {
@@ -215,60 +199,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-    public void actualiserJoueur(Joueur joueur)
-    {
-        //Lire le joueur sauvegardé
-        String sauvegarDeJoueur = lireJoueur();
-        if(sauvegarDeJoueur == null)
-            sauvegarDeJoueur = "";
-
-        Scanner verifier = new Scanner(sauvegarDeJoueur).useLocale(Locale.US);
-
-        try
-        {
-            //joueur = new Joueur(verifier.next().replaceAll("&", " "), verifier.next().replaceAll("&", " "), verifier.next(), verifier.nextInt());
-            Log.wtf("J actualisé :", joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getBiscuits());
-
-        }
-        catch(NoSuchElementException e)
-        {
-            e.printStackTrace();
-        }
-    }
     public String lireJoueur()
     {
         FileInputStream joueur = null;
-
-
-        /*if(!fichierJoueur.isFile() && !fichierJoueur.canRead())
-        {
-            /*Joueur j = new Joueur();
-            String nouvJoueur = j.getPrenom().replaceAll(" ", "&") + " " + j.getNom().replaceAll(" ", "&") + " " + j.getAddresseElectronique() + " " + j.getBiscuits(); //TODO À mettre les autres
-            FileOutputStream enregistrer = null;
-            try
-            {
-                enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-                //enregistrer.write(nouvJoueur.getBytes());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    if (enregistrer != null)
-                    {
-                        enregistrer.close();//Fermer le fichier
-                    }
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }*/
 
         try
         {
@@ -280,8 +213,8 @@ public class MainActivity extends AppCompatActivity
             {
                 sauvegarDeJoueur.append(new String(buffer));
             }
-            Log.wtf("Fichier :", "Lecture de " + joueur.toString() + " réussi");
-            Log.wtf("J sauvergardé :", sauvegarDeJoueur.toString());
+            Log.wtf("Fichier ", "Lecture de " + fichierJoueur.getName() + " réussi");
+            Log.wtf("J sauvergardé ", sauvegarDeJoueur.toString());
             return sauvegarDeJoueur.toString();
         }
         catch (IOException e)

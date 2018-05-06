@@ -184,7 +184,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         //Creation du marqueur qui sera sur la carte, selon celui sélectionné
-        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(getResources().getIdentifier("arthur" + modelePerosnage + "_1", "drawable", MapActivity.this.getPackageName()));
+        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(MainActivity.joueur.getSkin());//TODO
         smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
 
         //

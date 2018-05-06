@@ -24,7 +24,7 @@ public class Arthur{
     private long mInWorldID;
 
     private final int FRAME_LENGTH = 200;
-    private final int SKIN = R.drawable.arthur1_1;//TODO Remove this after getting the current skin from saved data. This is only temporary.
+    private final int SKIN = MainActivity.joueur.getSkin();
 
     public Arthur(Context context){
         mContext = context;
