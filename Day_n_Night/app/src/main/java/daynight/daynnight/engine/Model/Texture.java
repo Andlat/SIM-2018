@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by andlat on 2018-04-01.
+ * Created by Nikola Zelovic on 2018-04-01.
  */
 
 public class Texture {

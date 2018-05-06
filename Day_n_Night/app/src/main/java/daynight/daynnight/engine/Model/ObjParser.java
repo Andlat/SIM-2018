@@ -17,7 +17,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by zelovini on 2018-02-05.
+ * Created by Nikola Zelovic on 2018-02-05.
  */
 
 //TODO This parser is made for glDrawArrays. For faster processing and drawing, it should parse for glDrawElements and the World class should use glDrawElements

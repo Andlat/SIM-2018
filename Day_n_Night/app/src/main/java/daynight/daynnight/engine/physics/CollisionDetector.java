@@ -12,7 +12,7 @@ import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.math.Vec3;
 
 /**
- * Created by andlat on 2018-04-23.
+ * Created by Nikola Zelovic on 2018-04-23.
  */
 
 public class CollisionDetector {

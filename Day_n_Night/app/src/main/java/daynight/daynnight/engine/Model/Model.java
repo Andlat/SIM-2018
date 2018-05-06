@@ -15,7 +15,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by zelovini on 2018-02-05.
+ * Created by Nikola Zelovic on 2018-02-05.
  */
 
 public class Model {

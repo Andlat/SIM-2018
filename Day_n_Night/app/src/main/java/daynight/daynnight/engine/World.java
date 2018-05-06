@@ -18,7 +18,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by andlat on 2018-02-11.
+ * Created by Nikola Zelovic on 2018-02-11.
  */
 
 //TODO HIDDEN Models are not supported for now

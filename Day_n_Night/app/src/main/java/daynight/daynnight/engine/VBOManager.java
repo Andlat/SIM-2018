@@ -16,7 +16,7 @@ import java.util.List;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by andlat on 2018-02-18.
+ * Created by Nikola Zelovic on 2018-02-18.
  */
 
 //TODO Delete VBO & VAO & Attributes ?

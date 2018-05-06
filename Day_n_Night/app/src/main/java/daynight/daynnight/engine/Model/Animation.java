@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by andlat on 2018-02-19.
+ * Created by Nikola Zelovic on 2018-02-19.
  */
 
 public class Animation {
     private List<Pair<Texture, Integer>> mFrames = new ArrayList<>();//Time in milliseconds
     private long mTimeInterval=0;
     private int mCurrentFrameIndex = 0;
+    private boolean mIsAnimationStopped = true;
 
     /**
      * Ajouter une "frame". Une valeur <= 0 équivaut à une "frame" qui ne changera pas
@@ -37,7 +38,9 @@ public class Animation {
     @Nullable
     public Texture getCurrentTexture(long frameElapsedTime){
         final int size = mFrames.size();
+
         if(size == 0) return null;
+        else if(mIsAnimationStopped) return mFrames.get(0).first;
         else {
             Pair<Texture, Integer> frame = mFrames.get(mCurrentFrameIndex);
             if (frame.second <= 0)//Stay on this animation
@@ -54,6 +57,13 @@ public class Animation {
                 return mFrames.get(mCurrentFrameIndex).first;
             }
         }
+    }
+
+    public void Stop(){
+        mIsAnimationStopped = true;
+    }
+    public void Start(){
+        mIsAnimationStopped = true;
     }
 
     void CloneTo(Animation clone){

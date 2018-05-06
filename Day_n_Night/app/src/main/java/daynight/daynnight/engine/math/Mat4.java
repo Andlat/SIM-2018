@@ -3,7 +3,7 @@ package daynight.daynnight.engine.math;
 import android.opengl.Matrix;
 
 /**
- * Created by andlat on 2018-02-04.
+ * Created by Nikola Zelovic on 2018-02-04.
  */
 
 public class Mat4 {

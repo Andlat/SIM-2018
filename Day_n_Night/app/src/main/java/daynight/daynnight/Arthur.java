@@ -15,7 +15,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
- * Created by andlat on 2018-04-30.
+ * Created by Nikola Zelovic on 2018-04-30.
  */
 
 public class Arthur{
@@ -44,6 +44,9 @@ public class Arthur{
             Log.e("Arthur Init", "Failed to load the Arthur model");
         }
     }
+
+    public void Walk(){ mModel.getAnimation().Start(); }
+    public void Stay(){ mModel.getAnimation().Stop(); }
 
     public MovingModel getModel(){ return mModel; }
 
