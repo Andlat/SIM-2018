@@ -15,7 +15,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/bungee"
         android:gravity="bottom"
-        android:text="Bravo!"
+        android:text="@string/bravo"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_light_default"
         android:textSize="36sp"

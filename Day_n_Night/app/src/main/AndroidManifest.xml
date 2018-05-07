@@ -49,5 +49,7 @@
             android:theme="@style/AppTheme.PopupRTheme" />
         <activity android:name=".PopupConnexion"
             android:theme="@style/AppTheme.PopupRTheme" />
+        <activity android:name=".PopupPause"
+            android:theme="@style/AppTheme.PopupRTheme"/>
     </application>
 </manifest>
