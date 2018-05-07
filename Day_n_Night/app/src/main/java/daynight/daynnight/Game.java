@@ -46,6 +46,8 @@ class Game extends GameView{
     private ArrayList<StaticModel> mListePlancher;
     private ArrayList<StaticModel> mListeMur;
     private int i,j,h,k;
+    private ArrayList<Integer> listeToutouDelete;
+    private ArrayList<Integer> listeBalleDelete;
 
     private Arthur mArthur;
     public Game(Context context) {
@@ -170,20 +172,21 @@ class Game extends GameView{
     @Override
     protected void onDrawFrame(World world) {
 
+        this.listeToutouDelete.clear();
+        this.listeBalleDelete.clear();
         int temp=0;
         int temp2=0;
         //world.getModel()
         for(Projectile projectile: mListeProjectile){
             projectile.setCoord(new Coord(this.getX()+ projectile.getmDirectionX(), this.getY()+ projectile.getmDirectionY()));
         }
-        temp=0;
         for(Projectile projectile : mListeProjectile){
             world.Move(projectile.getmID(), new Vec3(projectile.getmDirectionX(), projectile.getmDirectionY(), 0.f), getElapsedFrameTime());
             for(Toutou monsieurMovingAmiID:mListeToutou){
                 if(Math.sqrt(Math.pow(projectile.getCoord().getX() - mListeToutou.get(temp2).getCoord().getX(),2) + Math.pow(projectile.getCoord().getY() - mListeToutou.get(temp2).getCoord().getY(),2)) < 0.2){
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
-                        mListeToutou.remove(temp2);
+                        this.listeToutouDelete.add(temp2);
                         if(mListeToutou.isEmpty()){
                             try{
                                 updateLevel();
@@ -193,9 +196,15 @@ class Game extends GameView{
                         }
                     }
                     world.removeModel(projectile.getmID());
-                    mListeProjectile.remove(temp);
+                    this.listeBalleDelete.add(temp);
                 }
                 temp2++;
+            }
+            for(Integer positionsToutousDelete: this.listeToutouDelete){
+                this.mListeToutou.remove(positionsToutousDelete);
+            }
+            for(Integer positionBallesDelete: this.listeBalleDelete){
+                this.mListeProjectile.remove(positionBallesDelete);
             }
             temp++;
         }
@@ -255,6 +264,9 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
+            //do{
+
+            //}while()
             Vec3 vec3 = getCoordonnesMonstre();
             world.Translate(ami, vec3);
             mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(vec3.x(),vec3.y()), ami.getID()));
@@ -409,8 +421,16 @@ class Game extends GameView{
     }
 
     private Vec3 getCoordonnesMonstre() {
-        Vec3 vec3 = new Vec3((float)Math.random()*5 +1, (float)Math.random()*5 +1, 0);
-        return vec3;
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            Vec3 vec3 = new Vec3((mur.getCorners().get(0).x()-mur.getCorners().get(1).x()), mur.getCorners().get(1).y()-mur.getCorners().get(2).y(), 0);
+            Vec3 vec3retour = new Vec3((float)Math.random()*19 +1, (float)Math.random()*19 +1, 0);
+            return vec3retour;
+        }catch(IOException e){
+
+        }
+        return new Vec3(0,0,0);
     }
 
     public void movePerso(Vec3 vector){
