@@ -48,7 +48,7 @@ public class PopupNouveauJoueur extends Activity
                 EditText nom = findViewById(R.id.nom);
                 EditText adresseElectronique = findViewById(R.id.adresseElectronique);
 
-                MainActivity.joueur = new Joueur(prenom.getText().toString(), nom.getText().toString(), adresseElectronique.getText().toString());
+                MainActivity.joueur = new Joueur(prenom.getText().toString(), nom.getText().toString(), adresseElectronique.getText().toString(), getApplicationContext());
                 try
                 {
                     openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE).close();

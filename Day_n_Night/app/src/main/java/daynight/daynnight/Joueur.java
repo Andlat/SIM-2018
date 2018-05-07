@@ -26,6 +26,7 @@ public class Joueur
     String prenom;
     String nom;
     String adresseElectronique;
+    int skin; //Drawable
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -41,13 +42,18 @@ public class Joueur
 
 
     //Constructeurs
-    Joueur(Context context)
+    Joueur() {}
+    //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits)
     {
-        this.prenom = "Arthur";
-        this.nom = "s";
-        this.adresseElectronique = "baguettefrancaise@hotmail.com";
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresseElectronique = addresseElectronique;
+        this.skin = skin;
+        this.biscuits = biscuits;
 
-        this.biscuits = 30;
+
+        //POUR L'INSTANT
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
 
@@ -83,21 +89,53 @@ public class Joueur
         inventaire.add(decorationsInv);
 
         this.context = context;
-        items = readItemFile();
+        //items = readItemFile();
     }
-    Joueur(String prenom, String nom, String addresseElectronique, int biscuits)
-    {
-        this.prenom = prenom;
-        this.nom = nom;
-        this.adresseElectronique = addresseElectronique;
-        this.biscuits = biscuits;
-    }
-    Joueur(String prenom, String nom, String adresseElectronique)
+    //Constructeur appelé lors de la création du joueur
+    Joueur(String prenom, String nom, String adresseElectronique, Context context)
     {
         this.prenom = prenom;
         this.nom = nom;
         this.adresseElectronique = adresseElectronique;
+        this.skin = R.drawable.arthur1_1;
         this.biscuits = 30;
+
+        boutique = new ArrayList<>(3);
+        inventaire = new ArrayList<>(3);
+
+        ArrayList<Outil> outilsBout = new ArrayList<>();
+        ArrayList<Outil> skinsBout = new ArrayList<>();
+        ArrayList<Outil> decorationsBout = new ArrayList<>();
+        ArrayList<Outil> outilsInv = new ArrayList<>();
+        ArrayList<Outil> skinsInv = new ArrayList<>();
+        ArrayList<Outil> decorationsInv = new ArrayList<>();
+
+        //Ajout de cases vides
+        for(int j = 0 ; j < 56 ; j++)
+        {
+            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+
+            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+        }
+
+        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
+        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+
+        boutique.add(outilsBout);
+        boutique.add(skinsBout);
+        boutique.add(decorationsBout);
+        inventaire.add(outilsInv);
+        inventaire.add(skinsInv);
+        inventaire.add(decorationsInv);
+
+        this.context = context;
+        //items = readItemFile();
     }
 
     //Getteurs & Setteurs
@@ -112,6 +150,10 @@ public class Joueur
     public String getAdresseElectronique()
     {
         return adresseElectronique;
+    }
+    public int getSkin()
+    {
+        return skin;
     }
     public int getBiscuits()
     {
@@ -159,6 +201,10 @@ public class Joueur
     public void setAddresseElectronique(String addresseElectronique)
     {
         this.adresseElectronique = addresseElectronique;
+    }
+    public void setSkin(int skin)
+    {
+        this.skin = skin;
     }
     public void setBiscuits(int biscuits)
     {

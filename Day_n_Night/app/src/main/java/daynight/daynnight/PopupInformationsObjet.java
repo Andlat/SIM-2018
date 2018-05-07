@@ -10,14 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import static daynight.daynnight.MainActivity.joueur;
 
@@ -34,6 +31,7 @@ public class PopupInformationsObjet extends Activity
     Button fermer;
 
     Button acheter;
+    Button utiliser;
     LinearLayout prixLayout;
     LinearLayout caracteristiquesOutil;
 
@@ -57,13 +55,15 @@ public class PopupInformationsObjet extends Activity
         int height = dm.heightPixels;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             fermer = (Button) findViewById(R.id.fermerVerticale);
-            boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsVerticale);
+            boutons = (RelativeLayout) findViewById(R.id.BoutonsVerticale);
             acheter = (Button) findViewById(R.id.boutiqueAcheterVerticale);
+            utiliser = (Button) findViewById(R.id.inventaireUtiliserVerticale);
             getWindow().setLayout((int) (width * 0.85), (int) (height * 0.75));
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             fermer = (Button) findViewById(R.id.fermerHorizontale);
-            boutons = (RelativeLayout) findViewById(R.id.boutiqueBoutonsHorizontale);
+            boutons = (RelativeLayout) findViewById(R.id.BoutonsHorizontale);
             acheter = (Button) findViewById(R.id.boutiqueAcheterHorizontale);
+            utiliser = (Button) findViewById(R.id.inventaireUtiliserHorizontale);
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
         boutons.setVisibility(View.VISIBLE);
@@ -71,6 +71,7 @@ public class PopupInformationsObjet extends Activity
         prixLayout = (LinearLayout) findViewById(R.id.boutiquePrix);
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
+        MarginLayoutParams paramsUtiliser = (MarginLayoutParams) utiliser.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
         objet = getIntent().getExtras().getParcelable("objet");
 
@@ -94,6 +95,8 @@ public class PopupInformationsObjet extends Activity
         {
             paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            paramsUtiliser.width = 0;
+            paramsUtiliser.setMarginEnd(0);
 
             acheter.setOnClickListener(new View.OnClickListener()
             {
@@ -135,9 +138,31 @@ public class PopupInformationsObjet extends Activity
         }
         else
         {
+            paramsUtiliser.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsPrix.width = 0;
             paramsAcheter.width = 0;
             paramsAcheter.setMarginEnd(0);
+
+            utiliser.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    if(objet.getType() == Objet.Type.Outil)
+                    {
+
+                    }
+                    else if(objet.getType() == Objet.Type.Skin)
+                    {
+
+                    }
+                    else if(objet.getType() == Objet.Type.Décoration)
+                    {
+                        //TODO
+                    }
+                    finish();
+                }
+            });
         }
         prixLayout.setLayoutParams(paramsPrix);
         acheter.setLayoutParams(paramsAcheter);
