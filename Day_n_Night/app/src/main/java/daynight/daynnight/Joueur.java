@@ -25,8 +25,8 @@ public class Joueur
     //Propriétés
     String prenom;
     String nom;
-    String addresseElectronique;
-    Boolean connexion = false;
+    String adresseElectronique;
+    int skin; //Drawable
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -42,13 +42,18 @@ public class Joueur
 
 
     //Constructeurs
-    Joueur(Context context)
+    Joueur() {}
+    //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits)
     {
-        this.prenom = "Arthur";
-        this.nom = "ca&rie,&Sarry&pu";//wow
-        this.addresseElectronique = "baguettefrancaise@hotmail.com";
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresseElectronique = addresseElectronique;
+        this.skin = skin;
+        this.biscuits = biscuits;
 
-        this.biscuits = 30;
+
+        //POUR L'INSTANT
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
 
@@ -62,19 +67,19 @@ public class Joueur
         //Ajout de cases vides
         for(int j = 0 ; j < 56 ; j++)
         {
-            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
 
-            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
         }
 
-        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
+        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
 
         boutique.add(outilsBout);
         boutique.add(skinsBout);
@@ -84,14 +89,53 @@ public class Joueur
         inventaire.add(decorationsInv);
 
         this.context = context;
-        items = readItemFile();
+        //items = readItemFile();
     }
-    Joueur(String prenom, String nom, String addresseElectronique, int biscuits)
+    //Constructeur appelé lors de la création du joueur
+    Joueur(String prenom, String nom, String adresseElectronique, Context context)
     {
         this.prenom = prenom;
         this.nom = nom;
-        this.addresseElectronique = addresseElectronique;
-        this.biscuits = biscuits;
+        this.adresseElectronique = adresseElectronique;
+        this.skin = R.drawable.arthur1_1;
+        this.biscuits = 30;
+
+        boutique = new ArrayList<>(3);
+        inventaire = new ArrayList<>(3);
+
+        ArrayList<Outil> outilsBout = new ArrayList<>();
+        ArrayList<Outil> skinsBout = new ArrayList<>();
+        ArrayList<Outil> decorationsBout = new ArrayList<>();
+        ArrayList<Outil> outilsInv = new ArrayList<>();
+        ArrayList<Outil> skinsInv = new ArrayList<>();
+        ArrayList<Outil> decorationsInv = new ArrayList<>();
+
+        //Ajout de cases vides
+        for(int j = 0 ; j < 56 ; j++)
+        {
+            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+
+            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+        }
+
+        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
+        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+
+        boutique.add(outilsBout);
+        boutique.add(skinsBout);
+        boutique.add(decorationsBout);
+        inventaire.add(outilsInv);
+        inventaire.add(skinsInv);
+        inventaire.add(decorationsInv);
+
+        this.context = context;
+        //items = readItemFile();
     }
 
     //Getteurs & Setteurs
@@ -103,9 +147,13 @@ public class Joueur
     {
         return nom;
     }
-    public String getAddresseElectronique()
+    public String getAdresseElectronique()
     {
-        return addresseElectronique;
+        return adresseElectronique;
+    }
+    public int getSkin()
+    {
+        return skin;
     }
     public int getBiscuits()
     {
@@ -152,7 +200,11 @@ public class Joueur
     }
     public void setAddresseElectronique(String addresseElectronique)
     {
-        this.addresseElectronique = addresseElectronique;
+        this.adresseElectronique = addresseElectronique;
+    }
+    public void setSkin(int skin)
+    {
+        this.skin = skin;
     }
     public void setBiscuits(int biscuits)
     {
@@ -190,48 +242,6 @@ public class Joueur
     }
 
     //Méthodes
-    //Pour connecter,cette metode sert à vérifier si le joueur voulu est celui existant
-    Boolean connexion(Context c, String prenom, String nom, String sauvegarDeJoueur) throws IOException
-    {
-        Scanner verifier = new Scanner(sauvegarDeJoueur);//Sert à lire valeur par valeur dans le String sauvegardeDeJoueur
-
-        try
-        {
-            if(!connexion)
-            {
-                String motA = verifier.next().replaceAll("&", " ");
-                String motB = verifier.next().replaceAll("&", " ");
-
-                if (motA.equals(prenom) && motB.equals(nom))
-                {
-                    this.prenom = prenom;
-                    this.nom = nom;
-                    this.addresseElectronique = verifier.next();
-                    this.biscuits = verifier.nextInt();
-                    this.connexion = true;
-
-                    Toast toast = Toast.makeText(c,"Connexion réussie...", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-                else if(!motA.equals(prenom) || !motB.equals(nom))
-                {
-                    Toast toast = Toast.makeText(c,"Le prénom et/ou le nom ne correspond(ent) pas au joueur...", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-            }
-        }
-        catch(NoSuchElementException e)
-        {
-            Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            e.printStackTrace();
-        }
-        return connexion;
-    }
-
     private ArrayList<Outil> readItemFile(){
         ArrayList<Outil> outils = new ArrayList<Outil>();
         try{

@@ -1,50 +1,60 @@
 package daynight.daynnight;
 
+import android.content.Context;
 import android.content.Intent;
 
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.media.MediaPlayer;
 
 import java.io.File;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 public class MainActivity extends AppCompatActivity
 {
     static MainActivity ma;
     static File fichierJoueur = new File("joueurDNN");
     public static Joueur joueur;
-    static boolean connexion = false;
 
     public static boolean onPause = false;
     public static boolean SurChangementActivity = false;
 
-    int temps;
-    public static MediaPlayer MusiqueDeFond;
+    public static MediaPlayer musiqueDeFond;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
-        //getIntent().setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         setContentView(R.layout.activity_main);
         ma = this;
 
-        //Connexion
-        if(!connexion)
+        //getApplicationContext().deleteFile(fichierJoueur.getName());
+        if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
-            startActivity(new Intent(MainActivity.this, PopupConnexion.class));
+            Scanner actualiser = new Scanner(lireJoueur());
+            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt());
+            Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
+        }
+        else
+        {
+            startActivity(new Intent(MainActivity.this, PopupNouveauJoueur.class));
         }
 
-        //Création du joueur
-        joueur = new Joueur(getApplicationContext());
-
         //Musique d'arriere plan
-        MusiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        MusiqueDeFond.setLooping(true);
-        MusiqueDeFond.start();
+        musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        musiqueDeFond.setLooping(true);
+        musiqueDeFond.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
@@ -67,10 +77,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 SurChangementActivity = true;
-                //Ceci est juste un test pour le bouton pause
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -84,8 +91,6 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, Inventaire.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -99,8 +104,6 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, ListeBadges.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
@@ -114,26 +117,21 @@ public class MainActivity extends AppCompatActivity
             {
                 SurChangementActivity = true;
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                //temps = backgroundMusique.getCurrentPosition();
-                //intent.putExtra("TEMPS", temps);
                 startActivity(intent);
             }
         });
     }
-
-    //Arrête la musique lorsque l'application ferme et commence quand elle ouvre
     @Override
     protected void onPause()
     {
         super.onPause();
         onPause = true;
     }
-
     @Override
     protected void onResume()
     {
         super.onResume();
-        MusiqueDeFond.start();
+        musiqueDeFond.start();
     }
     @Override
     protected void onStop()
@@ -142,9 +140,103 @@ public class MainActivity extends AppCompatActivity
 
         if(onPause && !SurChangementActivity)
         {
-            MusiqueDeFond.pause();
+            sauvegardeJoueur(joueur);
+            musiqueDeFond.pause();
             onPause = false;
+        }
+    }
+    @Override
+    public void finish()
+    {
+        super.finish();
+    }
 
+    //Méthodes
+    public boolean fileExists(Context context, String filename)
+    {
+        File file = context.getFileStreamPath(filename);
+        if(file == null || !file.exists())
+        {
+            return false;
+        }
+        return true;
+    }
+    public void sauvegardeJoueur(Joueur joueur)
+    {
+        if(fileExists(getApplicationContext(), fichierJoueur.getName()))
+        {
+            //Lire le joueur sauvegardé
+            String sauvegarDeJoueur = lireJoueur();
+            if(sauvegarDeJoueur == null)
+                sauvegarDeJoueur = "";
+
+
+            //nouvelle souvegarde du joueur en string
+            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getSkin() + " " + joueur.getBiscuits(); //TODO À mettre les autres
+
+            //Écrire dans le fichier
+            FileOutputStream enregistrer = null;
+
+            try
+            {
+                enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
+                enregistrer.write(nouvJoueur.getBytes());
+
+                Log.wtf("J sauvegardé MAINTENANT ", nouvJoueur);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    enregistrer.close();//Fermer le fichier
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public String lireJoueur()
+    {
+        FileInputStream joueur = null;
+
+        try
+        {
+            joueur = openFileInput(fichierJoueur.getName());
+            byte[] buffer = new byte[1];
+            StringBuilder sauvegarDeJoueur = new StringBuilder();
+
+            while((joueur.read(buffer)) != -1)
+            {
+                sauvegarDeJoueur.append(new String(buffer));
+            }
+            Log.wtf("Fichier ", "Lecture de " + fichierJoueur.getName() + " réussi");
+            Log.wtf("J sauvergardé ", sauvegarDeJoueur.toString());
+            return sauvegarDeJoueur.toString();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            if(joueur != null)
+            {
+                try
+                {
+                    joueur.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

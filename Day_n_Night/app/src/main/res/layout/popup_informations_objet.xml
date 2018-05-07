@@ -104,7 +104,7 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/boutiqueBoutonsHorizontale"
+            android:id="@+id/BoutonsHorizontale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/caracteristiquesOutil"
@@ -123,6 +123,15 @@
                 android:text="@string/acheter" />
 
             <Button
+                android:id="@+id/inventaireUtiliserHorizontale"
+                android:background="@drawable/style_button_ripple_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentBottom="true"
+                android:text="@string/utiliser" />
+
+            <Button
                 android:id="@+id/fermerHorizontale"
                 android:layout_toEndOf="@id/boutiqueAcheterHorizontale"
                 android:layout_width="wrap_content"
@@ -134,7 +143,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/boutiqueBoutonsVerticale"
+        android:id="@+id/BoutonsVerticale"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -150,6 +159,15 @@
             android:layout_marginEnd="10dp"
             android:layout_alignParentBottom="true"
             android:text="@string/acheter" />
+
+        <Button
+            android:id="@+id/inventaireUtiliserVerticale"
+            android:background="@drawable/style_button_ripple_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/utiliser" />
 
         <Button
             android:id="@+id/fermerVerticale"

@@ -2,7 +2,10 @@ package daynight.daynnight;
 
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -103,13 +106,11 @@ public class ListeObjets extends Fragment
             ImageViewCarre objet = view.findViewById(R.id.objet);
             objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
 
-
             return view;
         }
-
-        public void retirementView(int position)
+        public List<Outil> getObjets()
         {
-            objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            return this.objets;
         }
     }
 }

@@ -29,12 +29,13 @@ public class World {
     private static final int MVP_LOCATION = 4, TEXTURE_LOCATION = 5;
 
     private MVP mMVP = null;
+    private long mModelToFollow = -1;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
     private final List<MovingModel> mMovingModels = new ArrayList<>();//Models in this list are also included in mModels
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
-    private boolean mArePhysicsOn = false;
+    private boolean mArePhysicsOn = false;//TODO Take this in account?
 
     public enum State {VISIBLE, HIDDEN}
 
@@ -134,10 +135,27 @@ public class World {
         model.addTranslation(translate);
     }
 
+    public final void setCamFollowModel(long id_model){
+        mModelToFollow = id_model;
+    }
+    private void CamFollowModel(){
+        if(mModelToFollow > 0) {
+            MVP.Camera cam = mMVP.getCamera();
+
+            Vec3 center = mModels.get(mModelToFollow).CalculateOrigin();
+            cam.setCenter(center);//set where to look
+
+            cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking
+        }
+    }
+
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
     //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
     void DrawWorld(long frameElapsedTime){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+
+        CamFollowModel();
+
 
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
