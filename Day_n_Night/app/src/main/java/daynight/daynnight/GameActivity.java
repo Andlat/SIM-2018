@@ -32,8 +32,10 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
 
         game = (Game) findViewById(R.id.game1);
         joystickTir = (Joystick) findViewById(R.id.joystickTir);
+        joystickTir.setZOrderOnTop(true);
         joystickTir.setColor(105,105, 105);
         joystickPerso = (Joystick) findViewById(R.id.joystickPerso);
+        joystickPerso.setZOrderOnTop(true);
         joystickPerso.setColor(105,105,105);
 
         countDownTimer = new CountDownTimer(500, 500) {
