@@ -27,10 +27,6 @@ public class Joueur
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
-<<<<<<< HEAD
-=======
-    ArrayList<Outil> items;
->>>>>>> 4c9d3614e69b5322c31bd561e93a79c98444dae7
     Context context;
 
     //Préférences
