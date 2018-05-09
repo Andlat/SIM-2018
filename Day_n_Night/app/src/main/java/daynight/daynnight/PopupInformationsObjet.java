@@ -36,7 +36,7 @@ public class PopupInformationsObjet extends Activity
     LinearLayout prixLayout;
     LinearLayout caracteristiquesOutil;
 
-    TextView nom, prix, description, portee, nbCibles, toucherParCoup;
+    TextView nom, prix, description, rarete, portee, nbCibles, toucherParCoup, intervalleParCoup;
     ImageViewCarre imageObjet;
 
     //Constructeurs
@@ -80,16 +80,34 @@ public class PopupInformationsObjet extends Activity
         nom = (TextView) findViewById(R.id.nom);
         prix = (TextView) findViewById(R.id.prix);
         description = (TextView) findViewById(R.id.description);
+        rarete  = (TextView) findViewById(R.id.rarete);
         portee = (TextView) findViewById(R.id.portee);
         nbCibles = (TextView) findViewById(R.id.nbCibles);
         toucherParCoup = (TextView) findViewById(R.id.toucherParCoup);
+        intervalleParCoup = (TextView) findViewById(R.id.intervalleParCoup);
         imageObjet = (ImageViewCarre) findViewById(R.id.imageObjet);
         nom.setText(objet.getNom());
         prix.setText(String.valueOf(objet.getPrix()));
         description.setText(objet.getDescription());
+        switch (objet.getRarete())
+        {
+            case 1:
+                rarete.setText(getString(R.string.rarete, "Régulier"));
+                break;
+            case 2:
+                rarete.setText(getString(R.string.rarete, "Rare"));
+                break;
+            case 3:
+                rarete.setText(getString(R.string.rarete, "Légendaire"));
+                break;
+            default:
+                rarete.setText(getString(R.string.rarete, "Aucune"));
+                break;
+        }
         portee.setText(getString(R.string.portee, String.valueOf(objet.getPortee())));
         nbCibles.setText(getString(R.string.nb_cibles, objet.getNbCibles()));
         toucherParCoup.setText(getString(R.string.toucher_par_coup, objet.getToucherParCoup()));
+        intervalleParCoup.setText(getString(R.string.intervalle_par_coup, objet.getIntervalleParCoup()));
         imageObjet.setImageResource(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
 
         if (!objet.getAcquis())
@@ -110,7 +128,7 @@ public class PopupInformationsObjet extends Activity
                         if(objet.getType() == Objet.Type.Outil)
                         {
                             MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
                             //ListeObjets.adapteur.retirementView(getIntent().getExtras().getInt("position"));
                             //ListeObjets.adapteur.notifyDataSetChanged();
                             //Boutique.viewPager.getAdapter().notifyDataSetChanged();
@@ -119,12 +137,12 @@ public class PopupInformationsObjet extends Activity
                         else if(objet.getType() == Objet.Type.Skin)
                         {
                             MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
                         }
                         else if(objet.getType() == Objet.Type.Décoration)
                         {
                             MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
                         }
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits()-objet.getPrix());
                         Boutique.biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));

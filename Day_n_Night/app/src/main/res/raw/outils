@@ -2,37 +2,37 @@
 objet_outil_baguette_francaise
 Pain baguette
 20
-1,6
+1.6
 1
-12,5
+12.5
 1
 Rapprochée
-15,625
+16
 RÉGULIER : Avec sa mie moelleuse et sa croûte croustillante, la chaude baguette française va faire raffoler les toutous.
 1
-vide
+objet_outil_crayon_mine
 Crayon à mine
 25
 2
 1
-12,5
+12.5
 1
 Rapprochée
-15,625
+16
 RÉGULIER : Bien aguisé, ce crayon vous aidera certainement à éloigner vos adversaires.
 2
-vide
+objet_outil_bleuet
 Bleuet
 5
-0,4
+0.4
 1
-12,5
+12.5
 1
 Éloignée
-15,625
+16
 RÉGULIER : Ces bleuets géants sont tant remplis d'OGM, de pesticides qu'ils seraient responsables de la hausse de popularité du bio chez les toutous.
 3
-objet_outil_seau_deau
+objet_outil_seau_deau_0
 Seau d'eau
 45
 3
@@ -40,10 +40,10 @@ Seau d'eau
 15
 1
 Éloignée
-22,5
+22
 RÉGULIER : Rien de mieux qu'un bon seau d'eau en pleine face pour surprendre vos adversaires!
 4
-objet_outil_melon_deau
+objet_outil_melon_deau_0
 Melon d'eau
 30
 2
@@ -51,7 +51,7 @@ Melon d'eau
 15
 1
 Éloignée
-22,5
+22
 RÉGULIER : Votre ami Antoine dit que si ces melons contiennent tant d'eau c'est à cause qu'ils poussent sur le bord d'une rivière magique.
 5
 objet_outil_boule_neige
@@ -62,21 +62,21 @@ Boule de neige
 15
 1
 Éloignée
-22,5
+22
 RÉGULIER : Préparez vos munitions et démarrer la bataille de boules de neiges contre vos ennemis!
 6
-vide
+objet_outil_framboise
 Framboise
 6
-0,4
+0.4
 1
 15
 1
 Éloignée
-22,5
-RÉGULIER : En vérité, la framboise n,est pas un fruit. Elle est enfait un ensemble de 40 à 80 drupéoles qui représentent chacun un petit fruit.
+22
+RÉGULIER : En vérité, la framboise n'est pas un fruit. Elle est enfait un ensemble de 40 à 80 drupéoles qui représentent chacun un petit fruit.
 7
-vide
+objet_outil_coeur_0
 Coeur
 16
 1
@@ -84,10 +84,10 @@ Coeur
 16
 1
 Éloignée
-25,6
+26
 RÉGULIER : Quelqu'un vous a déjà dit que la violence n'arrange rien? Utilisez donc l'amour pour combattre vos adversaires!
 8
-vide
+objet_outil_ballon_plage
 Ballon de plage
 18
 1
@@ -95,10 +95,10 @@ Ballon de plage
 18
 1
 Éloignée
-32,4
+32
 RÉGULIER : Personne ne sait pourquoi, mais les toutous ont une terrible phobie des ballons de plage.
 9
-vide
+objet_outil_frisbee_bleu_0
 Frisbee bleu
 20
 2
@@ -109,7 +109,7 @@ Frisbee bleu
 40
 RÉGULIER : Bien qu'il prenne du temps à être lancé, ce frisbee peut toucher jusqu'à deux toutous en un seul coup!
 10
-vide
+objet_outil_noix_coco_0
 Noix de coco
 20
 1
@@ -118,12 +118,12 @@ Noix de coco
 1
 Éloignée
 40
-RÉGULIER : Heureusement que les toutous ont la tête molle. Car une noix de coco sur le coco, ça ne doit pas faire du bien!
+RÉGULIER : Heureusement que les toutous ont la tête molle, car une noix de coco sur le coco, ça ne doit pas faire du bien!
 11
-vide
+objet_outil_poireau
 Poireau
 12
-0,6
+0.6
 1
 20
 1
@@ -131,18 +131,18 @@ Poireau
 40
 RÉGULIER : C'est pas pour rien que le détective d'Agatha Cristie s'appele Hercule Poireau. Utilisez ceci pour découvrir le point faible de tous les toutous!
 12
-vide
+objet_outil_bambouzla_bleuets
 Bambouzla à bleuets
 5
-0,2
+0.2
 1
 25
 1
 Éloignée
-62,5
+62
 RÉGULIER : Les bleuets aux OGM sont de retour dans ce rapide Bambouzla.
 13
-vide
+objet_outil_mangue
 Mangue
 25
 1
@@ -150,8 +150,8 @@ Mangue
 25
 1
 Éloignée
-62,5
-RÉGULIER : MANGO MANGO MANGO MANGO MANGO MANGO MANGOOOOOOOOOOOOOOOOO
+62
+RÉGULIER : MANGO MANGO MANGO MANGO MANGO MANGO MANGOOOOOOOOOOOOOOOOO!
 14
 objet_outil_pokeball
 Poké Ball
@@ -162,12 +162,12 @@ Poké Ball
 1
 Éloignée
 90
-RÉGULIER : Première de la série des super-balles, …
+RÉGULIER : La Poké-Ball est la première balle obtenue par un dresseur. Elle est aussi la plus commune et la plus utilisée pour attraper des pokémons.
 15
-vide
+objet_outil_bambouzla_framboises
 Bambouzla à framboises
 6
-0,2
+0.2
 1
 30
 1
@@ -175,7 +175,7 @@ Bambouzla à framboises
 90
 RÉGULIER : Ces savoureuses framboises deviennent redoutables lorsqu'elles sont projetées en si grande quantité.
 16
-vide
+objet_outil_kiwi
 Kiwi
 30
 1
@@ -186,7 +186,7 @@ Kiwi
 90
 RÉGULIER : Certains disent que la pelure de ce fruit ce mange. Évitez ces gens. Ils sont fous.
 17
-vide
+objet_outil_basketball_0
 Ballon de basket-ball
 40
 1
@@ -195,7 +195,7 @@ Ballon de basket-ball
 2
 Éloignée
 160
-RARE :
+RARE : Dribble dribble dribble petit arthur, fais moi un beau panier! Fait la passe aux toutous.
 18
 objet_outil_greatball
 Great Ball
@@ -206,12 +206,12 @@ Great Ball
 2
 Éloignée
 160
-RARE :
+RARE : La Great-Ball est la Poké-Ball des vrais! Les dresseurs amateurs qui parcourent la planète à la recherche de pokémons.
 19
-vide
+objet_outil_bambouzla_noix_cocos
 Bambouzla à noix de coco
 20
-0,5
+0.5
 1
 40
 2
@@ -219,7 +219,7 @@ Bambouzla à noix de coco
 160
 RARE : Imaginez vous une noix de coco projeté à haute vitesse. Il y a de quoi faire peur!
 20
-vide
+objet_outil_frisbee_vert_0
 Frisbee vert
 30
 2
@@ -227,32 +227,32 @@ Frisbee vert
 45
 2
 Éloignée
-202,5
+202
 RARE : Le frisbee vert peut prendre du temps à être lancé, mais il peut heureusement toucher 3 toutous d'un coup!
 21
-vide
+objet_outil_tournevis_sonique_0
 Tournevis sonique
 10
-0,2
+0.2
 1
 50
 2
 Éloignée
 250
-RARE :
+RARE : Dans son bon vieux T.A.R.D.I.S., le Docteur Arthur n’est rien sans son tournevis sonique!
 22
-objet_outil_eau_benite
+objet_outil_eau_benite_0
 Eau bénite
 40
-0,8
+0.8
 1
 50
 2
 Éloignée
 250
-RARE : 
+RARE : Exorcizamus te omnis immundus spiritus omnis satanica potestas omnis incursio infernalis adversii omnis congregatio secta diabolica ergo draco maledicte ecclesiam tuam securi tibi facias libertate servire te rogamus audi nos.
 23
-vide
+objet_outil_frisbee_rouge_0
 Frisbee rouge
 40
 2
@@ -272,18 +272,18 @@ Ultra Ball
 2
 Éloignée
 360
-RARE :
+RARE : L’Ultra-Ball est Ultra, il faut être spécial et unique pour l’utiliser! Seul les meilleurs s’en servent.
 25
-vide
+objet_outil_bambouzla_mangues
 Bambouzla à mangue
 25
-0,4
+0.4
 1
-62,5
+62.5
 2
 Éloignée
-390,625
-RARE : Les toutous veulent toujours plus de mangue. Donnez-en leur toute une dose avec ce Bambouzla!.
+390
+RARE : Les toutous veulent toujours plus de mangue. Donnez-en leur toute une dose avec ce Bambouzla!
 26
 objet_outil_masterball
 Master Ball
@@ -293,13 +293,13 @@ Master Ball
 85
 3
 Éloignée
-722,5
+722
 LÉGENDAIRE : La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons, il faut être un maitre dans l'art pour l'utiliser!
 27
-vide
+objet_outil_bambouzla_kiwis
 Bambouzla à kiwi
 30
-0,3
+0.3
 1
 100
 3
@@ -307,7 +307,7 @@ Bambouzla à kiwi
 1000
 LÉGENDAIRE : Le fruit étrangement hyper poilu est de retour dans ce bambouzla méga puissant.
 28
-vide
+objet_outil_frisbee_mauve_0
 Frisbee mauve
 50
 2
@@ -327,12 +327,12 @@ Safari Ball
 3
 Éloignée
 1210
-LÉGENDAIRE : Si t'es rendu avec cet outil la, il est probablement le temps que t'arrête de jouer.
+LÉGENDAIRE : La Safari-Ball est pour les aventuriers, les «wild boys» qui n’attrapent pas les pokémons, ils les chassent!
 30
 outil01
 Projectilateur à bacon
 50
-0,5
+0.5
 1
 100
 3
@@ -343,18 +343,18 @@ LÉGENDAIRE : Il y a quelque chose dans ce canon qui rend cette viande affreusem
 outil02
 Projectilateur à pizzas
 45
-0,5
+0.5
 1
 90
 3
 Éloignée
 810
-LÉGENDAIRE : Ce projectilateur permet de lancer les pointes si rapidement qu,il renpliroa le ventre de vos adversaires plus rapidement que l'éclair!
+LÉGENDAIRE : Ce projectilateur permet de lancer les pointes si rapidement qu.il renpliroa le ventre de vos adversaires plus rapidement que l'éclair!
 32
 outil03
 Projectilateur à frites
 20
-0,2
+0.2
 1
 100
 3
@@ -365,7 +365,7 @@ LÉGENDAIRE : Fraîchement sorties de la friteuse, ces frites croustillantes et 
 outil14
 Projectilateur à crème-glacée
 40
-0,5
+0.5
 1
 80
 3
@@ -376,7 +376,7 @@ LÉGENDAIRE : La créme glacée est si froide qu'elle frigorifira tous vos adver
 outil13
 Projectilateur à barbotine
 40
-0,5
+0.5
 1
 80
 3
@@ -387,7 +387,7 @@ LÉGENDAIRE : Attention! Ce lance barbotine est réputé pour donner les pires "
 outil04
 Projectilateur à café
 35
-0,5
+0.5
 1
 70
 2
@@ -398,7 +398,7 @@ RARE : Cette boisson contient tant de caféine qu'elle sortira vos adversaires d
 outil05
 Projectilateur à Pepsi
 35
-0,5
+0.5
 1
 70
 2
@@ -409,7 +409,7 @@ RARE : Bien que les toutous préfèrent secrètement le Coca Cola, ils ne diront
 outil06
 Projectilateur à oranges
 25
-0,5
+0.5
 1
 50
 2
@@ -420,7 +420,7 @@ RARE : Ce jus de fruit bourré de vitamines va faire le plus grand plaisir des t
 outil07
 Projectilateur à pommes
 25
-0,5
+0.5
 1
 50
 2
@@ -431,7 +431,7 @@ RARE : Cette pompe à jus de pomme est suffisamment puissante pour faire tomber 
 outil08
 Projectilateur à bananes
 25
-0,5
+0.5
 1
 50
 2
@@ -453,7 +453,7 @@ RARE : Saviez-vous qu'un ananas prend 3 ans à pousser?
 outil10
 Projectilateur à cerises
 8
-0,2
+0.2
 1
 40
 2
@@ -464,7 +464,7 @@ RARE : Ces petits fruits deviennent très caloriques lorsqu'elles sont projectil
 outil11
 Projectilateur à baies
 8
-0,2
+0.2
 1
 40
 2
@@ -475,13 +475,13 @@ RARE : Presque inoffensives individuellement, les baies deviennent redoutables e
 outil12
 Projectilateur à carottes
 25
-0,5
+0.5
 1
 50
 2
 Éloignée
 250
-RARE :
+RARE : Maman Arthur ne t’a jamais dit que les carottes sont bonnes pour les yeux? En tous cas, tu ne veux pas manger ceux-là dans les yeux! Ha ha.
 44
 balle01
 Bacon
@@ -502,7 +502,7 @@ Pizza
 35
 2
 Rapprochée
-122,5
+122
 RARE : La spécialité de italienne contient fromage, pepperoni, sauce tomate et poivrons. Dequoi faire saliver tous vos adversaires.
 46
 balle03
@@ -513,7 +513,7 @@ Frites
 35
 2
 Éloignée
-122,5
+122
 RARE : Bien chaudes et croustillante, elle deviendront le régal de tous les toutous de ce monde.
 47
 balle04
@@ -524,7 +524,7 @@ Café
 35
 2
 Éloignée
-122,5
+122
 RARE :
 48
 balle05
@@ -535,7 +535,7 @@ Pepsi
 35
 2
 Éloignée
-122,5
+122
 RARE : 
 49
 balle14
@@ -568,7 +568,7 @@ Jus d'orange
 25
 1
 Éloignée
-62,5
+62
 RÉGULIER : 
 52
 balle07
@@ -579,7 +579,7 @@ Jus de pommes
 25
 1
 Éloignée
-62,5
+62
 RÉGULIER : 
 53
 balle08
@@ -590,7 +590,7 @@ Banane
 25
 1
 Rapprochée
-62,5
+62
 RÉGULIER : Attention de ne pas échapper ce fruit par terre. Il pourrait vous faire trébucher!
 54
 balle09
@@ -634,5 +634,5 @@ Carotte
 15
 1
 Rapprochée
-22,5
+22
 RÉGULIER : Aliment #1 des lapins, les toutous vont sans aucun doute l'apprécier.

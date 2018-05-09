@@ -6,15 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import android.content.Context;
-import android.view.Gravity;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 /**
  * Created by sebastien on 18-03-28.
@@ -33,8 +27,6 @@ public class Joueur
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
-    //TODO Je comprend pas ce que seb a fait donc je fait ca
-    ArrayList<Outil> items;
     Context context;
 
     //Préférences
@@ -44,7 +36,7 @@ public class Joueur
     //Constructeurs
     Joueur() {}
     //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
-    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits)
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Context context)
     {
         this.prenom = prenom;
         this.nom = nom;
@@ -57,7 +49,9 @@ public class Joueur
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
 
-        ArrayList<Outil> outilsBout = new ArrayList<>();
+        this.context = context;
+
+        //ArrayList<Outil> outilsBout = new ArrayList<>();
         ArrayList<Outil> skinsBout = new ArrayList<>();
         ArrayList<Outil> decorationsBout = new ArrayList<>();
         ArrayList<Outil> outilsInv = new ArrayList<>();
@@ -67,29 +61,26 @@ public class Joueur
         //Ajout de cases vides
         for(int j = 0 ; j < 56 ; j++)
         {
-            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            //outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
 
-            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            outilsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            skinsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            decorationsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
         }
 
-        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+        //outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        //outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil(666,"Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0,0f, "arthur2_1", false));
+        skinsBout.set(1, new Outil(666,"Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0,0f, "arthur7_1", false));
 
-        boutique.add(outilsBout);
+        boutique.add(lireOutilsBoutique());
         boutique.add(skinsBout);
         boutique.add(decorationsBout);
         inventaire.add(outilsInv);
         inventaire.add(skinsInv);
         inventaire.add(decorationsInv);
-
-        this.context = context;
-        //items = readItemFile();
     }
     //Constructeur appelé lors de la création du joueur
     Joueur(String prenom, String nom, String adresseElectronique, Context context)
@@ -103,7 +94,9 @@ public class Joueur
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
 
-        ArrayList<Outil> outilsBout = new ArrayList<>();
+        this.context = context;
+
+        //ArrayList<Outil> outilsBout = new ArrayList<>();
         ArrayList<Outil> skinsBout = new ArrayList<>();
         ArrayList<Outil> decorationsBout = new ArrayList<>();
         ArrayList<Outil> outilsInv = new ArrayList<>();
@@ -113,29 +106,26 @@ public class Joueur
         //Ajout de cases vides
         for(int j = 0 ; j < 56 ; j++)
         {
-            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            //outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            skinsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
 
-            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            outilsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            skinsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            decorationsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
         }
 
-        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
+        //outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
+        //outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
+        skinsBout.set(0, new Outil(666,"Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0,0f, "arthur2_1", false));
+        skinsBout.set(1, new Outil(666,"Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0,0f, "arthur7_1", false));
 
-        boutique.add(outilsBout);
+        boutique.add(lireOutilsBoutique());
         boutique.add(skinsBout);
         boutique.add(decorationsBout);
         inventaire.add(outilsInv);
         inventaire.add(skinsInv);
         inventaire.add(decorationsInv);
-
-        this.context = context;
-        //items = readItemFile();
     }
 
     //Getteurs & Setteurs
@@ -242,30 +232,31 @@ public class Joueur
     }
 
     //Méthodes
-    private ArrayList<Outil> readItemFile(){
+    private ArrayList<Outil> lireOutilsBoutique()
+    {
         ArrayList<Outil> outils = new ArrayList<Outil>();
-        try{
-            InputStream inputStream = context.getResources().openRawResource(R.raw.objets);
+        try
+        {
+            InputStream inputStream = context.getResources().openRawResource(R.raw.outils);
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader buffReader = new BufferedReader(isr);
             String line;
             StringBuilder text = new StringBuilder();
 
             int id;
-            String drwable;
+            String imageDrawableString;
             String nom;
-            int touche;
-            float frequence;
-            int nbCible;
+            int toucherParCoup;
+            float intervalleParCoup;
+            int nbCibles;
             float puissance;
             int rarete;
-            String porte;
+            String portee;
             int prix;
             String description;
 
-            while (( line = buffReader.readLine()) != null) {
-
-
+            while (( line = buffReader.readLine()) != null)
+            {
                 //Lire chaque ligne et donner les valeurs
                 text.setLength(0);
                 text.append(line);
@@ -274,7 +265,7 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                drwable = text.toString();
+                imageDrawableString = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -284,17 +275,17 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                touche = Integer.valueOf(text.toString());
+                toucherParCoup = Integer.valueOf(text.toString());
 
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                frequence = Float.valueOf(text.toString());
+                intervalleParCoup = Float.valueOf(text.toString());
 
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                nbCible = Integer.valueOf(text.toString());
+                nbCibles = Integer.valueOf(text.toString());
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -309,7 +300,7 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                porte = text.toString();
+                portee = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -321,10 +312,10 @@ public class Joueur
                 text.append(line);
                 description = text.toString();
 
-                //items.add(new Objet());
+                outils.add(new Outil(id, nom, description, Objet.Type.Outil, rarete, Outil.Portee.valueOf(portee), prix, toucherParCoup, nbCibles, intervalleParCoup, imageDrawableString, false));
             }
-
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return null;
         }
 

@@ -40,7 +40,7 @@ public class BarreDOutils extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         for(int i = 0 ; i < 5 ; i++)
-            outils[i] = new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true);
+            outils[i] = new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true);
 
         adapteur = new AdapteurArrayaObjets(getContext(), 0, outils);
         gridView = getView().findViewById(R.id.listeOutils);

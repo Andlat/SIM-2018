@@ -43,8 +43,8 @@
     <string name="acheter">Acheter</string>
     <string name="prix_nulle">000</string>
     <!-- Spéciaux -->
-    <string name="toucher_par_coup">Nombre de tagues par coup : %1$d</string>
-    <string name="nb_cibles">Nombre de cibles : %1$d</string>
+    <string name="toucher_par_coup">Nbre de tagues/coup : %1$d</string>
+    <string name="nb_cibles">Nbre de cibles : %1$d</string>
     <string name="portee">Portée : %1$s</string>
     <string name="menuJeu">Menu</string>
     <string name="recommencer">Recommencer</string>
@@ -53,5 +53,7 @@
     <string name="jeu_de_jour_desactive">Le jeu de jour a été désactivé. Activez la géolocalisation dansles réglages pour l\'activer!</string>
     <string name="bravo">Bravo!</string>
     <string name="utiliser">Utiliser</string>
+    <string name="intervalle_par_coup">Intervalle de temps/coup : %1$.1fs</string>
+    <string name="rarete">Rareté : %1$s</string>
     <!-- ************ -->
 </resources>

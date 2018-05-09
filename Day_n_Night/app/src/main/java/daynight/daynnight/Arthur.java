@@ -24,7 +24,6 @@ public class Arthur{
     private long mInWorldID;
 
     private final int FRAME_LENGTH = 200;
-    private final int SKIN = MainActivity.joueur.getSkin();
 
     public Arthur(Context context){
         mContext = context;
@@ -32,7 +31,7 @@ public class Arthur{
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
-            this.setSkin(SKIN);
+            this.setSkin(MainActivity.joueur.getSkin());
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override

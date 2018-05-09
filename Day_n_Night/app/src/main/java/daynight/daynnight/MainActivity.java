@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
             Scanner actualiser = new Scanner(lireJoueur());
-            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt());
+            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
             Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
         }
         else
