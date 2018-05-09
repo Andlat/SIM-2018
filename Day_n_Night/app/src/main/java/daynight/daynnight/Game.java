@@ -54,7 +54,6 @@ class Game extends GameView{
     private Arthur mArthur;
     public Game(Context context) {
         super(context);
-
         init(context);
     }
 
@@ -275,6 +274,7 @@ class Game extends GameView{
         nbrMonstreVert17 = (int)Math.floor((qttDifficulte-nbrMonstreMauve69*69)/17)+(int)Math.floor(round/12);
         nbrMonstreBleu4 = (int)Math.floor((qttDifficulte-nbrMonstreVert17*17-nbrMonstreMauve69*69)/4)+(int)Math.floor(round/7);
         nbrMonstreJaune1 = (int)Math.abs(qttDifficulte-nbrMonstreBleu4*4-nbrMonstreVert17*17-nbrMonstreMauve69*69+3+Math.floor(round/5));
+        //Création de toutous mauves
         for(i=0; i<nbrMonstreMauve69;i++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -345,6 +345,7 @@ class Game extends GameView{
             });
         }
         i = mListeToutou.size();
+        //Création de toutous verts
         for(j=0; j<nbrMonstreVert17;j++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -415,6 +416,7 @@ class Game extends GameView{
             });
         }
         i=mListeToutou.size();
+        //Céation de toutous bleu
         for(h=0; h<nbrMonstreBleu4;h++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -485,7 +487,8 @@ class Game extends GameView{
             });
         }
         i=mListeToutou.size();
-        for(k=0; k<nbrMonstreVert17;k++){
+        //Création des Clémentines
+        for(k=0; k<nbrMonstreJaune1;k++){
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
