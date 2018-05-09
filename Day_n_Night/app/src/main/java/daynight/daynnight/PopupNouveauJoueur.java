@@ -6,14 +6,17 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import static daynight.daynnight.MainActivity.fichierJoueur;
 import static daynight.daynnight.MainActivity.joueur;
@@ -48,17 +51,26 @@ public class PopupNouveauJoueur extends Activity
                 EditText nom = findViewById(R.id.nom);
                 EditText adresseElectronique = findViewById(R.id.adresseElectronique);
 
-                MainActivity.joueur = new Joueur(prenom.getText().toString(), nom.getText().toString(), adresseElectronique.getText().toString(), getApplicationContext());
-                try
+                if(!Objects.equals(prenom.getText().toString().replaceAll(" ", ""), "") || !Objects.equals(nom.getText().toString().replaceAll(" ", ""), "") || !Objects.equals(adresseElectronique.getText().toString().replaceAll(" ", ""), ""))
                 {
-                    openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE).close();
+                    MainActivity.joueur = new Joueur(prenom.getText().toString(), nom.getText().toString(), adresseElectronique.getText().toString(), getApplicationContext());
+                    try
+                    {
+                        openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE).close();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    finish();
                 }
-                catch (IOException e)
+                else
                 {
-                    e.printStackTrace();
+                    Toast toast = Toast.makeText(getApplicationContext(),"Le prénom, le nom ou l'adresse électronique ne sont pas valide...", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
 
-                finish();
             }
         });
 

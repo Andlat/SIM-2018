@@ -6,7 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 
 /**
- * Created by andlat on 2018-04-22.
+ * Created by Nikola Zelovic on 2018-04-22.
  */
 
 public class TShaderSingleton extends Shader {

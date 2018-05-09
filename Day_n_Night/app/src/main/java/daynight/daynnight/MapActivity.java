@@ -162,7 +162,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     protected void onStop()
     {
         MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.MusiqueDeFond.pause();
+        MainActivity.musiqueDeFond.pause();
         super.onStop();
     }
 
@@ -172,7 +172,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     protected void onResume()
     {
-        MainActivity.MusiqueDeFond.start();
+        MainActivity.musiqueDeFond.start();
         super.onResume();
 
         //Quand la map est disponible, on appel la fonction OnMapReady()
@@ -211,6 +211,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         //types de poi
         filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", /*"school",*/ "stadium", "synagogue", "university", "zoo"};
 
+        idPois = new ArrayList<String>();
         //Recentrage de la carte lors du click sur le bouton Center
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);

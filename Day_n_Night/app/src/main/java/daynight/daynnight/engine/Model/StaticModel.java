@@ -3,7 +3,7 @@ package daynight.daynnight.engine.Model;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
- * Created by andlat on 2018-02-14.
+ * Created by Nikola Zelovic on 2018-02-14.
  */
 
 public class StaticModel extends Model {

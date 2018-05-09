@@ -51,5 +51,9 @@
             android:theme="@style/AppTheme.PopupRTheme" />
         <activity android:name=".PopupPause"
             android:theme="@style/AppTheme.PopupRTheme"/>
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.PopupTheme"
+            android:configChanges="locale|orientation|keyboardHidden"
+            android:noHistory="true"/>
     </application>
 </manifest>

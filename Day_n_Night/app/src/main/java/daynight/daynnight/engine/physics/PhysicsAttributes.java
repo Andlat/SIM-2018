@@ -3,7 +3,7 @@ package daynight.daynnight.engine.physics;
 import daynight.daynnight.engine.math.Vec3;
 
 /**
- * Created by andlat on 2018-02-05.
+ * Created by Nikola Zelovic on 2018-02-05.
  */
 
 public class PhysicsAttributes {

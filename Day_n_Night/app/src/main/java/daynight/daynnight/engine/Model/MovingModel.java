@@ -6,7 +6,7 @@ import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
- * Created by andlat on 2018-02-14.
+ * Created by Nikola Zelovic on 2018-02-14.
  */
 
 public class MovingModel extends Model {

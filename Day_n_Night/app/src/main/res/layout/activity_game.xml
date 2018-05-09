@@ -4,76 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     tools:context="daynight.daynnight.GameActivity">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <daynight.daynnight.Game
+        android:id="@+id/game1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="match_parent" />
+
+
+    <daynight.daynnight.Joystick
+        android:id="@+id/joystickPerso"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="75dp"
+        android:layout_marginStart="75dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <daynight.daynnight.Game
-            android:id="@+id/game1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteX="293dp"
-            tools:layout_editor_absoluteY="137dp" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <daynight.daynnight.Joystick
+        android:id="@+id/joystickTir"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="75dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <daynight.daynnight.Joystick
-            android:id="@+id/joystickPerso"
-            android:layout_width="match_parent"
-            android:layout_height="127dp"
-            android:layout_gravity="bottom|left"
-            android:layout_marginBottom="75dp"
-            android:layout_marginEnd="125dp"
-            android:layout_marginStart="75dp"
-            android:layout_weight="1"
-            tools:ignore="RtlHardcoded"
-            tools:layout_editor_absoluteY="127dp" />
-
-        <daynight.daynnight.Joystick
-            android:id="@+id/joystickTir"
-            android:layout_width="match_parent"
-            android:layout_height="127dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="75dp"
-            android:layout_marginEnd="75dp"
-            android:layout_marginStart="125dp"
-            android:layout_weight="1"
-            tools:ignore="RtlHardcoded" />
-
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageButton
         android:id="@+id/imageButton3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="340dp"
-        android:layout_marginEnd="310dp"
-        android:layout_marginStart="310dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/pause1"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

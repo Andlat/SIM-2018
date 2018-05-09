@@ -33,12 +33,13 @@ public class Joueur
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
-    //TODO Je comprend pas ce que seb a fait donc je fait ca
     ArrayList<Outil> items;
     Context context;
 
     //Préférences
     Boolean musique;
+    String langue;
+
 
 
     //Constructeurs
@@ -139,6 +140,23 @@ public class Joueur
     }
 
     //Getteurs & Setteurs
+
+    public Boolean getMusique() {
+        return musique;
+    }
+
+    public void setMusique(Boolean musique) {
+        this.musique = musique;
+    }
+
+    public String getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String langue) {
+        this.langue = langue;
+    }
+
     public String getPrenom()
     {
         return prenom;

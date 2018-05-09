@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -93,8 +94,8 @@ public class PopupInformationsObjet extends Activity
 
         if (!objet.getAcquis())
         {
-            paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            //paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            //paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             paramsUtiliser.width = 0;
             paramsUtiliser.setMarginEnd(0);
 
@@ -136,12 +137,12 @@ public class PopupInformationsObjet extends Activity
                 }
             });
         }
-        else
+        else if (objet.getAcquis())
         {
             paramsUtiliser.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            paramsPrix.width = 0;
-            paramsAcheter.width = 0;
-            paramsAcheter.setMarginEnd(0);
+            //paramsPrix.width = 0;
+            //paramsAcheter.width = 0;
+            //paramsAcheter.setMarginEnd(0);
 
             utiliser.setOnClickListener(new View.OnClickListener()
             {
@@ -150,7 +151,19 @@ public class PopupInformationsObjet extends Activity
                 {
                     if(objet.getType() == Objet.Type.Outil)
                     {
-
+                        for(int i = 0 ; i < 4 ; i++)
+                        {
+                            startActivity(new Intent(PopupInformationsObjet.this, BarreDOutils.class));//TODO
+                            BarreDOutils.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                            {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                                {
+                                    BarreDOutils.outils[i] = objet;
+                                    BarreDOutils.adapteur.getOutils()[i] = objet;
+                                }
+                            });
+                        }
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
@@ -166,12 +179,12 @@ public class PopupInformationsObjet extends Activity
         }
         prixLayout.setLayoutParams(paramsPrix);
         acheter.setLayoutParams(paramsAcheter);
+        utiliser.setLayoutParams(paramsUtiliser);
 
         if (objet.getType().equals(Objet.Type.Nul)) {}
         else if(objet.getType().equals(Objet.Type.Outil))
         {
             caracteristiquesOutil.setVisibility(View.VISIBLE);
-
         }
         else
         {

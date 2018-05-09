@@ -125,6 +125,7 @@
             <Button
                 android:id="@+id/inventaireUtiliserHorizontale"
                 android:background="@drawable/style_button_ripple_coin"
+                android:layout_toStartOf="@id/fermerHorizontale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -163,6 +164,7 @@
         <Button
             android:id="@+id/inventaireUtiliserVerticale"
             android:background="@drawable/style_button_ripple_coin"
+            android:layout_toStartOf="@id/fermerVerticale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

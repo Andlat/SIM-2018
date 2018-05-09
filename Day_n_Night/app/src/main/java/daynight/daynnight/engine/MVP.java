@@ -7,7 +7,7 @@ import daynight.daynnight.engine.math.Mat4;
 import daynight.daynnight.engine.math.Vec3;
 
 /**
- * Created by andlat on 2018-02-04.
+ * Created by Nikola Zelovic on 2018-02-04.
  */
 
 class MVP {

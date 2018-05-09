@@ -1,7 +1,7 @@
 package daynight.daynnight.engine.util;
 
 /**
- * Created by andlat on 2018-04-02.
+ * Created by Nikola Zelovic on 2018-04-02.
  */
 
 public class Coord {
