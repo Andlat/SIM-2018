@@ -71,7 +71,6 @@ class Game extends GameView{
         mWorld = new World();
         super.UseWorld(mWorld);
 
-        /*
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -97,103 +96,72 @@ class Game extends GameView{
             }
         }catch(IOException e){
 
-        }*/
-
-        StaticModel mur=null, mur2=null, mur3=null;
-        try {
-            mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-            mur.setType(StaticModel.Type.WALL_TOP);
-
-        }catch(IOException ex){
-            Log.e("Load Model", ex.getMessage(), ex);
         }
 
-        if(mur != null) {
-            mur2 = new StaticModel(mur);
-            mur2.StaticTranslate(new Vec3(mur.getCorners().get(0).x()*2, 0, 0));//translate to the side of the other wall
-
-            mur3 = new StaticModel(mur);
-            mur3.StaticTranslate(new Vec3(-mur.getCorners().get(0).x()*2, 0, 0));//translate to the side of the other wall
-
-            mWorld.addModel(mur);
-            mWorld.addModel(mur2);
-        }
 
         mArthur = new Arthur(mContext);
         mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-/*
-        if(mur3 != null){
-            mWorld.addModel(mur3);
-
-            for(int i=1; i <= 1000; ++i){
-                StaticModel o = new StaticModel(mur3);
-                o.StaticTranslate(new Vec3(-mur.getCorners().get(0).x()*i*2, 0, 0));//translate to the side of the other wall
-                mWorld.addModel(o);
-            }
-        }
-*/
     }
-    /*
-        private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
-            try {
-                StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
-                mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-                mur.setType(StaticModel.Type.FLOOR);
-                mWorld.addModel(mur);
-                mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
-                mListeMur.add(mur);
-            }catch(IOException e){
+    private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.FLOOR);
+            mWorld.addModel(mur);
+            mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
 
-            }
         }
+    }
 
-        private void placerMurBlock(int hauteur, int largeur, Vec3 vec3) {
-            try {
-                StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-                mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-                mur.setType(StaticModel.Type.BLOCK);
-                mWorld.addModel(mur);
-                mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
-                mListeMur.add(mur);
-            }catch(IOException e){
+    private void placerMurBlock(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.BLOCK);
+            mWorld.addModel(mur);
+            mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
 
-            }
         }
+    }
 
-        private void placerMurBas(int hauteur, int largeur, Vec3 vec3) {
-            try {
-                StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-                mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-                mur.setType(StaticModel.Type.WALL_BOTTOM);
-                mWorld.addModel(mur);
-                mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
-                mListeMur.add(mur);
-            }catch(IOException e){
+    private void placerMurBas(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_BOTTOM);
+            mWorld.addModel(mur);
+            mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
 
-            }
         }
+    }
 
-        private void placerMurHaut(int hauteur, int largeur, Vec3 vec3) {
-            try {
-                StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-                mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
-                mur.setType(StaticModel.Type.WALL_TOP);
-                mWorld.addModel(mur);
-                mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
-                mListeMur.add(mur);
-            }catch(IOException e){
+    private void placerMurHaut(int hauteur, int largeur, Vec3 vec3) {
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            mur.setType(StaticModel.Type.WALL_TOP);
+            mWorld.addModel(mur);
+            mWorld.Translate(mur, new Vec3((largeur-10)*vec3.x(), (hauteur-11)*vec3.y(), 0.f));
+            mListeMur.add(mur);
+        }catch(IOException e){
 
-            }
         }
-    */
+    }
+
     @Override
     protected void onSurfaceChanged(int width, int height) {
     }
 
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mArthur.getInWorldID(), new Vec3(-1, 0, 0), getElapsedFrameTime());
+        //world.Move(mArthur.getInWorldID(), new Vec3(-1, 0, 0), getElapsedFrameTime());
 /*
         int temp=0;
         int temp2=0;
@@ -250,7 +218,7 @@ class Game extends GameView{
         }
 */
     }
-/*
+
     private void endGame() {
         for(Projectile projectile : mListeProjectile){
             mWorld.removeModel(projectile.getmID());
@@ -442,5 +410,4 @@ class Game extends GameView{
     public void movePerso(Vec3 vector){
         mWorld.Move(perso.getID() ,persoVec,getElapsedFrameTime());
     }
-*/
 }
