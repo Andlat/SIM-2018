@@ -53,7 +53,15 @@
     <string name="jeu_de_jour_desactive">Le jeu de jour a été désactivé. Activez la géolocalisation dansles réglages pour l\'activer!</string>
     <string name="bravo">Bravo!</string>
     <string name="utiliser">Utiliser</string>
+<<<<<<< HEAD
     <string name="intervalle_par_coup">Intervalle de temps/coup : %1$.1fs</string>
     <string name="rarete">Rareté : %1$s</string>
+=======
+    <string name="musique">Musique</string>
+    <string name="langue">Langue</string>
+    <string name="fran_ais">Français</string>
+    <string name="english">English</string>
+    <string name="effacer_partie">Effacer partie</string>
+>>>>>>> 4c9d3614e69b5322c31bd561e93a79c98444dae7
     <!-- ************ -->
 </resources>

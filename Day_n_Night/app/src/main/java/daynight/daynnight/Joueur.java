@@ -27,10 +27,16 @@ public class Joueur
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
+<<<<<<< HEAD
+=======
+    ArrayList<Outil> items;
+>>>>>>> 4c9d3614e69b5322c31bd561e93a79c98444dae7
     Context context;
 
     //Préférences
     Boolean musique;
+    String langue;
+
 
 
     //Constructeurs
@@ -129,6 +135,23 @@ public class Joueur
     }
 
     //Getteurs & Setteurs
+
+    public Boolean getMusique() {
+        return musique;
+    }
+
+    public void setMusique(Boolean musique) {
+        this.musique = musique;
+    }
+
+    public String getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String langue) {
+        this.langue = langue;
+    }
+
     public String getPrenom()
     {
         return prenom;

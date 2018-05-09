@@ -23,7 +23,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Coord;
 
 /**
- * Created by andlat on 2018-02-17.
+ * Created by Nikola Zelovic on 2018-02-17.
  */
 
 public abstract class GameView extends GLSurfaceView {
@@ -42,11 +42,12 @@ public abstract class GameView extends GLSurfaceView {
 
     private void init(){
         setEGLContextClientVersion(3);
+        setPreserveEGLContextOnPause(true);
 
         Renderer renderer = new Renderer();
         setRenderer(renderer);
 
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO For testing. Remove RENDER_WHEN_DIRTY
+        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO For testing. Remove RENDERMODE_WHEN_DIRTY
     }
 
     final public void UseWorld(World world){ mWorld = world; }
@@ -71,7 +72,7 @@ public abstract class GameView extends GLSurfaceView {
             GLES30.glEnable(GLES30.GL_BLEND);
             GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-            GLES30.glClearColor(0.f,0.f, 0.f, 1.f);//black background by default
+            GLES30.glClearColor(0.f,0.f, 0.f, 0.f);//black transparent background by default
         }
 
         @Override

@@ -2,7 +2,6 @@ package daynight.daynnight.engine.Model;
 
 import android.opengl.Matrix;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.Pair;
 
 import java.nio.FloatBuffer;
@@ -15,7 +14,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by zelovini on 2018-02-05.
+ * Created by Nikola Zelovic on 2018-02-05.
  */
 
 public class Model {
@@ -36,6 +35,18 @@ public class Model {
     private Mat4 mModelMatrix = new Mat4();//Position of the model from its origin. Default is an identity matrix (it's origin)
 
     private long mID;
+
+    private int mDrawGroupID;
+
+    //On ModelMatrix or Animation changed listener
+    public static abstract class onModelChangedListener {
+        public enum Changed{ MODEL_MAT, ANIMATION }
+        abstract public void onModelMatChanged(Model _this, Changed changed);
+    }
+    private onModelChangedListener mOnModelChangedListener;
+    public void setOnModelMatChangedListener(onModelChangedListener listener){
+        mOnModelChangedListener = listener;
+    }
 
     public Model(){
         mID = mNxtModelID;
@@ -154,7 +165,12 @@ public class Model {
         return mAnimation.addFrame(new Pair<>(texture, milliseconds));
     }
     public final Animation getAnimation(){ return mAnimation; }
-    public final void setAnimation(Animation animation){ mAnimation = animation; }
+    public final void setAnimation(Animation animation){
+        mAnimation = animation;
+
+        if(mOnModelChangedListener != null)
+            mOnModelChangedListener.onModelMatChanged(this, onModelChangedListener.Changed.ANIMATION);
+    }
 
 
     public final long getID(){ return mID; }
@@ -163,7 +179,15 @@ public class Model {
     public final void setVBOWorldOffset(long offset){ mWorldVBOOffset = offset; }
 
     public final Mat4 getModelMatrix(){ return mModelMatrix; }
-    public final void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
+    public final void setModelMatrix(Mat4 matrix){
+        mModelMatrix = matrix;
+
+        if(mOnModelChangedListener != null)
+            mOnModelChangedListener.onModelMatChanged(this, onModelChangedListener.Changed.MODEL_MAT);
+    }
+
+    public int getDrawGroupID(){ return mDrawGroupID; }
+    public void setDrawGroupID(int groupID){ mDrawGroupID = groupID; }
 
     public final void RewindTranslation(){
         mCurrentTranslation = mLastTranslation;

@@ -87,7 +87,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private String directionRegardee = "droite";
     private URL url;
     Intent intent;
-    private int modelePerosnage = 5;
+    private int modelePerosnage = 1;
     private Marker tempMarker;
     private BitmapDrawable bitmapDrawable;
     private Bitmap smallMarker;
@@ -196,7 +196,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         //Creation du marqueur qui sera sur la carte, selon celui sélectionné
-        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(MainActivity.joueur.getSkin());//TODO
+        bitmapDrawable = (BitmapDrawable)getResources().getDrawable(MainActivity.joueur.getSkin());
         smallMarker = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), imageViewPersonnage.getWidth(), imageViewPersonnage.getHeight(), false);
 
         //
@@ -211,6 +211,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         //types de poi
         filters = new String[]{"airport", "amusement_park", "aquarium", "art_gallery", "campground", "casino", "church", "city_hall", "courthouse", "embassy", "hindu_temple", "hospital", "library", "lodging", "mosque", "museum", "park", /*"school",*/ "stadium", "synagogue", "university", "zoo"};
 
+        idPois = new ArrayList<String>();
         //Recentrage de la carte lors du click sur le bouton Center
         boutonCenter = (findViewById(R.id.boutonCenter));
         boutonCenter.setClickable(true);
