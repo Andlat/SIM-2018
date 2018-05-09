@@ -14,9 +14,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -35,9 +36,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.MapStyleOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,6 +128,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCALISATION_REQUEST);
             }
         }
+
+        //Listner du bouton de pause
+        ImageButton pause = (ImageButton) findViewById(R.id.pauseJour);
+        pause.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MapActivity.this, PopupPause.class));
+            }
+        });
+
+        //Initialisation de variables
         distanceFromPoiUpdate = new float[1];
         prevPos = new LatLng(0, 0);
         livePos = new LatLng(0,0);
@@ -150,7 +162,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     protected void onStop()
     {
         MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        MainActivity.MusiqueDeFond.pause();
         super.onStop();
     }
 
@@ -160,7 +172,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        MainActivity.MusiqueDeFond.start();
         super.onResume();
 
         //Quand la map est disponible, on appel la fonction OnMapReady()
@@ -388,11 +400,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                     //Enregistre tout les position des POI dans le rayon spécifié
                                     for (int k = 0; k < jsonResults.length(); k++) {
 
-                                        //TODO commenter cette section
+
                                         addPoi = true;
                                         tempId = jsonResults.getJSONObject(k).getString("id");
                                         for(int u = 0; u < idPois.size(); u++){
                                             if(tempId.equals(idPois.get(u))){
+                                                //Vérifie si le id du nouveau poi est différent des autres pois
                                                 addPoi = false;
                                                 break;
                                             }
@@ -407,7 +420,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                                             tempMarker = map.addMarker(new MarkerOptions().flat(false).snippet("POI")
                                                     .position(tempPos).icon(BitmapDescriptorFactory
                                                             .fromResource(R.drawable.coffre)));
-                                            //affecte l'objet poi au markeur pour y avoir acces ensuite
+                                            //affecte l'objet poi au marqueur pour y avoir acces ensuite
                                             tempMarker.setTag(tempPoi);
                                             idPois.add(tempId);
                                         }
@@ -459,6 +472,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
                 distanceFromPoi = new float[1];
                 Location.distanceBetween(livePos.latitude,livePos.longitude,marker.getPosition().latitude,marker.getPosition().longitude, distanceFromPoi);
+                actualPoi = (Poi) marker.getTag();
+                Toast.makeText(getApplicationContext(),actualPoi.getName(),Toast.LENGTH_SHORT);
 
                 if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<1000){
                     //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur

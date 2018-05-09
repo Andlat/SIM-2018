@@ -257,6 +257,7 @@ public class Joueur
             int touche;
             float frequence;
             int nbCible;
+            float puissance;
             int rarete;
             String porte;
             int prix;
@@ -294,6 +295,11 @@ public class Joueur
                 text.setLength(0);
                 text.append(line);
                 nbCible = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                puissance = Float.valueOf(text.toString());
 
                 line = buffReader.readLine();
                 text.setLength(0);

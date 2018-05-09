@@ -46,6 +46,10 @@ class Game extends GameView{
     private ArrayList<StaticModel> mListePlancher;
     private ArrayList<StaticModel> mListeMur;
     private int i,j,h,k;
+    private ArrayList<Integer> listeToutouDelete;
+    private ArrayList<Integer> listeBalleDelete;
+    private Toutou toutouTest;
+    private boolean positionPositiveDuSpawn = false;
 
     private Arthur mArthur;
     public Game(Context context) {
@@ -69,6 +73,19 @@ class Game extends GameView{
     protected void onCreate() {
         World world = new World();
         super.UseWorld(world);
+        try {
+            MovingModel amiTest = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            amiTest.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            world.addModel(amiTest);
+            Vec3 vec3 = getCoordonnesMonstre();
+            world.Translate(amiTest, vec3);
+            this.mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(vec3.x(),vec3.y()), amiTest.getID()));
+            this.mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
+            this.toutouTest = new Toutou(25, 10, new Coord(0,0), amiTest.getID());
+        }catch(IOException e){
+
+        }
+
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -170,20 +187,21 @@ class Game extends GameView{
     @Override
     protected void onDrawFrame(World world) {
 
+        this.listeToutouDelete.clear();
+        this.listeBalleDelete.clear();
         int temp=0;
         int temp2=0;
         //world.getModel()
         for(Projectile projectile: mListeProjectile){
             projectile.setCoord(new Coord(this.getX()+ projectile.getmDirectionX(), this.getY()+ projectile.getmDirectionY()));
         }
-        temp=0;
         for(Projectile projectile : mListeProjectile){
             world.Move(projectile.getmID(), new Vec3(projectile.getmDirectionX(), projectile.getmDirectionY(), 0.f), getElapsedFrameTime());
             for(Toutou monsieurMovingAmiID:mListeToutou){
                 if(Math.sqrt(Math.pow(projectile.getCoord().getX() - mListeToutou.get(temp2).getCoord().getX(),2) + Math.pow(projectile.getCoord().getY() - mListeToutou.get(temp2).getCoord().getY(),2)) < 0.2){
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
-                        mListeToutou.remove(temp2);
+                        this.listeToutouDelete.add(temp2);
                         if(mListeToutou.isEmpty()){
                             try{
                                 updateLevel();
@@ -193,9 +211,15 @@ class Game extends GameView{
                         }
                     }
                     world.removeModel(projectile.getmID());
-                    mListeProjectile.remove(temp);
+                    this.listeBalleDelete.add(temp);
                 }
                 temp2++;
+            }
+            for(Integer positionsToutousDelete: this.listeToutouDelete){
+                this.mListeToutou.remove(positionsToutousDelete);
+            }
+            for(Integer positionBallesDelete: this.listeBalleDelete){
+                this.mListeProjectile.remove(positionBallesDelete);
             }
             temp++;
         }
@@ -255,7 +279,38 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
-            Vec3 vec3 = getCoordonnesMonstre();
+            Vec3 vec3 = new Vec3();
+            do{
+                vec3 = getCoordonnesMonstre();
+                for(StaticModel plancher:mListePlancher){
+                    world.Translate(this.toutouTest.getmID(), vec3);
+                    if((plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ){
+                        this.positionPositiveDuSpawn = true;
+                    }else{
+                        world.Translate(this.toutouTest.getmID(), new Vec3(-vec3.x(), -vec3.y(),0f));
+                    }
+                }
+            }while(!this.positionPositiveDuSpawn);
+            this.positionPositiveDuSpawn = false;
             world.Translate(ami, vec3);
             mListeToutou.add(new Toutou(25*27+round*4, 34, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(i).setMovingModel(getContext(), "toutou4");
@@ -294,7 +349,38 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
-            Vec3 vec3 = getCoordonnesMonstre();
+            Vec3 vec3 = new Vec3();
+            do{
+                vec3 = getCoordonnesMonstre();
+                for(StaticModel plancher:mListePlancher){
+                    world.Translate(this.toutouTest.getmID(), vec3);
+                    if((plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ){
+                        this.positionPositiveDuSpawn = true;
+                    }else{
+                        world.Translate(this.toutouTest.getmID(), new Vec3(-vec3.x(), -vec3.y(),0f));
+                    }
+                }
+            }while(!this.positionPositiveDuSpawn);
+            this.positionPositiveDuSpawn = false;
             world.Translate(ami, vec3);
             mListeToutou.add(new Toutou(25*9+round*3, 25, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(j+i).setMovingModel(getContext(), "toutou3");
@@ -333,7 +419,38 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou2.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
-            Vec3 vec3 = getCoordonnesMonstre();
+            Vec3 vec3 = new Vec3();
+            do{
+                vec3 = getCoordonnesMonstre();
+                for(StaticModel plancher:mListePlancher){
+                    world.Translate(this.toutouTest.getmID(), vec3);
+                    if((plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ){
+                        this.positionPositiveDuSpawn = true;
+                    }else{
+                        world.Translate(this.toutouTest.getmID(), new Vec3(-vec3.x(), -vec3.y(),0f));
+                    }
+                }
+            }while(!this.positionPositiveDuSpawn);
+            this.positionPositiveDuSpawn = false;
             world.Translate(ami, vec3);
             mListeToutou.add(new Toutou(25*3+round*2, 20, new Coord(vec3.x(), vec3.y()), ami.getID()));
             mListeToutou.get(h+i).setMovingModel(getContext(), "toutou2");
@@ -372,7 +489,38 @@ class Game extends GameView{
             MovingModel ami = ObjParser.Parse(mContext, "models", "toutou1.obj").get(0).toMovingModel();
             ami.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             world.addModel(ami);
-            Vec3 vec3 = getCoordonnesMonstre();
+            Vec3 vec3 = new Vec3();
+            do{
+                vec3 = getCoordonnesMonstre();
+                for(StaticModel plancher:mListePlancher){
+                    world.Translate(this.toutouTest.getmID(), vec3);
+                    if((plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ||
+                            (plancher.getCorners().get(1).x() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > this.world.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            ){
+                        this.positionPositiveDuSpawn = true;
+                    }else{
+                        world.Translate(this.toutouTest.getmID(), new Vec3(-vec3.x(), -vec3.y(),0f));
+                    }
+                }
+            }while(!this.positionPositiveDuSpawn);
+            this.positionPositiveDuSpawn = false;
             world.Translate(ami, vec3);
             mListeToutou.add(new Toutou(25+round, 17, new Coord(vec3.x(),vec3.y()), ami.getID()));
             mListeToutou.get(k+i).setMovingModel(getContext(), "toutou1");
@@ -409,8 +557,16 @@ class Game extends GameView{
     }
 
     private Vec3 getCoordonnesMonstre() {
-        Vec3 vec3 = new Vec3((float)Math.random()*5 +1, (float)Math.random()*5 +1, 0);
-        return vec3;
+        try {
+            StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
+            mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
+            Vec3 vec3 = new Vec3((mur.getCorners().get(0).x()-mur.getCorners().get(1).x()), mur.getCorners().get(1).y()-mur.getCorners().get(2).y(), 0);
+            Vec3 vec3retour = new Vec3((float)Math.random()*19 +1, (float)Math.random()*19 +1, 0);
+            return vec3retour;
+        }catch(IOException e){
+
+        }
+        return new Vec3(0,0,0);
     }
 
     public void movePerso(Vec3 vector){
