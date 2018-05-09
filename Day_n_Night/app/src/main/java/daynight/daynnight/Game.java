@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.Model;
@@ -98,18 +99,40 @@ class Game extends GameView{
 
         }*/
 
-
+        StaticModel mur=null, mur2=null, mur3=null;
         try {
-            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
             mur.setType(StaticModel.Type.WALL_TOP);
-            mWorld.addModel(mur);
+
         }catch(IOException ex){
             Log.e("Load Model", ex.getMessage(), ex);
+        }
+
+        if(mur != null) {
+            mur2 = new StaticModel(mur);
+            mur2.StaticTranslate(new Vec3(mur.getCorners().get(0).x()*2, 0, 0));//translate to the side of the other wall
+
+            mur3 = new StaticModel(mur);
+            mur3.StaticTranslate(new Vec3(-mur.getCorners().get(0).x()*2, 0, 0));//translate to the side of the other wall
+
+            mWorld.addModel(mur);
+            mWorld.addModel(mur2);
         }
 
         mArthur = new Arthur(mContext);
         mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+/*
+        if(mur3 != null){
+            mWorld.addModel(mur3);
+
+            for(int i=1; i <= 1000; ++i){
+                StaticModel o = new StaticModel(mur3);
+                o.StaticTranslate(new Vec3(-mur.getCorners().get(0).x()*i*2, 0, 0));//translate to the side of the other wall
+                mWorld.addModel(o);
+            }
+        }
+*/
     }
     /*
         private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
@@ -170,6 +193,7 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
+        world.Move(mArthur.getInWorldID(), new Vec3(-1, 0, 0), getElapsedFrameTime());
 /*
         int temp=0;
         int temp2=0;

@@ -33,6 +33,7 @@ public class Arthur{
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
             this.setSkin(SKIN);
+            mModel.getAnimation().Start();
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override

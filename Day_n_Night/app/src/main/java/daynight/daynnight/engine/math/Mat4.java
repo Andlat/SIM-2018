@@ -82,4 +82,12 @@ public class Mat4 {
 
         return b.toString();
     }
+
+    public boolean equals(Mat4 other) {
+        for(byte i=0; i < mMatrix.length; ++i){
+            if(other.mMatrix[i] != mMatrix[i])
+                return false;
+        }
+        return true;
+    }
 }

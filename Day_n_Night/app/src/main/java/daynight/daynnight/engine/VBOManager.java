@@ -2,6 +2,7 @@ package daynight.daynnight.engine;
 
 import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
@@ -36,8 +37,8 @@ class VBOManager {
     private final int mWorldVAO;
 
     private int mDataSizeInBytes = 0;
-    private float mVBOSizeInMB = .5f;
-    private final static float VBO_SIZE_JUMP_MB = .5f;
+    private float mVBOSizeInMB = 2f;
+    private final static float VBO_SIZE_JUMP_MB = 1f;
 
     //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.
     private final static int VERTEX_ATTRIB = 0, UV_ATTRIB = 1, NORMAL_ATTRIB = 2;
@@ -70,23 +71,26 @@ class VBOManager {
      * @param data Données du modèle
      * @return Offset des données du modèle dans le VBO global
      */
-    int addData(FloatBuffer data){
+    int addData(FloatBuffer data, Integer offset){
         int dataSize = data.remaining() * Util.FLOAT_SIZE;
 
-        CheckSizeForIncrease(dataSize);
+        //CheckSizeForIncrease(dataSize); Devra se faire manuellement finalement
         mDataSizeInBytes += dataSize;
 
-        mVBOData.position(mLastDataPosition);//Go to the end of the data
+        mVBOData.position(offset);//Go where to put the data
         mVBOData.put(data);//Put the data into the VBO buffer
 
-        int offset = mLastDataPosition;//Offset of the start of this data
-        mLastDataPosition = mVBOData.position();//Keep track of the end data
-
+        if(offset == mLastDataPosition)//Keep track of the end data
+            mLastDataPosition = mVBOData.position();
 
         //Send data to OpenGL
         WriteToVBO(offset, dataSize);
 
         return offset;
+    }
+
+    int addData(FloatBuffer data) {
+        return addData(data, mLastDataPosition);//Add data to the end of the buffer
     }
 
     /**

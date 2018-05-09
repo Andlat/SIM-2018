@@ -42,11 +42,12 @@ public abstract class GameView extends GLSurfaceView {
 
     private void init(){
         setEGLContextClientVersion(3);
+        setPreserveEGLContextOnPause(true);
 
         Renderer renderer = new Renderer();
         setRenderer(renderer);
 
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO For testing. Remove RENDER_WHEN_DIRTY
+        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);//TODO For testing. Remove RENDERMODE_WHEN_DIRTY
     }
 
     final public void UseWorld(World world){ mWorld = world; }

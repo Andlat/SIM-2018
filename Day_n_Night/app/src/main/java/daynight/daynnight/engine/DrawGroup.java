@@ -1,10 +1,13 @@
 package daynight.daynnight.engine;
 
+import android.util.Log;
+
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.Model;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Mat4;
 
 /**
@@ -13,10 +16,10 @@ import daynight.daynnight.engine.math.Mat4;
 
 class DrawGroup {
     private List<Model> mList = new ArrayList<>();
-    private Texture mTexture;
+    private Animation mAnimation;
     private Mat4 mModelMatrix;
 
-    private int mVBOOffset=-1, mSize=0;
+    private int mVBOOffsetFloat=-1, mSizeFloat =0;
 
     static class WrongGroupException extends Exception{
         WrongGroupException(){ super("Model has a model matrix or a Texture that is not the same as this group's"); }
@@ -24,46 +27,88 @@ class DrawGroup {
     }
 
     DrawGroup(){}
-    DrawGroup(Model first){
-        initGroup(first);
+    DrawGroup(Model first, VBOManager vbo, int vboOffset){
+        this.setVBOOffset(vboOffset);
+        initGroup(first, vbo);
     }
-    DrawGroup(List<Model> models) throws WrongGroupException{
-        initGroup(models.get(0));
+    DrawGroup(List<Model> models, VBOManager vbo, int vboOffset) throws WrongGroupException{
+        this.setVBOOffset(vboOffset);
+        initGroup(models.get(0), vbo);
 
         final int size = models.size();
         for(int i=1; i < size; ++i ){
-            this.addModel(models.get(i));
+            this.addModel(models.get(i), vbo);
         }
     }
 
-    private void initGroup(Model first){
-        mList.add(first);
-        mSize += first.getVBO().capacity();
+    private void initGroup(Model first, VBOManager vbo){
+        this.addVBO(first, vbo);
 
-        mTexture = first.getOrgTexture();
+        mAnimation = first.getAnimation();
         mModelMatrix = first.getModelMatrix();
     }
 
-    boolean addModel(Model model) {
+    boolean addModel(Model model, VBOManager vbo) {
         if(mList.isEmpty()){
-            initGroup(model);
+            initGroup(model, vbo);
         }else{
             //Check if texture and model matrix is the same as the group's
             if(isGroup(model)) {
-                mList.add(model);
-                mSize += model.getVBO().capacity();
+                this.addVBO(model, vbo);
             }else{
                 return false;
             }
         }
         return true;
     }
+    private void addVBO(Model model, VBOManager vbo){
+        mList.add(model);
 
-    boolean isGroup(Model model){
-        return model.getOrgTexture() == mTexture && model.getModelMatrix() == mModelMatrix;
+        //The order of the 2 following calls is important because of the variable mSizeFloat
+        int offset = mVBOOffsetFloat + mSizeFloat;
+        vbo.addData(model.getVBO(), offset);
+        mSizeFloat += model.getVBO().capacity();
+
+        model.setVBOWorldOffset(offset);
     }
 
-    int getSize(){ return mSize; }
-    void setVBOOffset(int offset){ mVBOOffset = offset; }
-    int getVBOOffset(){ return mVBOOffset; }
+    boolean removeModel(Model model, VBOManager vbo){
+        int index = mList.indexOf(model);
+        if(index == -1) return false;
+
+        if(index < mList.size() -1){//If not last element in the list. If it is, it is not necessary to shift the data.
+            //Shift all the data of this group in the VBO. Now, the data is sequential and can all be drawn with only 1 draw call.
+            int vboOffset = (int)model.getVBOWorldOffset();
+
+            for(int i = index+1; i < mList.size(); ++i){
+                final FloatBuffer data = mList.get(i).getVBO();
+
+                vbo.addData(data, vboOffset);
+                vboOffset += data.capacity();
+            }
+        }
+
+        mSizeFloat -= model.getVBO().capacity();
+        mList.remove(model);
+
+        return true;
+    }
+
+    boolean isGroup(Model model){
+        return model.getAnimation().equals(mAnimation) && model.getModelMatrix().equals(mModelMatrix);
+    }
+
+    List<Model> getModels(){ return mList; }
+    int getQuantity(){return mList.size();}
+
+    int getSizeInFloat(){ return mSizeFloat; }
+
+    void setVBOOffset(int offset){ mVBOOffsetFloat = offset; }
+    int getVBOOffset(){ return mVBOOffsetFloat; }
+
+    Animation getAnimation(){ return mAnimation; }
+    void setAnimation(Animation animation){ mAnimation = animation; }
+
+    Mat4 getModelMatrix(){ return mModelMatrix; }
+    void setModelMatrix(Mat4 modelMat){ mModelMatrix = modelMat; }
 }

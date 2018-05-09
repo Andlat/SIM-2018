@@ -63,7 +63,7 @@ public class Animation {
         mIsAnimationStopped = true;
     }
     public void Start(){
-        mIsAnimationStopped = true;
+        mIsAnimationStopped = false;
     }
 
     void CloneTo(Animation clone){
@@ -71,5 +71,20 @@ public class Animation {
         for(Pair<Texture, Integer> frame : mFrames){
             clone.addFrame(new Pair<>(frame.first, frame.second));
         }
+    }
+
+    public boolean equals(Animation compare){
+        List<Pair<Texture, Integer>> otherFrames = compare.mFrames;
+
+        final int size = mFrames.size();
+        if(size != otherFrames.size())
+            return false;
+
+        for(int i=0; i <size; ++i){
+            if(otherFrames.get(i).first != mFrames.get(i).first)
+                return false;
+        }
+
+        return true;
     }
 }
