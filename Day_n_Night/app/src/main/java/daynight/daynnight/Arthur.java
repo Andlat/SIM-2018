@@ -15,7 +15,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
- * Created by andlat on 2018-04-30.
+ * Created by Nikola Zelovic on 2018-04-30.
  */
 
 public class Arthur{
@@ -33,6 +33,7 @@ public class Arthur{
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
             this.setSkin(SKIN);
+            mModel.getAnimation().Start();
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
@@ -44,6 +45,9 @@ public class Arthur{
             Log.e("Arthur Init", "Failed to load the Arthur model");
         }
     }
+
+    public void Walk(){ mModel.getAnimation().Start(); }
+    public void Stay(){ mModel.getAnimation().Stop(); }
 
     public MovingModel getModel(){ return mModel; }
 

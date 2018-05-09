@@ -1,7 +1,7 @@
 package daynight.daynnight.engine.math;
 
 /**
- * Created by andlat on 2018-02-02.
+ * Created by Nikola Zelovic on 2018-02-02.
  */
 
 public class Vec3 extends Vector {

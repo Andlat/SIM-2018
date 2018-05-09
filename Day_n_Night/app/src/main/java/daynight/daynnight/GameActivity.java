@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
         joystickPerso = (Joystick) findViewById(R.id.joystickPerso);
         joystickPerso.setZOrderOnTop(true);
         joystickPerso.setColor(105,105,105);
-
+/*
         countDownTimer = new CountDownTimer(500, 500) {
             @Override
             public void onTick(long l) {
@@ -56,6 +56,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                 start();
             }
         }.start();
+*/
     }
 
     @Override
@@ -64,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
             case R.id.joystickPerso:
                 persoVec.x(xPercent);
                 persoVec.y(-yPercent);
-                //game.movePerso(persoVec);
+                game.getArthur().Walk();
                 break;
 
             case R.id.joystickTir:
