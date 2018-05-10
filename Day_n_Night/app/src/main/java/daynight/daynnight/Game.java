@@ -41,13 +41,13 @@ class Game extends GameView{
     private int nbrMonstreJaune1;
     private int qttDifficulte;
     private int vieJoueur = 100;
-    private ArrayList<Toutou> mListeToutou;
-    private ArrayList<Projectile> mListeProjectile;
-    private ArrayList<StaticModel> mListePlancher;
-    private ArrayList<StaticModel> mListeMur;
+    private ArrayList<Toutou> mListeToutou = new ArrayList<>();;
+    private ArrayList<Projectile> mListeProjectile = new ArrayList<>();;
+    private ArrayList<StaticModel> mListePlancher = new ArrayList<>();
+    private ArrayList<StaticModel> mListeMur = new ArrayList<>();
     private int i,j,h,k;
-    private ArrayList<Integer> listeToutouDelete;
-    private ArrayList<Integer> listeBalleDelete;
+    private ArrayList<Integer> listeToutouDelete = new ArrayList<>();
+    private ArrayList<Integer> listeBalleDelete = new ArrayList<>();
     private Toutou toutouTest;
     private boolean positionPositiveDuSpawn = false;
 
@@ -75,7 +75,7 @@ class Game extends GameView{
         super.UseWorld(mWorld);
 
         try {
-            MovingModel amiTest = ObjParser.Parse(mContext, "models", "cube.obj").get(0).toMovingModel();
+            MovingModel amiTest = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toMovingModel();
             amiTest.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
             mWorld.addModel(amiTest);
             Vec3 vec3 = getCoordonnesMonstre();
@@ -86,7 +86,7 @@ class Game extends GameView{
         }catch(IOException e){
 
         }
-
+/*
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -114,10 +114,12 @@ class Game extends GameView{
 
         }
 
-
+*/
         mArthur = new Arthur(mContext);
         mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+
+        mWorld.setCamFollowModel(mArthur.getInWorldID());
     }
     private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
         try {
@@ -177,7 +179,8 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-
+        world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+/*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;
@@ -276,25 +279,25 @@ class Game extends GameView{
                 vec3 = getCoordonnesMonstre();
                 for(StaticModel plancher:mListePlancher){
                     mWorld.Translate(this.toutouTest.getmID(), vec3);
-                    if((plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                    if((plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ){
                         this.positionPositiveDuSpawn = true;
                     }else{
@@ -347,25 +350,25 @@ class Game extends GameView{
                 vec3 = getCoordonnesMonstre();
                 for(StaticModel plancher:mListePlancher){
                     mWorld.Translate(this.toutouTest.getmID(), vec3);
-                    if((plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                    if((plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ){
                         this.positionPositiveDuSpawn = true;
                     }else{
@@ -418,25 +421,25 @@ class Game extends GameView{
                 vec3 = getCoordonnesMonstre();
                 for(StaticModel plancher:mListePlancher){
                     mWorld.Translate(this.toutouTest.getmID(), vec3);
-                    if((plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                    if((plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ){
                         this.positionPositiveDuSpawn = true;
                     }else{
@@ -489,25 +492,25 @@ class Game extends GameView{
                 vec3 = getCoordonnesMonstre();
                 for(StaticModel plancher:mListePlancher){
                     mWorld.Translate(this.toutouTest.getmID(), vec3);
-                    if((plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
-                            && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
-                            && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
+                    if((plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).x()
+                            && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y()
+                            && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(1).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ||
-                            (plancher.getCorners().get(1).x() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).x() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
-                                    && plancher.getCorners().get(0).y() < this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
-                                    && plancher.getCorners().get(2).y() > this.mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
+                            (plancher.getCorners().get(1).x() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).x() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).x()
+                                    && plancher.getCorners().get(0).y() < mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y()
+                                    && plancher.getCorners().get(2).y() > mWorld.getModel(this.toutouTest.getmID(), World.State.HIDDEN).getCorners().get(0).y())
                             ){
                         this.positionPositiveDuSpawn = true;
                     }else{
