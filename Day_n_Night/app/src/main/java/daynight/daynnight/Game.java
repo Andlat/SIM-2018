@@ -78,9 +78,9 @@ class Game extends GameView{
 
         mArthur = new Arthur(mContext);
         mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
-        //mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
 
-        //mWorld.setCamFollowModel(mArthur.getInWorldID());
+        mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try {
             StaticModel t1, t2, t3, b1, b2, b3;
@@ -100,7 +100,7 @@ class Game extends GameView{
 
             f = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toMovingModel();
             f.setPhysics(new PhysicsAttributes.MovingModelAttr(0,0, 0, 1));
-            fi = mWorld.addModel(f);
+            //fi = mWorld.addModel(f);
 
         }catch(IOException ex){
             Log.e("Game Init", "Failed to lead game: " + ex.toString(), ex);
@@ -207,11 +207,8 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-        //if(mArthur != null)
-            //world.Move(mArthur.getInWorldID(), new Vec3(-1, 0, 0), getElapsedFrameTime());
-        if(f!=null) {
-            world.Move(fi, new Vec3(1, 0, 0), getElapsedFrameTime());
-        }
+        if(mArthur != null)
+            world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
 /*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
