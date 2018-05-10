@@ -207,9 +207,14 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
+<<<<<<< HEAD
         if(mArthur != null)
             world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
 /*
+=======
+        world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+
+>>>>>>> master
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;

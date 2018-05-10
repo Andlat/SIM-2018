@@ -28,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static daynight.daynnight.ListeObjets.newInstance;
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
 public class Inventaire extends AppCompatActivity
 {
     //Variables
+    static Inventaire inventaire;
     ImageView boutique;
 
     TabLayout tabObjets;
@@ -43,14 +45,12 @@ public class Inventaire extends AppCompatActivity
     Fragment skinsFragment = newInstance(MainActivity.joueur.getSkinsInventaire());
     Fragment decorationsFragment = newInstance(MainActivity.joueur.getDecorationsInventaire());
 
-    //Constructeurs
-    Inventaire() {}
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_inventaire);
+        inventaire = this;
 
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
@@ -90,6 +90,7 @@ public class Inventaire extends AppCompatActivity
                             view.performClick();
                             startActivity(new Intent(Inventaire.this, Boutique.class));
                             finish();
+                            SurChangementActivity = true;
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -128,10 +129,20 @@ public class Inventaire extends AppCompatActivity
     }
 
     @Override
+    protected void onPause()
+    {
+        super.onPause();
+        //onPause = false;
+    }
+
+    @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)//TODO le problème est ici
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override
@@ -141,6 +152,12 @@ public class Inventaire extends AppCompatActivity
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
+    }
     //Méthodes
 
     //custom ArrayAdapter

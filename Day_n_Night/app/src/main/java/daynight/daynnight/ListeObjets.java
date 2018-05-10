@@ -20,6 +20,8 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
+
 
 public class ListeObjets extends Fragment
 {
@@ -56,6 +58,7 @@ public class ListeObjets extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 infosObjetInventaire.startActivity(objets.get(position), position, getContext(), objets.get(position).getAcquis());
+                SurChangementActivity = true;
             }
         });
 

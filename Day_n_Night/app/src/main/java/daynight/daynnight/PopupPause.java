@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
+import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
+
 public class PopupPause extends Activity {
 
     @Override
@@ -47,6 +51,7 @@ public class PopupPause extends Activity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ListeBadges.class));
+                SurChangementActivity = true;
 
             }
         });
@@ -55,7 +60,7 @@ public class PopupPause extends Activity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Inventaire.class));
-
+                SurChangementActivity = true;
             }
         });
 
@@ -63,7 +68,7 @@ public class PopupPause extends Activity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
+                SurChangementActivity = true;
             }
         });
 
@@ -71,9 +76,31 @@ public class PopupPause extends Activity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-
+                SurChangementActivity = true;
             }
         });
     }
+    @Override
+    protected void onStop()
+    {
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        MainActivity.musiqueDeFond.start();
+        super.onResume();
+    }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
+    }
 }
