@@ -1,6 +1,7 @@
 package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +41,14 @@ class DrawingManager {
         }
 
         private void onModelMatChanged(Model _this, DrawGroup group){
+            Log.e("ENTER1", "ENTER1");
             if (!_this.getModelMatrix().equals(group.getModelMatrix())) {
                 //If the model is the only element in the group, only change the model mat of the group
+                Log.e("ENTER2", "ENTER2");
                 if (group.getQuantity() == 1) {
+                    Log.e("ENTER3", "ENTER3");
                     group.setModelMatrix(_this.getModelMatrix());
+                    Log.e("ENTER4", "ENTER4");
                 } else {
                     CreateNewGroup(_this);
                 }

@@ -22,7 +22,7 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Arthur{
     private MovingModel mModel = null;
     private final Context mContext;
-    private long mInWorldID;
+    private long mInWorldID=-1;
 
     private Vec3 mDirection = new Vec3();
 

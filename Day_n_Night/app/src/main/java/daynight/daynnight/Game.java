@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,12 +69,44 @@ class Game extends GameView{
     }
 
     Arthur getArthur(){ return mArthur; }
-
+    MovingModel f;
+    long fi;
     @Override
     protected void onCreate() {
         mWorld = new World();
         super.UseWorld(mWorld);
 
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        //mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+
+        //mWorld.setCamFollowModel(mArthur.getInWorldID());
+
+        try {
+            StaticModel t1, t2, t3, b1, b2, b3;
+            t1 = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            t1.setType(StaticModel.Type.FLOOR);
+            t1.StaticTranslate(new Vec3(0, 2, 0));
+
+            t2 = new StaticModel(t1);
+            t3 = new StaticModel(t1);
+
+            t2.StaticTranslate(new Vec3(-2, 0, 0));
+            t3.StaticTranslate(new Vec3(2, 0, 0));
+
+//            mWorld.addModel(t1);
+  //          mWorld.addModel(t2);
+    //        mWorld.addModel(t3);
+
+            f = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toMovingModel();
+            f.setPhysics(new PhysicsAttributes.MovingModelAttr(0,0, 0, 1));
+            fi = mWorld.addModel(f);
+
+        }catch(IOException ex){
+            Log.e("Game Init", "Failed to lead game: " + ex.toString(), ex);
+        }
+
+/*
         try {
             MovingModel amiTest = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toMovingModel();
             amiTest.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -86,7 +119,7 @@ class Game extends GameView{
         }catch(IOException e){
 
         }
-/*
+
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -115,11 +148,6 @@ class Game extends GameView{
         }
 
 */
-        mArthur = new Arthur(mContext);
-        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-
-        mWorld.setCamFollowModel(mArthur.getInWorldID());
     }
     private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
         try {
@@ -179,7 +207,11 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+        //if(mArthur != null)
+            //world.Move(mArthur.getInWorldID(), new Vec3(-1, 0, 0), getElapsedFrameTime());
+        if(f!=null) {
+            world.Move(fi, new Vec3(1, 0, 0), getElapsedFrameTime());
+        }
 /*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
@@ -552,6 +584,7 @@ class Game extends GameView{
                 }
             });
         }
+*/
     }
 
     private Vec3 getCoordonnesMonstre() {

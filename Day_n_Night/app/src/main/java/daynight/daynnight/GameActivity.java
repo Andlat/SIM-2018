@@ -66,7 +66,9 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                 persoVec.x(xPercent);
                 persoVec.y(yPercent);
 
-                game.getArthur().setDirection(persoVec);
+                Arthur arthur = game.getArthur();
+                if(arthur != null)
+                    arthur.setDirection(persoVec);
                 break;
 
             case R.id.joystickTir:

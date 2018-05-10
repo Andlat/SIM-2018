@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ma = this;
 
-        //getApplicationContext().deleteFile(fichierJoueur.getName());
+        getApplicationContext().deleteFile(fichierJoueur.getName());
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
             Scanner actualiser = new Scanner(lireJoueur());

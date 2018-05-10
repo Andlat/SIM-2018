@@ -58,4 +58,14 @@ public final class Util {
         }
         return list;
     }
+
+    private String getFloatBufferString(FloatBuffer buf){
+        StringBuilder sb = new StringBuilder("Buffer{");
+        buf.position(0);
+        for(int i=0; i < buf.capacity(); ++i){
+            sb.append(buf.get(i)).append(", ");
+        }
+        sb.append("}");
+        return sb.toString();
+    }
 }

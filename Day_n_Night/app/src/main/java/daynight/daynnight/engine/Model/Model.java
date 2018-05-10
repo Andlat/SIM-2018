@@ -2,6 +2,7 @@ package daynight.daynnight.engine.Model;
 
 import android.opengl.Matrix;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 
 import java.nio.FloatBuffer;
@@ -46,6 +47,7 @@ public class Model {
     private onModelChangedListener mOnModelChangedListener;
     public void setOnModelMatChangedListener(onModelChangedListener listener){
         mOnModelChangedListener = listener;
+        Log.e("Listener", "listener: " + listener.toString());
     }
 
     public Model(){
@@ -181,7 +183,7 @@ public class Model {
     public final Mat4 getModelMatrix(){ return mModelMatrix; }
     public final void setModelMatrix(Mat4 matrix){
         mModelMatrix = matrix;
-
+Log.e("ModelMat", mModelMatrix.toString());
         if(mOnModelChangedListener != null)
             mOnModelChangedListener.onModelMatChanged(this, onModelChangedListener.Changed.MODEL_MAT);
     }
