@@ -20,9 +20,9 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
     private Button buttonMenu;
     private Joystick joystickTir;
     private Joystick joystickPerso;
-    private Vec3 persoVec;
+    private Vec3 persoVec = new Vec3();
     private Game game;
-    private Vec3 balleVec;
+    private Vec3 balleVec = new Vec3();
     private CountDownTimer countDownTimer;
 
     @Override
@@ -64,13 +64,14 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
         switch(source){
             case R.id.joystickPerso:
                 persoVec.x(xPercent);
-                persoVec.y(-yPercent);
-                game.getArthur().Walk();
+                persoVec.y(yPercent);
+
+                game.getArthur().setDirection(persoVec);
                 break;
 
             case R.id.joystickTir:
                 balleVec.x(xPercent);
-                balleVec.y(-yPercent);
+                balleVec.y(yPercent);
                 break;
         }
     }

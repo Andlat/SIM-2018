@@ -12,28 +12,30 @@ import daynight.daynnight.engine.Model.MovingModel;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
+import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 /**
  * Created by Nikola Zelovic on 2018-04-30.
  */
 
-public class Arthur{
+class Arthur{
     private MovingModel mModel = null;
     private final Context mContext;
     private long mInWorldID;
-
+    
+    private Vec3 mDirection = new Vec3();
+    
     private final int FRAME_LENGTH = 200;
-    private final int SKIN = MainActivity.joueur.getSkin();
 
-    public Arthur(Context context){
+    Arthur(Context context){
         mContext = context;
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
-            this.setSkin(SKIN);
-            mModel.getAnimation().Start();
+            this.setSkin(MainActivity.joueur.getSkin());
+            this.Walk();
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
@@ -46,21 +48,24 @@ public class Arthur{
         }
     }
 
-    public void Walk(){ mModel.getAnimation().Start(); }
-    public void Stay(){ mModel.getAnimation().Stop(); }
+    void Walk(){ mModel.getAnimation().Start(); }
+    void Stay(){ mModel.getAnimation().Stop(); }
 
-    public MovingModel getModel(){ return mModel; }
+    MovingModel getModel(){ return mModel; }
 
-    public void setInWorldID(long id){
+    void setInWorldID(long id){
         mInWorldID = id;
     }
-    public long getInWorldID(){ return mInWorldID; }
+    long getInWorldID(){ return mInWorldID; }
 
-    public void setSkin(int firstFrameSkinResID) throws IOException{
+    void setSkin(int firstFrameSkinResID) throws IOException{
         Animation skin = new Animation();
         for(byte i=0; i < 5; ++i)
             skin.addFrame(new Pair<>(Texture.Load(mContext, firstFrameSkinResID+i), FRAME_LENGTH));
 
         mModel.setAnimation(skin);
     }
+    
+    void setDirection(Vec3 dir){ mDirection=dir; }
+    Vec3 getDirection(){ return mDirection; }
 }
