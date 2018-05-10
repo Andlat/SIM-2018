@@ -53,7 +53,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
@@ -135,6 +137,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MapActivity.this, PopupPause.class));
+                SurChangementActivity = true;
             }
         });
 
@@ -161,9 +164,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
+    }
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
     }
 
     /**
@@ -481,6 +493,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                     actualPoi = (Poi) marker.getTag();
                     if(Objects.requireNonNull(actualPoi).isActive()){
                         startActivityForResult(new Intent(getApplicationContext(), PopupRecompenses.class),1);
+                        SurChangementActivity = true;
                     }else{
                         Toast.makeText(getApplicationContext(),getString(R.string.recompense_dipo_dans) + String.valueOf(actualPoi.getTimeLeft()) + getString(R.string.secondes), Toast.LENGTH_SHORT).show();
                     }

@@ -13,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 /**
  * Created by Antoine Mascolo on 2018-04-17.
@@ -151,12 +153,14 @@ public class PopupRecompenses extends Activity {
         });
 
     }
-
     @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override
@@ -164,5 +168,12 @@ public class PopupRecompenses extends Activity {
     {
         MainActivity.musiqueDeFond.start();
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
     }
 }

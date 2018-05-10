@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         musiqueDeFond.start();
     }
+
     @Override
     protected void onStop()
     {

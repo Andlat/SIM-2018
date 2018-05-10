@@ -13,19 +13,17 @@
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/icone"
+        android:roundIcon="@drawable/icone"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.FullScreen">
+        android:theme="@style/AppTheme.PleinEcran">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkJvT6IguUIXVbBAe8-0l2vO1RWbxW4Tk" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity android:name=".Inventaire" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +42,7 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
+        <activity android:name=".Inventaire" />
         <activity
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />

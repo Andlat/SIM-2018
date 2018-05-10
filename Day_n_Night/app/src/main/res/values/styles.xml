@@ -8,10 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.FullScreen">
+    <style name="AppTheme.PleinEcran">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="colorPrimary">@color/beige</item>
         <item name="colorPrimaryDark">@color/beigeFonce</item>
         <item name="colorAccent">@color/colorAccent</item>

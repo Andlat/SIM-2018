@@ -138,26 +138,17 @@
             android:visibility="invisible">
 
             <Button
-                android:id="@+id/boutiqueAcheterHorizontale"
+                android:id="@+id/utiliserAcheterHorizontale"
                 android:background="@drawable/style_button_ripple_coin"
+                android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="@string/acheter" />
-
-            <Button
-                android:id="@+id/inventaireUtiliserHorizontale"
-                android:background="@drawable/style_button_ripple_coin"
-                android:layout_toStartOf="@id/fermerHorizontale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="@string/utiliser" />
+                android:layout_marginEnd="10dp" />
 
             <Button
                 android:id="@+id/fermerHorizontale"
-                android:layout_toEndOf="@id/boutiqueAcheterHorizontale"
-                android:layout_alignBottom="@id/boutiqueAcheterHorizontale"
+                android:layout_toEndOf="@id/utiliserAcheterHorizontale"
+                android:layout_alignBottom="@id/utiliserAcheterHorizontale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/style_button_ripple_coin"
@@ -176,29 +167,18 @@
         android:visibility="invisible">
 
         <Button
-            android:id="@+id/boutiqueAcheterVerticale"
+            android:id="@+id/utiliserAcheterVerticale"
             android:background="@drawable/style_button_ripple_coin"
             android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/acheter" />
-
-        <Button
-            android:id="@+id/inventaireUtiliserVerticale"
-            android:background="@drawable/style_button_ripple_coin"
-            android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@id/fermerVerticale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/utiliser" />
+            android:layout_marginEnd="10dp" />
 
         <Button
             android:id="@+id/fermerVerticale"
             android:background="@drawable/style_button_ripple_coin"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/boutiqueAcheterVerticale"
+            android:layout_toEndOf="@id/utiliserAcheterVerticale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

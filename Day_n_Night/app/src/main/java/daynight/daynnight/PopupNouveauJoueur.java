@@ -18,8 +18,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.fichierJoueur;
 import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 /**
  * Created by sebastien on 18-03-17.
@@ -63,6 +65,7 @@ public class PopupNouveauJoueur extends Activity
                         e.printStackTrace();
                     }
                     finish();
+                    SurChangementActivity = false;
                 }
                 else
                 {
@@ -90,11 +93,14 @@ public class PopupNouveauJoueur extends Activity
             getWindow().setLayout((int) (height * 0.85), (int) (width * 0.40));
         }
     }
-
     @Override
     protected void onStop()
     {
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override

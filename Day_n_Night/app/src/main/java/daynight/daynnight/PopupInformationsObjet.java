@@ -17,6 +17,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 
 /**
@@ -31,8 +32,7 @@ public class PopupInformationsObjet extends Activity
     RelativeLayout boutons;
     Button fermer;
 
-    Button acheter;
-    Button utiliser;
+    Button utiliserAcheter;
     LinearLayout prixLayout;
     LinearLayout caracteristiquesOutil;
 
@@ -55,37 +55,33 @@ public class PopupInformationsObjet extends Activity
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            fermer = (Button) findViewById(R.id.fermerVerticale);
-            boutons = (RelativeLayout) findViewById(R.id.BoutonsVerticale);
-            acheter = (Button) findViewById(R.id.boutiqueAcheterVerticale);
-            utiliser = (Button) findViewById(R.id.inventaireUtiliserVerticale);
+            fermer = findViewById(R.id.fermerVerticale);
+            boutons = findViewById(R.id.BoutonsVerticale);
+            utiliserAcheter = findViewById(R.id.utiliserAcheterVerticale);
             getWindow().setLayout((int) (width * 0.85), (int) (height * 0.75));
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fermer = (Button) findViewById(R.id.fermerHorizontale);
-            boutons = (RelativeLayout) findViewById(R.id.BoutonsHorizontale);
-            acheter = (Button) findViewById(R.id.boutiqueAcheterHorizontale);
-            utiliser = (Button) findViewById(R.id.inventaireUtiliserHorizontale);
+            fermer = findViewById(R.id.fermerHorizontale);
+            boutons = findViewById(R.id.BoutonsHorizontale);
+            utiliserAcheter = findViewById(R.id.utiliserAcheterHorizontale);
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
         boutons.setVisibility(View.VISIBLE);
 
-        prixLayout = (LinearLayout) findViewById(R.id.boutiquePrix);
+        prixLayout = findViewById(R.id.boutiquePrix);
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
-        MarginLayoutParams paramsAcheter = (MarginLayoutParams) acheter.getLayoutParams();
-        MarginLayoutParams paramsUtiliser = (MarginLayoutParams) utiliser.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
         objet = getIntent().getExtras().getParcelable("objet");
 
-        caracteristiquesOutil = (LinearLayout) findViewById(R.id.caracteristiquesOutil);
-        nom = (TextView) findViewById(R.id.nom);
-        prix = (TextView) findViewById(R.id.prix);
-        description = (TextView) findViewById(R.id.description);
-        rarete  = (TextView) findViewById(R.id.rarete);
-        portee = (TextView) findViewById(R.id.portee);
-        nbCibles = (TextView) findViewById(R.id.nbCibles);
-        toucherParCoup = (TextView) findViewById(R.id.toucherParCoup);
-        intervalleParCoup = (TextView) findViewById(R.id.intervalleParCoup);
-        imageObjet = (ImageViewCarre) findViewById(R.id.imageObjet);
+        caracteristiquesOutil = findViewById(R.id.caracteristiquesOutil);
+        nom = findViewById(R.id.nom);
+        prix = findViewById(R.id.prix);
+        description = findViewById(R.id.description);
+        rarete  = findViewById(R.id.rarete);
+        portee = findViewById(R.id.portee);
+        nbCibles = findViewById(R.id.nbCibles);
+        toucherParCoup = findViewById(R.id.toucherParCoup);
+        intervalleParCoup = findViewById(R.id.intervalleParCoup);
+        imageObjet = findViewById(R.id.imageObjet);
         nom.setText(objet.getNom());
         prix.setText(String.valueOf(objet.getPrix()));
         description.setText(objet.getDescription());
@@ -112,12 +108,10 @@ public class PopupInformationsObjet extends Activity
 
         if (!objet.getAcquis())
         {
-            //paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            //paramsAcheter.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            paramsUtiliser.width = 0;
-            paramsUtiliser.setMarginEnd(0);
+            paramsPrix.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            utiliserAcheter.setText(getString(R.string.acheter));
 
-            acheter.setOnClickListener(new View.OnClickListener()
+            utiliserAcheter.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -125,28 +119,21 @@ public class PopupInformationsObjet extends Activity
                     if(MainActivity.joueur.getBiscuits() >= objet.getPrix())
                     {
                         objet.setAcquis(true);
-                        if(objet.getType() == Objet.Type.Outil)
-                        {
+                        if (objet.getType() == Objet.Type.Outil) {
                             MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
-                            //ListeObjets.adapteur.retirementView(getIntent().getExtras().getInt("position"));
-                            //ListeObjets.adapteur.notifyDataSetChanged();
-                            //Boutique.viewPager.getAdapter().notifyDataSetChanged();
-                            //Boutique.adapteurDeSection.notifyDataSetChanged();
-                        }
-                        else if(objet.getType() == Objet.Type.Skin)
-                        {
+                            MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+                        } else if (objet.getType() == Objet.Type.Skin) {
                             MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-                        }
-                        else if(objet.getType() == Objet.Type.Décoration)
-                        {
+                            MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+                        } else if (objet.getType() == Objet.Type.Décoration) {
                             MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
-                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+                            MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
                         }
-                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits()-objet.getPrix());
-                        Boutique.biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));
                         finish();
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() - objet.getPrix());
+                        Boutique.biscuits.setText(String.valueOf(MainActivity.joueur.getBiscuits()));
+                        Boutique.boutique.finish();
+                        startActivity(Inventaire.inventaire.getIntent());
                     }
                     else
                     {
@@ -157,12 +144,10 @@ public class PopupInformationsObjet extends Activity
         }
         else if (objet.getAcquis())
         {
-            paramsUtiliser.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            //paramsPrix.width = 0;
-            //paramsAcheter.width = 0;
-            //paramsAcheter.setMarginEnd(0);
+            paramsPrix.width = 0;
+            utiliserAcheter.setText(getString(R.string.utiliser));
 
-            utiliser.setOnClickListener(new View.OnClickListener()
+            utiliserAcheter.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -192,12 +177,11 @@ public class PopupInformationsObjet extends Activity
                         //TODO
                     }
                     finish();
+                    SurChangementActivity = false;
                 }
             });
         }
         prixLayout.setLayoutParams(paramsPrix);
-        acheter.setLayoutParams(paramsAcheter);
-        utiliser.setLayoutParams(paramsUtiliser);
 
         if (objet.getType().equals(Objet.Type.Nul)) {}
         else if(objet.getType().equals(Objet.Type.Outil))
@@ -215,15 +199,18 @@ public class PopupInformationsObjet extends Activity
             public void onClick(View view)
             {
                 finish();
+                SurChangementActivity = false;
             }
         });
     }
-
     @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override
@@ -231,6 +218,13 @@ public class PopupInformationsObjet extends Activity
     {
         MainActivity.musiqueDeFond.start();
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
     }
 
     //Getteurs & setteurs

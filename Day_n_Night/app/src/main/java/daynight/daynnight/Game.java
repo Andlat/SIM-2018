@@ -180,7 +180,7 @@ class Game extends GameView{
     @Override
     protected void onDrawFrame(World world) {
         world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
-/*
+
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;
