@@ -189,7 +189,7 @@ class DrawingManager {
 
         //Log.e("Size", "S: "+mGroups.size()+" ; F: "+frameElapsedTime);
 
-        //Sort the groups depending on their Z-index
+        //FOR Z-INDEX: Sort the groups depending on their Z-index
         mZSorter.sort();
 
         for(DrawGroup group : mZOrderedGroups){
