@@ -119,14 +119,17 @@ public class PopupInformationsObjet extends Activity
                     if(MainActivity.joueur.getBiscuits() >= objet.getPrix())
                     {
                         objet.setAcquis(true);
-                        if (objet.getType() == Objet.Type.Outil) {
-                            MainActivity.joueur.getOutilsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                        if (objet.getType() == Objet.Type.Outil)
+                        {
+                            MainActivity.joueur.getOutilsInventaire().add(objet);
                             MainActivity.joueur.getOutilsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
-                        } else if (objet.getType() == Objet.Type.Skin) {
-                            MainActivity.joueur.getSkinsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                        } else if (objet.getType() == Objet.Type.Skin)
+                        {
+                            MainActivity.joueur.getSkinsInventaire().add(objet);
                             MainActivity.joueur.getSkinsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
-                        } else if (objet.getType() == Objet.Type.Décoration) {
-                            MainActivity.joueur.getDecorationsInventaire().set(getIntent().getExtras().getInt("position"), objet);
+                        } else if (objet.getType() == Objet.Type.Décoration)
+                        {
+                            MainActivity.joueur.getDecorationsInventaire().add(objet);
                             MainActivity.joueur.getDecorationsBoutique().set(getIntent().getExtras().getInt("position"), new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
                         }
                         finish();

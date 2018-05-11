@@ -14,16 +14,32 @@ import java.io.File;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import daynight.daynnight.Objet.Type;
+
+import static daynight.daynnight.Objet.Type.Décoration;
+import static daynight.daynnight.Objet.Type.Outil;
+import static daynight.daynnight.Objet.Type.Skin;
 
 public class MainActivity extends AppCompatActivity
 {
     static MainActivity ma;
     static File fichierJoueur = new File("joueurDNN");
+    static File fichierOutilsInventaire = new File("outilsInventaireDNN");
+    static File fichierSkinsInventaire = new File("skinsInventaireDNN");
+    static File fichierDecorationsInventaire = new File("decorationsInventaireDNN");
+    static File fichierOutilsBoutique = new File("outilsBoutiqueDNN");
+    static File fichierSkinsBoutique = new File("skinsBoutiqueDNN");
+    static File fichierDecorationsBoutique = new File("decorationsBoutiqueDNN");
     public static Joueur joueur;
 
     public static boolean onPause = false;
@@ -40,11 +56,28 @@ public class MainActivity extends AppCompatActivity
         ma = this;
 
         //getApplicationContext().deleteFile(fichierJoueur.getName());
+        //getApplicationContext().deleteFile(fichierSkinsInventaire.getName());
+        //getApplicationContext().deleteFile(fichierSkinsBoutique.getName());
+        //getApplicationContext().deleteFile(fichierOutilsBoutique.getName());
+        //getApplicationContext().deleteFile(fichierOutilsInventaire.getName());
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
-            Scanner actualiser = new Scanner(lireJoueur());
-            joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
-            Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
+            Scanner actualiser;
+            try
+            {
+                actualiser = new Scanner(lireJoueur());
+                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
+                Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
+            }
+            catch (NoSuchElementException e)
+            {
+                e.printStackTrace();
+                startActivity(new Intent(MainActivity.this, PopupNouveauJoueur.class));
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
         }
         else
         {
@@ -166,24 +199,61 @@ public class MainActivity extends AppCompatActivity
     {
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
-            //Lire le joueur sauvegardé
-            String sauvegarDeJoueur = lireJoueur();
-            if(sauvegarDeJoueur == null)
-                sauvegarDeJoueur = "";
-
-
             //nouvelle souvegarde du joueur en string
             String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getSkin() + " " + joueur.getBiscuits(); //TODO À mettre les autres
+            String nouvOutilsInventaire = "";
+            for(int i = 0 ; i < joueur.getOutilsInventaire().size() ; i++)
+            {
+                nouvOutilsInventaire = nouvOutilsInventaire + joueur.getOutilsInventaire().get(i).getId() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getNom() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getDescription() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getType() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getRarete() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getPortee() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getPrix() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getToucherParCoup() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getNbCibles() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getIntervalleParCoup() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getImageDrawableString() + System.lineSeparator() + joueur.getOutilsInventaire().get(i).getAcquis() + System.lineSeparator();
+            }
+            String nouvSkinsInventaire = "";
+            for(int i = 0 ; i < joueur.getSkinsInventaire().size() ; i++)
+            {
+                nouvSkinsInventaire = nouvSkinsInventaire + joueur.getSkinsInventaire().get(i).getId() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getNom() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getDescription() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getType() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getRarete() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getPortee() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getPrix() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getToucherParCoup() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getNbCibles() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getIntervalleParCoup() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getImageDrawableString() + System.lineSeparator() + joueur.getSkinsInventaire().get(i).getAcquis() + System.lineSeparator();
+            }
+            String nouvOutilsBoutique = "";
+            for(int i = 0 ; i < joueur.getOutilsBoutique().size() ; i++)
+            {
+                nouvOutilsBoutique = nouvOutilsBoutique + joueur.getOutilsBoutique().get(i).getId() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getNom() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getDescription() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getType() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getRarete() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getPortee() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getPrix() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getToucherParCoup() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getNbCibles() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getIntervalleParCoup() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getImageDrawableString() + System.lineSeparator() + joueur.getOutilsBoutique().get(i).getAcquis() + System.lineSeparator();
+            }
+            String nouvSkinsBoutique = "";
+            for(int i = 0 ; i < joueur.getSkinsBoutique().size() ; i++)
+            {
+                nouvSkinsBoutique = nouvSkinsBoutique + joueur.getSkinsBoutique().get(i).getId() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getNom() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getDescription() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getType() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getRarete() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getPortee() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getPrix() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getToucherParCoup() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getNbCibles() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getIntervalleParCoup() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getImageDrawableString() + System.lineSeparator() + joueur.getSkinsBoutique().get(i).getAcquis() + System.lineSeparator();
+            }
 
             //Écrire dans le fichier
-            FileOutputStream enregistrer = null;
+            FileOutputStream enregistrerJoueur = null;
+
+            FileOutputStream enregistrerOutilsInventaire = null;
+            FileOutputStream enregistrerSkinsInventaire = null;
+            //FileOutputStream enregistrerDecorationsInventaire = null;
+            FileOutputStream enregistrerOutilsBoutique = null;
+            FileOutputStream enregistrerSkinsBoutique = null;
+            //FileOutputStream enregistrerDecorationsBoutique = null;
 
             try
             {
-                enregistrer = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
-                enregistrer.write(nouvJoueur.getBytes());
-
+                enregistrerJoueur = openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE);
+                enregistrerJoueur.write(nouvJoueur.getBytes());
                 Log.wtf("J sauvegardé MAINTENANT ", nouvJoueur);
+
+                enregistrerOutilsInventaire = openFileOutput(fichierOutilsInventaire.getName(), Context.MODE_PRIVATE);
+                enregistrerOutilsInventaire.write(nouvOutilsInventaire.getBytes());
+                Log.wtf("OI sauvegardé MAINTENANT ", nouvOutilsInventaire);
+
+                enregistrerSkinsInventaire = openFileOutput(fichierSkinsInventaire.getName(), Context.MODE_PRIVATE);
+                enregistrerSkinsInventaire.write(nouvSkinsInventaire.getBytes());
+                Log.wtf("SI sauvegardé MAINTENANT ", nouvSkinsInventaire);
+
+                enregistrerOutilsBoutique = openFileOutput(fichierOutilsBoutique.getName(), Context.MODE_PRIVATE);
+                enregistrerOutilsBoutique.write(nouvOutilsBoutique.getBytes());
+                Log.wtf("OB sauvegardé MAINTENANT ", nouvOutilsBoutique);
+
+                enregistrerSkinsBoutique = openFileOutput(fichierSkinsBoutique.getName(), Context.MODE_PRIVATE);
+                enregistrerSkinsBoutique.write(nouvSkinsBoutique.getBytes());
+                Log.wtf("SB sauvegardé MAINTENANT ", nouvSkinsBoutique);
+
             }
             catch (IOException e)
             {
@@ -193,7 +263,11 @@ public class MainActivity extends AppCompatActivity
             {
                 try
                 {
-                    enregistrer.close();//Fermer le fichier
+                    enregistrerJoueur.close();//Fermer le fichier
+                    enregistrerOutilsInventaire.close();
+                    enregistrerSkinsInventaire.close();
+                    enregistrerOutilsBoutique.close();
+                    enregistrerSkinsBoutique.close();
                 }
                 catch (IOException e)
                 {

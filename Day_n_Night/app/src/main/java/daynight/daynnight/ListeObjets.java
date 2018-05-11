@@ -7,6 +7,8 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -107,13 +109,40 @@ public class ListeObjets extends Fragment
             view.setPaddingRelative(20,20,20,20);
 
             ImageViewCarre objet = view.findViewById(R.id.objet);
-            objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
+            bitmap = getBitmapGrandeur(bitmap, 80);
+            objet.setImageBitmap(bitmap);
 
             return view;
         }
         public List<Outil> getObjets()
         {
             return this.objets;
+        }
+    }
+    public Bitmap getBitmapGrandeur(Bitmap image, int maxSize)
+    {
+        int width, height;
+        if(image != null)
+        {
+            width = image.getWidth();
+            height = image.getHeight();
+
+            float bitmapRatio = (float) width / (float) height;
+            if (bitmapRatio > 1)
+            {
+                width = maxSize;
+                height = (int) (width / bitmapRatio);
+            } else
+            {
+                height = maxSize;
+                width = (int) (height * bitmapRatio);
+            }
+            return Bitmap.createScaledBitmap(image, width, height, true);
+        }
+        else
+        {
+           return image;
         }
     }
 }

@@ -1,0 +1,696 @@
+0
+Pain baguette
+Avec sa mie moelleuse et sa croûte croustillante, la chaude baguette française va faire raffoler les toutous.
+Outil
+1
+Rapprochée
+44
+20
+1
+1.6
+objet_outil_baguette_francaise
+false
+1
+Crayon à mine
+Bien aguisé, ce crayon vous aidera certainement à éloigner vos adversaires.
+Outil
+1
+Rapprochée
+44
+25
+1
+2
+objet_outil_crayon_mine
+false
+2
+Bleuet
+Ces bleuets géants sont tant remplis d'OGM, de pesticides qu'ils seraient responsables de la hausse de popularité du bio chez les toutous.
+Outil
+1
+Éloignée
+44
+5
+1
+0.4
+objet_outil_bleuet
+false
+57
+Carotte
+Aliment #1 des lapins, les toutous vont sans aucun doute l'apprécier.
+Outil
+1
+Rapprochée
+58
+15
+1
+1
+balle12
+false
+46
+Frites
+Bien chaudes et croustillante, elle deviendront le régal de tous les toutous de ce monde.
+Outil
+2
+Éloignée
+58
+6
+1
+0.4
+balle03
+false
+3
+Seau d'eau
+Rien de mieux qu'un bon seau d'eau en pleine face pour surprendre vos adversaires!
+Outil
+1
+Éloignée
+58
+45
+1
+3
+objet_outil_seau_deau_0
+false
+4
+Melon d'eau
+Votre ami Antoine dit que si ces melons contiennent tant d'eau c'est à cause qu'ils poussent sur le bord d'une rivière magique.
+Outil
+1
+Éloignée
+58
+30
+1
+2
+objet_outil_melon_deau_0
+false
+5
+Boule de neige
+Préparez vos munitions et démarrer la bataille de boules de neiges contre vos ennemis!
+Outil
+1
+Éloignée
+58
+15
+1
+1
+objet_outil_boule_neige
+false
+6
+Framboise
+En vérité, la framboise n,est pas un fruit. Elle est enfait un ensemble de 40 à 80 drupéoles qui représentent chacun un petit fruit.
+Outil
+1
+Éloignée
+58
+6
+1
+0.4
+objet_outil_framboise
+false
+7
+Coeur
+Quelqu'un vous a déjà dit que la violence n'arrange rien? Utilisez donc l'amour pour combattre vos adversaires!
+Outil
+1
+Éloignée
+64
+16
+1
+1
+objet_outil_coeur_0
+false
+8
+Ballon de plage
+Personne ne sait pourquoi, mais les toutous ont une terrible phobie des ballons de plage.
+Outil
+1
+Éloignée
+76
+18
+1
+1
+objet_outil_ballon_plage
+false
+9
+Frisbee bleu
+Bien qu'il prenne du temps à être lancé, ce frisbee peut toucher jusqu'à deux toutous en un seul coup!
+Outil
+1
+Éloignée
+89
+20
+2
+2
+objet_outil_frisbee_bleu₀
+false
+10
+Noix de coco
+Heureusement que les toutous ont la tête molle. Car une noix de coco sur le coco, ça ne doit pas faire du bien!
+Outil
+1
+Éloignée
+89
+20
+1
+1
+objet_outil_noix_coco_0
+false
+11
+Poireau
+C'est pas pour rien que le détective d'Agatha Cristie s'appele Hercule Poireau. Utilisez ceci pour découvrir le point faible de tous les toutous!
+Outil
+1
+Éloignée
+89
+12
+1
+0.6
+objet_outil_poireau
+false
+55
+Cerises
+
+Outil
+1
+Éloignée
+89
+20
+1
+1
+balle10
+false
+56
+Baies
+
+Outil
+1
+Éloignée
+89
+20
+1
+1
+balle11
+false
+48
+Pepsi
+
+Outil
+2
+Éloignée
+89
+20
+1
+1
+balle05
+false
+49
+Boule de crème-glacée
+Saviez-vous qu'un américain moyen consomme environ 23 litres de crème glacée par année? Il y a dequoi rendre jaloux ces gourmants toutous!
+Outil
+1
+Éloignée
+89
+20
+1
+1
+balle14
+false
+44
+Bacon
+Rien de mieux que du bon bacon pour se graisser les artères.
+Outil
+2
+Rapprochée
+125
+10
+1
+0.4
+balle01
+false
+52
+Jus de pommes
+
+Outil
+1
+Éloignée
+125
+25
+1
+1
+balle07
+false
+12
+Bambouzla à bleuets
+Les bleuets aux OGM sont de retour dans ce rapide Bambouzla.
+Outil
+1
+Éloignée
+125
+5
+1
+0.2
+objet_outil_bambouzla_bleuets
+false
+13
+Mangue
+MANGO MANGO MANGO MANGO MANGO MANGO MANGOOOOOOOOOOOOOOOOO
+Outil
+1
+Éloignée
+125
+25
+1
+1
+objet_outil_mangue
+false
+14
+Poké Ball
+La Poké-Ball est la première balle obtenue par un dresseur. Elle est aussi la plus commune et la plus utilisée pour attraper des pokémons.
+Outil
+1
+Éloignée
+164
+30
+1
+1
+objet_outil_pokeball
+false
+15
+Bambouzla à framboises
+Ces savoureuses framboises deviennent redoutables lorsqu'elles sont projetées en si grande quantité.
+Outil
+1
+Éloignée
+164
+6
+1
+0.2
+objet_outil_bambouzla_framboises
+false
+16
+Kiwi
+Certains disent que la pelure de ce fruit ce mange. Évitez ces gens. Ils sont fous.
+Outil
+1
+Éloignée
+164
+30
+1
+1
+objet_outil_kiwi
+false
+50
+Barbotine
+
+Outil
+1
+Éloignée
+164
+30
+1
+1
+balle13
+false
+51
+Jus d'orange
+
+Outil
+1
+Éloignée
+164
+30
+1
+1
+balle06
+false
+54
+Ananas
+Ce fruit trop acide pourrait donner des maux d'estomac aux toutous. Par contre, ils prioriseront toujours le plaisisr de leurs papilles gustatives.
+Outil
+1
+Rapprochée
+164
+60
+1
+2
+balle09
+false
+45
+Pizza
+La spécialité de italienne contient fromage, pepperoni, sauce tomate et poivrons. Dequoi faire saliver tous vos adversaires.
+Outil
+2
+Rapprochée
+207
+35
+1
+1
+balle02
+false
+47
+Café
+RARE :
+Outil
+2
+Éloignée
+207
+35
+1
+1
+balle04
+false
+41
+Projectilateur à cerises
+Ces petits fruits deviennent très caloriques lorsqu'elles sont projectilisées à haute vitesse par ce projectilateur!
+Outil
+2
+Éloignée
+252
+8
+1
+0.2
+outil10
+false
+36
+Projectilateur à Pepsi
+Bien que les toutous préfèrent secrètement le Coca Cola, ils ne diront certainement pas non à une bonne dose de Pepsi!
+Outil
+2
+Éloignée
+252
+20
+1
+0.5
+outil05
+false
+17
+Ballon de basket-ball
+Dribble dribble dribble petit arthur, fais moi un beau panier! Fait la passe aux toutous.
+Outil
+2
+Éloignée
+252
+40
+1
+1
+objet_outil_basketball₀
+false
+18
+Great Ball
+La Great-Ball est la Poké-Ball des vrais! Les dresseurs amateurs qui parcourent la planète à la recherche de pokémons.
+Outil
+2
+Éloignée
+252
+40
+1
+1
+objet_outil_greatball
+false
+19
+Bambouzla à noix de coco
+Imaginez vous une noix de coco projeté à haute vitesse. Il y a de quoi faire peur!
+Outil
+2
+Éloignée
+252
+20
+1
+0.5
+objet_outil_bambouzla_noix_cocos
+false
+42
+Projectilateur à baies
+Presque inoffensives individuellement, les baies deviennent redoutables en grand nombre!
+Outil
+2
+Éloignée
+252
+8
+1
+0.2
+outil11
+false
+20
+Frisbee vert
+Le frisbee vert peut prendre du temps à être lancé, mais il peut heureusement toucher 3 toutous d'un coup!
+Outil
+2
+Éloignée
+301
+30
+3
+2
+objet_outil_frisbee_vert₀
+false
+21
+Tournevis sonique
+Dans son bon vieux T.A.R.D.I.S. , le Docteur Arthur n’est rien sans son tournevis sonique!
+Outil
+2
+Éloignée
+353
+10
+1
+0.2
+objet_outil_tournevis_sonique₀
+false
+22
+Eau bénite
+Exorcizamus te omnis immundus spiritus omnis satanica potestas omnis incursio infernalis adversii omnis congregatio secta diabolica ergo draco maledicte ecclesiam tuam securi tibi facias libertate servire te rogamus audi nos.
+Outil
+2
+Éloignée
+353
+40
+1
+0.8
+objet_outil_eau_benite_0
+false
+30
+Projectilateur à bacon
+Il y a quelque chose dans ce canon qui rend cette viande affreusement appétissante!
+Outil
+3
+Éloignée
+353
+20
+1
+0.4
+outil01
+false
+33
+Projectilateur à crème-glacée
+La créme glacée est si froide qu'elle frigorifira tous vos adversaires!
+Outil
+3
+Éloignée
+353
+40
+1
+0.8
+outil14
+false
+38
+Projectilateur à pommes
+Cette pompe à jus de pomme est suffisamment puissante pour faire tomber vos adversaire dans les pommes en un rien de temps!
+Outil
+2
+Éloignée
+353
+25
+1
+0.5
+outil07
+false
+40
+Projectilateur à ananas
+Saviez-vous qu'un ananas prend 3 ans à pousser? 
+Outil
+2
+Éloignée
+353
+100
+1
+2
+outil09
+false
+43
+Projectilateur à carottes
+Maman Arthur ne t’a jamais dit que les carottes sont bonnes pour les yeux? En tous cas, tu ne veux pas manger ceux-là dans les yeux! Ha ha.
+Outil
+2
+Éloignée
+353
+25
+1
+0.5
+outil12
+false
+53
+Banane
+Attention de ne pas échapper ce fruit par terre. Il pourrait vous faire trébucher!
+Outil
+1
+Rapprochée
+353
+25
+2
+1
+balle08
+false
+37
+Projectilateur à oranges
+Ce jus de fruit bourré de vitamines va faire le plus grand plaisir des toutous enrhumés
+Outil
+2
+Éloignée
+464
+30
+1
+0.5
+outil06
+false
+23
+Frisbee rouge
+Cette version rouge de la collection des disques est la deuxième plus puissante et touche jusqu'à trois adversaires en un seul lancé.
+Outil
+2
+Éloignée
+464
+40
+3
+2
+objet_outil_frisbee_rouge₀
+false
+24
+Ultra Ball
+L’Ultra-Ball est Ultra, il faut être spécial et unique pour l’utiliser! Seul les meilleurs s’en servent.
+Outil
+2
+Éloignée
+464
+60
+1
+1
+objet_outil_ultraball
+false
+25
+Bambouzla à mangue
+Les toutous veulent toujours plus de mangue. Donnez-en leur toute une dose avec ce Bambouzla!.
+Outil
+2
+Éloignée
+494
+25
+1
+0.4
+objet_outil_bambouzla_mangues
+false
+35
+Projectilateur à café
+Cette boisson contient tant de caféine qu'elle sortira vos adversaires de votre rêve plus rapidement que l'éclair!
+Outil
+2
+Éloignée
+585
+35
+1
+0.5
+outil04
+false
+32
+Projectilateur à frites
+Fraîchement sorties de la friteuse, ces frites croustillantes et chaudes deviendront le régal de tous les toutous de ce monde.
+Outil
+3
+Éloignée
+649
+15
+1
+0.2
+outil03
+false
+34
+Projectilateur à barbotine
+Attention! Ce lance barbotine est réputé pour donner les pires "gels de cerveau".
+Outil
+3
+Éloignée
+715
+40
+1
+0.5
+outil13
+false
+31
+Projectilateur à pizzas
+Ce projectilateur permet de lancer les pointes si rapidement qu,il renpliroa le ventre de vos adversaires plus rapidement que l'éclair!
+Outil
+3
+Éloignée
+715
+40
+1
+0.5
+outil02
+false
+26
+Master Ball
+La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons, il faut être un maitre dans l'art pour l'utiliser!
+Outil
+3
+Éloignée
+783
+85
+1
+1
+objet_outil_masterball
+false
+27
+Bambouzla à kiwi
+Le fruit étrangement hyper poilu est de retour dans ce bambouzla méga puissant.
+Outil
+3
+Éloignée
+1000
+30
+1
+0.3
+objet_outil_bambouzla_kiwis
+false
+28
+Frisbee mauve
+Ce frisbee mauve est la version la plus puissante des disques colorés. Elle touche jusqu'à 4 toutous d'un seul coup!
+Outil
+3
+Éloignée
+1000
+50
+4
+2
+objet_outil_frisbee_mauve₀
+false
+39
+Projectilateur à bananes
+Saviez-vous que le nom scientifique de la banane (musa sapientum) signifit homme rusé? 
+Outil
+2
+Éloignée
+1000
+25
+2
+0.5
+outil08
+false
+29
+Safari Ball
+La Safari-Ball est pour les aventuriers, les «wild boys» qui n’attrapent pas les pokémons, ils les chassent!
+Outil
+3
+Éloignée
+1153
+110
+1
+1
+objet_outil_safariball
+false
