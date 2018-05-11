@@ -20,6 +20,10 @@ import java.util.Objects;
 
 import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.fichierJoueur;
+import static daynight.daynnight.MainActivity.fichierOutilsBoutique;
+import static daynight.daynnight.MainActivity.fichierOutilsInventaire;
+import static daynight.daynnight.MainActivity.fichierSkinsBoutique;
+import static daynight.daynnight.MainActivity.fichierSkinsInventaire;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
@@ -59,6 +63,12 @@ public class PopupNouveauJoueur extends Activity
                     try
                     {
                         openFileOutput(fichierJoueur.getName(), Context.MODE_PRIVATE).close();
+                        openFileOutput(fichierOutilsInventaire.getName(), Context.MODE_PRIVATE).close();
+                        openFileOutput(fichierSkinsInventaire.getName(), Context.MODE_PRIVATE).close();
+                        //openFileOutput(fichierDecorationsInventaire.getName(), Context.MODE_PRIVATE).close();
+                        openFileOutput(fichierOutilsBoutique.getName(), Context.MODE_PRIVATE).close();
+                        openFileOutput(fichierSkinsBoutique.getName(), Context.MODE_PRIVATE).close();
+                        //openFileOutput(fichierDecorationsBoutique.getName(), Context.MODE_PRIVATE).close();
                     }
                     catch (IOException e)
                     {

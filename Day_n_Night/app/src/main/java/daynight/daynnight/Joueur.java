@@ -3,12 +3,16 @@ package daynight.daynnight;
 import android.content.Context;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static daynight.daynnight.Objet.Type.Skin;
+import static daynight.daynnight.Outil.Portee.Nulle;
 
 /**
  * Created by sebastien on 18-03-28.
@@ -33,12 +37,10 @@ public class Joueur
     Boolean musique;
     String langue;
 
-
-
     //Constructeurs
     Joueur() {}
     //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
-    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Context context)
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Context context) throws FileNotFoundException
     {
         this.prenom = prenom;
         this.nom = nom;
@@ -50,38 +52,21 @@ public class Joueur
         //POUR L'INSTANT
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
-
         this.context = context;
 
-        //ArrayList<Outil> outilsBout = new ArrayList<>();
-        ArrayList<Outil> skinsBout = new ArrayList<>();
         ArrayList<Outil> decorationsBout = new ArrayList<>();
-        ArrayList<Outil> outilsInv = new ArrayList<>();
-        ArrayList<Outil> skinsInv = new ArrayList<>();
         ArrayList<Outil> decorationsInv = new ArrayList<>();
-
         //Ajout de cases vides
-        for(int j = 0 ; j < 56 ; j++)
+        for(int j = 0 ; j < 60 ; j++)
         {
-            //outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
-            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-
-            outilsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-            skinsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-            decorationsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Nulle, 0, 0, 0,0f, "", true));
         }
 
-        //outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        //outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil(666,"Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0,0f, "arthur2_1", false));
-        skinsBout.set(1, new Outil(666,"Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0,0f, "arthur7_1", false));
-
-        boutique.add(lireOutilsBoutique());
-        boutique.add(skinsBout);
+        boutique.add(lireOutils(context.openFileInput(MainActivity.fichierOutilsBoutique.getName())));
+        boutique.add(lireSkins(context.openFileInput(MainActivity.fichierSkinsBoutique.getName())));
         boutique.add(decorationsBout);
-        inventaire.add(outilsInv);
-        inventaire.add(skinsInv);
+        inventaire.add(lireOutils(context.openFileInput(MainActivity.fichierOutilsInventaire.getName())));
+        inventaire.add(lireSkins(context.openFileInput(MainActivity.fichierSkinsInventaire.getName())));
         inventaire.add(decorationsInv);
     }
     //Constructeur appelé lors de la création du joueur
@@ -91,39 +76,25 @@ public class Joueur
         this.nom = nom;
         this.adresseElectronique = adresseElectronique;
         this.skin = R.drawable.arthur1_1;
-        this.biscuits = 30;
+        this.biscuits = 44;
 
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
-
         this.context = context;
 
-        //ArrayList<Outil> outilsBout = new ArrayList<>();
-        ArrayList<Outil> skinsBout = new ArrayList<>();
         ArrayList<Outil> decorationsBout = new ArrayList<>();
         ArrayList<Outil> outilsInv = new ArrayList<>();
         ArrayList<Outil> skinsInv = new ArrayList<>();
+        skinsInv.add(new Outil(1, "Le Classique", "Votre chemise et chandail vous vont déjà à merveille. Pourquoi voudriez vous changer une recette gagnante?", Skin, 1, Nulle, 0, 0, 0, 0f, "arthur1_1", true));
         ArrayList<Outil> decorationsInv = new ArrayList<>();
-
         //Ajout de cases vides
-        for(int j = 0 ; j < 56 ; j++)
+        for(int j = 0 ; j < 60 ; j++)
         {
-            //outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-
-            outilsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-            skinsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
-            decorationsInv.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true));
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Nulle, 0, 0, 0,0f, "", true));
         }
 
-        //outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil,0, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        //outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil,0, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil(666,"Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin,0, Outil.Portee.Nulle, 20, 0, 0,0f, "arthur2_1", false));
-        skinsBout.set(1, new Outil(666,"Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, 0, Outil.Portee.Nulle, 40, 0, 0,0f, "arthur7_1", false));
-
-        boutique.add(lireOutilsBoutique());
-        boutique.add(skinsBout);
+        boutique.add(lireOutils(context.getResources().openRawResource(R.raw.outils_depart)));
+        boutique.add(lireSkins(context.getResources().openRawResource(R.raw.skins_depart)));
         boutique.add(decorationsBout);
         inventaire.add(outilsInv);
         inventaire.add(skinsInv);
@@ -131,23 +102,6 @@ public class Joueur
     }
 
     //Getteurs & Setteurs
-
-    public Boolean getMusique() {
-        return musique;
-    }
-
-    public void setMusique(Boolean musique) {
-        this.musique = musique;
-    }
-
-    public String getLangue() {
-        return langue;
-    }
-
-    public void setLangue(String langue) {
-        this.langue = langue;
-    }
-
     public String getPrenom()
     {
         return prenom;
@@ -197,6 +151,12 @@ public class Joueur
     public ArrayList<Outil> getDecorationsBoutique()
     {
         return boutique.get(2);
+    }
+    public Boolean getMusique() {
+        return musique;
+    }
+    public String getLangue() {
+        return langue;
     }
 
     public void setPrenom(String prenom)
@@ -249,30 +209,36 @@ public class Joueur
     {
         this.boutique.set(2, decorations);
     }
+    public void setMusique(Boolean musique) {
+        this.musique = musique;
+    }
+    public void setLangue(String langue) {
+        this.langue = langue;
+    }
 
     //Méthodes
-    private ArrayList<Outil> lireOutilsBoutique()
+    public ArrayList<Outil> lireOutils(InputStream inputStream)
     {
         ArrayList<Outil> outils = new ArrayList<Outil>();
         try
         {
-            InputStream inputStream = context.getResources().openRawResource(R.raw.outils);
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader buffReader = new BufferedReader(isr);
             String line;
             StringBuilder text = new StringBuilder();
 
             int id;
-            String imageDrawableString;
             String nom;
-            int toucherParCoup;
-            float intervalleParCoup;
-            int nbCibles;
-            float puissance;
+            String description;
+            String type;
             int rarete;
             String portee;
             int prix;
-            String description;
+            int toucherParCoup;
+            int nbCibles;
+            float intervalleParCoup;
+            String imageDrawableString;
+            Boolean acquis;
 
             while (( line = buffReader.readLine()) != null)
             {
@@ -284,32 +250,17 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                imageDrawableString = text.toString();
-
-                line = buffReader.readLine();
-                text.setLength(0);
-                text.append(line);
                 nom = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                toucherParCoup = Integer.valueOf(text.toString());
+                description = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                intervalleParCoup = Float.valueOf(text.toString());
-
-                line = buffReader.readLine();
-                text.setLength(0);
-                text.append(line);
-                nbCibles = Integer.valueOf(text.toString());
-
-                line = buffReader.readLine();
-                text.setLength(0);
-                text.append(line);
-                puissance = Float.valueOf(text.toString());
+                type = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -329,9 +280,29 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                description = text.toString();
+                toucherParCoup = Integer.valueOf(text.toString());
 
-                outils.add(new Outil(id, nom, description, Objet.Type.Outil, rarete, Outil.Portee.valueOf(portee), prix, toucherParCoup, nbCibles, intervalleParCoup, imageDrawableString, false));
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nbCibles = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                intervalleParCoup = Float.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                imageDrawableString = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                acquis = Boolean.valueOf(text.toString());
+
+                outils.add(new Outil(id, nom, description, Objet.Type.Outil, rarete, Outil.Portee.valueOf(portee), prix, toucherParCoup, nbCibles, intervalleParCoup, imageDrawableString, acquis));
             }
         } catch (IOException e)
         {
@@ -339,5 +310,99 @@ public class Joueur
         }
 
         return outils;
+    }
+    public ArrayList<Outil> lireSkins(InputStream inputStream)
+    {
+        ArrayList<Outil> skins = new ArrayList<Outil>();
+        try
+        {
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader buffReader = new BufferedReader(isr);
+            String line;
+            StringBuilder text = new StringBuilder();
+
+            int id;
+            String nom;
+            String description;
+            String type;
+            int rarete;
+            String portee;
+            int prix;
+            int toucherParCoup;
+            int nbCibles;
+            float intervalleParCoup;
+            String imageDrawableString;
+            Boolean acquis;
+
+            while (( line = buffReader.readLine()) != null)
+            {
+                //Lire chaque ligne et donner les valeurs
+                text.setLength(0);
+                text.append(line);
+                id = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nom = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                description = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                type = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                rarete = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                portee = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                prix = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                toucherParCoup = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nbCibles = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                intervalleParCoup = Float.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                imageDrawableString = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                acquis = Boolean.valueOf(text.toString());
+
+                skins.add(new Outil(id, nom, description, Skin, rarete, Nulle, prix, 0, 0, 0f, imageDrawableString, false));
+            }
+        } catch (IOException e)
+        {
+            return null;
+        }
+
+        return skins;
     }
 }

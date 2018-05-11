@@ -11,7 +11,7 @@
     <string name="ok" translatable="false">OK</string>
     <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
 
-    <string name="badge" translatable="false">badge</string>
+    <string name="badges" translatable="false">badges</string>
     <string name="inventaire" translatable="false">inventaire</string>
     <string name="menu" translatable="false">menu</string>
     <string name="options" translatable="false">options</string>

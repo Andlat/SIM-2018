@@ -16,13 +16,13 @@
             android:id="@+id/tabObjets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/beigePaleBouton" />
+            android:background="@color/beigePale" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/beigePaleBouton" />
+            android:background="@color/beigePale" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +45,7 @@
         android:id="@+id/boutique"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginTop="48dp"
         android:src="@drawable/logo_boutique"
-        android:layout_gravity="end"
         android:background="@drawable/style_button_ripple_coin" />
 </android.support.design.widget.CoordinatorLayout>

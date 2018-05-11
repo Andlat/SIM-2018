@@ -104,7 +104,7 @@ public class Inventaire extends AppCompatActivity
                             {
                                 layoutParams.leftMargin = (int) xCoord;
                             }
-                            if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > 0)
+                            if((yCoord + view.getHeight()*(1.3f)) < height && (yCoord) > tabObjets.getHeight())
                             {
                                 layoutParams.topMargin = (int) yCoord;
                             }

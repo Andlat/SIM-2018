@@ -54,8 +54,9 @@ public class PopupPause extends Activity {
 
         badges.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ListeBadges.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, ListeBadges.class));
                 SurChangementActivity = true;
 
             }
@@ -63,24 +64,27 @@ public class PopupPause extends Activity {
 
         inventaire.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Inventaire.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, Inventaire.class));
                 SurChangementActivity = true;
             }
         });
 
         menu.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, MainActivity.class));
                 SurChangementActivity = true;
             }
         });
 
         settings.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, SettingsActivity.class));
                 SurChangementActivity = true;
             }
         });
