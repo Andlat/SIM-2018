@@ -5,7 +5,6 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;

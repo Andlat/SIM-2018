@@ -71,11 +71,10 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                 if(arthur != null) {
                     arthur.setDirection(persoVec);
 
-                    if(xPercent == 0 && yPercent == 0){
+                    if(persoVec.isEmpty())
                         arthur.Stay();
-                    }else{
+                    else
                         arthur.Walk();
-                    }
                 }
                 break;
 
