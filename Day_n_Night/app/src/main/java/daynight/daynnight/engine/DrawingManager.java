@@ -1,8 +1,11 @@
 package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
+import android.util.Log;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
@@ -21,15 +24,18 @@ class DrawingManager {
     private final int[] mVAO = new int[1];
     private final VBOManager mVBO;
 
-    private List<DrawGroup> mGroups = new ArrayList<>();
+    private SparseArray<DrawGroup> mGroups = new SparseArray<>();
 
     private static DrawingManager mManager=null;
+
+    private int mNxtVBOIndex = 0;
+    private final List<Integer> mEmptyPools = new ArrayList<>();
 
     private Model.onModelChangedListener mOnModelChangedListener = new Model.onModelChangedListener() {
         @Override
         public void onModelMatChanged(Model _this, Changed changed) {
             int groupID = _this.getDrawGroupID();
-            if (groupID > 0) {
+            if (groupID > -1) {
                 DrawGroup group = mGroups.get(_this.getDrawGroupID());
 
                 if(changed == Changed.MODEL_MAT)
@@ -83,14 +89,18 @@ class DrawingManager {
 
     void addModel(Model model){
         boolean foundGroup = false;
-        int groupIndex = -1;
+        int groupID = -1;
 
-        for(DrawGroup group : mGroups){
+        final int size = mGroups.size();
+        for(int i=0; i < size; ++i){
+            DrawGroup group = mGroups.valueAt(i);
+
             if(group.getQuantity() < mGroupMaxModels) {//If the group still has some space
                 if(group.addModel(model, mVBO)) {
 
                     foundGroup = true;
-                    groupIndex = mGroups.indexOf(group);
+                    groupID = group.getID();
+
 
                     break;
                 }
@@ -99,31 +109,63 @@ class DrawingManager {
 
         //No DrawingGroup could contain this model. Create a new one just for it
         if(!foundGroup){
-            DrawGroup n = new DrawGroup(model, mVBO, mGroups.size()*mGroupMaxSize/Util.FLOAT_SIZE);
-            mGroups.add(n);
-            groupIndex = mGroups.size()-1;
+            groupID = newGroup(model);
         }
 
-        model.setDrawGroupID(groupIndex);
+        model.setDrawGroupID(groupID);
         model.setOnModelMatChangedListener(mOnModelChangedListener);
     }
     void removeModel(Model model){
-        int index = model.getDrawGroupID();
-        if(index > 0) {
-            mGroups.get(index).removeModel(model, mVBO);
+        int key = model.getDrawGroupID();
+        if(key > 0) {
+            mGroups.get(key).removeModel(model, mVBO);
             model.setDrawGroupID(-1);
             model.setOnModelMatChangedListener(null);
         }
 
-/*TODO If empty group, delete it
-        if(mGroups.get(index).getQuantity() == 0) {
-            //mGroups.remove(index);//Creates the problem that all the other groupID are shifted. Maybe shouldn't use groupID and go back to searching through the groups
-            //Shift the VBO data to make space and substract group size to total size or keep track of empty pool
+        //Delete group if it is empty
+        if(mGroups.get(key).getQuantity() == 0) {
+            deleteGroup(key);
         }
-*/
     }
 
-    List<DrawGroup> getGroups(){ return mGroups; }
+    /**
+     * Create a new group
+     * @param model First model of the group
+     * @return Group ID. (Key in sparse array)
+     */
+    private int newGroup(Model model){
+        //Get VBO offset. Use an empty pool if there is. If not, put at the end
+        int vboOffset;
+        if(mEmptyPools.size() > 0) {
+            //Select the first empty pool and remove it from the list
+            vboOffset = mEmptyPools.get(0);
+            mEmptyPools.remove(0);
+        }else{
+            vboOffset = mNxtVBOIndex*mGroupMaxSize/Util.FLOAT_SIZE;
+            ++mNxtVBOIndex;
+        }
+
+        DrawGroup n = new DrawGroup(model, mVBO, vboOffset);
+        mGroups.put(n.getID(), n);
+
+        return n.getID();
+    }
+
+    /**
+     * Delete a group
+     * @param key Group ID. (Key in sparse array)
+     */
+    private void deleteGroup(int key){
+        DrawGroup group = mGroups.get(key);
+
+        //Keep track of empty pool index
+        mEmptyPools.add(group.getVBOOffset());
+
+        mGroups.remove(key);
+    }
+
+    List<DrawGroup> getGroups(){ return Util.SparseArrayToArrayList(mGroups); }
 
     void Draw(MVP mvp, long frameElapsedTime){
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -135,7 +177,10 @@ class DrawingManager {
 
         //Log.e("Size", "S: "+mGroups.size()+" ; F: "+frameElapsedTime);
 
-        for(DrawGroup group : mGroups){
+        final int size = mGroups.size();
+        for(int i=0; i < size; ++i){
+            DrawGroup group = mGroups.valueAt(i);
+
             final Texture texture = group.getAnimation().getCurrentTexture(frameElapsedTime);
             final int texUnit = texture.getUnit();
             Texture.ActivateUnit(texUnit);

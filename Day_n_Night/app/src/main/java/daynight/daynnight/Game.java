@@ -73,7 +73,7 @@ class Game extends GameView{
     protected void onCreate() {
         mWorld = new World();
         super.UseWorld(mWorld);
-
+/*
         try {
             MovingModel amiTest = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toMovingModel();
             amiTest.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -86,6 +86,22 @@ class Game extends GameView{
         }catch(IOException e){
 
         }
+*/
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+
+        mWorld.setCamFollowModel(mArthur.getInWorldID());
+//TODO Group Z-Index
+        try{
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.StaticTranslate(new Vec3(3, 3, 0));
+            mur.setType(StaticModel.Type.WALL_TOP);
+            mWorld.addModel(mur);
+        }catch(IOException ex){
+            Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
+        }
+
 /*
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
@@ -115,11 +131,6 @@ class Game extends GameView{
         }
 
 */
-        mArthur = new Arthur(mContext);
-        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-
-        mWorld.setCamFollowModel(mArthur.getInWorldID());
     }
     private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
         try {
@@ -179,8 +190,11 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
-
+        if(mArthur != null) {
+            if(!mArthur.getDirection().isEmpty())
+                world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+        }
+/*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;
@@ -241,6 +255,7 @@ class Game extends GameView{
             }
             temp++;
         }
+*/
     }
 
     private void endGame() {

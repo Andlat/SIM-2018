@@ -58,4 +58,13 @@ public final class Util {
         }
         return list;
     }
+
+    public static <T> int getKeyFromSparseArrayElmnt(SparseArray<T> array, T elmnt){
+        final int size = array.size();
+        for(int i=0; i<size; ++i){
+            if(array.valueAt(i) == elmnt)
+                return array.keyAt(i);
+        }
+        return -1;
+    }
 }

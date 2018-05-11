@@ -168,7 +168,6 @@ public class World {
     void DrawWorld(long frameElapsedTime){
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
-        CamFollowModel();
 
         //------------- OPTION 3. GROUPING MODELS BY MVPs AND ANIMATIONS --------------\\
         mDrawMan.Draw(mMVP, frameElapsedTime);
@@ -235,6 +234,8 @@ public class World {
             GLES30.glDrawArrays(GLES20.GL_TRIANGLES, offset.first, offset.second/4);
         }
         */
+
+        CamFollowModel();
 
         //Detect and execute collisions
         ExcecuteCollisions(CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels)));

@@ -81,6 +81,22 @@ public abstract class Vector {
     }
 
     /**
+     * Check if all components of the vector equal to 0
+     * @return Is the vector empty
+     */
+    public boolean isEmpty(){
+        boolean isEmpty = true;
+
+        for(byte i=0; i < this.Dimensions(); ++i){
+            if(this.components[i] != 0) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
+    }
+
+    /**
      * Nombre de composantes (ou dimensions) du vecteur
      * @return Nombre de composantes du vecteur
      */

@@ -39,7 +39,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".GameActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="sensorLandscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
         <activity android:name=".Inventaire" />
