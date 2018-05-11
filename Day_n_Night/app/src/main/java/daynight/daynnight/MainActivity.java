@@ -55,18 +55,18 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ma = this;
 
-        //getApplicationContext().deleteFile(fichierJoueur.getName());
-        //getApplicationContext().deleteFile(fichierSkinsInventaire.getName());
-        //getApplicationContext().deleteFile(fichierSkinsBoutique.getName());
-        //getApplicationContext().deleteFile(fichierOutilsBoutique.getName());
-        //getApplicationContext().deleteFile(fichierOutilsInventaire.getName());
+        /*getApplicationContext().deleteFile(fichierJoueur.getName());
+        getApplicationContext().deleteFile(fichierSkinsInventaire.getName());
+        getApplicationContext().deleteFile(fichierSkinsBoutique.getName());
+        getApplicationContext().deleteFile(fichierOutilsBoutique.getName());
+        getApplicationContext().deleteFile(fichierOutilsInventaire.getName());*/
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
             Scanner actualiser;
             try
             {
                 actualiser = new Scanner(lireJoueur());
-                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
+                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), 1000000, getApplicationContext());
                 Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
             }
             catch (NoSuchElementException e)
