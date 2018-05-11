@@ -14,10 +14,15 @@ import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
-public class PopupPause extends Activity {
+public class PopupPause extends Activity
+{
+    //Créer
+    ImageButton play;
+    Button badges, inventaire, menu, settings;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_recompense);
 
@@ -27,55 +32,67 @@ public class PopupPause extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         //Les proportions change selon l'orientation de l'écran
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
             getWindow().setLayout((int) (width * 0.85), (int) (height * 0.75));
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        }
+        else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
 
-        ImageButton play = (ImageButton) findViewById(R.id.playPauseButton);
-        Button badges = (Button) findViewById(R.id.badgePauseButton);
-        Button inventaire = (Button) findViewById(R.id.inventairePauseButton);
-        Button menu = (Button) findViewById(R.id.menuPauseButton);
-        Button settings = (Button) findViewById(R.id.settingsPauseButton);
+        play = (ImageButton) findViewById(R.id.playPauseButton);
+        badges = (Button) findViewById(R.id.badgePauseButton);
+        inventaire = (Button) findViewById(R.id.inventairePauseButton);
+        menu = (Button) findViewById(R.id.menuPauseButton);
+        settings = (Button) findViewById(R.id.settingsPauseButton);
 
-        play.setOnClickListener(new View.OnClickListener(){
+        play.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
                 finish();
             }
         });
 
-        badges.setOnClickListener(new View.OnClickListener(){
+        badges.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ListeBadges.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, ListeBadges.class));
                 SurChangementActivity = true;
 
             }
         });
 
-        inventaire.setOnClickListener(new View.OnClickListener(){
+        inventaire.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Inventaire.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, Inventaire.class));
                 SurChangementActivity = true;
             }
         });
 
-        menu.setOnClickListener(new View.OnClickListener(){
+        menu.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, MainActivity.class));
                 SurChangementActivity = true;
             }
         });
 
-        settings.setOnClickListener(new View.OnClickListener(){
+        settings.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            public void onClick(View view)
+            {
+                startActivity(new Intent(PopupPause.this, SettingsActivity.class));
                 SurChangementActivity = true;
             }
         });

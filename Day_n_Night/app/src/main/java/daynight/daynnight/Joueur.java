@@ -76,7 +76,7 @@ public class Joueur
         this.nom = nom;
         this.adresseElectronique = adresseElectronique;
         this.skin = R.drawable.arthur1_1;
-        this.biscuits = 30;
+        this.biscuits = 44;
 
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);

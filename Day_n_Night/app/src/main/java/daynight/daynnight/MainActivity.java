@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 actualiser = new Scanner(lireJoueur());
-                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), 1000000, getApplicationContext());
+                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
                 Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
             }
             catch (NoSuchElementException e)
