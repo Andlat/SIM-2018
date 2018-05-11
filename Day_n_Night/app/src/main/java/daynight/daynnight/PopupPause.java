@@ -15,11 +15,16 @@ import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
 public class PopupPause extends Activity {
+    private ImageButton play;
+    private Button badges;
+    private Button inventaire;
+    private Button menu;
+    private Button settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup_recompense);
+        setContentView(R.layout.popup_pause);
 
         //Parametre pour que l'activity ne prenne pas tout l'écran
         DisplayMetrics dm = new DisplayMetrics();
@@ -33,11 +38,11 @@ public class PopupPause extends Activity {
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
 
-        ImageButton play = (ImageButton) findViewById(R.id.playPauseButton);
-        Button badges = (Button) findViewById(R.id.badgePauseButton);
-        Button inventaire = (Button) findViewById(R.id.inventairePauseButton);
-        Button menu = (Button) findViewById(R.id.menuPauseButton);
-        Button settings = (Button) findViewById(R.id.settingsPauseButton);
+        play = (ImageButton) findViewById(R.id.playPauseButton);
+        badges = (Button) findViewById(R.id.badgePauseButton);
+        inventaire = (Button) findViewById(R.id.inventairePauseButton);
+        menu = (Button) findViewById(R.id.menuPauseButton);
+        settings = (Button) findViewById(R.id.settingsPauseButton);
 
         play.setOnClickListener(new View.OnClickListener(){
             @Override
