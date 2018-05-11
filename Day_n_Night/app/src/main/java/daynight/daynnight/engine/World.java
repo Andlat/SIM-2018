@@ -2,19 +2,14 @@ package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -161,6 +156,12 @@ public class World {
 
             cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking
         }
+    }
+
+    public void setGroupZIndex(long id_model, int z){
+        Model m = mModels.get(id_model);
+        if(m != null)
+            mDrawMan.setZindex(m.getDrawGroupID(), z);
     }
 
     //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that

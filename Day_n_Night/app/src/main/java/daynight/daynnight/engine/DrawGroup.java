@@ -21,6 +21,8 @@ class DrawGroup {
 
     private int mVBOOffsetFloat=-1, mSizeFloat =0;
 
+    private int mZIndex=0;
+
     private static int mNxtID = 0;
     private final int mID;
 
@@ -122,4 +124,7 @@ class DrawGroup {
     void setModelMatrix(Mat4 modelMat){ mModelMatrix = modelMat; }
 
     int getID(){ return mID; }
+
+    int getZ(){ return mZIndex; }
+    void setZ(int ZIndex){ mZIndex = ZIndex; }
 }

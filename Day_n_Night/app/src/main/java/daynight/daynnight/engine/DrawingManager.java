@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
@@ -23,7 +24,11 @@ class DrawingManager {
     private final int[] mVAO = new int[1];
     private final VBOManager mVBO;
 
-    private SparseArray<DrawGroup> mGroups = new SparseArray<>();
+    private final SparseArray<DrawGroup> mGroups = new SparseArray<>();
+
+    private List<DrawGroup> mZOrderedGroups;
+    private boolean mGroupsZchanged = false;
+    private ZIndex_QuickSort mZSorter = new ZIndex_QuickSort();
 
     private static DrawingManager mManager=null;
 
@@ -148,6 +153,8 @@ class DrawingManager {
         DrawGroup n = new DrawGroup(model, mVBO, vboOffset);
         mGroups.put(n.getID(), n);
 
+        mGroupsZchanged = true;
+
         return n.getID();
     }
 
@@ -162,9 +169,15 @@ class DrawingManager {
         mEmptyPools.add(group.getVBOOffset());
 
         mGroups.remove(key);
+
+        mGroupsZchanged = true;
     }
 
     List<DrawGroup> getGroups(){ return Util.SparseArrayToArrayList(mGroups); }
+
+    void setZindex(int groupID, int z){
+        mGroups.get(groupID).setZ(z);
+    }
 
     void Draw(MVP mvp, long frameElapsedTime){
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -176,10 +189,10 @@ class DrawingManager {
 
         //Log.e("Size", "S: "+mGroups.size()+" ; F: "+frameElapsedTime);
 
-        final int size = mGroups.size();
-        for(int i=0; i < size; ++i){
-            DrawGroup group = mGroups.valueAt(i);
+        //Sort the groups depending on their Z-index
+        mZSorter.sort();
 
+        for(DrawGroup group : mZOrderedGroups){
             final Texture texture = group.getAnimation().getCurrentTexture(frameElapsedTime);
             final int texUnit = texture.getUnit();
             Texture.ActivateUnit(texUnit);
@@ -202,4 +215,43 @@ class DrawingManager {
             GLES30.glDrawArrays(GLES30.GL_TRIANGLES, group.getVBOOffset()/8,  group.getSizeInFloat()/8);//Strides of 8
         }
     }
+
+
+/*========== Implementation of the Lomuto partition scheme Quick Sort to order the groups by their Z-index ==========*/
+    private class ZIndex_QuickSort{
+        private void quickSort(final int low, final int hi){
+            if(low < hi) {
+                final int p = partition(low, hi);
+
+                quickSort(low, p-1);//Sort before partition
+                quickSort(p+1, hi);//Sort after
+            }
+        }
+        private int partition(final int low, final int hi){
+            final int pivot = mZOrderedGroups.get(hi).getZ();
+            int i = low - 1;
+            for(int j = low; j <= hi-1; ++j){
+                if(mZOrderedGroups.get(j).getZ() < pivot){
+                    ++i;
+                    Collections.swap(mZOrderedGroups, i, j);
+                }
+            }
+
+            Collections.swap(mZOrderedGroups, ++i, hi);
+
+            return i;
+        }
+
+        void sort(){
+            if(mGroupsZchanged){
+                mZOrderedGroups = Util.SparseArrayToArrayList(mGroups);
+
+                final int hi = mZOrderedGroups.size()-1;
+                quickSort(0, hi);
+
+                mGroupsZchanged = false;
+            }
+        }
+    }
+/*================================================================================================================*/
 }

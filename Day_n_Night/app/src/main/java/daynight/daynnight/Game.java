@@ -72,6 +72,28 @@ class Game extends GameView{
     protected void onCreate() {
         mWorld = new World();
         super.UseWorld(mWorld);
+
+        mArthur = new Arthur(mContext);
+        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
+        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+        mWorld.setGroupZIndex(mArthur.getInWorldID(), 999);
+
+        mWorld.setCamFollowModel(mArthur.getInWorldID());
+
+        try{
+            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
+            mur.StaticTranslate(new Vec3(3, 3, 0));
+            mur.setType(StaticModel.Type.WALL_TOP);
+            mWorld.addModel(mur);
+
+            StaticModel lit = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel();
+            lit.StaticTranslate(new Vec3(3, 3, 0));
+            mWorld.setGroupZIndex(mWorld.addModel(lit), -1);
+
+        }catch(IOException ex){
+            Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
+        }
+
 /*
         try {
             MovingModel amiTest = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toMovingModel();
@@ -86,20 +108,6 @@ class Game extends GameView{
 
         }
 */
-        mArthur = new Arthur(mContext);
-        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-
-        mWorld.setCamFollowModel(mArthur.getInWorldID());
-//TODO Group Z-Index
-        try{
-            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-            mur.StaticTranslate(new Vec3(3, 3, 0));
-            mur.setType(StaticModel.Type.WALL_TOP);
-            mWorld.addModel(mur);
-        }catch(IOException ex){
-            Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
-        }
 
 /*
         try {
