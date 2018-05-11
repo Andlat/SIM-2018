@@ -133,9 +133,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
 
         //Listner du bouton de pause
         ImageButton pause = (ImageButton) findViewById(R.id.pauseJour);
-        pause.setOnClickListener(new View.OnClickListener(){
+        pause.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 startActivity(new Intent(MapActivity.this, PopupPause.class));
                 SurChangementActivity = true;
             }

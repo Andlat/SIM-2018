@@ -17,14 +17,15 @@ import static daynight.daynnight.MainActivity.onPause;
 public class PopupPause extends Activity
 {
     //Créer
-    ImageButton play;
-    Button badges, inventaire, menu, settings;
+    Button badges, inventaire, menu, settings, play;
+
+    public PopupPause() {}
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup_recompense);
+        setContentView(R.layout.popup_pause);
 
         //Parametre pour que l'activity ne prenne pas tout l'écran
         DisplayMetrics dm = new DisplayMetrics();
@@ -41,7 +42,7 @@ public class PopupPause extends Activity
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
 
-        play = (ImageButton) findViewById(R.id.playPauseButton);
+        play = (Button) findViewById(R.id.playPauseButton);
         badges = (Button) findViewById(R.id.badgePauseButton);
         inventaire = (Button) findViewById(R.id.inventairePauseButton);
         menu = (Button) findViewById(R.id.menuPauseButton);
