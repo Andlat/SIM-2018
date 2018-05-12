@@ -12,8 +12,8 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icone"
-        android:roundIcon="@drawable/icone"
         android:label="@string/app_name"
+        android:roundIcon="@drawable/icone"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.PleinEcran">
         <meta-data
@@ -22,6 +22,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,19 +41,27 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ListeBadges" />
         <activity android:name=".Boutique" />
-        <activity android:name=".Inventaire" />
+        <activity android:name=".Inventaire"
+            android:theme="@style/AppTheme.OuvrirInventaire"/>
+        <activity android:name=".ChoixBarreDOutils"
+            android:theme="@style/AppTheme.ChoixTheme"/>
         <activity
             android:name=".PopupInformationsObjet"
             android:theme="@style/AppTheme.PopupTheme" />
-        <activity android:name=".PopupRecompenses"
+        <activity
+            android:name=".PopupRecompenses"
             android:theme="@style/AppTheme.PopupRTheme" />
-        <activity android:name=".PopupNouveauJoueur"
+        <activity
+            android:name=".PopupNouveauJoueur"
             android:theme="@style/AppTheme.PopupRTheme" />
-        <activity android:name=".PopupPause"
-            android:theme="@style/AppTheme.PopupRTheme"/>
-        <activity android:name=".SettingsActivity"
-            android:theme="@style/AppTheme.PopupTheme"
+        <activity
+            android:name=".PopupPause"
+            android:theme="@style/AppTheme.PopupRTheme" />
+        <activity
+            android:name=".SettingsActivity"
             android:configChanges="locale|orientation|keyboardHidden"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.PopupTheme" />
     </application>
+
 </manifest>

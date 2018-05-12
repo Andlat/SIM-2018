@@ -110,7 +110,7 @@ public class ListeObjets extends Fragment
 
             ImageViewCarre objet = view.findViewById(R.id.objet);
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
-            bitmap = getBitmapGrandeur(bitmap, 80);
+            bitmap = getBitmapGrandeur(bitmap, 70);
             objet.setImageBitmap(bitmap);
 
             return view;
