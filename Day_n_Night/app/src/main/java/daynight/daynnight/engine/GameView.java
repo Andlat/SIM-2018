@@ -72,7 +72,7 @@ public abstract class GameView extends GLSurfaceView {
             GLES30.glEnable(GLES30.GL_BLEND);
             GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
 
-            GLES30.glClearColor(0.f,0.f, 0.f, 0.f);//black transparent background by default
+            GLES30.glClearColor(.862745f,.996078f, .984313f, 1.f);//default background
         }
 
         @Override
