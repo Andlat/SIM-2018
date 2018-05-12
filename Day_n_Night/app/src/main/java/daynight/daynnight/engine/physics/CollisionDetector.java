@@ -83,7 +83,7 @@ public class CollisionDetector {
 
                 return (wallType == StaticModel.Type.WALL_TOP ?
                         (mvgY >= wallY && mvgY <= (wallY + wallHeight)) ://Top wall. Between over bottom line of wall and height of wall
-                        mvgY <= wallY && mvgY >= (wallY - wallHeight));//Bottom wall. Between under bottom line of wall and height bound. TODO problems when going under a bottom wall. Detecs a collision on an empty space the height of the wall and passes through the wall coming from the side
+                        mvgY <= (wallY + wallHeight/2) && mvgY >= (wallY - wallHeight/2));//Bottom wall. Between a height same as the wall with the bottom of the wall as the middle.
             }
         }
 

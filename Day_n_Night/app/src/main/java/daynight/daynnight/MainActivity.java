@@ -3,6 +3,7 @@ package daynight.daynnight;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        startActivity(new Intent(MainActivity.this, GameActivity.class));
+/*
         ma = this;
 
         //getApplicationContext().deleteFile(fichierJoueur.getName());
@@ -120,6 +124,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+*/
     }
     @Override
     protected void onPause()
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        musiqueDeFond.start();
+        //musiqueDeFond.start();
     }
 
     @Override
@@ -141,8 +146,8 @@ public class MainActivity extends AppCompatActivity
 
         if(onPause && !SurChangementActivity)
         {
-            sauvegardeJoueur(joueur);
-            musiqueDeFond.pause();
+            //sauvegardeJoueur(joueur);
+            //musiqueDeFond.pause();
             onPause = false;
         }
     }

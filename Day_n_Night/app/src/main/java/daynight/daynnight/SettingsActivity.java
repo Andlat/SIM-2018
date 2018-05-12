@@ -52,7 +52,7 @@ public class SettingsActivity extends Activity {
                     MainActivity.musiqueDeFond.pause();
                     MainActivity.joueur.setMusique(false);
                 }else{
-                    MainActivity.musiqueDeFond.start();
+                    //MainActivity.musiqueDeFond.start();
                     MainActivity.joueur.setMusique(true);
                 }
 
@@ -95,15 +95,15 @@ public class SettingsActivity extends Activity {
     {
         if(SurChangementActivity)
         {
-            MainActivity.musiqueDeFond.pause();
-            MainActivity.ma.sauvegardeJoueur(joueur);
+            /*MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);*/
         }
         super.onStop();
     }
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        //MainActivity.musiqueDeFond.start();
         super.onResume();
     }
 

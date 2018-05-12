@@ -161,13 +161,16 @@ public class World {
     public void setGroupZIndex(long id_model, int z){
         Model m = mModels.get(id_model);
         if(m != null)
-            mDrawMan.setZindex(m.getDrawGroupID(), z);
+            setGroupZIndex(m, z);
     }
 
-    //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
-    //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
+    public void setGroupZIndex(Model model, int z){
+        mDrawMan.setZindex(model.getDrawGroupID(), z);
+    }
+
+    //TODO Right now, it also draws hidden models. (but not removed ones ?). So I should remedy to that
     void DrawWorld(long frameElapsedTime){
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
 
         //------------- OPTION 3. GROUPING MODELS BY MVPs AND ANIMATIONS --------------\\

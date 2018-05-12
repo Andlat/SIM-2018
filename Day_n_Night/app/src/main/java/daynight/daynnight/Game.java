@@ -50,6 +50,9 @@ class Game extends GameView{
     private Toutou toutouTest;
     private boolean positionPositiveDuSpawn = false;
 
+
+    private int Z_ARTHUR=75;
+
     private Arthur mArthur;
     public Game(Context context) {
         super(context);
@@ -74,22 +77,18 @@ class Game extends GameView{
         super.UseWorld(mWorld);
 
         mArthur = new Arthur(mContext);
-        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-        mWorld.setGroupZIndex(mArthur.getInWorldID(), 999);
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, 1, 0));
+        mWorld.setGroupZIndex(mArthur.getInWorldID(), Z_ARTHUR);
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try{
-            StaticModel mur = ObjParser.Parse(mContext, "models", "mur.obj").get(0).toStaticModel();
-            mur.StaticTranslate(new Vec3(3, 3, 0));
-            mur.setType(StaticModel.Type.WALL_TOP);
-            mWorld.addModel(mur);
+            mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
-            StaticModel lit = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel();
-            lit.StaticTranslate(new Vec3(3, 3, 0));
-            mWorld.setGroupZIndex(mWorld.addModel(lit), -1);
+            Room.Generate(mContext, mWorld, 10);
 
+            Log.e("COUNT", ""+mWorld.getModelsCount());
         }catch(IOException ex){
             Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
         }

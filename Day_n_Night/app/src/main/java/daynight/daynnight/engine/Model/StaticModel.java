@@ -45,6 +45,7 @@ public class StaticModel extends Model {
         super.CloneTo(clone);
 
         this.mPhysics.CloneTo(clone.mPhysics);
+        clone.mType = this.mType;
     }
 
 
