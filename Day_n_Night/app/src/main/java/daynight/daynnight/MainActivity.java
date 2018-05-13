@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(MainActivity.this, GameActivity.class));
-/*
         ma = this;
 
         //getApplicationContext().deleteFile(fichierJoueur.getName());
@@ -124,7 +122,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-*/
     }
     @Override
     protected void onPause()

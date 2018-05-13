@@ -39,7 +39,7 @@ class Arthur{
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 10f));//TODO TEMP SPEED FOR TESTING
-            this.setSkin(R.drawable.arthur1_1);//MainActivity.joueur.getSkin());
+            this.setSkin(MainActivity.joueur.getSkin());
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
