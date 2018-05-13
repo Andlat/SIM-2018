@@ -2,6 +2,7 @@ package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
@@ -151,7 +152,7 @@ public class World {
         if(mModelToFollow > 0) {
             MVP.Camera cam = mMVP.getCamera();
 
-            Vec3 center = mModels.get(mModelToFollow).CalculateOrigin();
+            Vec3 center = mModels.get(mModelToFollow).getOrigin();
             cam.setCenter(center);//set where to look
 
             cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking
@@ -177,6 +178,7 @@ public class World {
         mDrawMan.Draw(mMVP, frameElapsedTime);
         //----------------------------------------------------------------------\\
 
+        //Log.e("OP 1", "FINISHED DRAWING");
 /*
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -240,9 +242,16 @@ public class World {
         */
 
         CamFollowModel();
+        //Log.e("OP 2", "CAM FOLLOWED");
 
+        /*
+        ============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
         //Detect and execute collisions
-        ExcecuteCollisions(CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels)));
+        List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels));
+        Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
+        ExcecuteCollisions(collisions);
+        Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
+        */
     }
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){

@@ -3,17 +3,15 @@ package daynight.daynnight;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 
 import java.io.IOException;
 
 import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.util.Util;
 
 import static daynight.daynnight.MainActivity.SurChangementActivity;
-import static daynight.daynnight.MainActivity.joueur;
-import static daynight.daynnight.MainActivity.onPause;
 
 
 public class GameActivity extends AppCompatActivity implements Joystick.JoystickListener{
@@ -62,26 +60,36 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        switch(source){
-            case R.id.joystickPerso:
-                persoVec.x(xPercent);
-                persoVec.y(yPercent);
+        Arthur arthur = game.getArthur();
+        if(arthur != null) {
+            switch(source){
+                case R.id.joystickPerso:
+                    persoVec.x(xPercent);
+                    persoVec.y(yPercent);
 
-                Arthur arthur = game.getArthur();
-                if(arthur != null) {
+
                     arthur.setDirection(persoVec);
 
-                    if(persoVec.isEmpty())
+                    if (persoVec.isEmpty())
                         arthur.Stay();
                     else
                         arthur.Walk();
-                }
-                break;
 
-            case R.id.joystickTir:
-                balleVec.x(xPercent);
-                balleVec.y(yPercent);
-                break;
+                    break;
+
+                case R.id.joystickTir:
+                    balleVec.x(xPercent);
+                    balleVec.y(yPercent);
+
+                    float theta = Util.RadToDeg((float) Math.atan2(yPercent, xPercent));
+
+                    if(theta < 0) theta = 360+theta;//atan2 correction (atan2 returns negatives for [PI, 2PI]. (E.g. 3PI/4 = -PI/4)
+
+                    Log.e("Theta", ""+theta);
+                    arthur.getTool().setRotation2D(theta);
+
+                    break;
+            }
         }
     }
     @Override

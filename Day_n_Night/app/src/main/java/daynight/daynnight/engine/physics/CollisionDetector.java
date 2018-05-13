@@ -18,8 +18,8 @@ import daynight.daynnight.engine.math.Vec3;
 public class CollisionDetector {
     /**
      * Detects collisions between models. A MovingModel can collide with another MovingModel or a StaticModel of type BLOCK
-     * @param movingModels
-     * @param models
+     * @param movingModels List of moving models to verify for
+     * @param models All models to verify against
      */
     public static List<Pair<MovingModel, Model>> Detect(List<MovingModel> movingModels, List<Model> models){
         List<Pair<MovingModel, Model>> collisions = new ArrayList<>();
@@ -82,7 +82,7 @@ public class CollisionDetector {
                         wallY = wallCornerBottomRight.y();
 
                 return (wallType == StaticModel.Type.WALL_TOP ?
-                        (mvgY >= wallY && mvgY <= (wallY + wallHeight)) ://Top wall. Between over bottom line of wall and height of wall
+                        (mvgY >= wallY && mvgY <= (wallY + wallHeight + 0.25)) ://Top wall. Between over bottom line of wall and height of wall. Adding a little margin on top, because of the corridors' opening. Without it, we can see the feet
                         mvgY <= (wallY + wallHeight/2) && mvgY >= (wallY - wallHeight/2));//Bottom wall. Between a height same as the wall with the bottom of the wall as the middle.
             }
         }
@@ -92,7 +92,7 @@ public class CollisionDetector {
 
     private static boolean hasCollision(MovingModel moving, Model model){
         final List<Vec3> cornersMvg = moving.getCorners(), cornersMdl = model.getCorners();
-        final Vec3 orgMvg = moving.CalculateOrigin(), orgMdl = model.CalculateOrigin();
+        final Vec3 orgMvg = moving.getOrigin(), orgMdl = model.getOrigin();
 
         for(Vec3 cornerMvg : cornersMvg){
             for(Vec3 cornerMdl : cornersMdl){

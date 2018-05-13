@@ -18,6 +18,10 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
 
+import static daynight.daynnight.Room.P_LFT;
+import static daynight.daynnight.Room.P_NONE;
+import static daynight.daynnight.Room.P_RGHT;
+
 /**
  * Created by Nikola Zelovic on 2018-02-17.
  */
@@ -50,9 +54,6 @@ class Game extends GameView{
     private Toutou toutouTest;
     private boolean positionPositiveDuSpawn = false;
 
-
-    private int Z_ARTHUR=75;
-
     private Arthur mArthur;
     public Game(Context context) {
         super(context);
@@ -78,17 +79,25 @@ class Game extends GameView{
 
         mArthur = new Arthur(mContext);
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, 1, 0));
-        mWorld.setGroupZIndex(mArthur.getInWorldID(), Z_ARTHUR);
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, 0, 0));
+        mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try{
-            mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
+            mArthur.setTool(ObjParser.Parse(mContext, "models", "outil.obj").get(0), mWorld);
 
-            Room.Generate(mContext, mWorld, 10);
+            //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
-            Log.e("COUNT", ""+mWorld.getModelsCount());
+            Room.Generate(mContext, mWorld, 16, new Vec3(), P_LFT|P_RGHT);
+
+            Corridor.Generate(mContext, mWorld, 4, new Vec3(-20, -1, 0));
+            Room.Generate(mContext, mWorld, 8, new Vec3(-32, 0, 0), P_RGHT);
+
+            Corridor.Generate(mContext, mWorld, 8, new Vec3(24, -1, 0));
+            Room.Generate(mContext, mWorld, 10, new Vec3(40, 0, 0), P_LFT);
+
+            //Log.e("COUNT", ""+mWorld.getModelsCount());
         }catch(IOException ex){
             Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
         }
@@ -200,6 +209,8 @@ class Game extends GameView{
             if(!mArthur.getDirection().isEmpty())
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
         }
+
+        //Log.e("FRAME TIME", ""+getElapsedFrameTime());
 /*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();

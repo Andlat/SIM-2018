@@ -18,7 +18,7 @@ import daynight.daynnight.engine.util.Util;
  */
 
 class DrawingManager {
-    private final static int mGroupMaxSize = 1024*1024/32;//32 groups per Mb of about 170 models of 192 bytes
+    private final static int mGroupMaxSize = 1024*1024/16;//32 groups per Mb of about 170 models of 192 bytes
     private final static int mGroupMaxModels = mGroupMaxSize/192;
 
     private final int[] mVAO = new int[1];
@@ -37,7 +37,7 @@ class DrawingManager {
 
     private Model.onModelChangedListener mOnModelChangedListener = new Model.onModelChangedListener() {
         @Override
-        public void onModelMatChanged(Model _this, Changed changed) {
+        public void onModelChanged(Model _this, Changed changed) {
             int groupID = _this.getDrawGroupID();
             if (groupID > -1) {
                 DrawGroup group = mGroups.get(_this.getDrawGroupID());
@@ -117,14 +117,14 @@ class DrawingManager {
         }
 
         model.setDrawGroupID(groupID);
-        model.setOnModelMatChangedListener(mOnModelChangedListener);
+        model.setOnModelChangedListener(mOnModelChangedListener);
     }
     void removeModel(Model model){
         int key = model.getDrawGroupID();
         if(key > 0) {
             mGroups.get(key).removeModel(model, mVBO);
             model.setDrawGroupID(-1);
-            model.setOnModelMatChangedListener(null);
+            model.setOnModelChangedListener(null);
         }
 
         //Delete group if it is empty
@@ -186,6 +186,8 @@ class DrawingManager {
         //All models use the same shader, so it is OK to only bind it once
         Shader shader = mGroups.get(0).getModels().get(0).getShader();
         shader.Use();
+
+        //Log.e("Groups Count: ", ""+mGroups.size());
 
         //Log.e("Size", "S: "+mGroups.size()+" ; F: "+frameElapsedTime);
 

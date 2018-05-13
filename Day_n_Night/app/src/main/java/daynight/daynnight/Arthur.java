@@ -28,12 +28,16 @@ class Arthur{
 
     private final int FRAME_LENGTH = 200;
 
+    private Model mTool;
+
+    public static int Z_ARTHUR=75, Z_TOOL=80;
+
     Arthur(Context context){
         mContext = context;
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
-            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 3f));
+            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 10f));//TODO TEMP SPEED FOR TESTING
             this.setSkin(R.drawable.arthur1_1);//MainActivity.joueur.getSkin());
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
@@ -67,4 +71,25 @@ class Arthur{
 
     void setDirection(Vec3 dir){ mDirection=dir; }
     Vec3 getDirection(){ return mDirection; }
+
+    void setTool(Model tool, World world){
+        mTool = tool;
+        mModel.Attach(tool);
+
+        tool.StaticTranslate(new Vec3(0.25f, -0.75f, 0));
+
+        world.addModel(tool);
+        world.setGroupZIndex(tool, Z_TOOL);
+    }
+
+    Model getTool(){ return mTool; }
+
+    void setToolDir(Vec3 dir){
+
+    }
+
+    //TODO
+    void ChangeToolSkin(){
+
+    }
 }

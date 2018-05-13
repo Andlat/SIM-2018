@@ -15,6 +15,21 @@ import java.util.List;
 
 public final class Util {
     public static final int FLOAT_SIZE = 4;
+    public static final float PI = 3.141593f;
+
+    public static float Clamp(float value, float min, float max){
+        if(value < min){
+            value = min;
+        }else if(value > max){
+            value = max;
+        }
+
+        return value;
+    }
+
+    public static float RadToDeg(float rad){
+        return rad * 360.f / (2.f * PI);
+    }
 
     public static float[] FloatListToArray(final List<Float> list){
         final int size = list.size();
