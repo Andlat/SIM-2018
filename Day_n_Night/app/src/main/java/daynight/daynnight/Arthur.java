@@ -14,6 +14,7 @@ import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
+import daynight.daynnight.engine.util.Util;
 
 /**
  * Created by Nikola Zelovic on 2018-04-30.
@@ -76,7 +77,7 @@ class Arthur{
         mTool = tool;
         mModel.Attach(tool);
 
-        tool.StaticTranslate(new Vec3(0.25f, -0.75f, 0));
+        tool.StaticTranslate(new Vec3(0.25f, -0.5f, 0));
 
         world.addModel(tool);
         world.setGroupZIndex(tool, Z_TOOL);
@@ -85,7 +86,26 @@ class Arthur{
     Model getTool(){ return mTool; }
 
     void setToolDir(Vec3 dir){
+        float theta = Util.RadToDeg((float) Math.atan2(dir.y(), dir.x()));
 
+        if(theta < 0) theta = 360+theta;//atan2 correction (atan2 returns negatives for [PI, 2PI]. (E.g. 3PI/4 = -PI/4)
+
+        mTool.setRotation2D(theta);
+    }
+
+    //Switch arthur to its opposite side
+    void checkSwitch(float x){
+        boolean s = x<0;
+        mModel.setSwitched(s);
+
+        /*TODO Translate tool x-axis to compensate the static translation when switching
+        if(!mTool.isSwitched() && s){
+            mTool.
+        }else if(mTool.isSwitched() && !s){
+
+        }
+        */
+        mTool.setSwitched(s);
     }
 
     //TODO

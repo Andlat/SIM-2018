@@ -33,10 +33,11 @@ public class Model {
 
     private Vec3 mCurrentTranslation = new Vec3(), mLastTranslation = new Vec3();
     private float mCurrentRotation2D = 0;
+    private boolean mIsSwitched = false;
 
     private Mat4 mModelMatrix = new Mat4();//Position of the model from its origin. Default is an identity matrix (it's origin)
 
-    private Vec3 mOrigin = new Vec3();
+    private Vec3 mStaticOrigin = new Vec3();
 
     private ArrayList<Model> mAttached = new ArrayList<>();
 
@@ -89,16 +90,12 @@ public class Model {
         mTexOffset = texOffset;
     }
 
-    public Vec3 getPosition(){
-        return (Vec3)getOrigin().add(mCurrentTranslation);
-    }
-
-    //TODO Fonction CalculateOrigin indépendante à l'application
+    //TODO Fonction CalculateStaticOrigin indépendante à l'application
     /**
      * Calcul de l'origine du modèle. Basé sur les coordonnées statiques de l'objet (coors du fichier ou après une translation des coordonnées dans le vbo)
      * CETTE FONCTION EST DÉPENDANTE DE LA FAÇON DONT LES FICHIERS OBJ ONT ÉTÉS FAITS. ELLE NE FONCTIONNE QUE POUR DES RECTANGLES ET EST DÉPENDANTE À CETTE APPLICATION
      */
-    private void CalculateOrigin(){
+    private void CalculateStaticOrigin(){
         Vec2 bottomRight, topLeft;
 
         bottomRight = new Vec2(mModelVBO.get(0), mModelVBO.get(1));
@@ -107,10 +104,14 @@ public class Model {
         float midX = (topLeft.x() + bottomRight.x()) / 2;
         float midY = (bottomRight.y() + topLeft.y()) / 2;
 
-        mOrigin = (Vec3)new Vec3(midX, midY, 0).add(mCurrentTranslation);
+        mStaticOrigin = new Vec3(midX, midY, 0);
     }
 
-    public Vec3 getOrigin(){ return mOrigin; }
+    public Vec3 getOrigin(){ return mStaticOrigin; }
+    public Vec3 getRelOrigin(){
+        Vec3 relOrg = new Vec3(mStaticOrigin);
+        return (Vec3)relOrg.add(mCurrentTranslation);
+    }
 
     //TODO Fonction getBottomPolyline indépendante à l'application
     /**
@@ -237,18 +238,27 @@ public class Model {
     public final float getRotation2D(){ return mCurrentRotation2D; }
     public final void ResetRotation2D(){ this.setRotation2D(0);}
 
+    public final void setSwitched(boolean isSwitched){ mIsSwitched = isSwitched; }
+    public final boolean isSwitched(){ return mIsSwitched; }
+
     private void CalculateModelMat(){
         //Calculate and set new ModelMatrix
         float[] modelBuffer = new Mat4().toArray();
 
         //Translate according to the relative position and the absolute position (the latter is used for the rotation on itself)
-        Matrix.translateM(modelBuffer, 0, mOrigin.x() + mCurrentTranslation.x(), mOrigin.y() + mCurrentTranslation.y(), mCurrentTranslation.z());
+        Matrix.translateM(modelBuffer, 0, mStaticOrigin.x() + mCurrentTranslation.x(), mStaticOrigin.y() + mCurrentTranslation.y(), mCurrentTranslation.z());
 
         //Rotate on itself around the z-axis
         Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D, 0, 0, 1f);
 
+        //Switch the side of the object if true
+        if(mIsSwitched)
+            Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
+
         //Translate back to the relative position (discards the absolute position)
-        Matrix.translateM(modelBuffer, 0, -mOrigin.x(), -mOrigin.y(), 0);
+        Matrix.translateM(modelBuffer, 0, -mStaticOrigin.x(), -mStaticOrigin.y(), 0);
+
+
 
         this.setModelMatrix(new Mat4(modelBuffer, 0));
     }
@@ -265,7 +275,7 @@ public class Model {
             mModelVBO.put(++i, mModelVBO.get(i) + translation.z());
         }
 
-        CalculateOrigin();
+        CalculateStaticOrigin();
     }
 
 
@@ -281,7 +291,7 @@ public class Model {
 
     private void RunAttached(){
         for(Model attached : mAttached){
-            attached.setModelMatrix(new Mat4(this.mModelMatrix.toArray(), 0));
+            attached.setTranslation(new Vec3(this.mCurrentTranslation));
         }
     }
 
@@ -316,9 +326,10 @@ public class Model {
         clone.mCurrentTranslation = new Vec3(this.mCurrentTranslation);
         clone.mLastTranslation = new Vec3(this.mLastTranslation);
         clone.mCurrentRotation2D = this.mCurrentRotation2D;
+        clone.mIsSwitched = this.mIsSwitched;
         clone.mModelMatrix = new Mat4(this.mModelMatrix.toArray(), 0);
 
-        clone.mOrigin = this.mOrigin;
+        clone.mStaticOrigin = this.mStaticOrigin;
 
         clone.mModelVBO = Util.CloneBuffer(this.mModelVBO);
 

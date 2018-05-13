@@ -149,10 +149,10 @@ public class World {
         mModelToFollow = id_model;
     }
     private void CamFollowModel(){
-        if(mModelToFollow > 0) {
+        if(mModelToFollow > -1) {
             MVP.Camera cam = mMVP.getCamera();
 
-            Vec3 center = mModels.get(mModelToFollow).getOrigin();
+            Vec3 center = mModels.get(mModelToFollow).getRelOrigin();
             cam.setCenter(center);//set where to look
 
             cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking

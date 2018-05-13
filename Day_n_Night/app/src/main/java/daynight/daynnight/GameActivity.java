@@ -69,6 +69,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
 
 
                     arthur.setDirection(persoVec);
+                    arthur.checkSwitch(xPercent);
 
                     if (persoVec.isEmpty())
                         arthur.Stay();
@@ -81,12 +82,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                     balleVec.x(xPercent);
                     balleVec.y(yPercent);
 
-                    float theta = Util.RadToDeg((float) Math.atan2(yPercent, xPercent));
-
-                    if(theta < 0) theta = 360+theta;//atan2 correction (atan2 returns negatives for [PI, 2PI]. (E.g. 3PI/4 = -PI/4)
-
-                    Log.e("Theta", ""+theta);
-                    arthur.getTool().setRotation2D(theta);
+                    arthur.setToolDir(new Vec3(xPercent, yPercent, 0));
 
                     break;
             }

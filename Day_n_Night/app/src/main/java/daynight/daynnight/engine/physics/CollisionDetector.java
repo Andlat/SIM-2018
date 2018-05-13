@@ -92,7 +92,7 @@ public class CollisionDetector {
 
     private static boolean hasCollision(MovingModel moving, Model model){
         final List<Vec3> cornersMvg = moving.getCorners(), cornersMdl = model.getCorners();
-        final Vec3 orgMvg = moving.getOrigin(), orgMdl = model.getOrigin();
+        final Vec3 orgMvg = moving.getRelOrigin(), orgMdl = model.getRelOrigin();
 
         for(Vec3 cornerMvg : cornersMvg){
             for(Vec3 cornerMdl : cornersMdl){
