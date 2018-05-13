@@ -11,6 +11,7 @@ import java.io.IOException;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
+import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.SurChangementActivity;
 
 
