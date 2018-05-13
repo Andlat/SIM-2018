@@ -140,15 +140,15 @@ public class Inventaire extends AppCompatActivity
     {
         if(SurChangementActivity)//TODO le problème est ici
         {
-            /*MainActivity.musiqueDeFond.pause();
-            MainActivity.ma.sauvegardeJoueur(joueur);*/
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
         }
         super.onStop();
     }
     @Override
     protected void onResume()
     {
-        //MainActivity.musiqueDeFond.start();
+        MainActivity.musiqueDeFond.start();
         super.onResume();
     }
 

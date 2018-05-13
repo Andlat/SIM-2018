@@ -168,8 +168,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     {
         if(SurChangementActivity)
         {
-            /*MainActivity.musiqueDeFond.pause();
-            MainActivity.ma.sauvegardeJoueur(joueur);*/
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
         }
         super.onStop();
     }
@@ -186,7 +186,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     @Override
     protected void onResume()
     {
-        //MainActivity.musiqueDeFond.start();
+        MainActivity.musiqueDeFond.start();
         super.onResume();
 
         //Quand la map est disponible, on appel la fonction OnMapReady()

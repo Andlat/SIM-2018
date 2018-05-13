@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        //musiqueDeFond.start();
+        musiqueDeFond.start();
     }
 
     @Override
@@ -176,8 +176,8 @@ public class MainActivity extends AppCompatActivity
 
         if(onPause && !SurChangementActivity)
         {
-            //sauvegardeJoueur(joueur);
-            //musiqueDeFond.pause();
+            sauvegardeJoueur(joueur);
+            musiqueDeFond.pause();
             onPause = false;
         }
     }
