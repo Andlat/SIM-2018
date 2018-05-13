@@ -1,4 +1,4 @@
-package daynight.daynnight;
+package daynight.daynnight.house;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -108,6 +108,9 @@ class Room {
         StaticModel wall_b_org = ObjParser.Parse(context, "models", "mur_bas.obj").get(0).toStaticModel();
         wall_b_org.setType(StaticModel.Type.WALL_BOTTOM);
 
+        boolean p_up = (passages & P_UP) == P_UP;
+        boolean p_dwn = (passages & P_DWN) == P_DWN;
+
         Vec3 l = new Vec3(), r = new Vec3();
 
         //Generate the top and bottom walls
@@ -119,37 +122,44 @@ class Room {
             //Left side
             l.x(-i-1 + orgInMap.x());  l.y(y_top + orgInMap.y());
 
-            StaticModel wall_top_l = new StaticModel(wall_t_org);
-            wall_top_l.StaticTranslate(l);
-            world.addModel(wall_top_l);
+            if(!p_up || l.x() < -3 || l.x() > -1) {//Skip the wall generation if needed a hole for a passage
+                StaticModel wall_top_l = new StaticModel(wall_t_org);
+                wall_top_l.StaticTranslate(l);
+                world.addModel(wall_top_l);
+            }
 
             //Right side
             r.x(i+1 + orgInMap.x()); r.y(y_top + orgInMap.y());
 
-            StaticModel wall_top_r = new StaticModel(wall_t_org);
-            wall_top_r.StaticTranslate(r);
-            world.addModel(wall_top_r);
+            if(!p_up || r.x() != 1) {//Skip the wall generation if needed a hole for a passage
+                StaticModel wall_top_r = new StaticModel(wall_t_org);
+                wall_top_r.StaticTranslate(r);
+                world.addModel(wall_top_r);
 
-            world.setGroupZIndex(wall_top_r, Z_WALL);
+                world.setGroupZIndex(wall_top_r, Z_WALL);
+            }
             /*---------------------------------/
 
             /*----------- Bottom row -----------*/
             //Left side
             l.x(-i-1 + orgInMap.x());  l.y(y_bot + orgInMap.y());
 
-            StaticModel wall_bot_l = new StaticModel(wall_b_org);
-            wall_bot_l.StaticTranslate(l);
-            world.addModel(wall_bot_l);
+            if(!p_dwn || l.x() < -3 || l.x() > -1) {//Skip the wall generation if needed a hole for a passage
+                StaticModel wall_bot_l = new StaticModel(wall_b_org);
+                wall_bot_l.StaticTranslate(l);
+                world.addModel(wall_bot_l);
+            }
 
             //Right side
             r.x(i+1 + orgInMap.x()); r.y(y_bot + orgInMap.y());
 
-            StaticModel wall_bot_r = new StaticModel(wall_b_org);
-            wall_bot_r.StaticTranslate(r);
-            world.addModel(wall_bot_r);
+            if(!p_dwn || r.x() != 1) {//Skip the wall generation if needed a hole for a passage
+                StaticModel wall_bot_r = new StaticModel(wall_b_org);
+                wall_bot_r.StaticTranslate(r);
+                world.addModel(wall_bot_r);
 
-
-            world.setGroupZIndex(wall_bot_r, Z_WALL_BOTTOM);
+                world.setGroupZIndex(wall_bot_r, Z_WALL_BOTTOM);
+            }
             /*------------------------------------*/
         }
     }
@@ -158,7 +168,7 @@ class Room {
      * Generate the Side walls of the room
      * @param context Context of activity
      * @param world World of Game
-     * @param FLOOR_SIZE Width and Height of a square room (number of 2x2 tiles). HAS TO BE PAR AND >= 8: FLOOR_SIZE e 2n >= 8
+     * @param FLOOR_SIZE Width and Height of a square room (number of 2x2 tiles). HAS TO BE PAR
      * @param orgInMap Center of the room in map coordinates
      * @param passages Where to put corridors
      * @throws IOException Couldn't read the .obj file

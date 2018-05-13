@@ -96,6 +96,12 @@ public abstract class Vector {
         return isEmpty;
     }
 
+    public void SwitchXY(){
+        float tmp = this.components[0];
+        this.components[0] = this.components[1];
+        this.components[1] = tmp;
+    }
+
     /**
      * Nombre de composantes (ou dimensions) du vecteur
      * @return Nombre de composantes du vecteur

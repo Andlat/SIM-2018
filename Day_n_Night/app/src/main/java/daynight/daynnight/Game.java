@@ -17,10 +17,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
-
-import static daynight.daynnight.Room.P_LFT;
-import static daynight.daynnight.Room.P_NONE;
-import static daynight.daynnight.Room.P_RGHT;
+import daynight.daynnight.house.House;
 
 /**
  * Created by Nikola Zelovic on 2018-02-17.
@@ -79,7 +76,7 @@ class Game extends GameView{
 
         mArthur = new Arthur(mContext);
         mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, 0, 0));
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
         mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
@@ -89,13 +86,7 @@ class Game extends GameView{
 
             //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
-            Room.Generate(mContext, mWorld, 16, new Vec3(), P_LFT|P_RGHT);
-
-            Corridor.Generate(mContext, mWorld, 4, new Vec3(-20, -1, 0));
-            Room.Generate(mContext, mWorld, 8, new Vec3(-32, 0, 0), P_RGHT);
-
-            Corridor.Generate(mContext, mWorld, 8, new Vec3(24, -1, 0));
-            Room.Generate(mContext, mWorld, 10, new Vec3(40, 0, 0), P_LFT);
+            House.Generate(mContext, mWorld);
 
             //Log.e("COUNT", ""+mWorld.getModelsCount());
         }catch(IOException ex){
