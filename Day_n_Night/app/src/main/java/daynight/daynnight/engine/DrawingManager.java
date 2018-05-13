@@ -26,7 +26,7 @@ class DrawingManager {
 
     private final SparseArray<DrawGroup> mGroups = new SparseArray<>();
 
-    private List<DrawGroup> mZOrderedGroups;
+    private final List<DrawGroup> mZOrderedGroups = new ArrayList<>();
     private boolean mGroupsZchanged = false;
     private ZIndex_QuickSort mZSorter = new ZIndex_QuickSort();
 
@@ -152,6 +152,7 @@ class DrawingManager {
 
         DrawGroup n = new DrawGroup(model, mVBO, vboOffset);
         mGroups.put(n.getID(), n);
+        mZOrderedGroups.add(n);
 
         mGroupsZchanged = true;
 
@@ -169,11 +170,12 @@ class DrawingManager {
         mEmptyPools.add(group.getVBOOffset());
 
         mGroups.remove(key);
+        mZOrderedGroups.remove(group);
 
         mGroupsZchanged = true;
     }
 
-    List<DrawGroup> getGroups(){ return Util.SparseArrayToArrayList(mGroups); }
+    List<DrawGroup> getGroups(){ return mZOrderedGroups; }//return Util.SparseArrayToArrayList(mGroups); }TODO Remove this line. The conversion takes too much time
 
     void setZindex(int groupID, int z){
         mGroups.get(groupID).setZ(z);
@@ -246,7 +248,8 @@ class DrawingManager {
 
         void sort(){
             if(mGroupsZchanged){
-                mZOrderedGroups = Util.SparseArrayToArrayList(mGroups);
+                Log.e("SORT", "SORT");
+                //mZOrderedGroups = Util.SparseArrayToArrayList(mGroups);TODO Remove this line. The conversion takes too much time
 
                 final int hi = mZOrderedGroups.size()-1;
                 quickSort(0, hi);

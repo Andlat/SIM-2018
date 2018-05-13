@@ -37,7 +37,7 @@ public class Model {
 
     private Mat4 mModelMatrix = new Mat4();//Position of the model from its origin. Default is an identity matrix (it's origin)
 
-    private Vec3 mStaticOrigin = new Vec3();
+    private Vec3 mStaticOrigin = new Vec3(), mRelOrigin = new Vec3();
 
     private ArrayList<Model> mAttached = new ArrayList<>();
 
@@ -105,13 +105,16 @@ public class Model {
         float midY = (bottomRight.y() + topLeft.y()) / 2;
 
         mStaticOrigin = new Vec3(midX, midY, 0);
+
+        this.CalculateRelOrigin();
+    }
+    private void CalculateRelOrigin(){
+        Vec3 relOrg = new Vec3(mStaticOrigin);
+        mRelOrigin = (Vec3)relOrg.add(mCurrentTranslation);
     }
 
     public Vec3 getOrigin(){ return mStaticOrigin; }
-    public Vec3 getRelOrigin(){
-        Vec3 relOrg = new Vec3(mStaticOrigin);
-        return (Vec3)relOrg.add(mCurrentTranslation);
-    }
+    public Vec3 getRelOrigin(){ return mRelOrigin; }
 
     //TODO Fonction getBottomPolyline indépendante à l'application
     /**
@@ -209,6 +212,7 @@ public class Model {
         mLastTranslation = mCurrentTranslation;
         mCurrentTranslation = position;
         this.CalculateModelMat();
+        this.CalculateRelOrigin();
     }
     public final void addTranslation(Vec3 translation){
         this.setTranslation((Vec3)new Vec3(mCurrentTranslation).add(translation));

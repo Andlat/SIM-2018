@@ -18,7 +18,11 @@ public class Coord {
     }
 
     public float distanceTo(Coord target){
-        return (float)Math.sqrt(Math.pow(target.X - this.X, 2) + Math.pow(target.Y - this.Y, 2));
+        return distanceTo(this.X, this.Y, target.X, target.Y);
+    }
+
+    public static float distanceTo(float x1, float y1, float x2, float y2){
+        return (float)Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     public void setX(float x){

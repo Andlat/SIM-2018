@@ -7,6 +7,7 @@ import android.util.Pair;
 import android.util.LongSparseArray;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
@@ -32,7 +33,8 @@ public class World {
     private long mModelToFollow = -1;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
-    private final List<MovingModel> mMovingModels = new ArrayList<>();//Models in this list are also included in mModels
+    private final List<MovingModel> mMovingModels = new LinkedList<>();//Models in this list are also included in mModels
+    private final List<Model> mModelsList = new LinkedList<>();
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
     private boolean mArePhysicsOn = false;//TODO Take this in account?
@@ -54,6 +56,7 @@ public class World {
     public long addModel(Model model){
         final long modelID = model.getID();
         mModels.put(modelID, model);
+        mModelsList.add(model);
 
         //model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
 
@@ -75,6 +78,7 @@ public class World {
         */
 
         mModels.remove(id_model);
+        mModelsList.remove(toRemoveModel);
 
 
         //Remove from mMovingModels if necessary
@@ -178,7 +182,7 @@ public class World {
         mDrawMan.Draw(mMVP, frameElapsedTime);
         //----------------------------------------------------------------------\\
 
-        //Log.e("OP 1", "FINISHED DRAWING");
+        Log.e("OP 1", "FINISHED DRAWING");
 /*
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -242,16 +246,17 @@ public class World {
         */
 
         CamFollowModel();
-        //Log.e("OP 2", "CAM FOLLOWED");
+        Log.e("OP 2", "CAM FOLLOWED");
 
-        /*
-        ============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
+        //============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
         //Detect and execute collisions
-        List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels));
+        Log.e("OP 3", "START COLLISIONS DETECTED");
+        //Util.LongSparseArrayToArrayList(mModels);
+        List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect2(mMovingModels, mModelsList);
         Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
         ExcecuteCollisions(collisions);
         Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
-        */
+
     }
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){

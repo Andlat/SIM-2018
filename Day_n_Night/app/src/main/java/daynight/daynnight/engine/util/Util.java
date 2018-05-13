@@ -55,6 +55,7 @@ public final class Util {
         return clone;
     }
 
+    /*TODO Remove these. The conversion takes too much time (tested for the long sparse array. Have to test for the int too)
     public static <T> List<T> SparseArrayToArrayList(SparseArray<T> array){
         List<T> list = new ArrayList<>();
 
@@ -65,7 +66,7 @@ public final class Util {
         return list;
     }
     public static <T> List<T> LongSparseArrayToArrayList(LongSparseArray<T> array){
-        List<T> list = new ArrayList<>();
+        final List<T> list = new ArrayList<>();
 
         final int size = array.size();
         for(int i=0; i < size; ++i){
@@ -73,6 +74,7 @@ public final class Util {
         }
         return list;
     }
+    */
 
     public static <T> int getKeyFromSparseArrayElmnt(SparseArray<T> array, T elmnt) {
         final int size = array.size();
