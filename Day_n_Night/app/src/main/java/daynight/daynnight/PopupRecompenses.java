@@ -13,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
+import static daynight.daynnight.MainActivity.onPause;
 
 /**
  * Created by Antoine Mascolo on 2018-04-17.
@@ -40,6 +42,14 @@ public class PopupRecompenses extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_recompense);
 
+        outilsLegend = new ArrayList<Outil>();
+        outilsRare = new ArrayList<Outil>();
+        outilsCommon = new ArrayList<Outil>();
+        skinsLegend = new ArrayList<Outil>();
+        skinsRare = new ArrayList<Outil>();
+        skinsCommon = new ArrayList<Outil>();
+        rand = new Random();
+
         //Parametre pour que l'activity ne prenne pas tout l'écran
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -51,7 +61,7 @@ public class PopupRecompenses extends Activity {
         ramasser = findViewById(R.id.ramasser);
         TextView recompense = (TextView) findViewById(R.id.recompenseMessage);
 
-
+/*
         //classe les outils selon leur rarete
         for(int i = 0; i < MainActivity.joueur.getOutilsBoutique().size(); i++){
             int rarete = MainActivity.joueur.getOutilsBoutique().get(i).getRarete();
@@ -86,14 +96,28 @@ public class PopupRecompenses extends Activity {
 
                 if(generate == 0){
                     //skin
-                    generate = rand.nextInt(skinsCommon.size());
-                    recompense.setText(skinsCommon.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() >0) {
+                        generate = rand.nextInt(skinsCommon.size());
+                        recompense.setText(skinsCommon.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
                 }else{
-                    //outil
-                    generate = rand.nextInt(outilsCommon.size());
-                    recompense.setText(outilsCommon.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() >0) {
+                        //outil
+                        generate = rand.nextInt(outilsCommon.size());
+                        recompense.setText(outilsCommon.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
                 }
 
 
@@ -102,15 +126,30 @@ public class PopupRecompenses extends Activity {
                 generate = rand.nextInt(2);
 
                 if(generate == 0){
-                    //skin
-                    generate = rand.nextInt(skinsRare.size());
-                    recompense.setText(skinsRare.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() > 0) {
+                        //skin
+                        generate = rand.nextInt(skinsRare.size());
+                        recompense.setText(skinsRare.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
+
                 }else{
-                    //outil
-                    generate = rand.nextInt(outilsRare.size());
-                    recompense.setText(outilsRare.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() <0) {
+                        //outil
+                        generate = rand.nextInt(outilsRare.size());
+                        recompense.setText(outilsRare.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
                 }
 
             }else{
@@ -118,19 +157,35 @@ public class PopupRecompenses extends Activity {
                 generate = rand.nextInt(2);
 
                 if(generate == 0){
-                    //skin
-                    generate = rand.nextInt(skinsLegend.size());
-                    recompense.setText(skinsLegend.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() >0) {
+                        //skin
+                        generate = rand.nextInt(skinsLegend.size());
+                        recompense.setText(skinsLegend.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
+
                 }else{
-                    //outil
-                    generate = rand.nextInt(outilsLegend.size());
-                    recompense.setText(outilsLegend.get(generate).getNom());
-                    //TODO ajouter à l'inventaire et retirer de la boutique
+                    if(skinsCommon.size() >0) {
+                        //outil
+                        generate = rand.nextInt(outilsLegend.size());
+                        recompense.setText(outilsLegend.get(generate).getNom());
+                        //TODO ajouter à l'inventaire et retirer de la boutique
+                    }else{
+                        //si il n'y a rien a gagner, donne des biscuits
+                        biscuit = rand.nextInt(21) + 5;
+                        MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
+                        recompense.setText(biscuit + "biscuits!");
+                    }
+
                 }
             }
 
-        }
+        }*/
 
 
 
@@ -151,12 +206,14 @@ public class PopupRecompenses extends Activity {
         });
 
     }
-
     @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override
@@ -164,5 +221,12 @@ public class PopupRecompenses extends Activity {
     {
         MainActivity.musiqueDeFond.start();
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        SurChangementActivity = false;
     }
 }

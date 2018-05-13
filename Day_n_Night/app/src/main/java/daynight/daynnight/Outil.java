@@ -13,21 +13,21 @@ import java.util.ArrayList;
 public class Outil extends Objet implements Parcelable
 {
     //Variables
-    enum Portee{Rapprochee, Eloignee, Nulle} Portee portee;
+    enum Portee{Rapprochée, Éloignée, Nulle} Portee portee;
     int nbCibles;
     int toucherParCoup;
-    int rarete;
-    //TODO int intervalleParCoup;
+    Float intervalleParCoup;
 
     //Constructeurs
     Outil() {}
-    Outil(String nom, String description, Type type, Portee portee, int prix, int toucherParCoup, int nbCibles/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis, int rarete)
+    Outil(int id, String nom, String description, Type type, int rarete, Portee portee, int prix, int toucherParCoup, int nbCibles, Float intervalleParCoup, String imageDrawableString, Boolean acquis)
     {
-        super(nom, description, type, prix/*, imagePaths*/, imageDrawableString, acquis);
+        super(id, nom, description, type, rarete, prix, imageDrawableString, acquis);
 
         this.portee = portee;
         this.toucherParCoup = toucherParCoup;
         this.nbCibles = nbCibles;
+        this.intervalleParCoup = intervalleParCoup;
         this.rarete = rarete;
     }
 
@@ -44,6 +44,10 @@ public class Outil extends Objet implements Parcelable
     {
         return nbCibles;
     }
+    public Float getIntervalleParCoup()
+    {
+        return intervalleParCoup;
+    }
 
     public void setPortee(Portee portee)
     {
@@ -57,14 +61,19 @@ public class Outil extends Objet implements Parcelable
     {
         this.nbCibles = nbCibles;
     }
+    public void setIntervalleParCoup(Float intervalleParCoup)
+    {
+        this.intervalleParCoup = intervalleParCoup;
+    }
 
     //Parceable
     public Outil(Parcel in)
     {
-        super(in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString(), Boolean.valueOf(in.readString()));
+        super(in.readInt(), in.readString(), in.readString(), Type.valueOf(in.readString()), in.readInt(), in.readInt()/*, (ArrayList<String>) in.readSerializable()*/, in.readString(), Boolean.valueOf(in.readString()));
         this.portee = Portee.valueOf(in.readString());
         this.toucherParCoup = in.readInt();
         this.nbCibles = in.readInt();
+        this.intervalleParCoup = in.readFloat();
     }
 
     @Override
@@ -76,16 +85,18 @@ public class Outil extends Objet implements Parcelable
     @Override
     public void writeToParcel(Parcel out, int i)
     {
+        out.writeInt(this.id);
         out.writeString(this.nom);
         out.writeString(this.description);
         out.writeString(this.type.name());
+        out.writeInt(this.rarete);
         out.writeInt(this.prix);
         out.writeString(this.imageDrawableString);
         out.writeString(this.acquis.toString());
         out.writeString(this.portee.name());
         out.writeInt(this.toucherParCoup);
         out.writeInt(this.nbCibles);
-        //out.writeSerializable(this.imagePaths);
+        out.writeFloat(this.intervalleParCoup);
     }
     public static final Parcelable.Creator<Outil> CREATOR = new Parcelable.Creator<Outil>()
     {
@@ -99,8 +110,4 @@ public class Outil extends Objet implements Parcelable
             return new Outil[size];
         }
     };
-
-    public int getRarete() {
-        return rarete;
-    }
 }

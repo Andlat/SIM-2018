@@ -12,9 +12,11 @@ import java.util.ArrayList;
 public class Objet implements Parcelable
 {
     //Variables
+    int id;
     String nom;
     String description;
     enum Type{Outil, Skin, Décoration, Nul} Type type;
+    int rarete;
     //TODO int identifiant;
 
     int prix;
@@ -26,18 +28,23 @@ public class Objet implements Parcelable
 
     //Constructeurs
     Objet() {}
-    Objet(String nom, String description, Type type, int prix/*, ArrayList<String> imagePaths*/, String imageDrawableString, Boolean acquis)
+    Objet(int id, String nom, String description, Type type, int rarete, int prix, String imageDrawableString, Boolean acquis)
     {
+        this.id = id;
         this.nom = nom;
         this.description = description;
         this.type = type;
+        this.rarete = rarete;
         this.prix = prix;
-        //this.imagePaths = imagePaths;
         this.imageDrawableString = imageDrawableString;
         this.acquis = acquis;
     }
 
     //Getteurs & Setteurs
+    public int getId()
+    {
+        return id;
+    }
     public String getNom()
     {
         return nom;
@@ -50,13 +57,13 @@ public class Objet implements Parcelable
     {
         return prix;
     }
-    /*public ArrayList<String> getImagePaths()
-    {
-        return imagePaths;
-    }*/
     public Type getType()
     {
         return type;
+    }
+    public int getRarete()
+    {
+        return rarete;
     }
     public String getImageDrawableString()
     {
@@ -67,6 +74,10 @@ public class Objet implements Parcelable
         return acquis;
     }
 
+    public void setId(int id)
+    {
+        this.id = id;
+    }
     public void setNom(String nom)
     {
         this.nom = nom;
@@ -79,13 +90,13 @@ public class Objet implements Parcelable
     {
         this.prix = prix;
     }
-    /*public void setImagePaths(ArrayList<String> imagePaths)
-    {
-        this.imagePaths = imagePaths;
-    }*/
     public void setType(Type type)
     {
         this.type = type;
+    }
+    public void setRarete(int rarete)
+    {
+        this.rarete = rarete;
     }
     public void setImageDrawableString(String imageDrawableString)
     {
@@ -99,11 +110,12 @@ public class Objet implements Parcelable
     //Parceable
     public Objet(Parcel in)
     {
+        this.id = in.readInt();
         this.nom = in.readString();
         this.description = in.readString();
         this.type = Type.valueOf(in.readString());
+        this.rarete = in.readInt();
         this.prix = in.readInt();
-        //this.imagePaths = (ArrayList<String>) in.readSerializable();
         this.imageDrawableString = in.readString();
         this.acquis = Boolean.valueOf(in.readString());
     }
@@ -117,11 +129,12 @@ public class Objet implements Parcelable
     @Override
     public void writeToParcel(Parcel out, int i)
     {
+        out.writeInt(this.id);
         out.writeString(this.nom);
         out.writeString(this.description);
         out.writeString(this.type.name());
+        out.writeInt(this.rarete);
         out.writeInt(this.prix);
-        //out.writeSerializable(this.imagePaths);
         out.writeString(this.imageDrawableString);
         out.writeString(this.acquis.toString());
     }

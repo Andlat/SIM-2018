@@ -15,7 +15,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by zelovini on 2018-02-05.
+ * Created by Nikola Zelovic on 2018-02-05.
  */
 
 public class Model {
@@ -32,10 +32,28 @@ public class Model {
     private Animation mAnimation = new Animation();
 
     private Vec3 mCurrentTranslation = new Vec3(), mLastTranslation = new Vec3();
+    private float mCurrentRotation2D = 0;
+    private boolean mIsSwitched = false;
 
     private Mat4 mModelMatrix = new Mat4();//Position of the model from its origin. Default is an identity matrix (it's origin)
 
+    private Vec3 mStaticOrigin = new Vec3(), mRelOrigin = new Vec3();
+
+    private ArrayList<Model> mAttached = new ArrayList<>();
+
     private long mID;
+
+    private int mDrawGroupID;
+
+    //On ModelMatrix or Animation changed listener
+    public static abstract class onModelChangedListener {
+        public enum Changed{ MODEL_MAT, ANIMATION }
+        abstract public void onModelChanged(Model _this, Changed changed);
+    }
+    private onModelChangedListener mOnModelChangedListener;
+    public void setOnModelChangedListener(onModelChangedListener listener){
+        mOnModelChangedListener = listener;
+    }
 
     public Model(){
         mID = mNxtModelID;
@@ -72,16 +90,12 @@ public class Model {
         mTexOffset = texOffset;
     }
 
-    public Vec3 getPosition(){
-        return (Vec3)CalculateOrigin().add(mCurrentTranslation);
-    }
-
-    //TODO Fonction CalculateOrigin dépendante à l'application
+    //TODO Fonction CalculateStaticOrigin indépendante à l'application
     /**
      * Calcul de l'origine du modèle. Basé sur les coordonnées statiques de l'objet (coors du fichier ou après une translation des coordonnées dans le vbo)
      * CETTE FONCTION EST DÉPENDANTE DE LA FAÇON DONT LES FICHIERS OBJ ONT ÉTÉS FAITS. ELLE NE FONCTIONNE QUE POUR DES RECTANGLES ET EST DÉPENDANTE À CETTE APPLICATION
      */
-    public Vec3 CalculateOrigin(){
+    private void CalculateStaticOrigin(){
         Vec2 bottomRight, topLeft;
 
         bottomRight = new Vec2(mModelVBO.get(0), mModelVBO.get(1));
@@ -90,10 +104,19 @@ public class Model {
         float midX = (topLeft.x() + bottomRight.x()) / 2;
         float midY = (bottomRight.y() + topLeft.y()) / 2;
 
-        return (Vec3)new Vec3(midX, midY, 0).add(mCurrentTranslation);
+        mStaticOrigin = new Vec3(midX, midY, 0);
+
+        this.CalculateRelOrigin();
+    }
+    private void CalculateRelOrigin(){
+        Vec3 relOrg = new Vec3(mStaticOrigin);
+        mRelOrigin = (Vec3)relOrg.add(mCurrentTranslation);
     }
 
-    //TODO Fonction getBottomPolyline dépendante à l'application
+    public Vec3 getOrigin(){ return mStaticOrigin; }
+    public Vec3 getRelOrigin(){ return mRelOrigin; }
+
+    //TODO Fonction getBottomPolyline indépendante à l'application
     /**
      * Retourne les 2 coordonnées formant le bas du modèle rectangulaire.
      * CETTE FONCTION EST DÉPENDANTE DE LA FAÇON DONT LES FICHIERS OBJ ONT ÉTÉS FAITS. ELLE NE FONCTIONNE QUE POUR DES RECTANGLES ET EST DÉPENDANTE À CETTE APPLICATION
@@ -154,7 +177,12 @@ public class Model {
         return mAnimation.addFrame(new Pair<>(texture, milliseconds));
     }
     public final Animation getAnimation(){ return mAnimation; }
-    public final void setAnimation(Animation animation){ mAnimation = animation; }
+    public final void setAnimation(Animation animation){
+        mAnimation = animation;
+
+        if(mOnModelChangedListener != null)
+            mOnModelChangedListener.onModelChanged(this, onModelChangedListener.Changed.ANIMATION);
+    }
 
 
     public final long getID(){ return mID; }
@@ -163,7 +191,18 @@ public class Model {
     public final void setVBOWorldOffset(long offset){ mWorldVBOOffset = offset; }
 
     public final Mat4 getModelMatrix(){ return mModelMatrix; }
-    public final void setModelMatrix(Mat4 matrix){ mModelMatrix = matrix; }
+    public final void setModelMatrix(Mat4 matrix){
+        mModelMatrix = matrix;
+
+        if(mOnModelChangedListener != null) {
+            mOnModelChangedListener.onModelChanged(this, onModelChangedListener.Changed.MODEL_MAT);
+        }
+
+        RunAttached();
+    }
+
+    public int getDrawGroupID(){ return mDrawGroupID; }
+    public void setDrawGroupID(int groupID){ mDrawGroupID = groupID; }
 
     public final void RewindTranslation(){
         mCurrentTranslation = mLastTranslation;
@@ -173,6 +212,7 @@ public class Model {
         mLastTranslation = mCurrentTranslation;
         mCurrentTranslation = position;
         this.CalculateModelMat();
+        this.CalculateRelOrigin();
     }
     public final void addTranslation(Vec3 translation){
         this.setTranslation((Vec3)new Vec3(mCurrentTranslation).add(translation));
@@ -184,13 +224,47 @@ public class Model {
     public final Vec3 getTranslation(){ return mCurrentTranslation; }
     public final Vec3 getLastTranslation(){ return mLastTranslation; }
 
+    /**
+     * Set the rotation in degrees
+     * @param degrees degrees to rotate
+     */
+    public final void setRotation2D(float degrees){
+        //Clamp the degrees to [0, 360]
+        degrees = Util.Clamp(degrees, 0, 360);
+
+        mCurrentRotation2D = degrees;
+        this.CalculateModelMat();
+    }
+    public final void addRotation2D(float degrees){
+        this.setRotation2D(mCurrentRotation2D +degrees);
+    }
+
+    public final float getRotation2D(){ return mCurrentRotation2D; }
+    public final void ResetRotation2D(){ this.setRotation2D(0);}
+
+    public final void setSwitched(boolean isSwitched){ mIsSwitched = isSwitched; }
+    public final boolean isSwitched(){ return mIsSwitched; }
+
     private void CalculateModelMat(){
         //Calculate and set new ModelMatrix
-        float[] translateBuffer = new Mat4().toArray();//Identity matrix
-        Matrix.translateM(translateBuffer, 0, mCurrentTranslation.x(), mCurrentTranslation.y(), mCurrentTranslation.z());
-        Mat4 translateMat4 = new Mat4(translateBuffer, 0);
+        float[] modelBuffer = new Mat4().toArray();
 
-        this.setModelMatrix(translateMat4);
+        //Translate according to the relative position and the absolute position (the latter is used for the rotation on itself)
+        Matrix.translateM(modelBuffer, 0, mStaticOrigin.x() + mCurrentTranslation.x(), mStaticOrigin.y() + mCurrentTranslation.y(), mCurrentTranslation.z());
+
+        //Rotate on itself around the z-axis
+        Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D, 0, 0, 1f);
+
+        //Switch the side of the object if true
+        if(mIsSwitched)
+            Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
+
+        //Translate back to the relative position (discards the absolute position)
+        Matrix.translateM(modelBuffer, 0, -mStaticOrigin.x(), -mStaticOrigin.y(), 0);
+
+
+
+        this.setModelMatrix(new Mat4(modelBuffer, 0));
     }
 
     /**
@@ -203,6 +277,25 @@ public class Model {
             mModelVBO.put(i, mModelVBO.get(i) + translation.x());
             mModelVBO.put(++i, mModelVBO.get(i) + translation.y());
             mModelVBO.put(++i, mModelVBO.get(i) + translation.z());
+        }
+
+        CalculateStaticOrigin();
+    }
+
+
+    /**
+     * Attach a model to another. When the model matrix is changed, the attached model's model matrix is also changed to be the same. Meaning that any non-static translation of that object will be deleted. (Subject to change)
+     * @param model Model to attach to this
+     */
+    public void Attach(Model model){ mAttached.add(model); }
+    public void RemoveAttached(Model model){ mAttached.remove(model); }
+    public List<Model> getAttached(){ return mAttached; }
+    public boolean isAttached(Model model){ return mAttached.contains(model); }
+    public int getAttachedQuantity(){ return mAttached.size(); }
+
+    private void RunAttached(){
+        for(Model attached : mAttached){
+            attached.setTranslation(new Vec3(this.mCurrentTranslation));
         }
     }
 
@@ -226,6 +319,7 @@ public class Model {
      * Clone a Model's attributes to this one. Deep
      * @param clone The model to clone
      */
+    @SuppressWarnings("unchecked")
     public void CloneTo(Model clone){
         clone.mShader = this.mShader;
 
@@ -235,7 +329,11 @@ public class Model {
 
         clone.mCurrentTranslation = new Vec3(this.mCurrentTranslation);
         clone.mLastTranslation = new Vec3(this.mLastTranslation);
+        clone.mCurrentRotation2D = this.mCurrentRotation2D;
+        clone.mIsSwitched = this.mIsSwitched;
         clone.mModelMatrix = new Mat4(this.mModelMatrix.toArray(), 0);
+
+        clone.mStaticOrigin = this.mStaticOrigin;
 
         clone.mModelVBO = Util.CloneBuffer(this.mModelVBO);
 
@@ -244,6 +342,8 @@ public class Model {
         clone.mNormalsOffset = this.mNormalsOffset;
 
         clone.mWorldVBOOffset = this.mWorldVBOOffset;
+
+        clone.mAttached = (ArrayList<Model>)mAttached.clone();
     }
 
     /**

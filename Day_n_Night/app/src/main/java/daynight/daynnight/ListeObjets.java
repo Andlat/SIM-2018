@@ -2,8 +2,13 @@ package daynight.daynnight;
 
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,6 +21,8 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 
 
 public class ListeObjets extends Fragment
@@ -53,6 +60,7 @@ public class ListeObjets extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 infosObjetInventaire.startActivity(objets.get(position), position, getContext(), objets.get(position).getAcquis());
+                SurChangementActivity = true;
             }
         });
 
@@ -101,15 +109,40 @@ public class ListeObjets extends Fragment
             view.setPaddingRelative(20,20,20,20);
 
             ImageViewCarre objet = view.findViewById(R.id.objet);
-            objet.setImageResource(getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
-
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getResources().getIdentifier(nomObjet, "drawable", getContext().getPackageName()));
+            bitmap = getBitmapGrandeur(bitmap, 70);
+            objet.setImageBitmap(bitmap);
 
             return view;
         }
-
-        public void retirementView(int position)
+        public List<Outil> getObjets()
         {
-            objets.set(position, new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            return this.objets;
+        }
+    }
+    public Bitmap getBitmapGrandeur(Bitmap image, int maxSize)
+    {
+        int width, height;
+        if(image != null)
+        {
+            width = image.getWidth();
+            height = image.getHeight();
+
+            float bitmapRatio = (float) width / (float) height;
+            if (bitmapRatio > 1)
+            {
+                width = maxSize;
+                height = (int) (width / bitmapRatio);
+            } else
+            {
+                height = maxSize;
+                width = (int) (height * bitmapRatio);
+            }
+            return Bitmap.createScaledBitmap(image, width, height, true);
+        }
+        else
+        {
+           return image;
         }
     }
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Created by andlat on 2018-02-03.
+ * Created by Nikola Zelovic on 2018-02-03.
  */
 
 //TODO Remove public access. Add some convenient functions to create a simple shader

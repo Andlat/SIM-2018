@@ -11,7 +11,7 @@
     <string name="ok" translatable="false">OK</string>
     <string name="rationale_dialog">Votre localisation est nécessaire pour jouer à la partie Jour du jeu et obtenir des objets incroyables!!</string>
 
-    <string name="badge" translatable="false">badge</string>
+    <string name="badges" translatable="false">badges</string>
     <string name="inventaire" translatable="false">inventaire</string>
     <string name="menu" translatable="false">menu</string>
     <string name="options" translatable="false">options</string>
@@ -43,13 +43,22 @@
     <string name="acheter">Acheter</string>
     <string name="prix_nulle">000</string>
     <!-- Spéciaux -->
-    <string name="toucher_par_coup">Nombre de tagues par coup : %1$d</string>
-    <string name="nb_cibles">Nombre de cibles : %1$d</string>
+    <string name="toucher_par_coup">Nbre de tagues/coup : %1$d</string>
+    <string name="nb_cibles">Nbre de cibles : %1$d</string>
     <string name="portee">Portée : %1$s</string>
     <string name="menuJeu">Menu</string>
     <string name="recommencer">Recommencer</string>
     <string name="recompense_dipo_dans">Récompense disponible dans</string>
     <string name="secondes">secondes</string>
     <string name="jeu_de_jour_desactive">Le jeu de jour a été désactivé. Activez la géolocalisation dansles réglages pour l\'activer!</string>
+    <string name="bravo">Bravo!</string>
+    <string name="utiliser">Utiliser</string>
+    <string name="intervalle_par_coup">Intervalle de temps/coup : %1$.1fs</string>
+    <string name="rarete">Rareté : %1$s</string>
+    <string name="musique">Musique</string>
+    <string name="langue">Langue</string>
+    <string name="fran_ais">Français</string>
+    <string name="english">English</string>
+    <string name="effacer_partie">Effacer partie</string>
     <!-- ************ -->
 </resources>

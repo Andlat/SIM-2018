@@ -1,7 +1,7 @@
 package daynight.daynnight.engine.math;
 
 /**
- * Created by andlat on 2018-02-02.
+ * Created by Nikola Zelovic on 2018-02-02.
  */
 
 public abstract class Vector {
@@ -78,6 +78,28 @@ public abstract class Vector {
         for(byte i=0; i < this.Dimensions(); ++i){
             this.components[i] = 0;
         }
+    }
+
+    /**
+     * Check if all components of the vector equal to 0
+     * @return Is the vector empty
+     */
+    public boolean isEmpty(){
+        boolean isEmpty = true;
+
+        for(byte i=0; i < this.Dimensions(); ++i){
+            if(this.components[i] != 0) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
+    }
+
+    public void SwitchXY(){
+        float tmp = this.components[0];
+        this.components[0] = this.components[1];
+        this.components[1] = tmp;
     }
 
     /**

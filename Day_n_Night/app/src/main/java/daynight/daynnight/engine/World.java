@@ -2,75 +2,90 @@ package daynight.daynnight.engine;
 
 import android.opengl.GLES30;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Util;
 
 /**
- * Created by andlat on 2018-02-11.
+ * Created by Nikola Zelovic on 2018-02-11.
  */
 
 //TODO HIDDEN Models are not supported for now
 public class World {
+/*
     private final int[] mVAO = new int[1];
     private final VBOManager mVBOMan;
 
     private static final int MVP_LOCATION = 4, TEXTURE_LOCATION = 5;
-
+*/
     private MVP mMVP = null;
+    private long mModelToFollow = -1;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
-    private final List<MovingModel> mMovingModels = new ArrayList<>();//Models in this list are also included in mModels
+    private final List<MovingModel> mMovingModels = new LinkedList<>();//Models in this list are also included in mModels
+    private final List<Model> mModelsList = new LinkedList<>();
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
-    private boolean mArePhysicsOn = false;
+    private boolean mArePhysicsOn = false;//TODO Take this in account?
 
     public enum State {VISIBLE, HIDDEN}
 
+    private final DrawingManager mDrawMan = DrawingManager.getInstance();
+
     public World(){
+        /*
         //One VertexArrayObject (VAO) per World
         GLES30.glGenVertexArrays(1, mVAO, 0);
         GLES30.glBindVertexArray(mVAO[0]);
 
         mVBOMan = new VBOManager(mVAO[0]);
+        */
     }
 
     public long addModel(Model model){
         final long modelID = model.getID();
         mModels.put(modelID, model);
+        mModelsList.add(model);
 
-        model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
+        //model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
 
         //Add to movingModels list if necessary
         if(model instanceof MovingModel)
             mMovingModels.add((MovingModel)model);
+
+        mDrawMan.addModel(model);
 
         return modelID;
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
 
+        /*
         FloatBuffer modelVBO = toRemoveModel.getVBO();
         int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
         mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
+        */
 
         mModels.remove(id_model);
+        mModelsList.remove(toRemoveModel);
 
 
         //Remove from mMovingModels if necessary
         if(toRemoveModel instanceof MovingModel)
             mMovingModels.remove(toRemoveModel);
+
+        mDrawMan.removeModel(toRemoveModel);
     }
 
     public void hideModel(long id_model){
@@ -134,18 +149,48 @@ public class World {
         model.addTranslation(translate);
     }
 
-    //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
-    //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
-    void DrawWorld(long frameElapsedTime){
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+    public final void setCamFollowModel(long id_model){
+        mModelToFollow = id_model;
+    }
+    private void CamFollowModel(){
+        if(mModelToFollow > -1) {
+            MVP.Camera cam = mMVP.getCamera();
 
+            Vec3 center = mModels.get(mModelToFollow).getRelOrigin();
+            cam.setCenter(center);//set where to look
+
+            cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking
+        }
+    }
+
+    public void setGroupZIndex(long id_model, int z){
+        Model m = mModels.get(id_model);
+        if(m != null)
+            setGroupZIndex(m, z);
+    }
+
+    public void setGroupZIndex(Model model, int z){
+        mDrawMan.setZindex(model.getDrawGroupID(), z);
+    }
+
+    //TODO Right now, it also draws hidden models. (but not removed ones ?). So I should remedy to that
+    void DrawWorld(long frameElapsedTime){
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+
+
+        //------------- OPTION 3. GROUPING MODELS BY MVPs AND ANIMATIONS --------------\\
+        mDrawMan.Draw(mMVP, frameElapsedTime);
+        //----------------------------------------------------------------------\\
+
+        Log.e("OP 1", "FINISHED DRAWING");
+/*
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
 
         final int size = mModels.size();
         for(int i=0; i < size; ++i){
             Model model = mModels.valueAt(i);
-/*
+
             FloatBuffer g = ((ByteBuffer)GLES30.glMapBufferRange(GLES30.GL_ARRAY_BUFFER, (int)model.getVBOWorldOffset()*Util.FLOAT_SIZE, model.getModelVBOSize(), GLES30.GL_MAP_READ_BIT)).order(ByteOrder.nativeOrder()).asFloatBuffer();
             StringBuilder s = new StringBuilder(g.capacity()).append("{");
             for(int h=0; h < g.capacity(); ++h){
@@ -153,8 +198,8 @@ public class World {
             }
             s.append("}");
             Log.e("GL DATA " + model.getModelVBOSize()/Util.FLOAT_SIZE, s.toString());
-            GLES30.glUnmapBuffer(GLES20.GL_ARRAY_BUFFER);
-*/
+            GLES30.glUnmapBuffer(GLES30.GL_ARRAY_BUFFER);
+
             model.getShader().Use();
 
             final Texture texture = model.getAnimation().getCurrentTexture(frameElapsedTime);
@@ -171,6 +216,7 @@ public class World {
         }
 
         //----------------------------------------------------------------------\\
+*/
 
         /*          OPTION 1. FASTEST, BUT CAN'T USE MULTIPLE MVPs
         final List<Pair<Integer, Integer>> drawOffsets = mVBOMan.getDrawOffsets();
@@ -199,8 +245,18 @@ public class World {
         }
         */
 
+        CamFollowModel();
+        Log.e("OP 2", "CAM FOLLOWED");
+
+        //============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
         //Detect and execute collisions
-        ExcecuteCollisions(CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels)));
+        Log.e("OP 3", "START COLLISIONS DETECTED");
+        //Util.LongSparseArrayToArrayList(mModels);
+        List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect2(mMovingModels, mModelsList);
+        Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
+        ExcecuteCollisions(collisions);
+        Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
+
     }
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){

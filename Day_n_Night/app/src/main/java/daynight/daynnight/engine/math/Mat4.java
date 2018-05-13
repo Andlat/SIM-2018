@@ -3,7 +3,7 @@ package daynight.daynnight.engine.math;
 import android.opengl.Matrix;
 
 /**
- * Created by andlat on 2018-02-04.
+ * Created by Nikola Zelovic on 2018-02-04.
  */
 
 public class Mat4 {
@@ -81,5 +81,13 @@ public class Mat4 {
         b.replace(b.length(), b.length()+1, "}");
 
         return b.toString();
+    }
+
+    public boolean equals(Mat4 other) {
+        for(byte i=0; i < mMatrix.length; ++i){
+            if(other.mMatrix[i] != mMatrix[i])
+                return false;
+        }
+        return true;
     }
 }

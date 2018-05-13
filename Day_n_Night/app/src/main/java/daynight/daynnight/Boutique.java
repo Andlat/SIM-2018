@@ -16,12 +16,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import static daynight.daynnight.ListeObjets.newInstance;
+import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
 public class Boutique extends AppCompatActivity
 {
     //Créer
+    static Boutique boutique;
     static TextView biscuits;
     Button retour;
     Button boutonOutils;
@@ -39,6 +41,7 @@ public class Boutique extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_boutique);
+        boutique = this;
 
         //Attribuer
         biscuits = (TextView) findViewById(R.id.biscuits);
@@ -114,15 +117,18 @@ public class Boutique extends AppCompatActivity
             {
                 finish();
                 startActivity(new Intent(Boutique.this, Inventaire.class));
+                SurChangementActivity = false;
             }
         });
     }
-
     @Override
     protected void onStop()
     {
-        MainActivity.ma.sauvegardeJoueur(joueur);
-        MainActivity.musiqueDeFond.pause();
+        if(SurChangementActivity)
+        {
+            MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);
+        }
         super.onStop();
     }
     @Override
@@ -130,6 +136,14 @@ public class Boutique extends AppCompatActivity
     {
         MainActivity.musiqueDeFond.start();
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        startActivity(new Intent(Boutique.this, Inventaire.class));
+        SurChangementActivity = false;
     }
 
     //Méthodes

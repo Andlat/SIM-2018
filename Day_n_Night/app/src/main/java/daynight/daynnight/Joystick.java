@@ -134,8 +134,8 @@ public class Joystick extends SurfaceView implements Callback, View.OnTouchListe
         centerX = getWidth()/2;
         centerY = getHeight()/2;
         //Utilise les dimensions du SurfaceView pour calculer la grosseur du joystick
-        jsBottom = Math.min(getWidth(), getHeight()) / 2;
-        jsTop = Math.min(getWidth(), getHeight()) / 5;
+        jsBottom = Math.min(getWidth(), getHeight()) / 3;
+        jsTop = Math.min(getWidth(), getHeight()) / 7;
 
     }
 

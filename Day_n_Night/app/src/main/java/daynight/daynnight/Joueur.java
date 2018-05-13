@@ -3,18 +3,16 @@ package daynight.daynnight;
 import android.content.Context;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import android.content.Context;
-import android.view.Gravity;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+
+import static daynight.daynnight.Objet.Type.Skin;
+import static daynight.daynnight.Outil.Portee.Nulle;
 
 /**
  * Created by sebastien on 18-03-28.
@@ -25,73 +23,82 @@ public class Joueur
     //Propriétés
     String prenom;
     String nom;
-    String addresseElectronique;
-    Boolean connexion = false;
+    String adresseElectronique;
+    int skin; //Drawable
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
-    //TODO Je comprend pas ce que seb a fait donc je fait ca
-    ArrayList<Outil> items;
     Context context;
 
     //Préférences
     Boolean musique;
-
+    String langue;
 
     //Constructeurs
-    Joueur(Context context)
+    Joueur() {}
+    //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Context context) throws FileNotFoundException
     {
-        this.prenom = "Arthur";
-        this.nom = "ca&rie,&Sarry&pu";//wow
-        this.addresseElectronique = "baguettefrancaise@hotmail.com";
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresseElectronique = addresseElectronique;
+        this.skin = skin;
+        this.biscuits = biscuits;
 
-        this.biscuits = 30;
+
+        //POUR L'INSTANT
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
+        this.context = context;
 
-        ArrayList<Outil> outilsBout = new ArrayList<>();
-        ArrayList<Outil> skinsBout = new ArrayList<>();
+        ArrayList<Outil> decorationsBout = new ArrayList<>();
+        ArrayList<Outil> decorationsInv = new ArrayList<>();
+        //Ajout de cases vides
+        for(int j = 0 ; j < 60 ; j++)
+        {
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Nulle, 0, 0, 0,0f, "", true));
+        }
+
+        boutique.add(lireOutils(context.openFileInput(MainActivity.fichierOutilsBoutique.getName())));
+        boutique.add(lireSkins(context.openFileInput(MainActivity.fichierSkinsBoutique.getName())));
+        boutique.add(decorationsBout);
+        inventaire.add(lireOutils(context.openFileInput(MainActivity.fichierOutilsInventaire.getName())));
+        inventaire.add(lireSkins(context.openFileInput(MainActivity.fichierSkinsInventaire.getName())));
+        inventaire.add(decorationsInv);
+    }
+    //Constructeur appelé lors de la création du joueur
+    Joueur(String prenom, String nom, String adresseElectronique, Context context)
+    {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresseElectronique = adresseElectronique;
+        this.skin = R.drawable.arthur1_1;
+        this.biscuits = 44;
+
+        boutique = new ArrayList<>(3);
+        inventaire = new ArrayList<>(3);
+        this.context = context;
+
         ArrayList<Outil> decorationsBout = new ArrayList<>();
         ArrayList<Outil> outilsInv = new ArrayList<>();
         ArrayList<Outil> skinsInv = new ArrayList<>();
+        skinsInv.add(new Outil(1, "Le Classique", "Votre chemise et chandail vous vont déjà à merveille. Pourquoi voudriez vous changer une recette gagnante?", Skin, 1, Nulle, 0, 0, 0, 0f, "arthur1_1", true));
         ArrayList<Outil> decorationsInv = new ArrayList<>();
-
         //Ajout de cases vides
-        for(int j = 0 ; j < 56 ; j++)
+        for(int j = 0 ; j < 60 ; j++)
         {
-            outilsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsBout.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-
-            outilsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            skinsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
-            decorationsInv.add(new Outil("Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, Outil.Portee.Nulle, 0, 0, 0, "", true));
+            decorationsBout.add(new Outil(666,"Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Nulle, 0, 0, 0,0f, "", true));
         }
 
-        outilsBout.set(0, new Outil("Seau d'eau","Le seau d'eau ne contient pas de l'eau, mais plutôt de la Vodka", Objet.Type.Outil, Outil.Portee.Eloignee,6,1,1,"objet_outil_seau_deau", false));
-        outilsBout.set(1, new Outil("Master-Ball","La Master-Ball est une Poké-Ball utilisée par les meilleurs dresseurs de pokémons dans Pokémons, il faut être un maitre dans l'art pour l'utiliser!", Objet.Type.Outil, Outil.Portee.Eloignee,20,3,1,"objet_outil_masterball", false));
-        skinsBout.set(0, new Outil("Pijama","Un pijama rend nos nuits beaucoup plus conforatbles, n'est-ce pas ?", Objet.Type.Skin, Outil.Portee.Nulle, 20, 0, 0, "arthur2_1", false));
-        skinsBout.set(1, new Outil("Superman","Avec des super pouvoirs aussi puissants que les miens, moi, SuperArthur, je serai inéffrayable!", Objet.Type.Skin, Outil.Portee.Nulle, 40, 0, 0, "arthur7_1", false));
-
-        boutique.add(outilsBout);
-        boutique.add(skinsBout);
+        boutique.add(lireOutils(context.getResources().openRawResource(R.raw.outils_depart)));
+        boutique.add(lireSkins(context.getResources().openRawResource(R.raw.skins_depart)));
         boutique.add(decorationsBout);
         inventaire.add(outilsInv);
         inventaire.add(skinsInv);
         inventaire.add(decorationsInv);
-
-        this.context = context;
-        items = readItemFile();
-    }
-    Joueur(String prenom, String nom, String addresseElectronique, int biscuits)
-    {
-        this.prenom = prenom;
-        this.nom = nom;
-        this.addresseElectronique = addresseElectronique;
-        this.biscuits = biscuits;
     }
 
     //Getteurs & Setteurs
@@ -103,9 +110,13 @@ public class Joueur
     {
         return nom;
     }
-    public String getAddresseElectronique()
+    public String getAdresseElectronique()
     {
-        return addresseElectronique;
+        return adresseElectronique;
+    }
+    public int getSkin()
+    {
+        return skin;
     }
     public int getBiscuits()
     {
@@ -141,6 +152,12 @@ public class Joueur
     {
         return boutique.get(2);
     }
+    public Boolean getMusique() {
+        return musique;
+    }
+    public String getLangue() {
+        return langue;
+    }
 
     public void setPrenom(String prenom)
     {
@@ -152,7 +169,11 @@ public class Joueur
     }
     public void setAddresseElectronique(String addresseElectronique)
     {
-        this.addresseElectronique = addresseElectronique;
+        this.adresseElectronique = addresseElectronique;
+    }
+    public void setSkin(int skin)
+    {
+        this.skin = skin;
     }
     public void setBiscuits(int biscuits)
     {
@@ -188,82 +209,43 @@ public class Joueur
     {
         this.boutique.set(2, decorations);
     }
-
-    //Méthodes
-    //Pour connecter,cette metode sert à vérifier si le joueur voulu est celui existant
-    Boolean connexion(Context c, String prenom, String nom, String sauvegarDeJoueur) throws IOException
-    {
-        Scanner verifier = new Scanner(sauvegarDeJoueur);//Sert à lire valeur par valeur dans le String sauvegardeDeJoueur
-
-        try
-        {
-            if(!connexion)
-            {
-                String motA = verifier.next().replaceAll("&", " ");
-                String motB = verifier.next().replaceAll("&", " ");
-
-                if (motA.equals(prenom) && motB.equals(nom))
-                {
-                    this.prenom = prenom;
-                    this.nom = nom;
-                    this.addresseElectronique = verifier.next();
-                    this.biscuits = verifier.nextInt();
-                    this.connexion = true;
-
-                    Toast toast = Toast.makeText(c,"Connexion réussie...", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-                else if(!motA.equals(prenom) || !motB.equals(nom))
-                {
-                    Toast toast = Toast.makeText(c,"Le prénom et/ou le nom ne correspond(ent) pas au joueur...", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-            }
-        }
-        catch(NoSuchElementException e)
-        {
-            Toast toast = Toast.makeText(c,"Le nom d'utilisateur et/ou le mot de passe ne correspond(ent) à aucun compte...", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            e.printStackTrace();
-        }
-        return connexion;
+    public void setMusique(Boolean musique) {
+        this.musique = musique;
+    }
+    public void setLangue(String langue) {
+        this.langue = langue;
     }
 
-    private ArrayList<Outil> readItemFile(){
+    //Méthodes
+    public ArrayList<Outil> lireOutils(InputStream inputStream)
+    {
         ArrayList<Outil> outils = new ArrayList<Outil>();
-        try{
-            InputStream inputStream = context.getResources().openRawResource(R.raw.objets);
+        try
+        {
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader buffReader = new BufferedReader(isr);
             String line;
             StringBuilder text = new StringBuilder();
 
             int id;
-            String drwable;
             String nom;
-            int touche;
-            float frequence;
-            int nbCible;
-            int rarete;
-            String porte;
-            int prix;
             String description;
+            String type;
+            int rarete;
+            String portee;
+            int prix;
+            int toucherParCoup;
+            int nbCibles;
+            float intervalleParCoup;
+            String imageDrawableString;
+            Boolean acquis;
 
-            while (( line = buffReader.readLine()) != null) {
-
-
+            while (( line = buffReader.readLine()) != null)
+            {
                 //Lire chaque ligne et donner les valeurs
                 text.setLength(0);
                 text.append(line);
                 id = Integer.valueOf(text.toString());
-
-                line = buffReader.readLine();
-                text.setLength(0);
-                text.append(line);
-                drwable = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -273,17 +255,12 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                touche = Integer.valueOf(text.toString());
+                description = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                frequence = Float.valueOf(text.toString());
-
-                line = buffReader.readLine();
-                text.setLength(0);
-                text.append(line);
-                nbCible = Integer.valueOf(text.toString());
+                type = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -293,7 +270,7 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                porte = text.toString();
+                portee = text.toString();
 
                 line = buffReader.readLine();
                 text.setLength(0);
@@ -303,15 +280,129 @@ public class Joueur
                 line = buffReader.readLine();
                 text.setLength(0);
                 text.append(line);
-                description = text.toString();
+                toucherParCoup = Integer.valueOf(text.toString());
 
-                //items.add(new Objet());
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nbCibles = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                intervalleParCoup = Float.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                imageDrawableString = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                acquis = Boolean.valueOf(text.toString());
+
+                outils.add(new Outil(id, nom, description, Objet.Type.Outil, rarete, Outil.Portee.valueOf(portee), prix, toucherParCoup, nbCibles, intervalleParCoup, imageDrawableString, acquis));
             }
-
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return null;
         }
 
         return outils;
+    }
+    public ArrayList<Outil> lireSkins(InputStream inputStream)
+    {
+        ArrayList<Outil> skins = new ArrayList<Outil>();
+        try
+        {
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader buffReader = new BufferedReader(isr);
+            String line;
+            StringBuilder text = new StringBuilder();
+
+            int id;
+            String nom;
+            String description;
+            String type;
+            int rarete;
+            String portee;
+            int prix;
+            int toucherParCoup;
+            int nbCibles;
+            float intervalleParCoup;
+            String imageDrawableString;
+            Boolean acquis;
+
+            while (( line = buffReader.readLine()) != null)
+            {
+                //Lire chaque ligne et donner les valeurs
+                text.setLength(0);
+                text.append(line);
+                id = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nom = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                description = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                type = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                rarete = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                portee = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                prix = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                toucherParCoup = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                nbCibles = Integer.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                intervalleParCoup = Float.valueOf(text.toString());
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                imageDrawableString = text.toString();
+
+                line = buffReader.readLine();
+                text.setLength(0);
+                text.append(line);
+                acquis = Boolean.valueOf(text.toString());
+
+                skins.add(new Outil(id, nom, description, Skin, rarete, Nulle, prix, 0, 0, 0f, imageDrawableString, false));
+            }
+        } catch (IOException e)
+        {
+            return null;
+        }
+
+        return skins;
     }
 }
