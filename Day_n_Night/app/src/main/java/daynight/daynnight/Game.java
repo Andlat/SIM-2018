@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.Model;
@@ -18,6 +17,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
+import daynight.daynnight.house.House;
 
 /**
  * Created by Nikola Zelovic on 2018-02-17.
@@ -74,6 +74,26 @@ class Game extends GameView{
         mWorld = new World();
         super.UseWorld(mWorld);
 
+        mArthur = new Arthur(mContext);
+        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
+        mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
+
+        mWorld.setCamFollowModel(mArthur.getInWorldID());
+
+        try{
+            mArthur.setTool(ObjParser.Parse(mContext, "models", "outil.obj").get(0), mWorld);
+
+            //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
+
+            House.Generate(mContext, mWorld);
+
+            //Log.e("COUNT", ""+mWorld.getModelsCount());
+        }catch(IOException ex){
+            Log.e("Game Loading", "Failed to load game: " + ex.getMessage(), ex);
+        }
+
+/*
         try {
             MovingModel amiTest = ObjParser.Parse(mContext, "models", "lit.obj").get(0).toMovingModel();
             amiTest.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -86,6 +106,8 @@ class Game extends GameView{
         }catch(IOException e){
 
         }
+*/
+
 /*
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
@@ -115,11 +137,6 @@ class Game extends GameView{
         }
 
 */
-        mArthur = new Arthur(mContext);
-        mArthur.getModel().StaticTranslate(new Vec3(-1, -2, 0));
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-
-        mWorld.setCamFollowModel(mArthur.getInWorldID());
     }
     private void placerPlancher(int hauteur, int largeur, Vec3 vec3) {
         try {
@@ -179,8 +196,13 @@ class Game extends GameView{
 
     @Override
     protected void onDrawFrame(World world) {
-        world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+        if(mArthur != null) {
+            if(!mArthur.getDirection().isEmpty())
+                world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+        }
 
+        Log.e("FRAME TIME", ""+getElapsedFrameTime());
+/*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;
@@ -241,6 +263,7 @@ class Game extends GameView{
             }
             temp++;
         }
+*/
     }
 
     private void endGame() {

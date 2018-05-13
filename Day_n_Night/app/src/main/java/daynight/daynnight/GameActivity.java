@@ -3,17 +3,15 @@ package daynight.daynnight;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 
 import java.io.IOException;
 
 import daynight.daynnight.engine.math.Vec3;
+import daynight.daynnight.engine.util.Util;
 
 import static daynight.daynnight.MainActivity.SurChangementActivity;
-import static daynight.daynnight.MainActivity.joueur;
-import static daynight.daynnight.MainActivity.onPause;
 
 
 public class GameActivity extends AppCompatActivity implements Joystick.JoystickListener{
@@ -62,18 +60,32 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int source) throws IOException {
-        switch(source){
-            case R.id.joystickPerso:
-                persoVec.x(xPercent);
-                persoVec.y(yPercent);
+        Arthur arthur = game.getArthur();
+        if(arthur != null) {
+            switch(source){
+                case R.id.joystickPerso:
+                    persoVec.x(xPercent);
+                    persoVec.y(yPercent);
 
-                game.getArthur().setDirection(persoVec);
-                break;
 
-            case R.id.joystickTir:
-                balleVec.x(xPercent);
-                balleVec.y(yPercent);
-                break;
+                    arthur.setDirection(persoVec);
+                    arthur.checkSwitch(xPercent);
+
+                    if (persoVec.isEmpty())
+                        arthur.Stay();
+                    else
+                        arthur.Walk();
+
+                    break;
+
+                case R.id.joystickTir:
+                    balleVec.x(xPercent);
+                    balleVec.y(yPercent);
+
+                    arthur.setToolDir(new Vec3(xPercent, yPercent, 0));
+
+                    break;
+            }
         }
     }
     @Override
@@ -81,15 +93,15 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
     {
         if(SurChangementActivity)
         {
-            MainActivity.musiqueDeFond.pause();
-            MainActivity.ma.sauvegardeJoueur(joueur);
+            /*MainActivity.musiqueDeFond.pause();
+            MainActivity.ma.sauvegardeJoueur(joueur);*/
         }
         super.onStop();
     }
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        //MainActivity.musiqueDeFond.start();
         super.onResume();
     }
 

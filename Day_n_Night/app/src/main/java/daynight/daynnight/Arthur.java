@@ -14,6 +14,7 @@ import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
+import daynight.daynnight.engine.util.Util;
 
 /**
  * Created by Nikola Zelovic on 2018-04-30.
@@ -22,20 +23,23 @@ import daynight.daynnight.engine.physics.PhysicsAttributes;
 class Arthur{
     private MovingModel mModel = null;
     private final Context mContext;
-    private long mInWorldID;
+    private long mInWorldID=-1;
 
     private Vec3 mDirection = new Vec3();
 
     private final int FRAME_LENGTH = 200;
+
+    private Model mTool;
+
+    public static int Z_ARTHUR=75, Z_TOOL=80;
 
     Arthur(Context context){
         mContext = context;
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
-            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 2.5f));
+            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 10f));//TODO TEMP SPEED FOR TESTING
             this.setSkin(MainActivity.joueur.getSkin());
-            this.Walk();
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
@@ -68,4 +72,44 @@ class Arthur{
 
     void setDirection(Vec3 dir){ mDirection=dir; }
     Vec3 getDirection(){ return mDirection; }
+
+    void setTool(Model tool, World world){
+        mTool = tool;
+        mModel.Attach(tool);
+
+        tool.StaticTranslate(new Vec3(0.25f, -0.5f, 0));
+
+        world.addModel(tool);
+        world.setGroupZIndex(tool, Z_TOOL);
+    }
+
+    Model getTool(){ return mTool; }
+
+    void setToolDir(Vec3 dir){
+        float theta = Util.RadToDeg((float) Math.atan2(dir.y(), dir.x()));
+
+        if(theta < 0) theta = 360+theta;//atan2 correction (atan2 returns negatives for [PI, 2PI]. (E.g. 3PI/4 = -PI/4)
+
+        mTool.setRotation2D(theta);
+    }
+
+    //Switch arthur to its opposite side
+    void checkSwitch(float x){
+        boolean s = x<0;
+        mModel.setSwitched(s);
+
+        /*TODO Translate tool x-axis to compensate the static translation when switching
+        if(!mTool.isSwitched() && s){
+            mTool.
+        }else if(mTool.isSwitched() && !s){
+
+        }
+        */
+        mTool.setSwitched(s);
+    }
+
+    //TODO
+    void ChangeToolSkin(){
+
+    }
 }
