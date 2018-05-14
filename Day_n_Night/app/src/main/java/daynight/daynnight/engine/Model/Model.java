@@ -252,12 +252,13 @@ public class Model {
         //Translate according to the relative position and the absolute position (the latter is used for the rotation on itself)
         Matrix.translateM(modelBuffer, 0, mStaticOrigin.x() + mCurrentTranslation.x(), mStaticOrigin.y() + mCurrentTranslation.y(), mCurrentTranslation.z());
 
+        int switchedDeg = (mIsSwitched ? 180 : 0);
         //Rotate on itself around the z-axis
-        Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D, 0, 0, 1f);
+        Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D + switchedDeg, 0, 0, 1f);
 
         //Switch the side of the object if true
-        if(mIsSwitched)
-            Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
+        //if(mIsSwitched)
+            //Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
 
         //Translate back to the relative position (discards the absolute position)
         Matrix.translateM(modelBuffer, 0, -mStaticOrigin.x(), -mStaticOrigin.y(), 0);

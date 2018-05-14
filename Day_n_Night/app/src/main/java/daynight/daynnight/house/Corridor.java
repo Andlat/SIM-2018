@@ -1,16 +1,20 @@
 package daynight.daynnight.house;
 
 import android.content.Context;
+import android.util.Pair;
 
 import java.io.IOException;
 
+import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.StaticModel;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_BOTTOM;
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_TOP;
+import static daynight.daynnight.house.House.FLOOR_STYLE;
 
 /**
  * Created by andlat on 2018-05-12.
@@ -33,6 +37,7 @@ class Corridor {
 
     private static void GenFloor(final Context context, final World world, final int LENGTH, final Vec3 orgInMap, Axis axis) throws IOException{
         StaticModel floor_org = ObjParser.Parse(context, "models", "plancher.obj").get(0).toStaticModel();
+        floor_org.setAnimation(new Animation().addFrame(new Pair<>(Texture.Load(context, FLOOR_STYLE), 0)));
 
         Vec3 l = new Vec3(), r = new Vec3();
 

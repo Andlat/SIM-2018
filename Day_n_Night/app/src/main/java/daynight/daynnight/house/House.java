@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.io.IOException;
 
+import daynight.daynnight.R;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 
@@ -12,6 +13,8 @@ import daynight.daynnight.engine.math.Vec3;
  */
 
 public class House {
+    static final int FLOOR_STYLE = R.drawable.plancher5;
+
     public static void Generate(Context context, World world) throws IOException{
         Room.Generate(context, world, 16, new Vec3(), Room.P_LFT| Room.P_RGHT| Room.P_UP| Room.P_DWN);
 

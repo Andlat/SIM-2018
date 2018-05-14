@@ -70,14 +70,16 @@ public class World {
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
-
+        removeModel(toRemoveModel);
+    }
+    public void removeModel(Model toRemoveModel){
         /*
         FloatBuffer modelVBO = toRemoveModel.getVBO();
         int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
         mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
         */
 
-        mModels.remove(id_model);
+        mModels.remove(toRemoveModel.getID());
         mModelsList.remove(toRemoveModel);
 
 
@@ -182,7 +184,7 @@ public class World {
         mDrawMan.Draw(mMVP, frameElapsedTime);
         //----------------------------------------------------------------------\\
 
-        Log.e("OP 1", "FINISHED DRAWING");
+        //Log.e("OP 1", "FINISHED DRAWING");
 /*
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -246,16 +248,16 @@ public class World {
         */
 
         CamFollowModel();
-        Log.e("OP 2", "CAM FOLLOWED");
+        //Log.e("OP 2", "CAM FOLLOWED");
 
         //============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
         //Detect and execute collisions
-        Log.e("OP 3", "START COLLISIONS DETECTED");
+        //Log.e("OP 3", "START COLLISIONS DETECTED");
         //Util.LongSparseArrayToArrayList(mModels);
         List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect2(mMovingModels, mModelsList);
-        Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
+        //Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
         ExcecuteCollisions(collisions);
-        Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
+        //Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
 
     }
 

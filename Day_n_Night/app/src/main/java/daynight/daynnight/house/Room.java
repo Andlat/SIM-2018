@@ -3,15 +3,21 @@ package daynight.daynnight.house;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import daynight.daynnight.R;
+import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.StaticModel;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
+
+import static daynight.daynnight.house.House.FLOOR_STYLE;
 
 /**
  * Created by andlat on 2018-05-11.
@@ -67,6 +73,7 @@ class Room {
      */
     private static void GenFloor(final Context context, final World world, final int FLOOR_SIZE, final Vec3 orgInMap) throws IOException{
         StaticModel tile_org = ObjParser.Parse(context, "models", "plancher.obj").get(0).toStaticModel();
+        tile_org.setAnimation(new Animation().addFrame(new Pair<>(Texture.Load(context, FLOOR_STYLE), 0)));
 
         Vec3 l = new Vec3(), r = new Vec3();
         //Generate the floor

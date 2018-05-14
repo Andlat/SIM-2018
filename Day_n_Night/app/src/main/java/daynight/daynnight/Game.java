@@ -17,7 +17,11 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
+import daynight.daynnight.firepower.Ammo;
+import daynight.daynnight.firepower.Tool;
 import daynight.daynnight.house.House;
+
+import static daynight.daynnight.ZIndex.Z_ARTHUR;
 
 /**
  * Created by Nikola Zelovic on 2018-02-17.
@@ -74,16 +78,13 @@ class Game extends GameView{
         mWorld = new World();
         super.UseWorld(mWorld);
 
-        mArthur = new Arthur(mContext);
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
+        mArthur = new Arthur(mContext, mWorld);
         mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
-        mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
+
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try{
-            mArthur.setTool(ObjParser.Parse(mContext, "models", "outil.obj").get(0), mWorld);
-
             //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
             House.Generate(mContext, mWorld);
@@ -199,9 +200,13 @@ class Game extends GameView{
         if(mArthur != null) {
             if(!mArthur.getDirection().isEmpty())
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+
+            //Fire and move bullets
+            mArthur.getTool().Fire();
+            Ammo.AmmoManager.Move(world);
         }
 
-        Log.e("FRAME TIME", ""+getElapsedFrameTime());
+        //Log.e("FRAME TIME", ""+getElapsedFrameTime());
 /*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();

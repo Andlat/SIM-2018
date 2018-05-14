@@ -83,7 +83,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                     balleVec.x(xPercent);
                     balleVec.y(yPercent);
 
-                    arthur.setToolDir(new Vec3(xPercent, yPercent, 0));
+                    arthur.getTool().setDir(new Vec3(xPercent, yPercent, 0));
 
                     break;
             }
