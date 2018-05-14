@@ -396,7 +396,7 @@ public class Joueur
                 text.append(line);
                 acquis = Boolean.valueOf(text.toString());
 
-                skins.add(new Outil(id, nom, description, Skin, rarete, Nulle, prix, 0, 0, 0f, imageDrawableString, false));
+                skins.add(new Outil(id, nom, description, Skin, rarete, Nulle, prix, 0, 0, 0f, imageDrawableString, acquis));
             }
         } catch (IOException e)
         {

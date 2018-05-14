@@ -206,7 +206,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         map = googleMap;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         imageViewPersonnage = (findViewById(R.id.imageViewPersonnage));
-        imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + modelePerosnage, "drawable", MapActivity.this.getPackageName()));
+        imageViewPersonnage.setBackgroundResource(getResources().getIdentifier("mapcharacteranimation" + getResources().getResourceEntryName(MainActivity.joueur.getSkin()).replace("arthur", "").replace("_1", ""), "drawable", MapActivity.this.getPackageName()));
         animationDrawable = (AnimationDrawable)imageViewPersonnage.getBackground();
 
         //Creation du marqueur qui sera sur la carte, selon celui sélectionné

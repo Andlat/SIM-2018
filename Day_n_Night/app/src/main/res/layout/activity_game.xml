@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/pauseNuit"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="30dp"

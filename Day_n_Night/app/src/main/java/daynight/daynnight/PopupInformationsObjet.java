@@ -161,23 +161,19 @@ public class PopupInformationsObjet extends Activity
                 {
                     if(objet.getType() == Objet.Type.Outil)
                     {
+                        //Bundle bundle = new Bundle();
+                        //bundle.putParcelable("outil", objet);
+                        //Log.e("TEST", objet.getDescription());
+                        //BarreDOutils.barreDOutils = new BarreDOutils();
+                        //BarreDOutils.barreDOutils.getArguments().putParcelable("outil", objet);
+                        //BarreDOutils barreDOutils = new BarreDOutils();
+                        //barreDOutils.getArguments().putParcelable("outil", objet);
+                        //choixBarreDOutils.getFragmentManager().beginTransaction().replace(R.id.barreDOutils, barreDOutils).commit();
                         choixBarreDOutils.startActivity(getApplicationContext());
-                        for(int i = 0 ; i < 4 ; i++)
-                        {
-                            /*BarreDOutils.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                            {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-                                {
-                                    BarreDOutils.outils[i] = objet;
-                                    BarreDOutils.adapteur.getOutils()[i] = objet;
-                                }
-                            });*/
-                        }
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
-
+                        MainActivity.joueur.setSkin(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
                     }
                     else if(objet.getType() == Objet.Type.Décoration)
                     {

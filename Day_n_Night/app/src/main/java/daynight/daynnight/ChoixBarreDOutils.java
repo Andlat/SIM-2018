@@ -28,6 +28,9 @@ import static daynight.daynnight.MainActivity.joueur;
 
 public class ChoixBarreDOutils extends Activity
 {
+    //Variables
+    //static Outil objet;
+
     //Constructeurs
     public ChoixBarreDOutils() {}
 
@@ -36,6 +39,8 @@ public class ChoixBarreDOutils extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_choix_barre_doutils);
+
+        //objet = getIntent().getExtras().getParcelable("objet");
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -84,12 +89,10 @@ public class ChoixBarreDOutils extends Activity
     }
 
     //Méthodes
-    public void startActivity(/*Outil objet, int position, */Context context/*, Boolean objetVendu*/)
+    public void startActivity(/*Outil outil,*/Context context)
     {
         Intent intent = new Intent(context, ChoixBarreDOutils.class);
-        //intent.putExtra("objetVendu", objetVendu);
-        //intent.putExtra("objet", objet);
-        //intent.putExtra("position", position);
+        //intent.putExtra("objet", outil);
         context.startActivity(intent);
     }
 }
