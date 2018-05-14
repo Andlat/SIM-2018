@@ -14,12 +14,16 @@ import daynight.daynnight.engine.math.Vec2;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
+import static daynight.daynnight.properties.ModelAttributes.ATTR_NONE;
+
 /**
  * Created by Nikola Zelovic on 2018-02-05.
  */
 
 public class Model {
     private static long mNxtModelID = 1;//Static variable incremented when a new Model is created
+    private long mID;
+
     private long mWorldVBOOffset = -1;
 
     private Shader mShader;
@@ -41,9 +45,9 @@ public class Model {
 
     private ArrayList<Model> mAttached = new ArrayList<>();
 
-    private long mID;
-
     private int mDrawGroupID;
+
+    private int mAttr = ATTR_NONE;
 
     //On ModelMatrix or Animation changed listener
     public static abstract class onModelChangedListener {
@@ -245,6 +249,9 @@ public class Model {
     public final void setSwitched(boolean isSwitched){ mIsSwitched = isSwitched; }
     public final boolean isSwitched(){ return mIsSwitched; }
 
+    public final int getAttr(){ return mAttr; }
+    public final void setAttr(int attr){ mAttr = attr; }
+
     private void CalculateModelMat(){
         //Calculate and set new ModelMatrix
         float[] modelBuffer = new Mat4().toArray();
@@ -252,13 +259,12 @@ public class Model {
         //Translate according to the relative position and the absolute position (the latter is used for the rotation on itself)
         Matrix.translateM(modelBuffer, 0, mStaticOrigin.x() + mCurrentTranslation.x(), mStaticOrigin.y() + mCurrentTranslation.y(), mCurrentTranslation.z());
 
-        int switchedDeg = (mIsSwitched ? 180 : 0);
-        //Rotate on itself around the z-axis
-        Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D + switchedDeg, 0, 0, 1f);
-
         //Switch the side of the object if true
-        //if(mIsSwitched)
-            //Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
+        if(mIsSwitched)
+            Matrix.rotateM(modelBuffer, 0, 180, 0, 1f, 0);
+
+        //Rotate on itself around the z-axis
+        Matrix.rotateM(modelBuffer, 0, mCurrentRotation2D, 0, 0, 1f);
 
         //Translate back to the relative position (discards the absolute position)
         Matrix.translateM(modelBuffer, 0, -mStaticOrigin.x(), -mStaticOrigin.y(), 0);
@@ -335,6 +341,7 @@ public class Model {
         clone.mModelMatrix = new Mat4(this.mModelMatrix.toArray(), 0);
 
         clone.mStaticOrigin = this.mStaticOrigin;
+        clone.mRelOrigin = this.mRelOrigin;
 
         clone.mModelVBO = Util.CloneBuffer(this.mModelVBO);
 
@@ -345,6 +352,10 @@ public class Model {
         clone.mWorldVBOOffset = this.mWorldVBOOffset;
 
         clone.mAttached = (ArrayList<Model>)mAttached.clone();
+
+        clone.mDrawGroupID = this.mDrawGroupID;
+
+        clone.mAttr = this.mAttr;
     }
 
     /**

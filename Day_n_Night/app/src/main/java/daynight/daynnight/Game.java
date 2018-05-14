@@ -18,10 +18,7 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
 import daynight.daynnight.firepower.Ammo;
-import daynight.daynnight.firepower.Tool;
 import daynight.daynnight.house.House;
-
-import static daynight.daynnight.ZIndex.Z_ARTHUR;
 
 /**
  * Created by Nikola Zelovic on 2018-02-17.
@@ -79,7 +76,7 @@ class Game extends GameView{
         super.UseWorld(mWorld);
 
         mArthur = new Arthur(mContext, mWorld);
-        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -6, 0));
 
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
@@ -202,8 +199,29 @@ class Game extends GameView{
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
 
             //Fire and move bullets
-            mArthur.getTool().Fire();
+            mArthur.getTool().Fire(world);
             Ammo.AmmoManager.Move(world);
+
+            //TODO TOUTOUS: THIS IS TEMPORARY. REMOVE IT
+            //===========================================\\
+            //Normalize direction
+            Vec3 org = mArthur.getModel().getRelOrigin();
+            float x=org.x(), y=org.y();
+            if(x > y){
+                y = y/x;
+                x = 1;
+            }else{
+                x = x/y;
+                y=1;
+            }
+            Log.e("TOUTOU DIR", "X: " + x + ", Y: " + y);
+
+            world.Move(House.toutous.get(0).getID(), new Vec3(x, y, 0), getElapsedFrameTime());
+            //Move toutous
+            for(MovingModel toutou : House.toutous){
+                //world.Move(toutou.getID(), new Vec3(x, y, 0), getElapsedFrameTime());
+            }
+            //===========================================\\
         }
 
         //Log.e("FRAME TIME", ""+getElapsedFrameTime());

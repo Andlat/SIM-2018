@@ -14,6 +14,8 @@ import daynight.daynnight.engine.math.Vec3;
 
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_BOTTOM;
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_TOP;
+import static daynight.daynnight.properties.ZIndex.Z_WALL;
+import static daynight.daynnight.properties.ZIndex.Z_WALL_BOTTOM;
 import static daynight.daynnight.house.House.FLOOR_STYLE;
 
 /**
@@ -83,10 +85,10 @@ class Corridor {
             wall_b.StaticTranslate(new Vec3(x+orgInMap.x(),  -HEIGHT + orgInMap.y(), 0));
 
             world.addModel(wall_t);
-            world.setGroupZIndex(wall_t, Room.Z_WALL);
+            world.setGroupZIndex(wall_t, Z_WALL);
 
             world.addModel(wall_b);
-            world.setGroupZIndex(wall_b, Room.Z_WALL_BOTTOM);
+            world.setGroupZIndex(wall_b, Z_WALL_BOTTOM);
         }
     }
 
@@ -104,7 +106,7 @@ class Corridor {
 
         world.addModel(wall_corner_tl);
         world.addModel(wall_corner_tr);
-        world.setGroupZIndex(wall_corner_tr, Room.Z_WALL_BOTTOM);
+        world.setGroupZIndex(wall_corner_tr, Z_WALL_BOTTOM);
 
 
         for(int y=LENGTH-2; y >= -LENGTH+2; y -= 2){
@@ -118,7 +120,7 @@ class Corridor {
             wall_r.StaticTranslate(new Vec3(x + orgInMap.x(),  y + orgInMap.y(), 0));
             world.addModel(wall_r);
 
-            world.setGroupZIndex(wall_r, Room.Z_WALL);
+            world.setGroupZIndex(wall_r, Z_WALL);
         }
     }
 }

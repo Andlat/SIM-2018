@@ -37,7 +37,7 @@ class VBOManager {
     private final int mWorldVAO;
 
     private int mDataSizeInBytes = 0;
-    private float mVBOSizeInMB = 2f;
+    private float mVBOSizeInMB = 5f;
     private final static float VBO_SIZE_JUMP_MB = 1f;
 
     //TODO Look for the offsets in the models and set them to the attribs. For now, this is done manually. Potential problem: All models in a VBOManager must have the same offsets.

@@ -14,16 +14,18 @@ import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
-import daynight.daynnight.engine.util.Util;
 import daynight.daynnight.firepower.Tool;
 
-import static daynight.daynnight.ZIndex.Z_ARTHUR;
+import static daynight.daynnight.properties.ModelAttributes.ATTR_AMMO;
+import static daynight.daynnight.properties.ModelAttributes.ATTR_ARTHUR;
+import static daynight.daynnight.properties.ModelAttributes.ATTR_TOOL;
+import static daynight.daynnight.properties.ZIndex.Z_CHARACTER;
 
 /**
  * Created by Nikola Zelovic on 2018-04-30.
  */
 
-class Arthur{
+public class Arthur{
     private MovingModel mModel = null;
     private final Context mContext;
     private long mInWorldID=-1;
@@ -40,12 +42,15 @@ class Arthur{
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
             mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 10f));//TODO TEMP SPEED FOR TESTING
+            mModel.setAttr(ATTR_ARTHUR);
             this.setSkin(MainActivity.joueur.getSkin());
 
             mModel.setOnCollisionListener(new MovingModel.onCollisionListener() {
                 @Override
                 public void onCollision(World world, Model object) {
-                    mModel.RewindTranslation();
+                    Integer attr = object.getAttr();
+                    if(attr != ATTR_TOOL && attr != ATTR_AMMO)//Ignore the collision for a tool or ammo
+                        mModel.RewindTranslation();
                 }
             });
 
@@ -62,13 +67,13 @@ class Arthur{
         long wID = world.addModel(mModel);
 
         this.setInWorldID(wID);
-        world.setGroupZIndex(wID, Z_ARTHUR);
+        world.setGroupZIndex(wID, Z_CHARACTER);
     }
 
     void Walk(){ mModel.getAnimation().Start(); }
     void Stay(){ mModel.getAnimation().Stop(); }
 
-    MovingModel getModel(){ return mModel; }
+    public MovingModel getModel(){ return mModel; }
 
     void setInWorldID(long id){
         mInWorldID = id;
@@ -89,7 +94,7 @@ class Arthur{
 
     private void CreateTool(Context context, World world) throws IOException{
         //Temporary tool
-        this.setTool(new Tool(context, world, ObjParser.Parse(context, "models", "outil.obj").get(0)));
+        this.setTool(new Tool(context, world, R.drawable.outil02));
     }
 
     void setTool(Tool tool){

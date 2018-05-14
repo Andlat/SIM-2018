@@ -1,15 +1,10 @@
 package daynight.daynnight.house;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import daynight.daynnight.R;
 import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.StaticModel;
@@ -17,6 +12,8 @@ import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 
+import static daynight.daynnight.properties.ZIndex.Z_WALL;
+import static daynight.daynnight.properties.ZIndex.Z_WALL_BOTTOM;
 import static daynight.daynnight.house.House.FLOOR_STYLE;
 
 /**
@@ -24,8 +21,6 @@ import static daynight.daynnight.house.House.FLOOR_STYLE;
  */
 
 class Room {
-    static int Z_WALL_BOTTOM = 100, Z_WALL =1;
-
     //Flags for passages. 1 passage per side for now.
     static int  P_NONE = 1,
                 P_UP = 1 << 1,
