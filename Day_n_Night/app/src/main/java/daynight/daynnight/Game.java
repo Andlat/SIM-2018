@@ -201,7 +201,7 @@ class Game extends GameView{
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
         }
 
-        Log.e("FRAME TIME", ""+getElapsedFrameTime());
+        //Log.e("FRAME TIME", ""+getElapsedFrameTime());
 /*
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
