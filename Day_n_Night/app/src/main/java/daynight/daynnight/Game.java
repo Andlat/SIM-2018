@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.Model;
@@ -17,6 +18,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
+import daynight.daynnight.firepower.Ammo;
 import daynight.daynnight.house.House;
 
 /**
@@ -74,16 +76,13 @@ class Game extends GameView{
         mWorld = new World();
         super.UseWorld(mWorld);
 
-        mArthur = new Arthur(mContext);
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
-        mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
+        mArthur = new Arthur(mContext, mWorld);
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -6, 0));
+
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try{
-            mArthur.setTool(ObjParser.Parse(mContext, "models", "outil.obj").get(0), mWorld);
-
             //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
             House.Generate(mContext, mWorld);
@@ -199,6 +198,38 @@ class Game extends GameView{
         if(mArthur != null) {
             if(!mArthur.getDirection().isEmpty())
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+
+            //Fire and move bullets
+            mArthur.getTool().Fire(world);
+            Ammo.AmmoManager.Move(world);
+
+            //TODO TOUTOUS: THIS IS TEMPORARY. REMOVE IT
+            //===========================================\\
+
+            Random r = new Random();
+            //Move toutous
+            for(MovingModel toutou : House.toutous){
+                //Vec3 org = mArthur.getModel().getRelOrigin(), torg = toutou.getRelOrigin();
+                //float x=torg.x() - org.x(), y=torg.y()-org.y();
+                //Normalize direction
+                /*if(Math.abs(x) > Math.abs(y)){
+                    y = y/x;
+                    x = 1;
+                }else{
+                    x = x/y;
+                    y=1;
+                }*/
+                float x = r.nextFloat(), y = r.nextFloat();
+                if(r.nextBoolean())
+                    x = -x;
+                if(r.nextBoolean())
+                    y = -y;
+
+                //Log.e("TOUTOU DIR", "X: " + x + ", Y: " + y);
+
+                world.Move(toutou.getID(), new Vec3(x, y, 0), getElapsedFrameTime());
+            }
+            //===========================================\\
         }
 
         //Log.e("FRAME TIME", ""+getElapsedFrameTime());

@@ -80,20 +80,19 @@ class DrawGroup {
         mSizeFloat += model.getVBO().capacity();
 
         model.setVBOWorldOffset(offset);
+        model.setDrawGroupID(this.mID);
     }
 
     //TODO Verify this function.
     boolean removeModel(Model model, VBOManager vbo){
         int index = mList.indexOf(model);
         if(index == -1) return false;
-
         if(index < mList.size() -1){//If not last element in the list. If it is, it is not necessary to shift the data.
             //Shift all the data of this group in the VBO. Now, the data is sequential and can all be drawn with only 1 draw call.
             int vboOffset = (int)model.getVBOWorldOffset();
 
             for(int i = index+1; i < mList.size(); ++i){
                 final FloatBuffer data = mList.get(i).getVBO();
-
                 vbo.addData(data, vboOffset);
                 vboOffset += data.capacity();
             }

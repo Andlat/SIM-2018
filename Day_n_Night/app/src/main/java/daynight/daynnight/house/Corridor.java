@@ -1,16 +1,22 @@
 package daynight.daynnight.house;
 
 import android.content.Context;
+import android.util.Pair;
 
 import java.io.IOException;
 
+import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.ObjParser;
 import daynight.daynnight.engine.Model.StaticModel;
+import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_BOTTOM;
 import static daynight.daynnight.engine.Model.StaticModel.Type.WALL_TOP;
+import static daynight.daynnight.properties.ZIndex.Z_WALL;
+import static daynight.daynnight.properties.ZIndex.Z_WALL_BOTTOM;
+import static daynight.daynnight.house.House.FLOOR_STYLE;
 
 /**
  * Created by andlat on 2018-05-12.
@@ -33,6 +39,7 @@ class Corridor {
 
     private static void GenFloor(final Context context, final World world, final int LENGTH, final Vec3 orgInMap, Axis axis) throws IOException{
         StaticModel floor_org = ObjParser.Parse(context, "models", "plancher.obj").get(0).toStaticModel();
+        floor_org.setAnimation(new Animation().addFrame(new Pair<>(Texture.Load(context, FLOOR_STYLE), 0)));
 
         Vec3 l = new Vec3(), r = new Vec3();
 
@@ -78,10 +85,10 @@ class Corridor {
             wall_b.StaticTranslate(new Vec3(x+orgInMap.x(),  -HEIGHT + orgInMap.y(), 0));
 
             world.addModel(wall_t);
-            world.setGroupZIndex(wall_t, Room.Z_WALL);
+            world.setGroupZIndex(wall_t, Z_WALL);
 
             world.addModel(wall_b);
-            world.setGroupZIndex(wall_b, Room.Z_WALL_BOTTOM);
+            world.setGroupZIndex(wall_b, Z_WALL_BOTTOM);
         }
     }
 
@@ -99,7 +106,7 @@ class Corridor {
 
         world.addModel(wall_corner_tl);
         world.addModel(wall_corner_tr);
-        world.setGroupZIndex(wall_corner_tr, Room.Z_WALL_BOTTOM);
+        world.setGroupZIndex(wall_corner_tr, Z_WALL_BOTTOM);
 
 
         for(int y=LENGTH-2; y >= -LENGTH+2; y -= 2){
@@ -113,7 +120,7 @@ class Corridor {
             wall_r.StaticTranslate(new Vec3(x + orgInMap.x(),  y + orgInMap.y(), 0));
             world.addModel(wall_r);
 
-            world.setGroupZIndex(wall_r, Room.Z_WALL);
+            world.setGroupZIndex(wall_r, Z_WALL);
         }
     }
 }

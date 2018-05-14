@@ -18,7 +18,7 @@ import daynight.daynnight.engine.util.Util;
  */
 
 class DrawingManager {
-    private final static int mGroupMaxSize = 1024*1024/16;//32 groups per Mb of about 170 models of 192 bytes
+    private final static int mGroupMaxSize = 1024*1024/64;//64 groups per Mb of about 85 models of 192 bytes
     private final static int mGroupMaxModels = mGroupMaxSize/192;
 
     private final int[] mVAO = new int[1];
@@ -103,7 +103,7 @@ class DrawingManager {
                 if(group.addModel(model, mVBO)) {
 
                     foundGroup = true;
-                    groupID = group.getID();
+                    //groupID = group.getID();
 
 
                     break;
@@ -113,23 +113,24 @@ class DrawingManager {
 
         //No DrawingGroup could contain this model. Create a new one just for it
         if(!foundGroup){
-            groupID = newGroup(model);
+            //groupID = newGroup(model);
+            newGroup(model);
         }
 
-        model.setDrawGroupID(groupID);
+        //model.setDrawGroupID(groupID);
         model.setOnModelChangedListener(mOnModelChangedListener);
     }
     void removeModel(Model model){
         int key = model.getDrawGroupID();
-        if(key > 0) {
+        if(key > -1) {
             mGroups.get(key).removeModel(model, mVBO);
             model.setDrawGroupID(-1);
             model.setOnModelChangedListener(null);
-        }
 
-        //Delete group if it is empty
-        if(mGroups.get(key).getQuantity() == 0) {
-            deleteGroup(key);
+            //Delete group if it is empty
+            if(mGroups.get(key).getQuantity() == 0) {
+                deleteGroup(key);
+            }
         }
     }
 
