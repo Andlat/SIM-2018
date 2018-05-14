@@ -1,6 +1,10 @@
 package daynight.daynnight;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,6 +14,7 @@ import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static daynight.daynnight.Objet.Type.Skin;
 import static daynight.daynnight.Outil.Portee.Nulle;
@@ -40,14 +45,15 @@ public class Joueur
     //Constructeurs
     Joueur() {}
     //Constructeur appelé lors de l'actualisation des données .txt du joueur actuel //TODO à finir
-    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Context context) throws FileNotFoundException
+    Joueur(String prenom, String nom, String addresseElectronique, int skin, int biscuits, Boolean musique, String langue, Context context) throws FileNotFoundException
     {
         this.prenom = prenom;
         this.nom = nom;
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
-
+        this.musique = musique;
+        this.langue = langue;
 
         //POUR L'INSTANT
         boutique = new ArrayList<>(3);
@@ -77,6 +83,8 @@ public class Joueur
         this.adresseElectronique = adresseElectronique;
         this.skin = R.drawable.arthur1_1;
         this.biscuits = 44;
+        this.musique = true;
+        this.langue = "fr";
 
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
@@ -404,5 +412,15 @@ public class Joueur
         }
 
         return skins;
+    }
+    //Change la langue de l'application
+    //Fonction de Rubin Nellikunnathu sur https://stackoverflow.com/questions/34573201/change-languages-in-app-via-strings-xml
+    public void setLocale(Context context)
+    {
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(this.langue);
+        res.updateConfiguration(conf, dm);
     }
 }
