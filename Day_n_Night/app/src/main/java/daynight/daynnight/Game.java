@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.Model;
@@ -204,22 +205,29 @@ class Game extends GameView{
 
             //TODO TOUTOUS: THIS IS TEMPORARY. REMOVE IT
             //===========================================\\
-            //Normalize direction
-            Vec3 org = mArthur.getModel().getRelOrigin();
-            float x=org.x(), y=org.y();
-            if(x > y){
-                y = y/x;
-                x = 1;
-            }else{
-                x = x/y;
-                y=1;
-            }
-            Log.e("TOUTOU DIR", "X: " + x + ", Y: " + y);
 
-            world.Move(House.toutous.get(0).getID(), new Vec3(x, y, 0), getElapsedFrameTime());
+            Random r = new Random();
             //Move toutous
             for(MovingModel toutou : House.toutous){
-                //world.Move(toutou.getID(), new Vec3(x, y, 0), getElapsedFrameTime());
+                //Vec3 org = mArthur.getModel().getRelOrigin(), torg = toutou.getRelOrigin();
+                //float x=torg.x() - org.x(), y=torg.y()-org.y();
+                //Normalize direction
+                /*if(Math.abs(x) > Math.abs(y)){
+                    y = y/x;
+                    x = 1;
+                }else{
+                    x = x/y;
+                    y=1;
+                }*/
+                float x = r.nextFloat(), y = r.nextFloat();
+                if(r.nextBoolean())
+                    x = -x;
+                if(r.nextBoolean())
+                    y = -y;
+
+                //Log.e("TOUTOU DIR", "X: " + x + ", Y: " + y);
+
+                world.Move(toutou.getID(), new Vec3(x, y, 0), getElapsedFrameTime());
             }
             //===========================================\\
         }

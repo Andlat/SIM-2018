@@ -3,8 +3,6 @@ package daynight.daynnight.house;
 import android.content.Context;
 import android.util.Pair;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,8 +19,9 @@ import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 
 import static daynight.daynnight.properties.ModelAttributes.ATTR_TOUTOU;
-import static daynight.daynnight.properties.ZIndex.Z_CHARACTER;
+import static daynight.daynnight.properties.ZIndex.Z_ARTHUR;
 import static daynight.daynnight.properties.ZIndex.Z_DECO;
+import static daynight.daynnight.properties.ZIndex.Z_TOUTOU;
 
 /**
  * Created by andlat on 2018-05-13.
@@ -71,6 +70,8 @@ public class House {
         StaticModel deco4 = new StaticModel(deco);
         deco4.setAnimation(new Animation().addFrame(new Pair<>(Texture.Load(context, R.drawable.cadre4), 0)));
 
+        StaticModel deco4_1 = new StaticModel(deco4);
+
         deco.StaticTranslate(new Vec3(-11, 17, 0));
         world.addModel(deco);
         world.setGroupZIndex(deco, Z_DECO);
@@ -79,18 +80,28 @@ public class House {
         world.addModel(deco2);
         world.setGroupZIndex(deco2, Z_DECO);
 
-        deco3.StaticTranslate(new Vec3(-40, 34, 0));
+        deco3.StaticTranslate(new Vec3(-37, 9, 0));
         world.addModel(deco3);
         world.setGroupZIndex(deco3, Z_DECO);
 
-        deco4.StaticTranslate(new Vec3(40, 34, 0));
+        deco4.StaticTranslate(new Vec3(40, 11, 0));
         world.addModel(deco4);
         world.setGroupZIndex(deco4, Z_DECO);
+
+        deco4_1.StaticTranslate(new Vec3(15, 17, 0));
+        world.addModel(deco4_1);
+        world.setGroupZIndex(deco4_1, Z_DECO);
 
         StaticModel couch = ObjParser.Parse(context, "models", "divan.obj").get(0).toStaticModel();
         couch.setType(StaticModel.Type.BLOCK);
         world.addModel(couch);
         world.setGroupZIndex(couch, Z_DECO);
+
+        StaticModel bed = ObjParser.Parse(context, "models", "lit.obj").get(0).toStaticModel();
+        bed.setType(StaticModel.Type.BLOCK);
+        bed.StaticTranslate(new Vec3(-32, 0, 0));
+        world.addModel(bed);
+        world.setGroupZIndex(bed, Z_DECO);
     }
 
     //TODO TOUTOUS: THIS IS TEMPORARY. REMOVE IT
@@ -107,7 +118,7 @@ public class House {
 
             MovingModel toutou1 = ObjParser.Parse(context, "models", "toutou1.obj").get(0).toMovingModel();
             toutou1.setAttr(ATTR_TOUTOU);
-            toutou1.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2));
+            toutou1.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 2f));
             setSkin(toutou1, R.drawable.toutou1_1);
 
             MovingModel toutou2 = ObjParser.Parse(context, "models", "toutou2.obj").get(0).toMovingModel();
@@ -137,7 +148,7 @@ public class House {
                 m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
-                world.setGroupZIndex(m, Z_CHARACTER);
+                world.setGroupZIndex(m, Z_TOUTOU);
 
                 toutous.add(m);
             }
@@ -153,7 +164,7 @@ public class House {
                 m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
-                world.setGroupZIndex(m, Z_CHARACTER);
+                world.setGroupZIndex(m, Z_TOUTOU);
 
                 toutous.add(m);
             }
@@ -168,7 +179,7 @@ public class House {
                 m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
-                world.setGroupZIndex(m, Z_CHARACTER);
+                world.setGroupZIndex(m, Z_TOUTOU);
 
                 toutous.add(m);
             }
@@ -176,7 +187,7 @@ public class House {
             world.addModel(toutou4);
             toutou4.setOnCollisionListener(getListener(toutou4));
             world.Translate(toutou4, new Vec3(4, 7, 0));
-            world.setGroupZIndex(toutou4, Z_CHARACTER);
+            world.setGroupZIndex(toutou4, Z_TOUTOU);
 
             toutous.add(toutou4);
         }

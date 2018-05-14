@@ -51,7 +51,7 @@ public class Ammo {
     private MovingModel mModel = new MovingModel();
     private Vec3 mDir = new Vec3();
 
-    public float Interval = 1.5f;//TODO Temporary time
+    public float Interval = 0.75f;//TODO Temporary time
     public int dmg = 10;//TODO Temp dammage
 
     Ammo(Ammo ammo){

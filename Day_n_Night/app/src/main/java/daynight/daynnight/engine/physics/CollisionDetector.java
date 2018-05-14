@@ -14,6 +14,8 @@ import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Coord;
 
+import static daynight.daynnight.properties.ModelAttributes.ATTR_TOUTOU;
+
 /**
  * Created by Nikola Zelovic on 2018-04-23.
  */
@@ -127,6 +129,10 @@ public class CollisionDetector {
         //Log.e("CD Q", "QMM: " + movingModels.size() + ", QMO: " + models.size());
 
         for (MovingModel moving : movingModels) {
+            //TODO TOUTOUS: TEMP REMOVE THIS
+            if(moving.getAttr() == ATTR_TOUTOU)
+                continue;
+
             final Vec3 orgMvg = moving.getRelOrigin();
 
             for (Model model : models) {

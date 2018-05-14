@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, GameActivity.class));
-
         ma = this;
 
         /*getApplicationContext().deleteFile(fichierJoueur.getName());

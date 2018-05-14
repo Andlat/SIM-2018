@@ -19,7 +19,7 @@ import daynight.daynnight.firepower.Tool;
 import static daynight.daynnight.properties.ModelAttributes.ATTR_AMMO;
 import static daynight.daynnight.properties.ModelAttributes.ATTR_ARTHUR;
 import static daynight.daynnight.properties.ModelAttributes.ATTR_TOOL;
-import static daynight.daynnight.properties.ZIndex.Z_CHARACTER;
+import static daynight.daynnight.properties.ZIndex.Z_ARTHUR;
 
 /**
  * Created by Nikola Zelovic on 2018-04-30.
@@ -41,7 +41,7 @@ public class Arthur{
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
-            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 10f));//TODO TEMP SPEED FOR TESTING
+            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 7f));//TODO TEMP SPEED FOR TESTING
             mModel.setAttr(ATTR_ARTHUR);
             this.setSkin(MainActivity.joueur.getSkin());
 
@@ -67,7 +67,7 @@ public class Arthur{
         long wID = world.addModel(mModel);
 
         this.setInWorldID(wID);
-        world.setGroupZIndex(wID, Z_CHARACTER);
+        world.setGroupZIndex(wID, Z_ARTHUR);
     }
 
     void Walk(){ mModel.getAnimation().Start(); }
