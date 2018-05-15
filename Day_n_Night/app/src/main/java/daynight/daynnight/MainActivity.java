@@ -3,6 +3,7 @@ package daynight.daynnight;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,9 +52,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         ma = this;
+
+        //Musique d'arriere plan
+        musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
+        musiqueDeFond.setLooping(true);
 
         /*getApplicationContext().deleteFile(fichierJoueur.getName());
         getApplicationContext().deleteFile(fichierSkinsInventaire.getName());
@@ -66,8 +70,12 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 actualiser = new Scanner(lireJoueur());
-                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), getApplicationContext());
+                joueur = new Joueur(actualiser.next(), actualiser.next(), actualiser.next(), actualiser.nextInt(), actualiser.nextInt(), actualiser.nextBoolean(), actualiser.next(), getApplicationContext());
                 Log.wtf("CONFIRMATION", joueur.getPrenom() + " " + joueur.getNom());
+                if(joueur.getMusique())
+                {
+                    musiqueDeFond.start();
+                }
             }
             catch (NoSuchElementException e)
             {
@@ -81,13 +89,9 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
+            musiqueDeFond.start();
             startActivity(new Intent(MainActivity.this, PopupNouveauJoueur.class));
         }
-
-        //Musique d'arriere plan
-        musiqueDeFond = MediaPlayer.create(MainActivity.this, R.raw.musiquebackground);
-        musiqueDeFond.setLooping(true);
-        musiqueDeFond.start();
 
         //Bouton jeu de jour
         Button buttonDay = (Button) findViewById(R.id.jourButton);
@@ -164,7 +168,17 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        musiqueDeFond.start();
+        if(joueur != null)
+        {
+            if(joueur.getMusique())
+            {
+                musiqueDeFond.start();
+            }
+        }
+        else
+        {
+            musiqueDeFond.start();
+        }
     }
 
     @Override
@@ -200,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         if(fileExists(getApplicationContext(), fichierJoueur.getName()))
         {
             //nouvelle souvegarde du joueur en string
-            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getSkin() + " " + joueur.getBiscuits(); //TODO À mettre les autres
+            String nouvJoueur = joueur.getPrenom() + " " + joueur.getNom() + " " + joueur.getAdresseElectronique() + " " + joueur.getSkin() + " " + joueur.getBiscuits() + " " + joueur.getMusique() + " " + joueur.getLangue(); //TODO À mettre les autres
             String nouvOutilsInventaire = "";
             for(int i = 0 ; i < joueur.getOutilsInventaire().size() ; i++)
             {

@@ -39,6 +39,8 @@ public class PopupInformationsObjet extends Activity
     TextView nom, prix, description, rarete, portee, nbCibles, toucherParCoup, intervalleParCoup;
     ImageViewCarre imageObjet;
 
+    ChoixBarreDOutils choixBarreDOutils;
+
     //Constructeurs
     public PopupInformationsObjet() {}
 
@@ -72,6 +74,7 @@ public class PopupInformationsObjet extends Activity
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
         objet = getIntent().getExtras().getParcelable("objet");
+        choixBarreDOutils = new ChoixBarreDOutils();
 
         caracteristiquesOutil = findViewById(R.id.caracteristiquesOutil);
         nom = findViewById(R.id.nom);
@@ -158,23 +161,19 @@ public class PopupInformationsObjet extends Activity
                 {
                     if(objet.getType() == Objet.Type.Outil)
                     {
-                        for(int i = 0 ; i < 4 ; i++)
-                        {
-                            startActivity(new Intent(PopupInformationsObjet.this, BarreDOutils.class));//TODO
-                            BarreDOutils.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                            {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-                                {
-                                    BarreDOutils.outils[i] = objet;
-                                    BarreDOutils.adapteur.getOutils()[i] = objet;
-                                }
-                            });
-                        }
+                        //Bundle bundle = new Bundle();
+                        //bundle.putParcelable("outil", objet);
+                        //Log.e("TEST", objet.getDescription());
+                        //BarreDOutils.barreDOutils = new BarreDOutils();
+                        //BarreDOutils.barreDOutils.getArguments().putParcelable("outil", objet);
+                        //BarreDOutils barreDOutils = new BarreDOutils();
+                        //barreDOutils.getArguments().putParcelable("outil", objet);
+                        //choixBarreDOutils.getFragmentManager().beginTransaction().replace(R.id.barreDOutils, barreDOutils).commit();
+                        choixBarreDOutils.startActivity(getApplicationContext());
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
-
+                        MainActivity.joueur.setSkin(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
                     }
                     else if(objet.getType() == Objet.Type.Décoration)
                     {
@@ -220,7 +219,10 @@ public class PopupInformationsObjet extends Activity
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 
@@ -231,12 +233,9 @@ public class PopupInformationsObjet extends Activity
         SurChangementActivity = false;
     }
 
-    //Getteurs & setteurs
-
     //Méthodes
     public void startActivity(Outil objet, int position, Context context, Boolean objetVendu)
     {
-        Log.e("SEB", objet.getNom());
         Intent intent = new Intent(context, PopupInformationsObjet.class);
         //intent.putExtra("objetVendu", objetVendu);
         intent.putExtra("objet", objet);

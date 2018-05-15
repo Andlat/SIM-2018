@@ -6,15 +6,12 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.LongSparseArray;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import daynight.daynnight.engine.Model.Model;
 import daynight.daynnight.engine.Model.MovingModel;
-import daynight.daynnight.engine.Model.Texture;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.CollisionDetector;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
@@ -36,7 +33,8 @@ public class World {
     private long mModelToFollow = -1;
 
     private final LongSparseArray<Model> mModels = new LongSparseArray<>(), mHiddenModels = new LongSparseArray<>();
-    private final List<MovingModel> mMovingModels = new ArrayList<>();//Models in this list are also included in mModels
+    private final List<MovingModel> mMovingModels = new LinkedList<>();//Models in this list are also included in mModels
+    private final List<Model> mModelsList = new LinkedList<>();
 
     private PhysicsAttributes.WorldAttr mPhysicsAttr = null;
     private boolean mArePhysicsOn = false;//TODO Take this in account?
@@ -58,6 +56,7 @@ public class World {
     public long addModel(Model model){
         final long modelID = model.getID();
         mModels.put(modelID, model);
+        mModelsList.add(model);
 
         //model.setVBOWorldOffset(mVBOMan.addData(model.getVBO()));
 
@@ -71,14 +70,17 @@ public class World {
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
-
+        removeModel(toRemoveModel);
+    }
+    public void removeModel(Model toRemoveModel){
         /*
         FloatBuffer modelVBO = toRemoveModel.getVBO();
         int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
         mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
         */
 
-        mModels.remove(id_model);
+        mModels.remove(toRemoveModel.getID());
+        mModelsList.remove(toRemoveModel);
 
 
         //Remove from mMovingModels if necessary
@@ -153,27 +155,36 @@ public class World {
         mModelToFollow = id_model;
     }
     private void CamFollowModel(){
-        if(mModelToFollow > 0) {
+        if(mModelToFollow > -1) {
             MVP.Camera cam = mMVP.getCamera();
 
-            Vec3 center = mModels.get(mModelToFollow).CalculateOrigin();
+            Vec3 center = mModels.get(mModelToFollow).getRelOrigin();
             cam.setCenter(center);//set where to look
 
             cam.setEye(new Vec3(center.x(), center.y(), cam.getEye().z()));//Set where the camera is, so it is parallel to where it's looking
         }
     }
 
-    //TODO Right now, it also draws hidden models. (but not removed ones). So I should remedy to that
-    //TODO Bind textures. Group models based on the textures so I'd only need to bind the same image once.
-    void DrawWorld(long frameElapsedTime){
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+    public void setGroupZIndex(long id_model, int z){
+        Model m = mModels.get(id_model);
+        if(m != null)
+            setGroupZIndex(m, z);
+    }
 
-        CamFollowModel();
+    public void setGroupZIndex(Model model, int z){
+        mDrawMan.setZindex(model.getDrawGroupID(), z);
+    }
+
+    //TODO Right now, it also draws hidden models. (but not removed ones ?). So I should remedy to that
+    void DrawWorld(long frameElapsedTime){
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+
 
         //------------- OPTION 3. GROUPING MODELS BY MVPs AND ANIMATIONS --------------\\
         mDrawMan.Draw(mMVP, frameElapsedTime);
         //----------------------------------------------------------------------\\
 
+        //Log.e("OP 1", "FINISHED DRAWING");
 /*
         //------------- OPTION 2. SLOW AS FUCK WITH MANY OBJECTS --------------\\
         GLES30.glBindVertexArray(mVAO[0]);//Not really necessary since it is never unbound, but yeah.
@@ -236,13 +247,26 @@ public class World {
         }
         */
 
+        CamFollowModel();
+        //Log.e("OP 2", "CAM FOLLOWED");
+
+        //============ CollisionDetector.Detect IS FUCKING SLOW AND TAKES UP 4/5 OF THE FRAME TIME =========
         //Detect and execute collisions
-        ExcecuteCollisions(CollisionDetector.Detect(mMovingModels, Util.LongSparseArrayToArrayList(mModels)));
+        //Log.e("OP 3", "START COLLISIONS DETECTED");
+        //Util.LongSparseArrayToArrayList(mModels);
+        List<Pair<MovingModel, Model>> collisions = CollisionDetector.Detect2(mMovingModels, mModelsList);
+        //Log.e("OP 3", "FINISHED COLLISIONS DETECTED");
+        ExcecuteCollisions(collisions);
+        //Log.e("OP 4", "FINISHED COLLISIONS EXECUTED");
+
     }
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){
         for(Pair<MovingModel, Model> collision : collisions){
-            collision.first.getOnCollisionListener().onCollision(this, collision.second);
+            MovingModel.onCollisionListener listener = collision.first.getOnCollisionListener();
+            if(listener != null){
+                listener.onCollision(this, collision.second);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +22,7 @@ import java.util.List;
 public class BarreDOutils extends Fragment
 {
     //Variables
+    static BarreDOutils barreDOutils;
     static GridView gridView;
     static AdapteurArrayaObjets adapteur;
     PopupInformationsObjet infosObjetInventaire;
@@ -33,6 +34,7 @@ public class BarreDOutils extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        barreDOutils = this;
         return inflater.inflate(R.layout.fragment_barre_doutils, container, false);
     }
 
@@ -48,13 +50,28 @@ public class BarreDOutils extends Fragment
         infosObjetInventaire = new PopupInformationsObjet();
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        //if(getArguments().getParcelable("outil") != null)
         {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
-                infosObjetInventaire.startActivity(outils[position], position, getContext(), outils[position].getAcquis());
-            }
-        });
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                {
+                    outils[i] = getArguments().getParcelable("outil");
+                    adapteur.getOutils()[i] = getArguments().getParcelable("outil");
+                }
+            });
+        }
+        /*else
+        {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    infosObjetInventaire.startActivity(outils[position], position, getContext(), outils[position].getAcquis());
+                }
+            });
+        }*/
 
         gridView.setNumColumns(5);
 
