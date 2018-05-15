@@ -15,7 +15,7 @@ import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
 public class PopupPause extends Activity {
-    private ImageButton play;
+    private Button play;
     private Button badges;
     private Button inventaire;
     private Button menu;
@@ -38,7 +38,7 @@ public class PopupPause extends Activity {
             getWindow().setLayout((int) (width * 0.75), (int) (height * 0.85));
         }
 
-        play = (ImageButton) findViewById(R.id.playPauseButton);
+        play = (Button) findViewById(R.id.playPauseButton);
         badges = (Button) findViewById(R.id.badgePauseButton);
         inventaire = (Button) findViewById(R.id.inventairePauseButton);
         menu = (Button) findViewById(R.id.menuPauseButton);
