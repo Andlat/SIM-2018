@@ -51,8 +51,10 @@ public class Ammo {
     private MovingModel mModel = new MovingModel();
     private Vec3 mDir = new Vec3();
 
+    //TODO Aller chercher ces infos selon les données des projectiles
     public float Interval = 0.75f;//TODO Temporary time
     public int dmg = 10;//TODO Temp dammage
+    public float speed = 0.5f;//TODO Temp speed
 
     Ammo(Ammo ammo){
         ammo.CloneTo(this);
@@ -65,16 +67,16 @@ public class Ammo {
     Ammo(Context context, int resID) throws IOException {
         initAmmo(ObjParser.Parse(context, "models", "outil.obj").get(0).toMovingModel());
 
+        //TODO Vérifier si le projectile est une animation (s'il a plusieurs frames)
         this.setSkin(new Animation().addFrame(new Pair<>(Texture.Load(context, resID), 0)));
     }
 
     private void initAmmo(MovingModel model){
         mModel = model;
-        mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(10, 0, 0, 0.5f));//TODO Temporary speed
+        mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(10, 0, 0, speed));
         mModel.setAttr(ATTR_AMMO);
     }
 
-    //TODO Load the animation auto. Like Arthur.setSkin. Have to check if tool has multiple frames or only one
     void setSkin(Animation skin){
         mModel.setAnimation(skin);
     }
