@@ -41,7 +41,7 @@ public class Arthur{
 
         try {
             mModel = ObjParser.Parse(context, "models", "arthur.obj", FRAME_LENGTH).get(0).toMovingModel();
-            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 7f));//TODO TEMP SPEED FOR TESTING
+            mModel.setPhysics(new PhysicsAttributes.MovingModelAttr(70000, 0, 0, 7f));
             mModel.setAttr(ATTR_ARTHUR);
             this.setSkin(MainActivity.joueur.getSkin());
 
@@ -94,7 +94,7 @@ public class Arthur{
 
     private void CreateTool(Context context, World world) throws IOException{
         //Temporary tool
-        this.setTool(new Tool(context, world, R.drawable.outil02));
+        this.setTool(new Tool(context, world, R.drawable.outil02));//TODO Aller chercher l'outil sélectionner du joueur
     }
 
     void setTool(Tool tool){

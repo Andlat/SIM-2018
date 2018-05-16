@@ -107,7 +107,7 @@ class Game extends GameView{
         }
 */
 
-/*
+/*                  UTILISÉ DANS LES CLASSES Room, Corridor et House. Peut donc être supprimé d'ici
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -202,34 +202,6 @@ class Game extends GameView{
             //Fire and move bullets
             mArthur.getTool().Fire(world);
             Ammo.AmmoManager.Move(world);
-
-            //TODO TOUTOUS: THIS IS TEMPORARY. REMOVE IT
-            //===========================================\\
-
-            Random r = new Random();
-            //Move toutous
-            for(MovingModel toutou : House.toutous){
-                //Vec3 org = mArthur.getModel().getRelOrigin(), torg = toutou.getRelOrigin();
-                //float x=torg.x() - org.x(), y=torg.y()-org.y();
-                //Normalize direction
-                /*if(Math.abs(x) > Math.abs(y)){
-                    y = y/x;
-                    x = 1;
-                }else{
-                    x = x/y;
-                    y=1;
-                }*/
-                float x = r.nextFloat(), y = r.nextFloat();
-                if(r.nextBoolean())
-                    x = -x;
-                if(r.nextBoolean())
-                    y = -y;
-
-                //Log.e("TOUTOU DIR", "X: " + x + ", Y: " + y);
-
-                world.Move(toutou.getID(), new Vec3(x, y, 0), getElapsedFrameTime());
-            }
-            //===========================================\\
         }
 
         //Log.e("FRAME TIME", ""+getElapsedFrameTime());

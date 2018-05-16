@@ -34,7 +34,7 @@ public class Tool {
     private Vec3 mDir = new Vec3();
 
     private Tool(Context context) throws IOException {
-        mAmmoType = new Ammo(context, R.drawable.balle02);//TODO This is temporary ammo
+        mAmmoType = new Ammo(context, R.drawable.balle02);//TODO Aller chercher les projectiles reliées au fusil
     }
 
     public Tool(Context context, World world, Model model) throws IOException{
@@ -49,6 +49,7 @@ public class Tool {
 
         mModel = ObjParser.Parse(context, "models", "outil.obj").get(0);
 
+        //TODO Vérifier si le fusil est une animation (s'il a plusieurs frames)
         this.setSkin(new Animation().addFrame(new Pair<>(Texture.Load(context, resID), 0)));
 
         init(world);
@@ -72,8 +73,6 @@ public class Tool {
         mModel.setRotation2D(theta);
     }
 
-
-    //TODO Load the animation auto. Like Arthur.setSkin. Have to check if tool has multiple frames or only one
     public void setSkin(Animation skin){
         mModel.setAnimation(skin);
     }

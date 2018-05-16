@@ -145,7 +145,6 @@ public class House {
                 }
 
                 MovingModel m = new MovingModel(toutou1);
-                m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
                 world.setGroupZIndex(m, Z_TOUTOU);
@@ -161,7 +160,6 @@ public class House {
                 }
 
                 MovingModel m = new MovingModel(toutou2);
-                m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
                 world.setGroupZIndex(m, Z_TOUTOU);
@@ -176,7 +174,6 @@ public class House {
                 }
 
                 MovingModel m = new MovingModel(toutou3);
-                m.setOnCollisionListener(getListener(m));
                 world.addModel(m);
                 world.Translate(m, new Vec3(x, y, 0));
                 world.setGroupZIndex(m, Z_TOUTOU);
@@ -185,7 +182,6 @@ public class House {
             }
 
             world.addModel(toutou4);
-            toutou4.setOnCollisionListener(getListener(toutou4));
             world.Translate(toutou4, new Vec3(4, 7, 0));
             world.setGroupZIndex(toutou4, Z_TOUTOU);
 
@@ -198,15 +194,6 @@ public class House {
                 skin.addFrame(new Pair<>(Texture.Load(mContext, firstFrameSkinResID+i), FRAME_LENGTH));
 
             model.setAnimation(skin);
-        }
-
-        MovingModel.onCollisionListener getListener(final MovingModel m){
-            return new MovingModel.onCollisionListener() {
-                @Override
-                public void onCollision(World world, Model object) {
-                    m.RewindTranslation();
-                }
-            };
         }
     }
 }
