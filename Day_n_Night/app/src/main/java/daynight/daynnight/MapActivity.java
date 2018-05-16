@@ -493,7 +493,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 actualPoi = (Poi) marker.getTag();
                 Toast.makeText(getApplicationContext(),actualPoi.getName(),Toast.LENGTH_SHORT);
 
-                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<100){
+                if(marker.getSnippet().equals("POI") && distanceFromPoi[0]<10000){
                     //Si le marqueur est un poi et si il est a moins de 100m de l'utilisateur
                     actualPoi = (Poi) marker.getTag();
                     if(Objects.requireNonNull(actualPoi).isActive()){
