@@ -57,10 +57,10 @@
         android:textSize="24sp" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/recImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@drawable/objet_biscuit"
+        android:src="@drawable/objet_biscuit"
         android:visibility="visible" />
 
     <Button
