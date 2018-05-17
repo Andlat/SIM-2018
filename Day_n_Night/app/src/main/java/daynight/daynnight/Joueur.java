@@ -27,6 +27,7 @@ public class Joueur
     int skin; //Drawable
 
     int biscuits;
+    int bestScore;
     List<ArrayList<Outil>> inventaire;
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
@@ -47,6 +48,7 @@ public class Joueur
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
+        this.bestScore = 0;
 
 
         //POUR L'INSTANT

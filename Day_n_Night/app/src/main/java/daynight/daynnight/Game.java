@@ -202,7 +202,7 @@ class Game extends GameView{
         }
 
         //Log.e("FRAME TIME", ""+getElapsedFrameTime());
-/*
+
         this.listeToutouDelete.clear();
         this.listeBalleDelete.clear();
         int temp=0;
@@ -214,7 +214,7 @@ class Game extends GameView{
         for(Projectile projectile : mListeProjectile){
             world.Move(projectile.getmID(), new Vec3(projectile.getmDirectionX(), projectile.getmDirectionY(), 0.f), getElapsedFrameTime());
             for(Toutou monsieurMovingAmiID:mListeToutou){
-                if(Math.sqrt(Math.pow(projectile.getCoord().getX() - mListeToutou.get(temp2).getCoord().getX(),2) + Math.pow(projectile.getCoord().getY() - mListeToutou.get(temp2).getCoord().getY(),2)) < 0.2){
+                if(Math.sqrt(Math.pow(projectile.getCoord().getX() - mListeToutou.get(temp2).getCoord().getX(),2) + Math.pow(projectile.getCoord().getY() - mListeToutou.get(temp2).getCoord().getY(),2)) < 1){
                     mListeToutou.get(temp2).setmVie(mListeToutou.get(temp2).getmVie()-projectile.getmPuissance());
                     if(mListeToutou.get(temp2).getmVie()<=0){
                         this.listeToutouDelete.add(temp2);
@@ -242,28 +242,31 @@ class Game extends GameView{
         temp=0;
         float angle=0;
         for(Toutou monsieurMovingAmiID:mListeToutou){
-            //TODO determiner si l'origine est le personnage ou alors un point dans la carte
-            angle=(float)Math.atan2(-mListeToutou.get(temp2).getCoord().getY(), -mListeToutou.get(temp2).getCoord().getX());
-            if(angle > 7*Math.PI/4 && angle < Math.PI/4){
-                monsieurMovingAmiID.setDernierDeplacement('d');
-            }else if(angle > Math.PI/4 && angle < 3*Math.PI/4){
-                monsieurMovingAmiID.setDernierDeplacement('h');
-            }else if(angle > 3*Math.PI/4 && angle < 5*Math.PI/4){
-                monsieurMovingAmiID.setDernierDeplacement('g');
-            }else if(angle > 5*Math.PI/4 && angle < 7*Math.PI/4){
-                monsieurMovingAmiID.setDernierDeplacement('b');
-            }
-            world.Move(mListeToutou.get(temp).getmID(), new Vec3((float)Math.sin(angle), (float)Math.cos(angle), 0), getElapsedFrameTime());
-            if(mListeToutou.get(temp2).getCoord().getX() < 0.5){
-                world.Move(mListeToutou.get(temp).getmID(), new Vec3(-(float)Math.sin(angle)*20, -(float)Math.cos(angle)*20, 0), getElapsedFrameTime());
-                this.vieJoueur -= mListeToutou.get(temp).getmDMG();
-                if(this.vieJoueur <=0){
-                    endGame();
+            //Vérification de la distance du joueur au toutou pour faire avancer ce dernier
+            if(Math.sqrt(Math.pow(this.mArthur.getModel().getCorners().get(0).y()-monsieurMovingAmiID.getModel().getCorners().get(0).y(), 2) + Math.pow(this.mArthur.getModel().getCorners().get(0).x()-monsieurMovingAmiID.getModel().getCorners().get(0).x(), 2)) < (this.mListeMur.get(0).getCorners().get(0).x() - this.mListeMur.get(0).getCorners().get(1).x())*7){
+                //On compare la position d'un des coins des toutous et d'Arthur pour diriger les toutous
+                angle=(float)Math.atan2(this.mArthur.getModel().getCorners().get(0).y()-monsieurMovingAmiID.getModel().getCorners().get(0).y(), this.mArthur.getModel().getCorners().get(0).x()-monsieurMovingAmiID.getModel().getCorners().get(0).x());
+                if(angle > 7*Math.PI/4 && angle < Math.PI/4){
+                    monsieurMovingAmiID.setDernierDeplacement('d');
+                }else if(angle > Math.PI/4 && angle < 3*Math.PI/4){
+                    monsieurMovingAmiID.setDernierDeplacement('h');
+                }else if(angle > 3*Math.PI/4 && angle < 5*Math.PI/4){
+                    monsieurMovingAmiID.setDernierDeplacement('g');
+                }else if(angle > 5*Math.PI/4 && angle < 7*Math.PI/4){
+                    monsieurMovingAmiID.setDernierDeplacement('b');
+                }
+                world.Move(monsieurMovingAmiID.getmID(), new Vec3((float)Math.cos(angle), (float)Math.sin(angle), 0), getElapsedFrameTime());
+                if(Math.sqrt(Math.pow(this.mArthur.getModel().getCorners().get(0).y()-monsieurMovingAmiID.getModel().getCorners().get(0).y(), 2) + Math.pow(this.mArthur.getModel().getCorners().get(0).x()-monsieurMovingAmiID.getModel().getCorners().get(0).x(), 2)) < (this.mListeMur.get(0).getCorners().get(0).x() - this.mListeMur.get(0).getCorners().get(1).x())*2){
+                    world.Move(monsieurMovingAmiID.getmID(), new Vec3(-(float)Math.sin(angle)*20, -(float)Math.cos(angle)*20, 0), getElapsedFrameTime());
+                    this.vieJoueur -= monsieurMovingAmiID.getmDMG();
+                    if(this.vieJoueur <=0){
+                        endGame();
+                    }
                 }
             }
             temp++;
         }
-*/
+
     }
 
     private void endGame() {
