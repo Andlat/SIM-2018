@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import daynight.daynnight.engine.GameView;
 import daynight.daynnight.engine.Model.Model;
@@ -17,6 +18,7 @@ import daynight.daynnight.engine.World;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.physics.PhysicsAttributes;
 import daynight.daynnight.engine.util.Coord;
+import daynight.daynnight.firepower.Ammo;
 import daynight.daynnight.house.House;
 
 /**
@@ -74,16 +76,13 @@ class Game extends GameView{
         mWorld = new World();
         super.UseWorld(mWorld);
 
-        mArthur = new Arthur(mContext);
-        mArthur.setInWorldID(mWorld.addModel(mArthur.getModel()));
-        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -40, 0));
-        mWorld.setGroupZIndex(mArthur.getInWorldID(), Arthur.Z_ARTHUR);
+        mArthur = new Arthur(mContext, mWorld);
+        mWorld.Translate(mArthur.getInWorldID(), new Vec3(0, -6, 0));
+
 
         mWorld.setCamFollowModel(mArthur.getInWorldID());
 
         try{
-            mArthur.setTool(ObjParser.Parse(mContext, "models", "outil.obj").get(0), mWorld);
-
             //mWorld.addModel(ObjParser.Parse(mContext, "models", "lit.obj").get(0).toStaticModel());
 
             House.Generate(mContext, mWorld);
@@ -108,7 +107,7 @@ class Game extends GameView{
         }
 */
 
-/*
+/*                  UTILISÉ DANS LES CLASSES Room, Corridor et House. Peut donc être supprimé d'ici
         try {
             StaticModel mur = ObjParser.Parse(mContext, "models", "plancher.obj").get(0).toStaticModel();
             mur.setPhysics(new PhysicsAttributes.MovingModelAttr(1000, 0, 0, 3));
@@ -199,6 +198,10 @@ class Game extends GameView{
         if(mArthur != null) {
             if(!mArthur.getDirection().isEmpty())
                 world.Move(mArthur.getInWorldID(), mArthur.getDirection(), getElapsedFrameTime());
+
+            //Fire and move bullets
+            mArthur.getTool().Fire(world);
+            Ammo.AmmoManager.Move(world);
         }
 
         //Log.e("FRAME TIME", ""+getElapsedFrameTime());

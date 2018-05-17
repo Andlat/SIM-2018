@@ -70,14 +70,16 @@ public class World {
     }
     public void removeModel(long id_model){
         Model toRemoveModel = mModels.get(id_model);
-
+        removeModel(toRemoveModel);
+    }
+    public void removeModel(Model toRemoveModel){
         /*
         FloatBuffer modelVBO = toRemoveModel.getVBO();
         int floatCount = (modelVBO != null ? modelVBO.capacity() : 0);
         mVBOMan.removeData((int)toRemoveModel.getVBOWorldOffset(), floatCount);
         */
 
-        mModels.remove(id_model);
+        mModels.remove(toRemoveModel.getID());
         mModelsList.remove(toRemoveModel);
 
 
@@ -261,7 +263,10 @@ public class World {
 
     private void ExcecuteCollisions(List<Pair<MovingModel, Model>> collisions){
         for(Pair<MovingModel, Model> collision : collisions){
-            collision.first.getOnCollisionListener().onCollision(this, collision.second);
+            MovingModel.onCollisionListener listener = collision.first.getOnCollisionListener();
+            if(listener != null){
+                listener.onCollision(this, collision.second);
+            }
         }
     }
 }

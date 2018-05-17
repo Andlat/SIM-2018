@@ -16,10 +16,8 @@ import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.onPause;
 
-public class SettingsActivity extends Activity {
-
-    private Locale myLocale;
-
+public class SettingsActivity extends Activity
+{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +46,13 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                if(MainActivity.musiqueDeFond.isPlaying()){
+                if(MainActivity.joueur.getMusique())
+                {
                     MainActivity.musiqueDeFond.pause();
                     MainActivity.joueur.setMusique(false);
-                }else{
+                }
+                else
+                {
                     MainActivity.musiqueDeFond.start();
                     MainActivity.joueur.setMusique(true);
                 }
@@ -61,24 +62,29 @@ public class SettingsActivity extends Activity {
 
         fr.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                setLocale("fr");
+            public void onClick(View view)
+            {
                 MainActivity.joueur.setLangue("fr");
+                MainActivity.joueur.setLocale(getApplicationContext());
             }
         });
 
         eng.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                setLocale("en");
+            public void onClick(View view)
+            {
                 MainActivity.joueur.setLangue("en");
+                MainActivity.joueur.setLocale(getApplicationContext());
             }
         });
 
         restart.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                getApplicationContext().deleteFile(MainActivity.fichierJoueur.getName());
+            public void onClick(View view)
+            {
+                finish();
+                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                startActivity(new Intent(SettingsActivity.this, PopupNouveauJoueur.class));
             }
         });
 
@@ -103,7 +109,10 @@ public class SettingsActivity extends Activity {
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 
@@ -112,20 +121,6 @@ public class SettingsActivity extends Activity {
     {
         super.onBackPressed();
         SurChangementActivity = false;
-    }
-
-    //Change la langue de l'application
-    //Fonction de Rubin Nellikunnathu sur https://stackoverflow.com/questions/34573201/change-languages-in-app-via-strings-xml
-    public void setLocale(String lang) {
-
-        myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-        Intent refresh = new Intent(this, SettingsActivity.class);
-        startActivity(refresh);
     }
 }
 

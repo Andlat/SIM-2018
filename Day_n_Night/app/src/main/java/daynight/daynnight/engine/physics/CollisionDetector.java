@@ -14,6 +14,8 @@ import daynight.daynnight.engine.Model.StaticModel;
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Coord;
 
+import static daynight.daynnight.properties.ModelAttributes.ATTR_TOUTOU;
+
 /**
  * Created by Nikola Zelovic on 2018-04-23.
  */
@@ -127,9 +129,23 @@ public class CollisionDetector {
         //Log.e("CD Q", "QMM: " + movingModels.size() + ", QMO: " + models.size());
 
         for (MovingModel moving : movingModels) {
+            //TODO TOUTOUS: TEMP REMOVE THIS
+            if(moving.getAttr() == ATTR_TOUTOU)
+                continue;
+
             final Vec3 orgMvg = moving.getRelOrigin();
 
             for (Model model : models) {
+                boolean isStaticModel = false;
+
+                //If it is a floor tile, can discard it immediately
+                if(model instanceof StaticModel) {
+                    isStaticModel = true;
+
+                    if (((StaticModel) model).getType() == StaticModel.Type.FLOOR)
+                        continue;
+                }
+
                 final Vec3 orgMdl = model.getRelOrigin();
 
                 if (Coord.distanceTo(orgMvg.x(), orgMvg.y(), orgMdl.x(), orgMdl.y()) <= BOX_RADIUS) {//Check if other model is in radius
@@ -143,14 +159,12 @@ public class CollisionDetector {
                     boolean checkYWallCollision = false;
 
                     //Verify if need to check for collision against another model
-                    if(model instanceof StaticModel){//Check against a static model
+                    if(isStaticModel){//Check against a static model
                         StaticModel.Type t = ((StaticModel)model).getType();
-                        if(t != StaticModel.Type.FLOOR){
-                            if(t == StaticModel.Type.BLOCK){//If the static model is of normal type
-                                checkCollision = true;
-                            }else if(t == StaticModel.Type.WALL_BOTTOM || t == StaticModel.Type.WALL_TOP){//If the static model is of a top or bottom wall type, then check for a collision using their specific function
-                                checkYWallCollision = true;
-                            }
+                        if(t == StaticModel.Type.BLOCK){//If the static model is of normal type
+                            checkCollision = true;
+                        }else if(t == StaticModel.Type.WALL_BOTTOM || t == StaticModel.Type.WALL_TOP){//If the static model is of a top or bottom wall type, then check for a collision using their specific function
+                            checkYWallCollision = true;
                         }
                     }else if(movingModels.contains(model)){//Check against another moving model
                         checkCollision = true;

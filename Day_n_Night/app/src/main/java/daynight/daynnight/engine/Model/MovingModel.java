@@ -18,7 +18,7 @@ public class MovingModel extends Model {
     public static abstract class onCollisionListener{
         abstract public void onCollision(World world, Model object);
     }
-    private onCollisionListener mOnCollisionListener;
+    private onCollisionListener mOnCollisionListener = null;
 
     /**
      * Constructor for a MovingModel.
@@ -64,6 +64,7 @@ public class MovingModel extends Model {
         super.CloneTo(clone);
 
         this.mPhysics.CloneTo(clone.mPhysics);
+        clone.mLastDirection = this.mLastDirection;
     }
 
     /**

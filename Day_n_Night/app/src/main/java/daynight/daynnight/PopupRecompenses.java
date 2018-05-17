@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import static daynight.daynnight.MainActivity.onPause;
 public class PopupRecompenses extends Activity {
 
     private Button ramasser;
+    ImageView image;
     private String ok;
     private ArrayList<Outil> outilsLegend;
     private ArrayList<Outil> outilsRare;
@@ -34,6 +36,7 @@ public class PopupRecompenses extends Activity {
     private Random rand;
     private int biscuit;
     private int generate;
+    private int position;
 
 
     @SuppressLint("SetTextI18n")
@@ -60,8 +63,9 @@ public class PopupRecompenses extends Activity {
         ok = "non";
         ramasser = findViewById(R.id.ramasser);
         TextView recompense = (TextView) findViewById(R.id.recompenseMessage);
+        image = findViewById(R.id.recImage);
 
-/*
+
         //classe les outils selon leur rarete
         for(int i = 0; i < MainActivity.joueur.getOutilsBoutique().size(); i++){
             int rarete = MainActivity.joueur.getOutilsBoutique().get(i).getRarete();
@@ -84,7 +88,7 @@ public class PopupRecompenses extends Activity {
             //donne entre 5 et 25 biscuits
             biscuit = rand.nextInt(21) + 5;
             MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-            recompense.setText(biscuit + "biscuits!");
+            recompense.setText(biscuit + " biscuits!");
 
         }else{
             //Slection la rarete de l'item
@@ -98,25 +102,45 @@ public class PopupRecompenses extends Activity {
                     //skin
                     if(skinsCommon.size() >0) {
                         generate = rand.nextInt(skinsCommon.size());
+                        skinsCommon.get(generate).setAcquis(true);
                         recompense.setText(skinsCommon.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(skinsCommon.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getSkinsBoutique().size(); k++){
+                            if(skinsCommon.get(generate).getId() == MainActivity.joueur.getSkinsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getSkinsInventaire().add(skinsCommon.get(generate));
+                        MainActivity.joueur.getSkinsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
                 }else{
-                    if(skinsCommon.size() >0) {
+                    if(outilsCommon.size() >0) {
                         //outil
                         generate = rand.nextInt(outilsCommon.size());
+                        outilsCommon.get(generate).setAcquis(true);
                         recompense.setText(outilsCommon.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(outilsCommon.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getOutilsBoutique().size(); k++){
+                            if(outilsCommon.get(generate).getId() == MainActivity.joueur.getOutilsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getOutilsInventaire().add(outilsCommon.get(generate));
+                        MainActivity.joueur.getOutilsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
                 }
 
@@ -126,29 +150,49 @@ public class PopupRecompenses extends Activity {
                 generate = rand.nextInt(2);
 
                 if(generate == 0){
-                    if(skinsCommon.size() > 0) {
+                    if(skinsRare.size() > 0) {
                         //skin
                         generate = rand.nextInt(skinsRare.size());
+                        skinsRare.get(generate).setAcquis(true);
                         recompense.setText(skinsRare.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(skinsRare.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getSkinsBoutique().size(); k++){
+                            if(skinsRare.get(generate).getId() == MainActivity.joueur.getSkinsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getSkinsInventaire().add(skinsRare.get(generate));
+                        MainActivity.joueur.getSkinsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
 
                 }else{
-                    if(skinsCommon.size() <0) {
+                    if(outilsRare.size() > 0) {
                         //outil
                         generate = rand.nextInt(outilsRare.size());
+                        outilsRare.get(generate).setAcquis(true);
                         recompense.setText(outilsRare.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(outilsRare.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getOutilsBoutique().size(); k++){
+                            if(outilsRare.get(generate).getId() == MainActivity.joueur.getOutilsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getOutilsInventaire().add(outilsRare.get(generate));
+                        MainActivity.joueur.getOutilsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
                 }
 
@@ -157,35 +201,55 @@ public class PopupRecompenses extends Activity {
                 generate = rand.nextInt(2);
 
                 if(generate == 0){
-                    if(skinsCommon.size() >0) {
+                    if(skinsLegend.size() >0) {
                         //skin
                         generate = rand.nextInt(skinsLegend.size());
+                        skinsLegend.get(generate).setAcquis(true);
                         recompense.setText(skinsLegend.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(skinsLegend.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getSkinsBoutique().size(); k++){
+                            if(skinsLegend.get(generate).getId() == MainActivity.joueur.getSkinsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getSkinsInventaire().add(skinsLegend.get(generate));
+                        MainActivity.joueur.getSkinsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
 
                 }else{
-                    if(skinsCommon.size() >0) {
+                    if(outilsLegend.size() >0) {
                         //outil
                         generate = rand.nextInt(outilsLegend.size());
+                        outilsLegend.get(generate).setAcquis(true);
                         recompense.setText(outilsLegend.get(generate).getNom());
-                        //TODO ajouter à l'inventaire et retirer de la boutique
+                        image.setImageResource(getResources().getIdentifier(outilsLegend.get(generate).getImageDrawableString(), "drawable", getPackageName()));
+                        for(int k =0; k< MainActivity.joueur.getOutilsBoutique().size(); k++){
+                            if(outilsLegend.get(generate).getId() == MainActivity.joueur.getOutilsBoutique().get(k).getId()){
+                                position = k;
+                                break;
+                            }
+                        }
+                        MainActivity.joueur.getOutilsInventaire().add(outilsLegend.get(generate));
+                        MainActivity.joueur.getOutilsBoutique().set(position, new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration, 0, Outil.Portee.Nulle, 0, 0, 0, 0f, "", true));
+
                     }else{
                         //si il n'y a rien a gagner, donne des biscuits
                         biscuit = rand.nextInt(21) + 5;
                         MainActivity.joueur.setBiscuits(MainActivity.joueur.getBiscuits() + biscuit);
-                        recompense.setText(biscuit + "biscuits!");
+                        recompense.setText(biscuit + " biscuits!");
                     }
 
                 }
             }
 
-        }*/
+        }
 
 
 
@@ -219,7 +283,10 @@ public class PopupRecompenses extends Activity {
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 

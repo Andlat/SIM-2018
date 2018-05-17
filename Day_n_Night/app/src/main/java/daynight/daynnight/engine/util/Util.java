@@ -1,5 +1,6 @@
 package daynight.daynnight.engine.util;
 
+import android.util.Log;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
 
@@ -29,6 +30,12 @@ public final class Util {
 
     public static float RadToDeg(float rad){
         return rad * 360.f / (2.f * PI);
+    }
+    public static float dirToDeg(float x, float y){
+        float theta = Util.RadToDeg((float) Math.atan2(y, x));
+        if(theta < 0) theta = 360+theta;//atan2 correction (atan2 returns negatives for [PI, 2PI]. (E.g. 3PI/4 = -PI/4)
+
+        return theta;
     }
 
     public static float[] FloatListToArray(final List<Float> list){

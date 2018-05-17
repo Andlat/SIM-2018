@@ -52,6 +52,12 @@ public class Inventaire extends AppCompatActivity
         setContentView(R.layout.layout_inventaire);
         inventaire = this;
 
+        Fragment barreDOutils = BarreDOutils.barreDOutils;
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.layout_barreDOutils, barreDOutils);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
         tabObjets = (TabLayout) findViewById(R.id.tabObjets);
@@ -148,7 +154,10 @@ public class Inventaire extends AppCompatActivity
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 

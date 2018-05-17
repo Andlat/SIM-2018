@@ -1,11 +1,12 @@
 package daynight.daynnight;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,8 +27,12 @@ import static daynight.daynnight.MainActivity.joueur;
  * Created by sebastien on 18-03-17.
  */
 
-public class ChoixBarreDOutils extends Activity
+public class ChoixBarreDOutils extends AppCompatActivity
 {
+    //Variables
+    static ChoixBarreDOutils choixBarreDOutils;
+    Outil outil;
+
     //Constructeurs
     public ChoixBarreDOutils() {}
 
@@ -36,6 +41,18 @@ public class ChoixBarreDOutils extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_choix_barre_doutils);
+        choixBarreDOutils = this;
+
+        outil = getIntent().getExtras().getParcelable("outil");
+
+        Fragment barreDOutils = BarreDOutils.barreDOutils;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("outil", outil);
+        barreDOutils.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.layout_barreDOutils, barreDOutils);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -72,7 +89,10 @@ public class ChoixBarreDOutils extends Activity
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 
@@ -84,12 +104,10 @@ public class ChoixBarreDOutils extends Activity
     }
 
     //Méthodes
-    public void startActivity(/*Outil objet, int position, */Context context/*, Boolean objetVendu*/)
+    public void startActivity(Outil outil, Context context)
     {
         Intent intent = new Intent(context, ChoixBarreDOutils.class);
-        //intent.putExtra("objetVendu", objetVendu);
-        //intent.putExtra("objet", objet);
-        //intent.putExtra("position", position);
+        intent.putExtra("outil", outil);
         context.startActivity(intent);
     }
 }

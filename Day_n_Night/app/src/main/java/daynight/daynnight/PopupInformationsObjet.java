@@ -39,8 +39,6 @@ public class PopupInformationsObjet extends Activity
     TextView nom, prix, description, rarete, portee, nbCibles, toucherParCoup, intervalleParCoup;
     ImageViewCarre imageObjet;
 
-    ChoixBarreDOutils choixBarreDOutils;
-
     //Constructeurs
     public PopupInformationsObjet() {}
 
@@ -74,7 +72,7 @@ public class PopupInformationsObjet extends Activity
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
         objet = getIntent().getExtras().getParcelable("objet");
-        choixBarreDOutils = new ChoixBarreDOutils();
+        ChoixBarreDOutils.choixBarreDOutils = new ChoixBarreDOutils();
 
         caracteristiquesOutil = findViewById(R.id.caracteristiquesOutil);
         nom = findViewById(R.id.nom);
@@ -161,23 +159,11 @@ public class PopupInformationsObjet extends Activity
                 {
                     if(objet.getType() == Objet.Type.Outil)
                     {
-                        choixBarreDOutils.startActivity(getApplicationContext());
-                        for(int i = 0 ; i < 4 ; i++)
-                        {
-                            /*BarreDOutils.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                            {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-                                {
-                                    BarreDOutils.outils[i] = objet;
-                                    BarreDOutils.adapteur.getOutils()[i] = objet;
-                                }
-                            });*/
-                        }
+                        ChoixBarreDOutils.choixBarreDOutils.startActivity(objet, getApplicationContext());
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
-
+                        MainActivity.joueur.setSkin(getResources().getIdentifier(objet.getImageDrawableString(), "drawable", getPackageName()));
                     }
                     else if(objet.getType() == Objet.Type.Décoration)
                     {
@@ -223,7 +209,10 @@ public class PopupInformationsObjet extends Activity
     @Override
     protected void onResume()
     {
-        MainActivity.musiqueDeFond.start();
+        if(MainActivity.joueur.getMusique())
+        {
+            MainActivity.musiqueDeFond.start();
+        }
         super.onResume();
     }
 

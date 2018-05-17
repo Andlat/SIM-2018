@@ -33,12 +33,12 @@
         android:padding="4dp"
         android:background="@drawable/layout_barre_doutils">
 
-        <fragment
+        <!--<fragment
             android:id="@+id/barreDOutils"
             android:name="daynight.daynnight.BarreDOutils"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" />-->
     </LinearLayout>
 
     <ImageView
