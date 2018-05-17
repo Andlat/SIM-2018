@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +27,7 @@ public class BarreDOutils extends Fragment
     static AdapteurArrayaObjets adapteur;
     PopupInformationsObjet infosObjetInventaire;
     static Outil[] outils = new Outil[5];
+    Outil outil;
 
     //constructeur
     public BarreDOutils() {}
@@ -44,37 +45,44 @@ public class BarreDOutils extends Fragment
         for(int i = 0 ; i < 5 ; i++)
             outils[i] = new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true);
 
-        adapteur = new AdapteurArrayaObjets(getContext(), 0, outils);
+        adapteur = new AdapteurArrayaObjets(view.getContext(), 0, outils);
         gridView = getView().findViewById(R.id.listeOutils);
         gridView.setAdapter(adapteur);
         infosObjetInventaire = new PopupInformationsObjet();
 
 
-        //if(getArguments().getParcelable("outil") != null)
+        Bundle bundle = getArguments();
+        if(bundle != null)
+        {
+            outil = getArguments().getParcelable("outil");
+        }
+        if(outil != null)
         {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
                 {
-                    outils[i] = getArguments().getParcelable("outil");
-                    adapteur.getOutils()[i] = getArguments().getParcelable("outil");
+                    outils[i] = outil;
+                    adapteur.setOutil(outil, i);
+                    adapteur.notifyDataSetChanged();
+                    outil = null;
+                    ChoixBarreDOutils.choixBarreDOutils.finish();
                 }
             });
         }
-        /*else
+        else
         {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
-                    infosObjetInventaire.startActivity(outils[position], position, getContext(), outils[position].getAcquis());
+                    infosObjetInventaire.startActivity(outils[position], position, view.getContext(), outils[position].getAcquis());
                 }
             });
-        }*/
+        }
 
         gridView.setNumColumns(5);
-
     }
 
     //custom ArrayAdapter
@@ -109,6 +117,10 @@ public class BarreDOutils extends Fragment
         public Outil[] getOutils()
         {
             return this.outils;
+        }
+        public void setOutil(Outil outil, int position)
+        {
+            outils[position] = outil;
         }
     }
 }

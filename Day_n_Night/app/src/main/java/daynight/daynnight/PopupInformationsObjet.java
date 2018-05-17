@@ -39,8 +39,6 @@ public class PopupInformationsObjet extends Activity
     TextView nom, prix, description, rarete, portee, nbCibles, toucherParCoup, intervalleParCoup;
     ImageViewCarre imageObjet;
 
-    ChoixBarreDOutils choixBarreDOutils;
-
     //Constructeurs
     public PopupInformationsObjet() {}
 
@@ -74,7 +72,7 @@ public class PopupInformationsObjet extends Activity
         ViewGroup.LayoutParams paramsPrix = prixLayout.getLayoutParams();
         objetVendu = getIntent().getExtras().getBoolean("objetVendu");
         objet = getIntent().getExtras().getParcelable("objet");
-        choixBarreDOutils = new ChoixBarreDOutils();
+        ChoixBarreDOutils.choixBarreDOutils = new ChoixBarreDOutils();
 
         caracteristiquesOutil = findViewById(R.id.caracteristiquesOutil);
         nom = findViewById(R.id.nom);
@@ -161,15 +159,7 @@ public class PopupInformationsObjet extends Activity
                 {
                     if(objet.getType() == Objet.Type.Outil)
                     {
-                        //Bundle bundle = new Bundle();
-                        //bundle.putParcelable("outil", objet);
-                        //Log.e("TEST", objet.getDescription());
-                        //BarreDOutils.barreDOutils = new BarreDOutils();
-                        //BarreDOutils.barreDOutils.getArguments().putParcelable("outil", objet);
-                        //BarreDOutils barreDOutils = new BarreDOutils();
-                        //barreDOutils.getArguments().putParcelable("outil", objet);
-                        //choixBarreDOutils.getFragmentManager().beginTransaction().replace(R.id.barreDOutils, barreDOutils).commit();
-                        choixBarreDOutils.startActivity(getApplicationContext());
+                        ChoixBarreDOutils.choixBarreDOutils.startActivity(objet, getApplicationContext());
                     }
                     else if(objet.getType() == Objet.Type.Skin)
                     {
