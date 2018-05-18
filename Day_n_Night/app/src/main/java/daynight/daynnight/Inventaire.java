@@ -35,7 +35,7 @@ import static daynight.daynnight.MainActivity.onPause;
 public class Inventaire extends AppCompatActivity
 {
     //Variables
-    static Inventaire inventaire;
+    static Inventaire inventaire = new Inventaire();
     static Boolean choix = false;
     ImageView boutique;
 
@@ -171,7 +171,6 @@ public class Inventaire extends AppCompatActivity
         barreDOutils.setArguments(bundle);
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(res, barreDOutils);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
