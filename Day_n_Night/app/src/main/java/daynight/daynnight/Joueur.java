@@ -56,6 +56,11 @@ public class Joueur
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
+<<<<<<< HEAD
+=======
+
+        this.bestScore = 0;
+>>>>>>> f71422a0f250b71c1caf6cfbc87ac116cde8b7c4
 
         this.musique = musique;
         this.langue = langue;
