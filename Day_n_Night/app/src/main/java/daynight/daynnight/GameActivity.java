@@ -1,19 +1,26 @@
 package daynight.daynnight;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
+import static daynight.daynnight.Inventaire.inventaire;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.SurChangementActivity;
 
@@ -33,6 +40,8 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        inventaire.notifyBarreDOutilsUpdate(this, new Bundle(), R.id.layout_barreDOutils);
 
         game = (Game) findViewById(R.id.game1);
         joystickTir = (Joystick) findViewById(R.id.joystickTir);
@@ -70,10 +79,19 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                 }
                 start();
             }
-        }.start();
+        }.start();*/
 
 
-*/
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        LinearLayout layoutBarreDOutils = (LinearLayout) findViewById(R.id.layout_barreDOutils);
+        ViewGroup.LayoutParams params = layoutBarreDOutils.getLayoutParams();
+
+        //Attribuer
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        params.width = height;
+        layoutBarreDOutils.setLayoutParams(params);
     }
 
     @Override

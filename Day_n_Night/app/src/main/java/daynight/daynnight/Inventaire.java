@@ -36,6 +36,7 @@ public class Inventaire extends AppCompatActivity
 {
     //Variables
     static Inventaire inventaire;
+    static Boolean choix = false;
     ImageView boutique;
 
     TabLayout tabObjets;
@@ -52,11 +53,7 @@ public class Inventaire extends AppCompatActivity
         setContentView(R.layout.layout_inventaire);
         inventaire = this;
 
-        Fragment barreDOutils = BarreDOutils.barreDOutils;
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.layout_barreDOutils, barreDOutils);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        notifyBarreDOutilsUpdate(this, new Bundle(), R.id.layout_barreDOutils);
 
         //Attribuer
         boutique = (ImageView) findViewById(R.id.boutique);
@@ -168,6 +165,15 @@ public class Inventaire extends AppCompatActivity
         SurChangementActivity = false;
     }
     //Méthodes
+    public void notifyBarreDOutilsUpdate(AppCompatActivity activity, Bundle bundle, int res)
+    {
+        Fragment barreDOutils = new BarreDOutils();
+        barreDOutils.setArguments(bundle);
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(res, barreDOutils);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
     //custom ArrayAdapter
     public class SectionPagerAdapter extends FragmentPagerAdapter {

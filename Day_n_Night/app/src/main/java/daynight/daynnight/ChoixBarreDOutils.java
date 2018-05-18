@@ -20,6 +20,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static daynight.daynnight.Inventaire.inventaire;
 import static daynight.daynnight.MainActivity.SurChangementActivity;
 import static daynight.daynnight.MainActivity.joueur;
 
@@ -31,7 +32,6 @@ public class ChoixBarreDOutils extends AppCompatActivity
 {
     //Variables
     static ChoixBarreDOutils choixBarreDOutils;
-    Outil outil;
 
     //Constructeurs
     public ChoixBarreDOutils() {}
@@ -42,17 +42,11 @@ public class ChoixBarreDOutils extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_choix_barre_doutils);
         choixBarreDOutils = this;
+        Inventaire.choix = true;
 
-        outil = getIntent().getExtras().getParcelable("outil");
-
-        Fragment barreDOutils = BarreDOutils.barreDOutils;
         Bundle bundle = new Bundle();
-        bundle.putParcelable("outil", outil);
-        barreDOutils.setArguments(bundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.layout_barreDOutils, barreDOutils);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        bundle.putParcelable("outil", getIntent().getExtras().getParcelable("outil"));
+        inventaire.notifyBarreDOutilsUpdate(this, bundle, R.id.layout_barreDOutils);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -84,6 +78,7 @@ public class ChoixBarreDOutils extends AppCompatActivity
             MainActivity.musiqueDeFond.pause();
             MainActivity.ma.sauvegardeJoueur(joueur);
         }
+        //inventaire.notifyBarreDOutilsUpdate(new Bundle());
         super.onStop();
     }
     @Override
@@ -102,6 +97,7 @@ public class ChoixBarreDOutils extends AppCompatActivity
         super.onBackPressed();
         SurChangementActivity = false;
     }
+
 
     //Méthodes
     public void startActivity(Outil outil, Context context)
