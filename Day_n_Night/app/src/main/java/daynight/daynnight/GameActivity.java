@@ -42,10 +42,11 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        game = (Game) findViewById(R.id.game1);
+
         enJeu = true;
         inventaire.notifyBarreDOutilsUpdate(this, new Bundle(), R.id.layout_barreDOutils);
 
-        game = (Game) findViewById(R.id.game1);
         joystickTir = (Joystick) findViewById(R.id.joystickTir);
         joystickTir.setZOrderOnTop(true);
         joystickTir.setColor(105,105, 105);

@@ -16,9 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import daynight.daynnight.firepower.Tool;
 
 import static daynight.daynnight.GameActivity.enJeu;
 import static daynight.daynnight.Inventaire.choix;
@@ -70,6 +73,15 @@ public class BarreDOutils extends Fragment
                 {
                     MainActivity.joueur.setOutilSelection(outils[i]);
                     //TODO ICI NIK
+                    Arthur arthur = Game.getArthur();
+                    if(arthur != null){
+                        final Context context = BarreDOutils.this.getContext();
+                        try {
+                            arthur.setTool(new Tool(context, Game.getWorld(), context.getResources().getIdentifier(MainActivity.joueur.getOutilSelection().getImageDrawableString(), "drawable", context.getPackageName())));
+                        }catch(IOException ex){
+                            Log.e("Barre D'Outils", "L'image n'existe pas.");
+                        }
+                    }
                 }
             });
         }
