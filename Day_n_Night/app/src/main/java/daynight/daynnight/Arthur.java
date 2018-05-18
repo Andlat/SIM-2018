@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import daynight.daynnight.engine.Model.Animation;
 import daynight.daynnight.engine.Model.Model;
@@ -93,8 +94,15 @@ public class Arthur{
 
 
     private void CreateTool(Context context, World world) throws IOException{
-        //Temporary tool
-        this.setTool(new Tool(context, world, R.drawable.outil02));//TODO Aller chercher l'outil sélectionner du joueur
+        if(MainActivity.joueur.getOutilSelection() == null)
+        {
+            //Temporary tool
+            this.setTool(new Tool(context, world, R.drawable.outil02));//TODO Aller chercher l'outil sélectionner du joueur
+        }
+        else
+        {
+            this.setTool(new Tool(context, world, context.getResources().getIdentifier(MainActivity.joueur.getOutilSelection().getImageDrawableString(), "drawable", context.getPackageName())));
+        }
     }
 
     void setTool(Tool tool){

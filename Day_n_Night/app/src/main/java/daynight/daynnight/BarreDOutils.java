@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import static daynight.daynnight.GameActivity.enJeu;
 import static daynight.daynnight.Inventaire.choix;
 
 
@@ -60,7 +61,19 @@ public class BarreDOutils extends Fragment
         infosObjetInventaire = new PopupInformationsObjet();
 
 
-        if(choix)
+        if(enJeu)
+        {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                {
+                    MainActivity.joueur.setOutilSelection(outils[i]);
+                    //TODO ICI NIK
+                }
+            });
+        }
+        else if(choix)
         {
             outil = getArguments().getParcelable("outil");
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()

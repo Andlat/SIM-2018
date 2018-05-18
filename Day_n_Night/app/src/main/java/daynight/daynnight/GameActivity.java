@@ -35,12 +35,14 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
     private Game game;
     private Vec3 balleVec = new Vec3();
     private CountDownTimer countDownTimer;
+    static public Boolean enJeu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        enJeu = true;
         inventaire.notifyBarreDOutilsUpdate(this, new Bundle(), R.id.layout_barreDOutils);
 
         game = (Game) findViewById(R.id.game1);
@@ -132,6 +134,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
             MainActivity.musiqueDeFond.pause();
             MainActivity.ma.sauvegardeJoueur(joueur);
         }
+        enJeu = false;
         super.onStop();
     }
     @Override

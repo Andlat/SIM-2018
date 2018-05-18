@@ -33,6 +33,7 @@ public class Joueur
     int biscuits;
     List<ArrayList<Outil>> inventaire;
     Outil[] barreDOutils = new Outil[5];
+    Outil outilSelection = null;
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
@@ -161,6 +162,10 @@ public class Joueur
     {
         return barreDOutils;
     }
+    public Outil getOutilSelection()
+    {
+        return outilSelection;
+    }
     public List<ArrayList<Outil>> getBoutique() {
         return boutique;
     }
@@ -221,6 +226,10 @@ public class Joueur
     public void setBarreDOutils(Outil[] barreDOutils)
     {
         this.barreDOutils = barreDOutils;
+    }
+    public void setOutilSelection(Outil outilSelection)
+    {
+        this.outilSelection = outilSelection;
     }
     public void setBoutique(List<ArrayList<Outil>> boutique) {
         this.boutique = boutique;
