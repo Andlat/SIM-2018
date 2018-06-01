@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:padding="4dp"
+        android:orientation="horizontal"
         android:background="@drawable/layout_barre_doutils">
 
         <!--<fragment

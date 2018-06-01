@@ -35,7 +35,7 @@ class Game extends GameView{
     private int nbrBallesLancees = 0;
     private MovingModel perso;
     private Vec3 persoVec;
-    private World mWorld;
+    private static World mWorld;
     private int round=0;
     private int nbrMonstreMauve69;
     private int nbrMonstreVert17;
@@ -53,7 +53,7 @@ class Game extends GameView{
     private Toutou toutouTest;
     private boolean positionPositiveDuSpawn = false;
 
-    private Arthur mArthur;
+    private static Arthur mArthur;
     public Game(Context context) {
         super(context);
         init(context);
@@ -69,7 +69,8 @@ class Game extends GameView{
         mContext = context;
     }
 
-    Arthur getArthur(){ return mArthur; }
+    static Arthur getArthur(){ return mArthur; }
+    static World getWorld(){ return mWorld; }
 
     @Override
     protected void onCreate() {

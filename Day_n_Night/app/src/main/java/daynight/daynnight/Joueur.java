@@ -1,7 +1,6 @@
 package daynight.daynnight;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -32,8 +31,9 @@ public class Joueur
     int skin; //Drawable
 
     int biscuits;
-    int bestScore;
     List<ArrayList<Outil>> inventaire;
+    Outil[] barreDOutils = new Outil[5];
+    Outil outilSelection = null;
     List<ArrayList<Outil>> boutique;
     List<Badge> badges;
 
@@ -42,6 +42,10 @@ public class Joueur
     //Préférences
     Boolean musique;
     String langue;
+
+    //Statistiques
+    int NbreVaguesAtteintes;
+
 
     //Constructeurs
     Joueur() {}
@@ -53,14 +57,21 @@ public class Joueur
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
+<<<<<<< HEAD
         this.bestScore = 0;
+=======
+>>>>>>> c9249aca5059eea533481f7e942e4b616974bec6
 
         this.musique = musique;
         this.langue = langue;
 
-        //POUR L'INSTANT
+        this.NbreVaguesAtteintes = 0;
+
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
+        for(int i = 0 ; i < 5 ; i++)
+            barreDOutils[i] = new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true);
+
         this.context = context;
 
         ArrayList<Outil> decorationsBout = new ArrayList<>();
@@ -91,6 +102,9 @@ public class Joueur
 
         boutique = new ArrayList<>(3);
         inventaire = new ArrayList<>(3);
+        for(int i = 0 ; i < 5 ; i++)
+            barreDOutils[i] = new Outil(666, "Case vide", "La case vide ne vous sera pas très utile.", Objet.Type.Décoration,0, Outil.Portee.Nulle, 0, 0, 0,0f, "", true);
+
         this.context = context;
 
         ArrayList<Outil> decorationsBout = new ArrayList<>();
@@ -148,6 +162,14 @@ public class Joueur
     {
         return inventaire.get(2);
     }
+    public Outil[] getBarreDOutils()
+    {
+        return barreDOutils;
+    }
+    public Outil getOutilSelection()
+    {
+        return outilSelection;
+    }
     public List<ArrayList<Outil>> getBoutique() {
         return boutique;
     }
@@ -204,6 +226,14 @@ public class Joueur
     public void setDecorationsInventaire(ArrayList<Outil> decorations)
     {
         this.inventaire.set(2, decorations);
+    }
+    public void setBarreDOutils(Outil[] barreDOutils)
+    {
+        this.barreDOutils = barreDOutils;
+    }
+    public void setOutilSelection(Outil outilSelection)
+    {
+        this.outilSelection = outilSelection;
     }
     public void setBoutique(List<ArrayList<Outil>> boutique) {
         this.boutique = boutique;

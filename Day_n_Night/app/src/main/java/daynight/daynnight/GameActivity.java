@@ -1,19 +1,26 @@
 package daynight.daynnight;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 
 import daynight.daynnight.engine.math.Vec3;
 import daynight.daynnight.engine.util.Util;
 
+import static daynight.daynnight.Inventaire.inventaire;
 import static daynight.daynnight.MainActivity.joueur;
 import static daynight.daynnight.MainActivity.SurChangementActivity;
 
@@ -28,6 +35,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
     private Game game;
     private Vec3 balleVec = new Vec3();
     private CountDownTimer countDownTimer;
+    static public Boolean enJeu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +43,10 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
         setContentView(R.layout.activity_game);
 
         game = (Game) findViewById(R.id.game1);
+
+        enJeu = true;
+        inventaire.notifyBarreDOutilsUpdate(this, new Bundle(), R.id.layout_barreDOutils);
+
         joystickTir = (Joystick) findViewById(R.id.joystickTir);
         joystickTir.setZOrderOnTop(true);
         joystickTir.setColor(105,105, 105);
@@ -70,10 +82,19 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
                 }
                 start();
             }
-        }.start();
+        }.start();*/
 
 
-*/
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        LinearLayout layoutBarreDOutils = (LinearLayout) findViewById(R.id.layout_barreDOutils);
+        ViewGroup.LayoutParams params = layoutBarreDOutils.getLayoutParams();
+
+        //Attribuer
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        params.width = height;
+        layoutBarreDOutils.setLayoutParams(params);
     }
 
     @Override
@@ -114,6 +135,7 @@ public class GameActivity extends AppCompatActivity implements Joystick.Joystick
             MainActivity.musiqueDeFond.pause();
             MainActivity.ma.sauvegardeJoueur(joueur);
         }
+        enJeu = false;
         super.onStop();
     }
     @Override
