@@ -53,13 +53,10 @@ public class Joueur
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
-<<<<<<< HEAD
         this.bestScore = 0;
 
-=======
         this.musique = musique;
         this.langue = langue;
->>>>>>> bab4ab29aeaebe053a6ca1d74303322d7b45c8f5
 
         //POUR L'INSTANT
         boutique = new ArrayList<>(3);
