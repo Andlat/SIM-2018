@@ -29,6 +29,7 @@ public class Joueur
     String nom;
     String adresseElectronique;
     int skin; //Drawable
+    private int bestScore;
 
     int biscuits;
     List<ArrayList<Outil>> inventaire;
@@ -57,10 +58,7 @@ public class Joueur
         this.adresseElectronique = addresseElectronique;
         this.skin = skin;
         this.biscuits = biscuits;
-<<<<<<< HEAD
         this.bestScore = 0;
-=======
->>>>>>> c9249aca5059eea533481f7e942e4b616974bec6
 
         this.musique = musique;
         this.langue = langue;
