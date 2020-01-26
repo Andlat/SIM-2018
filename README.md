@@ -28,14 +28,14 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 - Menu
 <img src="images/main-menu.png" alt="Main menu" height="300" />
 
--Jeux (nuit)
+- Jeux (nuit)
 <img src="images/game.png" alt="Game" height="300" />
 
 - Magasin
 <img src="images/store-1.png" alt="Store" height="300" />
 <img src="images/store-2.png" alt="Store skins" height="300" />
 
--Badges
+- Badges
 <img src="images/badges.png" alt="Badges" height="300" />
 
 
