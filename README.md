@@ -21,10 +21,25 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 - Les objets sont classés en catégories de rareté. (e.g. commun, rare, epic...)
 
 **Personnages**
-- Arthur ? (Hero, enfant)
+- Arthur (Hero, enfant)
 - Ennemies (Toutou...)
 
-### Design
+### Screenshots Produit
+- Menu
+<img src="images/main-menu.png" alt="Main menu" height="300" />
+
+-Jeux (nuit)
+<img src="images/game.png" alt="Game" height="300" />
+
+- Magasin
+<img src="images/store-1.png" alt="Store" height="300" />
+<img src="images/store-2.png" alt="Store skins" height="300" />
+
+-Badges
+<img src="images/badges.png" alt="Badges" height="300" />
+
+
+### Design protype
 - Pixel art
 <img src="images/eg_pixel_art.png" alt="pixel art" height="300" />
 
