@@ -24,7 +24,7 @@ Pendant que l'enfant est réveillé, il peut promène dans la ville (ville réel
 - Arthur (Hero, enfant)
 - Ennemies (Toutou...)
 
-### Screenshots Produit
+### Screenshots produit
 - Menu
 <img src="images/main-menu.png" alt="Main menu" height="300" />
 
